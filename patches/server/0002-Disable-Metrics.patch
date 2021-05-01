@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sat, 1 May 2021 14:44:37 -0400
+Subject: [PATCH] Disable Metrics
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
+index dee00aac05f1acf050f05d4db557a08dd0f301c8..df2aefc163d9f932664e2ff0c8a8f9a5b09047e5 100644
+--- a/src/main/java/com/destroystokyo/paper/Metrics.java
++++ b/src/main/java/com/destroystokyo/paper/Metrics.java
+@@ -73,7 +73,7 @@ public class Metrics {
+         Metrics.logger = logger;
+ 
+         // Start submitting the data
+-        startSubmitting();
++        // startSubmitting();
+     }
+ 
+     /**
