@@ -25,13 +25,6 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-maven-
 
-    - name: Setup eden-api
-      run: |
-        git submodule init
-        git submodule update eden-api
-        cd eden-api && mvn clean install
-        cd ..
-
     - name: Patch Parchment
       run: |
         git config --global user.email "you@example.com"
