@@ -60,6 +60,7 @@ case "$1" in
         ./scripts/apply.sh "$basedir"
         cd "$basedir"
         mvn -N install
+        cd ${FORK_NAME}-Common && mvn -e clean install
         cd ${FORK_NAME}-API && mvn -e clean install
         cd ../Paper/Paper-MojangAPI && mvn -e clean install
         cd ../../${FORK_NAME}-Server && mvn -e clean install
