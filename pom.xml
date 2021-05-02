@@ -23,6 +23,7 @@
         <finalName>${project.artifactId}</finalName>
     </build>
     <modules>
+        <module>Parchment-Common</module>
         <module>Parchment-API</module>
         <module>Parchment-Server</module>
         <module>Paper${file.separator}Paper-MojangAPI</module> <!-- We don't plan on patching this, so this hack is good enough. -->

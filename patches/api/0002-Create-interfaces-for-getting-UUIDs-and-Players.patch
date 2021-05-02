@@ -1,10 +1,29 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Sun, 2 May 2021 00:32:09 -0400
+Date: Sun, 2 May 2021 14:16:41 -0400
 Subject: [PATCH] Create interfaces for getting UUIDs and Players
 
 Creates new interfaces for getting UUIDs, Human Entities, Offline Players, and Players. Features matching NotNull and Nullable interfaces. Lessens the required overloads for plugin developers when working with varying player objects.
 
+diff --git a/pom.xml b/pom.xml
+index e5ed07236c358e9ea544f43b41533c92769192dd..8a45c77963d3cd35d2cfa4a3af15c0e27bbbf165 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -47,6 +47,14 @@
+     <!-- Paper end -->
+ 
+     <dependencies>
++        <!-- Parchment start -->
++        <dependency>
++            <groupId>me.lexikiq</groupId>
++            <artifactId>parchment-common</artifactId>
++            <version>dev-SNAPSHOT</version>
++            <scope>compile</scope>
++        </dependency>
++        <!-- Parchment end -->
+         <!-- Paper start -->
+         <dependency>
+             <groupId>net.kyori</groupId>
 diff --git a/src/main/java/com/destroystokyo/paper/event/block/BeaconEffectEvent.java b/src/main/java/com/destroystokyo/paper/event/block/BeaconEffectEvent.java
 index 978813b94a5eae0afccbd3b38b463091a46b56ac..18716a020c0c7c1a06b5ab3935abc33a42d89748 100644
 --- a/src/main/java/com/destroystokyo/paper/event/block/BeaconEffectEvent.java
@@ -299,29 +318,6 @@ index 0000000000000000000000000000000000000000..df10bd66eb531f51b519815a67566195
 +	@Override
 +	@NotNull Player getPlayer();
 +}
-diff --git a/src/main/java/me/lexikiq/HasUniqueId.java b/src/main/java/me/lexikiq/HasUniqueId.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..4fe1da41b9417d82f52432c3bd5b4e8b4c73f09b
---- /dev/null
-+++ b/src/main/java/me/lexikiq/HasUniqueId.java
-@@ -0,0 +1,17 @@
-+package me.lexikiq;
-+
-+import org.jetbrains.annotations.NotNull;
-+
-+import java.util.UUID;
-+
-+/**
-+ * Represents an object that has a {@link UUID}
-+ */
-+public interface HasUniqueId extends OptionalUniqueId {
-+	/**
-+	 * Returns a unique and persistent id for this object
-+	 *
-+	 * @return unique id
-+	 */
-+	@NotNull UUID getUniqueId();
-+}
 diff --git a/src/main/java/me/lexikiq/OptionalHumanEntity.java b/src/main/java/me/lexikiq/OptionalHumanEntity.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..fc5a565e9b654eaa3604f9be5f0fa86bbaab6f2f
@@ -387,29 +383,6 @@ index 0000000000000000000000000000000000000000..70fcce84e8b42f3a2c3543b8365b25cc
 +	 * @return player or null
 +	 */
 +	@Nullable Player getPlayer();
-+}
-diff --git a/src/main/java/me/lexikiq/OptionalUniqueId.java b/src/main/java/me/lexikiq/OptionalUniqueId.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..da4a0422dd4f072dc15750a9e133262a344ef78a
---- /dev/null
-+++ b/src/main/java/me/lexikiq/OptionalUniqueId.java
-@@ -0,0 +1,17 @@
-+package me.lexikiq;
-+
-+import org.jetbrains.annotations.Nullable;
-+
-+import java.util.UUID;
-+
-+/**
-+ * Represents an object that may have a {@link UUID}
-+ */
-+public interface OptionalUniqueId {
-+	/**
-+	 * Returns a unique and persistent id for this object which may be null
-+	 *
-+	 * @return unique id or null
-+	 */
-+	@Nullable UUID getUniqueId();
 +}
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
 index 3afd5f5c0208a4ee93b5dbfc2aab2b9d2e8a7544..e2b4f86fc3825a77a5a0c1c29b428308eee54b16 100644
