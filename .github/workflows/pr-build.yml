@@ -22,7 +22,7 @@ jobs:
     - name: Setup eden-api
       run: | 
         git clone https://github.com/Pugabyte/eden-api               
-        cd eden-api && mvn clean install -o
+        cd eden-api && mvn clean install
         cd .. && rm -rf eden-api
 
     - uses: actions/cache@v2
