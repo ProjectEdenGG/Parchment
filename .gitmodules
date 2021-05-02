@@ -2,3 +2,6 @@
 	path = Paper
 	url = https://github.com/PaperMC/Paper
 	branch = master
+[submodule "eden-api"]
+	path = eden-api
+	url = https://github.com/Pugabyte/eden-api
