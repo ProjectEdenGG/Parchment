@@ -20,7 +20,9 @@ jobs:
         java-version: ${{ matrix.java }}
 
     - name: Setup eden-api
-      run: | 
+      run: |
+        git submodule init
+        git submodule update eden-api
         cd eden-api && mvn clean install
         cd ..
 

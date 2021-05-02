@@ -21,6 +21,8 @@ jobs:
 
     - name: Setup eden-api
       run: |
+        git submodule init
+        git submodule update eden-api
         cd eden-api && mvn clean install
         cd ..
 
