@@ -23,7 +23,7 @@ jobs:
       run: | 
         git clone https://github.com/Pugabyte/eden-api               
         cd eden-api && mvn clean install
-        cd .. && rm -rf eden-api
+        cd ..
 
     - uses: actions/cache@v2
       with:
