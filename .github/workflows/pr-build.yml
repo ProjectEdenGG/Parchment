@@ -19,6 +19,12 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
 
+    - name: Setup eden-api
+      run: | 
+        git clone https://github.com/Pugabyte/eden-api               
+        cd eden-api && mvn clean install -o
+        cd .. && rm -rf eden-api
+
     - uses: actions/cache@v2
       with:
         path: ~/.m2/repository
