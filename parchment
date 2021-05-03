@@ -83,13 +83,13 @@ case "$1" in
     "d" | "deploy")
     (
         basedir
-        mvn -N install
+        mvn -N deploy
         cd ${FORK_NAME}-Common
         mvn clean deploy
         cd ../${FORK_NAME}-API
         mvn clean deploy
         cd ../${FORK_NAME}-Server
-        mvn clean deploy
+        mvn clean install
     )
     ;;
     "up" | "upstream")
