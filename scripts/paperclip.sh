@@ -7,15 +7,16 @@
 set -e
 basedir="$(cd "$1" && pwd -P)"
 workdir="$basedir/Paper/work"
+altworkdir="$basedir/work"
 mcver=$(cat "$workdir/BuildData/info.json" | grep minecraftVersion | cut -d '"' -f 4)
 paperjar="$basedir/Parchment-Server/target/parchment-$mcver.jar"
 vanillajar="$workdir/Minecraft/$mcver/$mcver.jar"
 
 (
-    cd "$workdir/Paperclip"
+    cd "$altworkdir/Paperclip"
     mvn clean package "-Dmcver=$mcver" "-Dpaperjar=$paperjar" "-Dvanillajar=$vanillajar"
 )
-cp "$workdir/Paperclip/assembly/target/paperclip-${mcver}.jar" "$basedir/parchment-paperclip.jar"
+cp "$altworkdir/Paperclip/assembly/target/paperclip-${mcver}.jar" "$basedir/parchment-paperclip.jar"
 
 echo ""
 echo ""
