@@ -80,6 +80,25 @@ case "$1" in
         mvn clean install
     )
     ;;
+    "ghjar")
+    (
+    # github install because workflows are dumb
+        basedir
+        cd "$basedir"
+        if [ "$2" != "fast" ]; then
+           scripts/upstream.sh
+        fi
+        ./scripts/apply.sh "$basedir"
+        cd "$basedir"
+        mvn -N install
+        cd ${FORK_NAME}-Common && mvn -e clean install -Dmaven.javadoc.skip=true
+        cd ${FORK_NAME}-API && mvn -e clean install -Dmaven.javadoc.skip=true
+        cd ../Paper/Paper-MojangAPI && mvn -e clean install
+        cd ../../${FORK_NAME}-Server && mvn -e clean install
+        cd "$basedir"
+        ./scripts/paperclip.sh
+    )
+    ;;
     "d" | "deploy")
     (
         basedir
