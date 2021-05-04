@@ -61,7 +61,7 @@ case "$1" in
         cd "$basedir"
         mvn -N install
         cd ${FORK_NAME}-Common && mvn -e clean install
-        cd ${FORK_NAME}-API && mvn -e clean install
+        cd ../${FORK_NAME}-API && mvn -e clean install
         cd ../Paper/Paper-MojangAPI && mvn -e clean install
         cd ../../${FORK_NAME}-Server && mvn -e clean install
         cd "$basedir"
@@ -76,7 +76,9 @@ case "$1" in
         mvn clean install
         cd ../${FORK_NAME}-API
         mvn clean install
-        cd ../${FORK_NAME}-Server
+        cd ../Paper/Paper-MojangAPI
+        mvn clean install
+        cd ../../${FORK_NAME}-Server
         mvn clean install
     )
     ;;
@@ -92,7 +94,7 @@ case "$1" in
         cd "$basedir"
         mvn -N install
         cd ${FORK_NAME}-Common && mvn -e clean install -Dmaven.javadoc.skip=true
-        cd ${FORK_NAME}-API && mvn -e clean install -Dmaven.javadoc.skip=true
+        cd ../${FORK_NAME}-API && mvn -e clean install -Dmaven.javadoc.skip=true
         cd ../Paper/Paper-MojangAPI && mvn -e clean install
         cd ../../${FORK_NAME}-Server && mvn -e clean install
         cd "$basedir"
