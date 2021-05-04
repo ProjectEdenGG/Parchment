@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Tue, 4 May 2021 11:50:43 -0400
+Subject: [PATCH] Build sources and javadocs
+
+
+diff --git a/pom.xml b/pom.xml
+index 8a45c77963d3cd35d2cfa4a3af15c0e27bbbf165..1edfbf2c99a1815f9f7aabbbcf11e45eceaea2e5 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -333,6 +333,37 @@
+                             </signature>
+                         </configuration>
+                     </plugin>
++                    <!-- Parchment start -->
++                    <plugin>
++                        <groupId>org.apache.maven.plugins</groupId>
++                        <artifactId>maven-source-plugin</artifactId>
++                        <version>3.2.0</version>
++                        <executions>
++                            <execution>
++                                <id>attach-sources</id>
++                                <goals>
++                                    <goal>jar</goal>
++                                </goals>
++                            </execution>
++                        </executions>
++                    </plugin>
++                    <plugin>
++                        <groupId>org.apache.maven.plugins</groupId>
++                        <artifactId>maven-javadoc-plugin</artifactId>
++                        <version>3.2.0</version>
++                        <executions>
++                            <execution>
++                                <id>attach-javadocs</id>
++                                <goals>
++                                    <goal>jar</goal>
++                                </goals>
++                            </execution>
++                        </executions>
++                        <configuration>
++                            <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
++                        </configuration>
++                    </plugin>
++                    <!-- Parchment end -->
+                 </plugins>
+             </build>
+         </profile>

@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Tue, 4 May 2021 11:50:36 -0400
+Subject: [PATCH] Build sources
+
+
+diff --git a/pom.xml b/pom.xml
+index 85bf0a229fa8c4e42744f438b71fda4cef67b4e0..dde8ac8aadd56c411f72c12124dcf301ea50e169 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -352,6 +352,21 @@
+                     </excludes>
+                 </configuration>
+             </plugin>
++            <!-- Parchment start -->
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-source-plugin</artifactId>
++                <version>3.2.0</version>
++                <executions>
++                    <execution>
++                        <id>attach-sources</id>
++                        <goals>
++                            <goal>jar</goal>
++                        </goals>
++                    </execution>
++                </executions>
++            </plugin>
++            <!-- Parchment end -->
+         </plugins>
+     </build>
+ 

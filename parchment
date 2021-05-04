@@ -89,7 +89,7 @@ case "$1" in
         cd ../${FORK_NAME}-API
         mvn clean deploy
         cd ../${FORK_NAME}-Server
-        mvn clean install
+        mvn clean deploy
     )
     ;;
     "up" | "upstream")
