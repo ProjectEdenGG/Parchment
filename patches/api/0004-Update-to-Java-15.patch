@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Sun, 9 May 2021 16:42:00 -0400
-Subject: [PATCH] Update to Java 15 and build sources
+Date: Sun, 9 May 2021 17:03:09 -0400
+Subject: [PATCH] Update to Java 15
 
 
 diff --git a/pom.xml b/pom.xml
-index 8a45c77963d3cd35d2cfa4a3af15c0e27bbbf165..ab9e63c6db20378151fe6599fa4b5066417c16ae 100644
+index 8a45c77963d3cd35d2cfa4a3af15c0e27bbbf165..ed910c6c7851dc4c4d2c540c0cb6285ae4e4be46 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -19,8 +19,10 @@
@@ -21,7 +21,16 @@ index 8a45c77963d3cd35d2cfa4a3af15c0e27bbbf165..ab9e63c6db20378151fe6599fa4b5066
          <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
          <adventure.version>4.7.0</adventure.version> <!-- Paper - When updating this make sure to update the linked JavaDocs on the homepage as well! -->
      </properties>
-@@ -259,25 +261,37 @@
+@@ -129,7 +131,7 @@
+         <!-- annotations -->
+         <dependency>
+             <groupId>org.jetbrains</groupId>
+-            <artifactId>annotations-java5</artifactId>
++            <artifactId>annotations</artifactId> <!-- Parchment -->
+             <version>20.1.0</version>
+             <scope>provided</scope>
+         </dependency>
+@@ -259,15 +261,38 @@
                      </properties>
                  </configuration>
              </plugin>
@@ -52,19 +61,17 @@ index 8a45c77963d3cd35d2cfa4a3af15c0e27bbbf165..ab9e63c6db20378151fe6599fa4b5066
 +                    </execution>
 +                </executions>
                  <configuration>
--                    <links>
--                        <link>https://guava.dev/releases/21.0/api/docs/</link>
--                        <link>https://javadoc.io/doc/org.yaml/snakeyaml/1.27/</link>
--                        <link>https://javadoc.io/doc/org.jetbrains/annotations-java5/20.1.0/</link>
--                        <link>https://javadoc.io/doc/net.md-5/bungeecord-chat/1.16-R0.4/</link>
--                        <!-- Paper start -->
--                        <link>https://jd.adventure.kyori.net/api/${adventure.version}/</link>
--                        <link>https://jd.adventure.kyori.net/text-serializer-gson/${adventure.version}/</link>
--                        <link>https://jd.adventure.kyori.net/text-serializer-legacy/${adventure.version}/</link>
--                        <link>https://jd.adventure.kyori.net/text-serializer-plain/${adventure.version}/</link>
--                        <!-- Paper end -->
--                    </links>
 +                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                     <links>
+                         <link>https://guava.dev/releases/21.0/api/docs/</link>
+                         <link>https://javadoc.io/doc/org.yaml/snakeyaml/1.27/</link>
+-                        <link>https://javadoc.io/doc/org.jetbrains/annotations-java5/20.1.0/</link>
++                        <link>https://javadoc.io/doc/org.jetbrains/annotations/20.1.0/</link> <!-- Parchment -->
+                         <link>https://javadoc.io/doc/net.md-5/bungeecord-chat/1.16-R0.4/</link>
+                         <!-- Paper start -->
+                         <link>https://jd.adventure.kyori.net/api/${adventure.version}/</link>
+@@ -278,6 +303,7 @@
+                     </links>
                  </configuration>
              </plugin>
 +            <!-- Parchment end -->
