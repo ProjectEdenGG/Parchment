@@ -1,0 +1,73 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sun, 9 May 2021 16:42:00 -0400
+Subject: [PATCH] Update to Java 15 and build sources
+
+
+diff --git a/pom.xml b/pom.xml
+index 8a45c77963d3cd35d2cfa4a3af15c0e27bbbf165..ab9e63c6db20378151fe6599fa4b5066417c16ae 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -19,8 +19,10 @@
+ 
+     <properties>
+         <!-- <skipTests>true</skipTests> Paper - This [was] not going to end well -->
+-        <maven.compiler.source>1.8</maven.compiler.source>
+-        <maven.compiler.target>1.8</maven.compiler.target>
++        <!-- Parchment start -->
++        <maven.compiler.source>15</maven.compiler.source>
++        <maven.compiler.target>15</maven.compiler.target>
++        <!-- Parchment end -->
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+         <adventure.version>4.7.0</adventure.version> <!-- Paper - When updating this make sure to update the linked JavaDocs on the homepage as well! -->
+     </properties>
+@@ -259,25 +261,37 @@
+                     </properties>
+                 </configuration>
+             </plugin>
++            <!-- Parchment start -->
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-source-plugin</artifactId>
++                <version>3.2.0</version>
++                <executions>
++                    <execution>
++                        <id>attach-sources</id>
++                        <goals>
++                            <goal>jar</goal>
++                        </goals>
++                    </execution>
++                </executions>
++            </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-javadoc-plugin</artifactId>
+                 <version>3.2.0</version>
++                <executions>
++                    <execution>
++                        <id>attach-javadocs</id>
++                        <goals>
++                            <goal>jar</goal>
++                        </goals>
++                    </execution>
++                </executions>
+                 <configuration>
+-                    <links>
+-                        <link>https://guava.dev/releases/21.0/api/docs/</link>
+-                        <link>https://javadoc.io/doc/org.yaml/snakeyaml/1.27/</link>
+-                        <link>https://javadoc.io/doc/org.jetbrains/annotations-java5/20.1.0/</link>
+-                        <link>https://javadoc.io/doc/net.md-5/bungeecord-chat/1.16-R0.4/</link>
+-                        <!-- Paper start -->
+-                        <link>https://jd.adventure.kyori.net/api/${adventure.version}/</link>
+-                        <link>https://jd.adventure.kyori.net/text-serializer-gson/${adventure.version}/</link>
+-                        <link>https://jd.adventure.kyori.net/text-serializer-legacy/${adventure.version}/</link>
+-                        <link>https://jd.adventure.kyori.net/text-serializer-plain/${adventure.version}/</link>
+-                        <!-- Paper end -->
+-                    </links>
++                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                 </configuration>
+             </plugin>
++            <!-- Parchment end -->
+         </plugins>
+     </build>
+ 
