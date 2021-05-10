@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Mon, 10 May 2021 01:22:18 -0400
-Subject: [PATCH] Add canPlaceOn method
+Date: Mon, 10 May 2021 01:26:38 -0400
+Subject: [PATCH] Add CraftItemStack#canPlaceOn
 
 
 diff --git a/src/main/java/net/minecraft/world/item/ItemBlock.java b/src/main/java/net/minecraft/world/item/ItemBlock.java
@@ -17,7 +17,7 @@ index 59d52c252b2e59923b8e513dd4d2e1ec9ce34dc7..25326f1124773ca4956a72a9b2998513
          EntityHuman entityhuman = blockactioncontext.getEntity();
          VoxelShapeCollision voxelshapecollision = entityhuman == null ? VoxelShapeCollision.a() : VoxelShapeCollision.a((Entity) entityhuman);
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..a9af640388103bb93b156511ead38ac1760a5b19 100644
+index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..da56f0790ee5a07c0dad09082b2d58a3a2e3b702 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 @@ -3,18 +3,31 @@ package org.bukkit.craftbukkit.inventory;
@@ -52,7 +52,7 @@ index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..a9af640388103bb93b156511ead38ac1
  import org.bukkit.inventory.ItemStack;
  import org.bukkit.inventory.meta.ItemMeta;
  import org.bukkit.material.MaterialData;
-@@ -105,6 +118,32 @@ public final class CraftItemStack extends ItemStack {
+@@ -105,6 +118,33 @@ public final class CraftItemStack extends ItemStack {
          setItemMeta(itemMeta);
      }
  
@@ -65,6 +65,7 @@ index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..a9af640388103bb93b156511ead38ac1
 +     * @return if the item can be placed
 +     */
 +    public boolean canPlaceOn(HasHumanEntity _player, Block block, BlockFace face) {
++        if (block.getType().isEmpty()) return false;
 +        HumanEntity player = _player.getPlayer();
 +        if (!face.isCartesian()) throw new IllegalArgumentException("Face must be cartesian");
 +        if (!(block instanceof CraftBlock)) return false;
