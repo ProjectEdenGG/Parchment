@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Mon, 10 May 2021 01:39:48 -0400
+Date: Mon, 10 May 2021 01:58:38 -0400
 Subject: [PATCH] Add CraftItemStack#canPlaceOn
 
 
@@ -16,21 +16,36 @@ index 59d52c252b2e59923b8e513dd4d2e1ec9ce34dc7..25326f1124773ca4956a72a9b2998513
      protected boolean b(BlockActionContext blockactioncontext, IBlockData iblockdata) {
          EntityHuman entityhuman = blockactioncontext.getEntity();
          VoxelShapeCollision voxelshapecollision = entityhuman == null ? VoxelShapeCollision.a() : VoxelShapeCollision.a((Entity) entityhuman);
+diff --git a/src/main/java/net/minecraft/world/item/context/BlockActionContext.java b/src/main/java/net/minecraft/world/item/context/BlockActionContext.java
+index 2cb451db6ca23290f700dc428a7622f64fb90b97..1763ada73e4ef422f95eb5c3f42f19d7600261a6 100644
+--- a/src/main/java/net/minecraft/world/item/context/BlockActionContext.java
++++ b/src/main/java/net/minecraft/world/item/context/BlockActionContext.java
+@@ -24,7 +24,7 @@ public class BlockActionContext extends ItemActionContext {
+         this(itemactioncontext.getWorld(), itemactioncontext.getEntity(), itemactioncontext.getHand(), itemactioncontext.getItemStack(), itemactioncontext.i());
+     }
+ 
+-    protected BlockActionContext(World world, @Nullable EntityHuman entityhuman, EnumHand enumhand, ItemStack itemstack, MovingObjectPositionBlock movingobjectpositionblock) {
++    public BlockActionContext(World world, @Nullable EntityHuman entityhuman, EnumHand enumhand, ItemStack itemstack, MovingObjectPositionBlock movingobjectpositionblock) { // Parchment
+         super(world, entityhuman, enumhand, itemstack, movingobjectpositionblock);
+         this.a = true;
+         this.b = movingobjectpositionblock.getBlockPosition().shift(movingobjectpositionblock.getDirection());
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..9634a967e04ca405d51007b939e24557914be420 100644
+index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..faf174f7cf48579203822e86df57a58b199a7b7b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-@@ -3,18 +3,32 @@ package org.bukkit.craftbukkit.inventory;
+@@ -3,21 +3,41 @@ package org.bukkit.craftbukkit.inventory;
  import static org.bukkit.craftbukkit.inventory.CraftMetaItem.*;
  import com.google.common.collect.ImmutableMap;
  import java.util.Map;
 +import me.lexikiq.HasHumanEntity;
++import me.lexikiq.OptionalHumanEntity;
 +import net.minecraft.core.EnumDirection;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
 +import net.minecraft.world.EnumHand;
 +import net.minecraft.world.entity.player.EntityHuman;
  import net.minecraft.world.item.Item;
++import net.minecraft.world.item.Items;
  import net.minecraft.world.item.enchantment.EnchantmentManager;
 +import net.minecraft.world.item.ItemBlock;
 +import net.minecraft.world.item.context.BlockActionContext;
@@ -39,9 +54,11 @@ index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..9634a967e04ca405d51007b939e24557
  import org.apache.commons.lang.Validate;
 +import org.bukkit.Location;
  import org.bukkit.Material;
++import org.bukkit.World;
 +import org.bukkit.block.Block;
 +import org.bukkit.block.BlockFace;
  import org.bukkit.configuration.serialization.DelegateDeserialization;
++import org.bukkit.craftbukkit.CraftWorld;
  import org.bukkit.craftbukkit.enchantments.CraftEnchantment;
 +import org.bukkit.craftbukkit.block.CraftBlock;
 +import org.bukkit.craftbukkit.entity.CraftEntity;
@@ -53,7 +70,12 @@ index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..9634a967e04ca405d51007b939e24557
  import org.bukkit.inventory.ItemStack;
  import org.bukkit.inventory.meta.ItemMeta;
  import org.bukkit.material.MaterialData;
-@@ -105,6 +119,35 @@ public final class CraftItemStack extends ItemStack {
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
+ 
+ @DelegateDeserialization(ItemStack.class)
+ public final class CraftItemStack extends ItemStack {
+@@ -105,6 +125,55 @@ public final class CraftItemStack extends ItemStack {
          setItemMeta(itemMeta);
      }
  
@@ -61,28 +83,48 @@ index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..9634a967e04ca405d51007b939e24557
 +    /**
 +     * Determines if this item can be placed on a block. Must be run synchronously. Factors in player location,
 +     * nearby entities, and more.
-+     * @param _player player placing the block
++     * @param world world in which the block is being placed
++     * @param _player optional player placing the block
 +     * @param block block to check against
 +     * @param face cardinal direction
 +     * @return if the item can be placed
 +     */
-+    public boolean canPlaceOn(HasHumanEntity _player, Block block, BlockFace face) {
++    public boolean canPlaceOn(World world, @Nullable OptionalHumanEntity _player, Block block, BlockFace face) {
++        Validate.notNull(world, "'world' must not be null");
++        Validate.notNull(block, "'block' must not be null");
++        Validate.notNull(face, "'face' must not be null");
++
 +        if (block.getType().isEmpty()) return false;
-+        HumanEntity player = _player.getPlayer();
-+        Location playerLoc = player.getLocation();
++        HumanEntity player = _player != null ? _player.getPlayer() : null;
++        if (!(world instanceof CraftWorld)) return false;
 +        if (!face.isCartesian()) throw new IllegalArgumentException("Face must be cartesian");
 +        if (!(block instanceof CraftBlock)) return false;
-+        if (!(player instanceof CraftEntity)) return false;
++        if (player != null && !(player instanceof CraftEntity)) return false;
++        EntityHuman human = player != null ? (EntityHuman) ((CraftEntity) player).getHandle() : null;
 +        CraftBlock craftBlock = (CraftBlock) block;
 +        CraftBlock relativeBlock = (CraftBlock) block.getRelative(face);
++        Location playerLoc = player != null ? player.getLocation() : relativeBlock.getLocation();
 +        EnumDirection direction = EnumDirection.valueOf(face.name());
 +
-+        Item item = handle.getItem();
++        Item item = handle != null ? handle.getItem() : Items.AIR;
 +        if (!(item instanceof ItemBlock)) return false;
 +        ItemBlock itemBlock = (ItemBlock) item;
 +
-+        BlockActionContext context = new BlockActionContext((EntityHuman) ((CraftEntity) player).getHandle(), EnumHand.MAIN_HAND, asNMSCopy(this), new MovingObjectPositionBlock(new Vec3D(playerLoc.getX(), playerLoc.getY(), playerLoc.getZ()), direction, craftBlock.getPosition(), false));
++        BlockActionContext context = new BlockActionContext(((CraftWorld) world).getHandle(), human, EnumHand.MAIN_HAND, asNMSCopy(this), new MovingObjectPositionBlock(new Vec3D(playerLoc.getX(), playerLoc.getY(), playerLoc.getZ()), direction, craftBlock.getPosition(), false));
 +        return itemBlock.canPlaceOn(context, itemBlock.getBlock().getPlacedState(context));
++    }
++
++    /**
++     * Determines if this item can be placed on a block. Must be run synchronously. Factors in player location,
++     * nearby entities, and more.
++     * @param player player placing the block
++     * @param block block to check against
++     * @param face cardinal direction
++     * @return if the item can be placed
++     */
++    public boolean canPlaceOn(@NotNull HasHumanEntity player, Block block, BlockFace face) {
++        Validate.notNull(player, "'player' must not be null");
++        return canPlaceOn(player.getPlayer().getWorld(), player, block, face);
 +    }
 +    // Parchment end
 +

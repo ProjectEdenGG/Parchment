@@ -538,7 +538,7 @@ index 2ce774c81a93260a1464183d435b4c418ed61648..aaf08f8e2cce8c7f7f0520fbe3904d26
      /**
       * Returns the name of this player
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 2ea531eaef8c455fdd503f0c0258813fe9136085..5b011eb3795d30f79a7c5ffef7c3a852dfd09c29 100644
+index 34b51466ffb281b05f531b3f7deda245ae7fd96a..f37339692b027c0258d2f5bc20ee7db9c6c9b7fb 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -5,6 +5,7 @@ import java.util.Set; // Paper
