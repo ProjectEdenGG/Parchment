@@ -1,0 +1,87 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Mon, 10 May 2021 01:22:18 -0400
+Subject: [PATCH] Add canPlaceOn method
+
+
+diff --git a/src/main/java/net/minecraft/world/item/ItemBlock.java b/src/main/java/net/minecraft/world/item/ItemBlock.java
+index 59d52c252b2e59923b8e513dd4d2e1ec9ce34dc7..25326f1124773ca4956a72a9b2998513748f7b85 100644
+--- a/src/main/java/net/minecraft/world/item/ItemBlock.java
++++ b/src/main/java/net/minecraft/world/item/ItemBlock.java
+@@ -173,6 +173,7 @@ public class ItemBlock extends Item {
+         }).orElse(iblockdata);
+     }
+ 
++    public boolean canPlaceOn(BlockActionContext blockActionContext, IBlockData iBlockData) {return b(blockActionContext, iBlockData);} // Parchment - OBFHELPER
+     protected boolean b(BlockActionContext blockactioncontext, IBlockData iblockdata) {
+         EntityHuman entityhuman = blockactioncontext.getEntity();
+         VoxelShapeCollision voxelshapecollision = entityhuman == null ? VoxelShapeCollision.a() : VoxelShapeCollision.a((Entity) entityhuman);
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
+index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..a9af640388103bb93b156511ead38ac1760a5b19 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
+@@ -3,18 +3,31 @@ package org.bukkit.craftbukkit.inventory;
+ import static org.bukkit.craftbukkit.inventory.CraftMetaItem.*;
+ import com.google.common.collect.ImmutableMap;
+ import java.util.Map;
++import me.lexikiq.HasHumanEntity;
++import net.minecraft.core.EnumDirection;
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
++import net.minecraft.world.EnumHand;
++import net.minecraft.world.entity.player.EntityHuman;
+ import net.minecraft.world.item.Item;
+ import net.minecraft.world.item.enchantment.EnchantmentManager;
++import net.minecraft.world.item.ItemBlock;
++import net.minecraft.world.item.context.BlockActionContext;
++import net.minecraft.world.phys.MovingObjectPositionBlock;
++import net.minecraft.world.phys.Vec3D;
+ import org.apache.commons.lang.Validate;
+ import org.bukkit.Material;
++import org.bukkit.block.Block;
++import org.bukkit.block.BlockFace;
+ import org.bukkit.configuration.serialization.DelegateDeserialization;
+ import org.bukkit.craftbukkit.enchantments.CraftEnchantment;
++import org.bukkit.craftbukkit.block.CraftBlock;
++import org.bukkit.craftbukkit.entity.CraftEntity;
+ import org.bukkit.craftbukkit.util.CraftLegacy;
+ import org.bukkit.craftbukkit.util.CraftMagicNumbers;
+ import org.bukkit.craftbukkit.util.CraftNamespacedKey;
+ import org.bukkit.enchantments.Enchantment;
++import org.bukkit.entity.HumanEntity;
+ import org.bukkit.inventory.ItemStack;
+ import org.bukkit.inventory.meta.ItemMeta;
+ import org.bukkit.material.MaterialData;
+@@ -105,6 +118,32 @@ public final class CraftItemStack extends ItemStack {
+         setItemMeta(itemMeta);
+     }
+ 
++    // Parchment start
++    /**
++     * Determines if this item can be placed on a block. Must be run synchronously.
++     * @param _player player placing the block
++     * @param block block to check against
++     * @param face cardinal direction
++     * @return if the item can be placed
++     */
++    public boolean canPlaceOn(HasHumanEntity _player, Block block, BlockFace face) {
++        HumanEntity player = _player.getPlayer();
++        if (!face.isCartesian()) throw new IllegalArgumentException("Face must be cartesian");
++        if (!(block instanceof CraftBlock)) return false;
++        if (!(player instanceof CraftEntity)) return false;
++        CraftBlock craftBlock = (CraftBlock) block;
++        CraftBlock relativeBlock = (CraftBlock) block.getRelative(face);
++        EnumDirection direction = EnumDirection.valueOf(face.name());
++
++        Item item = handle.getItem();
++        if (!(item instanceof ItemBlock)) return false;
++        ItemBlock itemBlock = (ItemBlock) item;
++
++        BlockActionContext context = new BlockActionContext((EntityHuman) ((CraftEntity) player).getHandle(), EnumHand.MAIN_HAND, asNMSCopy(this), new MovingObjectPositionBlock(new Vec3D(relativeBlock.getX(), relativeBlock.getY(), relativeBlock.getZ()), direction, craftBlock.getPosition(), false));
++        return itemBlock.canPlaceOn(context, itemBlock.getBlock().getPlacedState(context));
++    }
++    // Parchment end
++
+     @Override
+     public MaterialData getData() {
+         return handle != null ? CraftMagicNumbers.getMaterialData(handle.getItem()) : super.getData();
