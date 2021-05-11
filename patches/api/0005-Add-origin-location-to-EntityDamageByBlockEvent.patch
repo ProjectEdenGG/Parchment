@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Mon, 10 May 2021 22:10:23 -0400
+Subject: [PATCH] Add origin location to EntityDamageByBlockEvent
+
+
+diff --git a/src/main/java/org/bukkit/event/entity/EntityDamageByBlockEvent.java b/src/main/java/org/bukkit/event/entity/EntityDamageByBlockEvent.java
+index 461727dc7f06efb3550fc370e0db5bd04ba89711..cd3ad8ce0f3f22f1292ae81e3a974d0d464a388c 100644
+--- a/src/main/java/org/bukkit/event/entity/EntityDamageByBlockEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntityDamageByBlockEvent.java
+@@ -12,17 +12,38 @@ import org.jetbrains.annotations.Nullable;
+  */
+ public class EntityDamageByBlockEvent extends EntityDamageEvent {
+     private final Block damager;
++    private final org.bukkit.Location location; // Parchment
+ 
+     public EntityDamageByBlockEvent(@Nullable final Block damager, @NotNull final Entity damagee, @NotNull final DamageCause cause, final double damage) {
+         super(damagee, cause, damage);
+         this.damager = damager;
++        this.location = damager != null ? damager.getLocation() : null; // Parchment
+     }
+ 
+     public EntityDamageByBlockEvent(@Nullable final Block damager, @NotNull final Entity damagee, @NotNull final DamageCause cause, @NotNull final Map<DamageModifier, Double> modifiers, @NotNull final Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions) {
+         super(damagee, cause, modifiers, modifierFunctions);
+         this.damager = damager;
++        this.location = damager != null ? damager.getLocation() : null; // Parchment
+     }
+ 
++    // Parchment start
++    public EntityDamageByBlockEvent(@Nullable final Block damager, @NotNull final Entity damagee, @NotNull final DamageCause cause, @Nullable final org.bukkit.Location damageLocation, @NotNull final Map<DamageModifier, Double> modifiers, @NotNull final Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions) {
++        super(damagee, cause, modifiers, modifierFunctions);
++        this.damager = damager;
++        this.location = damageLocation;
++    }
++
++    /**
++     * Gets the location of the damage source.
++     *
++     * @return Originating location of the damage source
++     */
++    @Nullable
++    public org.bukkit.Location getLocation() {
++        return location;
++    }
++    // Parchment end
++
+     /**
+      * Returns the block that damaged the player.
+      *
