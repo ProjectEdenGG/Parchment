@@ -30,7 +30,7 @@ index 2cb451db6ca23290f700dc428a7622f64fb90b97..1763ada73e4ef422f95eb5c3f42f19d7
          this.a = true;
          this.b = movingobjectpositionblock.getBlockPosition().shift(movingobjectpositionblock.getDirection());
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..192131cd2bbc872eb284d998ed555e1ae2d18888 100644
+index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..e709c910e3e9a09c26b44225a0d6c809502e4b67 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 @@ -3,21 +3,41 @@ package org.bukkit.craftbukkit.inventory;
@@ -94,7 +94,7 @@ index 09d7a86b5f6cffdf6664ad657dd4f8dd8eabdd70..192131cd2bbc872eb284d998ed555e1a
 +        Validate.notNull(block, "'block' must not be null");
 +        Validate.notNull(face, "'face' must not be null");
 +
-+        if (block.getType().isEmpty()) return false;
++        if (block.getType().isEmpty() || block.isLiquid()) return false;
 +        HumanEntity player = _player != null ? _player.getPlayer() : null;
 +        if (!(world instanceof CraftWorld)) return false;
 +        if (!face.isCartesian()) throw new IllegalArgumentException("Face must be cartesian");
