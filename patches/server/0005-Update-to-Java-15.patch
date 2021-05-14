@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
 Date: Tue, 4 May 2021 13:02:02 -0400
-Subject: [PATCH] Bump to Java 16
+Subject: [PATCH] Update to Java 15
 
 
 diff --git a/pom.xml b/pom.xml
-index dde8ac8aadd56c411f72c12124dcf301ea50e169..1effeb293e9e404b7712487a8c88f1c8ef4d6e6b 100644
+index dde8ac8aadd56c411f72c12124dcf301ea50e169..731610f136521d984508796a9d9fcea7ed477fac 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -14,8 +14,8 @@
@@ -14,8 +14,8 @@ index dde8ac8aadd56c411f72c12124dcf301ea50e169..1effeb293e9e404b7712487a8c88f1c8
          <minecraft_version>1_16_R3</minecraft_version>
 -        <maven.compiler.source>1.8</maven.compiler.source>
 -        <maven.compiler.target>1.8</maven.compiler.target>
-+        <maven.compiler.source>16</maven.compiler.source>
-+        <maven.compiler.target>16</maven.compiler.target>
++        <maven.compiler.source>15</maven.compiler.source>
++        <maven.compiler.target>15</maven.compiler.target>
      </properties>
  
      <parent>

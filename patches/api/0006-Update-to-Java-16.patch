@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Thu, 13 May 2021 21:24:52 -0400
+Subject: [PATCH] Update to Java 16
+
+
+diff --git a/pom.xml b/pom.xml
+index ed910c6c7851dc4c4d2c540c0cb6285ae4e4be46..893c4d14debae398cab2ce4f5a2e420bbdf5d54b 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -20,8 +20,8 @@
+     <properties>
+         <!-- <skipTests>true</skipTests> Paper - This [was] not going to end well -->
+         <!-- Parchment start -->
+-        <maven.compiler.source>15</maven.compiler.source>
+-        <maven.compiler.target>15</maven.compiler.target>
++        <maven.compiler.source>16</maven.compiler.source>
++        <maven.compiler.target>16</maven.compiler.target>
+         <!-- Parchment end -->
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+         <adventure.version>4.7.0</adventure.version> <!-- Paper - When updating this make sure to update the linked JavaDocs on the homepage as well! -->
+@@ -225,7 +225,7 @@
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-shade-plugin</artifactId>
+-                <version>3.2.3</version>
++                <version>3.3.0-SNAPSHOT</version>
+                 <executions>
+                     <execution>
+                         <phase>package</phase>

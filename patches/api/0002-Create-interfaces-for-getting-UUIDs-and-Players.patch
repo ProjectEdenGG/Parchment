@@ -911,7 +911,7 @@ index 9013d043503d175004ad276799e5935b7fa59dc4..9a6e1ebd46d580addf532786842ea64f
      private boolean cancelled;
  
 diff --git a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
-index c9af02b0f62b3d18da1e91d1ea02ce0864fc60b9..35e8c680309f0a67e941b749240f902be07c22e6 100644
+index 77aefda5aac4602bf5bf71c29600e7450defdd4e..e1275a902986ea82187f491503032d60b8c2c784 100644
 --- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 @@ -4,6 +4,7 @@ import java.net.InetAddress;
