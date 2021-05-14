@@ -5,10 +5,10 @@ Subject: [PATCH] Parchment brand changes
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 61712ae515b329a6b85dbe2e5960e4e864dc7731..051ba2c4ae14c5da58177e52f5c55241f97caab8 100644
+index 35bb4d0b9ed131e6570cce0b43ae78c5557a0bff..8d651788bce04f4d6d3e8bcbd3f97a8e0bbacf02 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1579,7 +1579,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1580,7 +1580,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -18,7 +18,7 @@ index 61712ae515b329a6b85dbe2e5960e4e864dc7731..051ba2c4ae14c5da58177e52f5c55241
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 1a0b3e2313b87c6a5eb049838ec72304dcc8f543..e91e5c3ee22a6bb646956b06ae3949ee7e5bea0b 100644
+index 6cc8eb04f42592aa12f76bb4a0a863ea509741b2..ae3af6c152aefad32616c9debd4f1172c49f68fd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -232,7 +232,7 @@ import javax.annotation.Nullable; // Paper
