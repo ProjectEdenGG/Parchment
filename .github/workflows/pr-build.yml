@@ -19,6 +19,13 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
 
+    - name: JDK 16 Maven Shade Workaround
+      run: |
+        git clone https://github.com/apache/maven-shade-plugin.git
+        cd maven-shade-plugin
+        mvn clean install
+        cd ..
+
     - uses: actions/cache@v2
       with:
         path: ~/.m2/repository
