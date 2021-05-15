@@ -1,0 +1,308 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Fri, 14 May 2021 21:05:49 -0400
+Subject: [PATCH] Make OptionalPlayerLike extend Audience
+
+
+diff --git a/src/main/java/me/lexikiq/OptionalPlayer.java b/src/main/java/me/lexikiq/OptionalPlayer.java
+index 70fcce84e8b42f3a2c3543b8365b25cc90addc8d..428e25fa82e276c473f3d96e56ac1539431a6674 100644
+--- a/src/main/java/me/lexikiq/OptionalPlayer.java
++++ b/src/main/java/me/lexikiq/OptionalPlayer.java
+@@ -13,4 +13,13 @@ public interface OptionalPlayer extends OptionalHumanEntity {
+ 	 * @return player or null
+ 	 */
+ 	@Nullable Player getPlayer();
++
++	/**
++	 * Tests if the {@link Player} represented by this object is online.
++	 *
++	 * @return true if online
++	 */
++	default boolean isOnline() {
++		return getPlayer() != null;
++	}
+ }
+diff --git a/src/main/java/me/lexikiq/OptionalPlayerLike.java b/src/main/java/me/lexikiq/OptionalPlayerLike.java
+index aaa1879f9560ef6ff415e98a5fdf2403f0480a0b..d56c4612ac601fb43a277ee3102726e6547cfee8 100644
+--- a/src/main/java/me/lexikiq/OptionalPlayerLike.java
++++ b/src/main/java/me/lexikiq/OptionalPlayerLike.java
+@@ -1,16 +1,200 @@
+ package me.lexikiq;
+ 
++import net.kyori.adventure.audience.Audience;
++import net.kyori.adventure.audience.MessageType;
++import net.kyori.adventure.bossbar.BossBar;
+ import net.kyori.adventure.identity.Identified;
+ import net.kyori.adventure.identity.Identity;
+-import org.checkerframework.checker.nullness.qual.NonNull;
++import net.kyori.adventure.inventory.Book;
++import net.kyori.adventure.sound.Sound;
++import net.kyori.adventure.sound.SoundStop;
++import net.kyori.adventure.text.Component;
++import net.kyori.adventure.title.Title;
++import org.apache.commons.lang.Validate;
++import org.bukkit.entity.Player;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.function.Consumer;
+ 
+ /**
+  * Class that may be like a {@link org.bukkit.entity.Player} in that it has a {@link java.util.UUID}, {@link org.bukkit.OfflinePlayer}, {@link Identity}, and a nullable Player.
++ * <p>
++ * This class extends the {@link Audience} interface and will silently fail if the player is not online.
+  * @see me.lexikiq.PlayerLike
+  */
+-public interface OptionalPlayerLike extends OptionalPlayer, HasUniqueId, HasOfflinePlayer, Identified {
++public interface OptionalPlayerLike extends OptionalPlayer, HasUniqueId, HasOfflinePlayer, Identified, Audience {
++	/**
++	 * Gets the identity corresponding with this object.
++	 *
++	 * @return the identity
++	 * @since 4.0.0
++	 */
+ 	@Override
+-	default @NonNull Identity identity() {
++	default @NotNull Identity identity() {
+ 		return Identity.identity(getUniqueId());
+ 	}
++
++	/**
++	 * Run a consumer with the {@link Player} associated with this object if the player is online.
++	 * <p>
++	 * Allows easily running a code on the player only if they are connected.
++	 *
++	 * @param consumer function that accepts a Player
++	 */
++	default void consumeIfOnline(final @NotNull Consumer<@NotNull Player> consumer) {
++		Validate.notNull(consumer, "Consumer<Player> should not be null");
++
++		final Player player = getPlayer();
++		if (player != null)
++			consumer.accept(player);
++	}
++
++	/**
++	 * Sends a chat message.
++	 *
++	 * @param source the identity of the source of the message
++	 * @param message a message
++	 * @param type the type
++	 * @see Component
++	 * @since 4.0.0
++	 */
++	@Override
++	default void sendMessage(final @NotNull Identity source, final @NotNull Component message, final @NotNull MessageType type) {
++		consumeIfOnline(player -> player.sendMessage(source, message, type));
++	}
++
++	/**
++	 * Sends a message on the action bar.
++	 *
++	 * @param message a message
++	 * @see Component
++	 * @since 4.0.0
++	 */
++	@Override
++	default void sendActionBar(final @NotNull Component message) {
++		consumeIfOnline(player -> player.sendActionBar(message));
++	}
++
++	/**
++	 * Sends the player list header and footer.
++	 *
++	 * @param header the header
++	 * @param footer the footer
++	 * @since 4.3.0
++	 */
++	@Override
++	default void sendPlayerListHeaderAndFooter(final @NotNull Component header, final @NotNull Component footer) {
++		consumeIfOnline(player -> player.sendPlayerListHeaderAndFooter(header, footer));
++	}
++
++	/**
++	 * Shows a title.
++	 *
++	 * @param title a title
++	 * @see Title
++	 * @since 4.0.0
++	 */
++	@Override
++	default void showTitle(final @NotNull Title title) {
++		consumeIfOnline(player -> player.showTitle(title));
++	}
++
++	/**
++	 * Clears the title, if one is being displayed.
++	 *
++	 * @see Title
++	 * @since 4.0.0
++	 */
++	@Override
++	default void clearTitle() {
++		consumeIfOnline(Audience::clearTitle);
++	}
++
++	/**
++	 * Resets the title and timings back to their default.
++	 *
++	 * @see Title
++	 * @since 4.0.0
++	 */
++	@Override
++	default void resetTitle() {
++		consumeIfOnline(Audience::resetTitle);
++	}
++
++	/**
++	 * Shows a boss bar.
++	 *
++	 * @param bar a boss bar
++	 * @see BossBar
++	 * @since 4.0.0
++	 */
++	@Override
++	default void showBossBar(final @NotNull BossBar bar) {
++		consumeIfOnline(player -> player.showBossBar(bar));
++	}
++
++	/**
++	 * Hides a boss bar.
++	 *
++	 * @param bar a boss bar
++	 * @see BossBar
++	 * @since 4.0.0
++	 */
++	@Override
++	default void hideBossBar(final @NotNull BossBar bar) {
++		consumeIfOnline(player -> player.hideBossBar(bar));
++	}
++
++	/**
++	 * Plays a sound.
++	 *
++	 * @param sound a sound
++	 * @see Sound
++	 * @since 4.0.0
++	 */
++	@Override
++	default void playSound(final @NotNull Sound sound) {
++		consumeIfOnline(player -> player.playSound(sound));
++	}
++
++	/**
++	 * Plays a sound at a location.
++	 *
++	 * @param sound a sound
++	 * @param x x coordinate
++	 * @param y y coordinate
++	 * @param z z coordinate
++	 * @see Sound
++	 * @since 4.0.0
++	 */
++	@Override
++	default void playSound(final @NotNull Sound sound, final double x, final double y, final double z) {
++		consumeIfOnline(player -> player.playSound(sound, x, y, z));
++	}
++
++	/**
++	 * Stops a sound, or many sounds.
++	 *
++	 * @param stop a sound stop
++	 * @see SoundStop
++	 * @since 4.0.0
++	 */
++	@Override
++	default void stopSound(final @NotNull SoundStop stop) {
++		consumeIfOnline(player -> player.stopSound(stop));
++	}
++
++	/**
++	 * Opens a book.
++	 *
++	 * <p>When possible, no item should persist after closing the book.</p>
++	 *
++	 * @param book a book
++	 * @see Book
++	 * @since 4.0.0
++	 */
++	@Override
++	default void openBook(final @NotNull Book book) {
++		consumeIfOnline(player -> player.openBook(book));
++	}
+ }
+diff --git a/src/main/java/me/lexikiq/PlayerLike.java b/src/main/java/me/lexikiq/PlayerLike.java
+index 3184f585f9c6e59ce9297d6613749453ce5e6ab5..d00a256c3a489d918c4d9bef1023e621d0faece3 100644
+--- a/src/main/java/me/lexikiq/PlayerLike.java
++++ b/src/main/java/me/lexikiq/PlayerLike.java
+@@ -1,7 +1,24 @@
+ package me.lexikiq;
+ 
++import org.bukkit.entity.Player;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.function.Consumer;
++
+ /**
+  * Class that is like a {@link org.bukkit.entity.Player} in that it has a Player, {@link java.util.UUID}, {@link org.bukkit.OfflinePlayer}, and an {@link net.kyori.adventure.identity.Identity}.
+  * @see me.lexikiq.OptionalPlayerLike
+  */
+-public interface PlayerLike extends HasPlayer, OptionalPlayerLike {}
++public interface PlayerLike extends HasPlayer, OptionalPlayerLike {
++
++	/**
++	 * Run a consumer with the {@link Player} associated with this object.
++	 * Unlike the parent class {@link OptionalPlayerLike}, this will always run.
++	 *
++	 * @param consumer function that accepts a Player
++	 */
++	@Override
++	default void consumeIfOnline(@NotNull Consumer<@NotNull Player> consumer) {
++		consumer.accept(getPlayer());
++	}
++}
+diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
+index 95220ef8ad0602fae9f88c0231762ff50358d98f..27e837a0dbcf37fff9927deb1c34a3ca96a7a49f 100644
+--- a/src/main/java/org/bukkit/OfflinePlayer.java
++++ b/src/main/java/org/bukkit/OfflinePlayer.java
+@@ -3,9 +3,7 @@ package org.bukkit;
+ import java.util.UUID;
+ 
+ import me.lexikiq.HasOfflinePlayer;
+-import me.lexikiq.HasUniqueId;
+ import me.lexikiq.OptionalPlayer;
+-import me.lexikiq.OptionalPlayerLike;
+ import org.bukkit.configuration.serialization.ConfigurationSerializable;
+ import org.bukkit.entity.AnimalTamer;
+ import org.bukkit.entity.EntityType;
+@@ -14,7 +12,7 @@ import org.bukkit.permissions.ServerOperator;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+ 
+-public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, OptionalPlayerLike { // Parchment
++public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, HasOfflinePlayer, OptionalPlayer { // Parchment
+     // Parchment start
+     @Override
+     @NotNull default OfflinePlayer getOfflinePlayer() {
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index c2866ecabc05edf48712f7fcd3596ae3bf0c46fd..206f5c00434b35fab27df6bc17c96c789fc8fb2a 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -5,8 +5,8 @@ import java.util.Set; // Paper
+ import java.util.UUID;
+ import com.destroystokyo.paper.ClientOption; // Paper
+ import com.destroystokyo.paper.Title; // Paper
++import me.lexikiq.HasOfflinePlayer;
+ import me.lexikiq.HasPlayer;
+-import me.lexikiq.PlayerLike;
+ import net.kyori.adventure.text.Component;
+ import com.destroystokyo.paper.profile.PlayerProfile; // Paper
+ import java.util.Date; // Paper
+@@ -41,7 +41,7 @@ import org.jetbrains.annotations.Nullable;
+ /**
+  * Represents a player, connected or not
+  */
+-public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, com.destroystokyo.paper.network.NetworkClient, PlayerLike { // Paper // Parchment
++public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, com.destroystokyo.paper.network.NetworkClient, HasOfflinePlayer, HasPlayer { // Paper // Parchment
+ 
+     // Parchment start
+     /**
