@@ -51,15 +51,16 @@ index 53ea8a6d90faf4f7f8fd0819be4499422bdd4cbe..344504de9714c4e5398a0fb32c026045
      }
  }
 diff --git a/src/main/java/net/minecraft/world/level/Explosion.java b/src/main/java/net/minecraft/world/level/Explosion.java
-index 79008bda42558ea7d28ccf51b66405a3bdb52da7..f3c4bea06536492931c4f565fd1a9f640cce6188 100644
+index 79008bda42558ea7d28ccf51b66405a3bdb52da7..8fd81f4238416fd6a5d09e3307aebe785f8e28e1 100644
 --- a/src/main/java/net/minecraft/world/level/Explosion.java
 +++ b/src/main/java/net/minecraft/world/level/Explosion.java
-@@ -85,6 +85,12 @@ public class Explosion {
+@@ -85,6 +85,13 @@ public class Explosion {
          this.l = explosiondamagecalculator == null ? this.a(entity) : explosiondamagecalculator;
      }
  
 +    // Parchment start
-+    public org.bukkit.Location getBukkitLocation() {
++    public @Nullable org.bukkit.Location getBukkitLocation() {
++        if (this.world == null) return null;
 +        return new org.bukkit.Location(world.getWorld(), posX, posY, posZ);
 +    }
 +    // Parchment end
