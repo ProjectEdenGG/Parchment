@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Fri, 14 May 2021 23:41:14 -0400
+Subject: [PATCH] Add respawn anchor damage location
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/BlockRespawnAnchor.java b/src/main/java/net/minecraft/world/level/block/BlockRespawnAnchor.java
+index 1a3c66464947e16cc085a20ee1172cc51a3fc2f5..2f921f08de6a349f4582e8471f0f1ff3670f92ed 100644
+--- a/src/main/java/net/minecraft/world/level/block/BlockRespawnAnchor.java
++++ b/src/main/java/net/minecraft/world/level/block/BlockRespawnAnchor.java
+@@ -38,6 +38,7 @@ import net.minecraft.world.level.material.Fluid;
+ import net.minecraft.world.level.pathfinder.PathMode;
+ import net.minecraft.world.phys.MovingObjectPositionBlock;
+ import net.minecraft.world.phys.Vec3D;
++import org.bukkit.Location;
+ import org.bukkit.craftbukkit.block.CraftBlock; // Parchment
+ import org.bukkit.entity.Player; // Parchment
+ 
+@@ -152,7 +153,12 @@ public class BlockRespawnAnchor extends Block {
+             }
+         };
+ 
+-        world.createExplosion((Entity) null, DamageSource.a(), explosiondamagecalculator, (double) blockposition.getX() + 0.5D, (double) blockposition.getY() + 0.5D, (double) blockposition.getZ() + 0.5D, 5.0F, true, Explosion.Effect.DESTROY);
++        // Parchment start
++        double posX = blockposition.getX() + 0.5D;
++        double posY = blockposition.getY() + 0.5D;
++        double posZ = blockposition.getZ() + 0.5D;
++        world.createExplosion((Entity) null, DamageSource.a().location(new Location(world.getWorld(), posX, posY, posZ)), explosiondamagecalculator, posX, posY, posZ, 5.0F, true, Explosion.Effect.DESTROY);
++        // Parchment end
+     }
+ 
+     public static boolean a(World world) {
