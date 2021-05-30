@@ -1,0 +1,485 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sun, 30 May 2021 00:16:59 -0400
+Subject: [PATCH] Add SoundEvent
+
+
+diff --git a/src/main/java/me/lexikiq/CraftSoundEvent.java b/src/main/java/me/lexikiq/CraftSoundEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..bcef4b18f5a710f9216cab917f3478a43827ace3
+--- /dev/null
++++ b/src/main/java/me/lexikiq/CraftSoundEvent.java
+@@ -0,0 +1,43 @@
++package me.lexikiq;
++
++import me.lexikiq.event.sound.EntitySoundEvent;
++import me.lexikiq.event.sound.LocationCustomSoundEvent;
++import me.lexikiq.event.sound.LocationNamedSoundEvent;
++import me.lexikiq.event.sound.SoundEvent;
++import net.minecraft.network.protocol.Packet;
++import net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect;
++import net.minecraft.network.protocol.game.PacketPlayOutEntitySound;
++import net.minecraft.network.protocol.game.PacketPlayOutNamedSoundEffect;
++import net.minecraft.sounds.SoundCategory;
++import org.bukkit.craftbukkit.CraftSound;
++import org.bukkit.craftbukkit.entity.CraftEntity;
++import org.bukkit.craftbukkit.util.CraftNamespacedKey;
++import org.bukkit.craftbukkit.util.CraftVector;
++import org.bukkit.util.Vector;
++import org.jetbrains.annotations.Nullable;
++
++public class CraftSoundEvent {
++	private CraftSoundEvent() {
++		throw new IllegalArgumentException("This class is a utility class and should not be instantiated");
++	}
++
++	public static @Nullable Packet<?> getPacket(SoundEvent _event) {
++		if (!_event.callEvent())
++			return null;
++		float volume = _event.getVolume();
++		float pitch = _event.getPitch();
++		if (_event instanceof LocationNamedSoundEvent) {
++			LocationNamedSoundEvent event = (LocationNamedSoundEvent) _event;
++			Vector pos = event.getVector();
++			return new PacketPlayOutNamedSoundEffect(CraftSound.getSoundEffect(event.getSound()), SoundCategory.valueOf(event.getCategory().name()), pos.getX(), pos.getY(), pos.getZ(), volume, pitch);
++		} else if (_event instanceof LocationCustomSoundEvent) {
++			LocationCustomSoundEvent event = (LocationCustomSoundEvent) _event;
++			Vector pos = event.getVector();
++			return new PacketPlayOutCustomSoundEffect(CraftNamespacedKey.toMinecraft(event.getKey()), SoundCategory.valueOf(event.getCategory().name()), CraftVector.toNMS(pos), volume, pitch);
++		} else if (_event instanceof EntitySoundEvent) {
++			EntitySoundEvent event = (EntitySoundEvent) _event;
++			return new PacketPlayOutEntitySound(CraftSound.getSoundEffect(event.getSound()), SoundCategory.valueOf(event.getCategory().name()), ((CraftEntity) event.getOrigin()).getHandle(), volume, pitch);
++		}
++		throw new IllegalArgumentException("A matching sound packet could not be found");
++	}
++}
+diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
+index 10e9e5328f783832b957113a8672f45f90ace813..1b474797a110d001050b8165c4c5dba06ab5b47b 100644
+--- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
++++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
+@@ -53,7 +53,6 @@ import net.minecraft.network.protocol.game.PacketPlayOutExperience;
+ import net.minecraft.network.protocol.game.PacketPlayOutGameStateChange;
+ import net.minecraft.network.protocol.game.PacketPlayOutLookAt;
+ import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
+-import net.minecraft.network.protocol.game.PacketPlayOutNamedSoundEffect;
+ import net.minecraft.network.protocol.game.PacketPlayOutOpenBook;
+ import net.minecraft.network.protocol.game.PacketPlayOutOpenSignEditor;
+ import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
+@@ -173,6 +172,12 @@ import org.bukkit.event.player.PlayerTeleportEvent;
+ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+ import org.bukkit.inventory.MainHand;
+ // CraftBukkit end
++// Parchmenr start
++import org.bukkit.craftbukkit.CraftSound;
++import org.bukkit.craftbukkit.util.CraftVector;
++import me.lexikiq.CraftSoundEvent;
++import me.lexikiq.event.sound.LocationNamedSoundEvent;
++// Parchment end
+ 
+ public class EntityPlayer extends EntityHuman implements ICrafting {
+ 
+@@ -2132,7 +2137,11 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+ 
+     @Override
+     public void a(SoundEffect soundeffect, SoundCategory soundcategory, float f, float f1) {
+-        this.playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(soundeffect, soundcategory, this.locX(), this.locY(), this.locZ(), f, f1));
++        // Parchment start
++        Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(this.getBukkitEntity(), this.getWorld().getWorld(), CraftVector.toBukkit(this.getPositionVector()), CraftSound.getBukkit(soundeffect), org.bukkit.SoundCategory.valueOf(soundcategory.name()), f, f1));
++        if (packet != null)
++            this.playerConnection.sendPacket(packet);
++        // Parchment end
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
+index 7e032845fe9a46d33236444d62405a41e29daa17..cfb5d2f716fe9181b721ee2b6364fba3eaa1313a 100644
+--- a/src/main/java/net/minecraft/server/level/WorldServer.java
++++ b/src/main/java/net/minecraft/server/level/WorldServer.java
+@@ -58,11 +58,9 @@ import net.minecraft.network.protocol.Packet;
+ import net.minecraft.network.protocol.game.PacketDebug;
+ import net.minecraft.network.protocol.game.PacketPlayOutBlockAction;
+ import net.minecraft.network.protocol.game.PacketPlayOutBlockBreakAnimation;
+-import net.minecraft.network.protocol.game.PacketPlayOutEntitySound;
+ import net.minecraft.network.protocol.game.PacketPlayOutEntityStatus;
+ import net.minecraft.network.protocol.game.PacketPlayOutExplosion;
+ import net.minecraft.network.protocol.game.PacketPlayOutGameStateChange;
+-import net.minecraft.network.protocol.game.PacketPlayOutNamedSoundEffect;
+ import net.minecraft.network.protocol.game.PacketPlayOutSpawnPosition;
+ import net.minecraft.network.protocol.game.PacketPlayOutWorldEvent;
+ import net.minecraft.network.protocol.game.PacketPlayOutWorldParticles;
+@@ -168,6 +166,13 @@ import org.bukkit.event.server.MapInitializeEvent;
+ import org.bukkit.event.weather.LightningStrikeEvent;
+ import org.bukkit.event.world.TimeSkipEvent;
+ // CraftBukkit end
++// Parchment start
++import me.lexikiq.CraftSoundEvent;
++import me.lexikiq.event.sound.EntitySoundEvent;
++import me.lexikiq.event.sound.LocationNamedSoundEvent;
++import org.bukkit.craftbukkit.CraftSound;
++import org.bukkit.util.Vector;
++// Parchment end
+ 
+ public class WorldServer extends World implements GeneratorAccessSeed {
+ 
+@@ -1663,12 +1668,20 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+ 
+     @Override
+     public void playSound(@Nullable EntityHuman entityhuman, double d0, double d1, double d2, SoundEffect soundeffect, SoundCategory soundcategory, float f, float f1) {
+-        this.server.getPlayerList().sendPacketNearby(entityhuman, d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, this.getDimensionKey(), new PacketPlayOutNamedSoundEffect(soundeffect, soundcategory, d0, d1, d2, f, f1));
++        // Parchment start
++        Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(entityhuman == null ? null : entityhuman.getBukkitEntity(), getWorld(), new Vector(d0, d1, d2), CraftSound.getBukkit(soundeffect), org.bukkit.SoundCategory.valueOf(soundcategory.name()), f, f1));
++        if (packet != null)
++            this.server.getPlayerList().sendPacketNearby(entityhuman, d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, this.getDimensionKey(), packet);
++        // Parchment end
+     }
+ 
+     @Override
+     public void playSound(@Nullable EntityHuman entityhuman, Entity entity, SoundEffect soundeffect, SoundCategory soundcategory, float f, float f1) {
+-        this.server.getPlayerList().sendPacketNearby(entityhuman, entity.locX(), entity.locY(), entity.locZ(), f > 1.0F ? (double) (16.0F * f) : 16.0D, this.getDimensionKey(), new PacketPlayOutEntitySound(soundeffect, soundcategory, entity, f, f1));
++        // Parchment start
++        Packet<?> packet = CraftSoundEvent.getPacket(new EntitySoundEvent(entityhuman == null ? null : entityhuman.getBukkitEntity(), entity.getBukkitEntity(), CraftSound.getBukkit(soundeffect), org.bukkit.SoundCategory.valueOf(soundcategory.name()), f, f1));
++        if (packet != null)
++            this.server.getPlayerList().sendPacketNearby(entityhuman, entity.locX(), entity.locY(), entity.locZ(), f > 1.0F ? (double) (16.0F * f) : 16.0D, this.getDimensionKey(), packet);
++        // Parchment end
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index 2a76c3624c64e93509a96579f48c507e29901625..4d908e13dae49e21f9c1001f0c225549bb529c2b 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -43,7 +43,6 @@ import net.minecraft.network.protocol.game.PacketPlayOutGameStateChange;
+ import net.minecraft.network.protocol.game.PacketPlayOutHeldItemSlot;
+ import net.minecraft.network.protocol.game.PacketPlayOutKickDisconnect;
+ import net.minecraft.network.protocol.game.PacketPlayOutLogin;
+-import net.minecraft.network.protocol.game.PacketPlayOutNamedSoundEffect;
+ import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
+ import net.minecraft.network.protocol.game.PacketPlayOutRecipeUpdate;
+ import net.minecraft.network.protocol.game.PacketPlayOutRespawn;
+@@ -67,8 +66,6 @@ import net.minecraft.server.level.PlayerInteractManager;
+ import net.minecraft.server.level.TicketType;
+ import net.minecraft.server.level.WorldServer;
+ import net.minecraft.server.network.PlayerConnection;
+-import net.minecraft.sounds.SoundCategory;
+-import net.minecraft.sounds.SoundEffects;
+ import net.minecraft.stats.ServerStatisticManager;
+ import net.minecraft.stats.StatisticList;
+ import net.minecraft.tags.Tag;
+@@ -123,6 +120,12 @@ import org.bukkit.event.player.PlayerLoginEvent;
+ import org.bukkit.event.player.PlayerQuitEvent;
+ import org.bukkit.event.player.PlayerRespawnEvent;
+ // CraftBukkit end
++// Parchment start
++import me.lexikiq.CraftSoundEvent;
++import me.lexikiq.event.sound.LocationNamedSoundEvent;
++import org.bukkit.craftbukkit.util.CraftVector;
++import org.bukkit.Sound;
++// Parchment end
+ 
+ public abstract class PlayerList {
+ 
+@@ -981,7 +984,11 @@ public abstract class PlayerList {
+         if (flag2 && !isLocAltered) {
+             IBlockData data = worldserver1.getType(blockposition);
+             worldserver1.setTypeAndData(blockposition, data.set(BlockRespawnAnchor.a, data.get(BlockRespawnAnchor.a) - 1), 3);
+-            entityplayer1.playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(SoundEffects.BLOCK_RESPAWN_ANCHOR_DEPLETE, SoundCategory.BLOCKS, (double) location.getX(), (double) location.getY(), (double) location.getZ(), 1.0F, 1.0F));
++            // Parchment start
++            Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(entityplayer1.getBukkitEntity(), entityplayer1.getWorld().getWorld(), CraftVector.toBukkit(entityplayer1.getPositionVector()), Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE, org.bukkit.SoundCategory.BLOCKS, 1.0F, 1.0F));
++            if (packet != null)
++                entityplayer1.playerConnection.sendPacket(packet);
++            // Parchment end
+         // Paper end
+         }
+         // Added from changeDimension
+diff --git a/src/main/java/net/minecraft/world/entity/EntityLightning.java b/src/main/java/net/minecraft/world/entity/EntityLightning.java
+index 85f571a791bce63989890f277857bc7bdeec0cb5..9172c6000174c53519b96e51819baa3066f51d04 100644
+--- a/src/main/java/net/minecraft/world/entity/EntityLightning.java
++++ b/src/main/java/net/minecraft/world/entity/EntityLightning.java
+@@ -12,9 +12,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity;
+ import net.minecraft.server.level.EntityPlayer;
+ import net.minecraft.server.level.WorldServer;
+ import net.minecraft.sounds.SoundCategory;
+-import net.minecraft.sounds.SoundEffects;
+ import net.minecraft.world.EnumDifficulty;
+-import net.minecraft.world.entity.player.EntityHuman;
+ import net.minecraft.world.level.GameRules;
+ import net.minecraft.world.level.IBlockAccess;
+ import net.minecraft.world.level.World;
+@@ -23,9 +21,14 @@ import net.minecraft.world.level.block.state.IBlockData;
+ import net.minecraft.world.phys.AxisAlignedBB;
+ 
+ // CraftBukkit start
+-import net.minecraft.network.protocol.game.PacketPlayOutNamedSoundEffect;
+ import org.bukkit.craftbukkit.event.CraftEventFactory;
+ // CraftBukkit end
++// Parchment start
++import org.bukkit.Sound;
++import org.bukkit.util.Vector;
++import me.lexikiq.CraftSoundEvent;
++import me.lexikiq.event.sound.LocationNamedSoundEvent;
++// Parchment end
+ 
+ public class EntityLightning extends Entity {
+ 
+@@ -88,8 +91,11 @@ public class EntityLightning extends Entity {
+                 double distanceSquared = deltaX * deltaX + deltaZ * deltaZ;
+                 // Paper start - Limit lightning strike effect distance
+                 if (distanceSquared <= this.world.paperConfig.sqrMaxLightningImpactSoundDistance) {
+-                    player.playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(SoundEffects.ENTITY_LIGHTNING_BOLT_IMPACT,
+-                        SoundCategory.WEATHER, this.locX(), this.locY(), this.locZ(), 2.0f, 0.5F + this.random.nextFloat() * 0.2F));
++                    // Parchment start
++                    Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(player.getBukkitEntity(), world.getWorld(), new Vector(this.locX(), this.locY(), this.locZ()), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, org.bukkit.SoundCategory.WEATHER, 2f, 0.5F + this.random.nextFloat() * 0.2F));
++                    if (packet != null)
++                        player.playerConnection.sendPacket(packet);
++                    // Parchment end
+                 }
+ 
+                 if (world.paperConfig.sqrMaxThunderDistance != -1 && distanceSquared >= world.paperConfig.sqrMaxThunderDistance) {
+@@ -97,14 +103,18 @@ public class EntityLightning extends Entity {
+                 }
+ 
+                 // Paper end
++                double relativeX = this.locX(); // Parchment - sound event
++                double relativeZ = this.locZ(); // Parchment - sound event
+                 if (distanceSquared > viewDistance * viewDistance) {
+                     double deltaLength = Math.sqrt(distanceSquared);
+-                    double relativeX = player.locX() + (deltaX / deltaLength) * viewDistance;
+-                    double relativeZ = player.locZ() + (deltaZ / deltaLength) * viewDistance;
+-                    player.playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(SoundEffects.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.WEATHER, relativeX, this.locY(), relativeZ, 10000.0F, pitch));
+-                } else {
+-                    player.playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(SoundEffects.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.WEATHER, this.locX(), this.locY(), this.locZ(), 10000.0F, pitch));
++                    relativeX = player.locX() + (deltaX / deltaLength) * viewDistance; // Parchment - sound event
++                    relativeZ = player.locZ() + (deltaZ / deltaLength) * viewDistance; // Parchment - sound event
+                 }
++                // Parchment start - sound event
++                Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(player.getBukkitEntity(), world.getWorld(), new Vector(relativeX, this.locY(), relativeZ), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, org.bukkit.SoundCategory.WEATHER, 10000.0F, pitch));
++                if (packet != null)
++                    player.playerConnection.sendPacket(packet);
++                // Parchment end - sound event
+             }
+             // CraftBukkit end
+ //            this.world.playSound((EntityHuman) null, this.locX(), this.locY(), this.locZ(), SoundEffects.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.WEATHER, 2.0F, 0.5F + this.random.nextFloat() * 0.2F); // Paper - Limit lightning strike effect distance (the packet is now sent from inside the loop)
+diff --git a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
+index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..32eb3e96ab357a29d5f5e61351d088a22250e907 100644
+--- a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
++++ b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
+@@ -28,7 +28,6 @@ import net.minecraft.network.chat.ChatMessage;
+ import net.minecraft.network.chat.IChatBaseComponent;
+ import net.minecraft.network.chat.IChatMutableComponent;
+ import net.minecraft.network.protocol.game.PacketPlayOutEntityVelocity;
+-import net.minecraft.network.protocol.game.PacketPlayOutNamedSoundEffect;
+ import net.minecraft.network.syncher.DataWatcher;
+ import net.minecraft.network.syncher.DataWatcherObject;
+ import net.minecraft.network.syncher.DataWatcherRegistry;
+@@ -125,6 +124,13 @@ import org.bukkit.event.entity.EntityExhaustionEvent;
+ import org.bukkit.event.player.PlayerDropItemEvent;
+ import org.bukkit.event.player.PlayerVelocityEvent;
+ // CraftBukkit end
++// Parchment start
++import org.bukkit.craftbukkit.CraftSound;
++import org.bukkit.util.Vector;
++import net.minecraft.network.protocol.Packet;
++import me.lexikiq.CraftSoundEvent;
++import me.lexikiq.event.sound.LocationNamedSoundEvent;
++// Parchment end
+ 
+ public abstract class EntityHuman extends EntityLiving {
+ 
+@@ -1755,7 +1761,11 @@ public abstract class EntityHuman extends EntityLiving {
+     private static void sendSoundEffect(EntityHuman fromEntity, double x, double y, double z, SoundEffect soundEffect, SoundCategory soundCategory, float volume, float pitch) {
+         fromEntity.world.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
+         if (fromEntity instanceof EntityPlayer) {
+-            ((EntityPlayer) fromEntity).playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(soundEffect, soundCategory, x, y, z, volume, pitch));
++            // Parchment start
++            Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(((EntityPlayer) fromEntity).getBukkitEntity(), fromEntity.getWorld().getWorld(), new Vector(x, y, z), CraftSound.getBukkit(soundEffect), org.bukkit.SoundCategory.valueOf(soundCategory.name()), volume, pitch));
++            if (packet != null)
++                ((EntityPlayer) fromEntity).playerConnection.sendPacket(packet);
++            // Parchment end
+         }
+     }
+     // Paper end
+diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+index 457cbdab3fa96fdf7fad1b0206bec9c0aa7847d8..e3ba6dbe6afdfbba299be5b50ff299cd18320ada 100644
+--- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
++++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+@@ -26,12 +26,9 @@ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
+ import net.minecraft.network.chat.ChatMessage;
+ import net.minecraft.network.chat.IChatBaseComponent;
+-import net.minecraft.network.protocol.game.PacketPlayOutNamedSoundEffect;
+ import net.minecraft.server.level.BossBattleServer;
+ import net.minecraft.server.level.EntityPlayer;
+ import net.minecraft.server.level.WorldServer;
+-import net.minecraft.sounds.SoundCategory;
+-import net.minecraft.sounds.SoundEffects;
+ import net.minecraft.stats.StatisticList;
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.world.BossBattle;
+@@ -58,6 +55,13 @@ import net.minecraft.world.level.block.Blocks;
+ import net.minecraft.world.level.block.entity.EnumBannerPatternType;
+ import net.minecraft.world.level.levelgen.HeightMap;
+ import net.minecraft.world.phys.Vec3D;
++// Parchment start
++import org.bukkit.Sound;
++import org.bukkit.util.Vector;
++import me.lexikiq.CraftSoundEvent;
++import me.lexikiq.event.sound.LocationNamedSoundEvent;
++import net.minecraft.network.protocol.Packet;
++// Parchment end
+ 
+ public class Raid {
+ 
+@@ -495,7 +499,11 @@ public class Raid {
+             double d1 = vec3d.z + (double) (13.0F / f1) * (vec3d1.z - vec3d.z);
+ 
+             if (f1 <= 64.0F || collection.contains(entityplayer)) {
+-                entityplayer.playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(SoundEffects.EVENT_RAID_HORN, SoundCategory.NEUTRAL, d0, entityplayer.locY(), d1, 64.0F, 1.0F));
++                // Parchment start
++                Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(entityplayer.getBukkitEntity(), world.getWorld(), new Vector(d0, entityplayer.locY(), d1), Sound.EVENT_RAID_HORN, org.bukkit.SoundCategory.NEUTRAL, 64.0F, 1.0F));
++                if (packet != null)
++                    entityplayer.playerConnection.sendPacket(packet);
++                // Parchment end
+             }
+         }
+ 
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index 3b3eda95c0ff8b129adedbae6561bba2d01c2f3a..b3563f4b2a3b72d8899abcd779d1e0424846e4a5 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -26,7 +26,6 @@ import net.minecraft.core.BlockPosition;
+ import net.minecraft.core.EnumDirection;
+ import net.minecraft.core.IRegistry;
+ import net.minecraft.data.worldgen.BiomeDecoratorGroups;
+-import net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect;
+ import net.minecraft.network.protocol.game.PacketPlayOutUpdateTime;
+ import net.minecraft.network.protocol.game.PacketPlayOutWorldEvent;
+ import net.minecraft.resources.MinecraftKey;
+@@ -268,6 +267,11 @@ import org.bukkit.util.BoundingBox;
+ import org.bukkit.util.Consumer;
+ import org.bukkit.util.RayTraceResult;
+ import org.bukkit.util.Vector;
++// Parchment start
++import me.lexikiq.CraftSoundEvent;
++import me.lexikiq.event.sound.LocationCustomSoundEvent;
++import net.minecraft.network.protocol.Packet;
++// Parchment end
+ 
+ public class CraftWorld implements World {
+     public static final int CUSTOM_DIMENSION_OFFSET = 10;
+@@ -2308,8 +2312,9 @@ public class CraftWorld implements World {
+         double y = loc.getY();
+         double z = loc.getZ();
+ 
+-        PacketPlayOutCustomSoundEffect packet = new PacketPlayOutCustomSoundEffect(new MinecraftKey(sound), SoundCategory.valueOf(category.name()), new Vec3D(x, y, z), volume, pitch);
+-        world.getMinecraftServer().getPlayerList().sendPacketNearby(null, x, y, z, volume > 1.0F ? 16.0F * volume : 16.0D, this.world.getDimensionKey(), packet);
++        Packet<?> packet = CraftSoundEvent.getPacket(new LocationCustomSoundEvent(null, this, new Vector(x, y, z), org.bukkit.craftbukkit.util.CraftNamespacedKey.fromString(sound), category, volume, pitch));
++        if (packet != null)
++            world.getMinecraftServer().getPlayerList().sendPacketNearby(null, x, y, z, volume > 1.0F ? 16.0F * volume : 16.0D, this.world.getDimensionKey(), packet);
+     }
+ 
+     private static Map<String, GameRules.GameRuleKey<?>> gamerules;
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 05248f560d643080a3eac581c01aa89fb3709e6c..5df15a4474e62e892d3fd901e1d158384d14bd52 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -41,10 +41,8 @@ import net.minecraft.network.protocol.game.PacketPlayOutBlockBreakAnimation;
+ import net.minecraft.network.protocol.game.PacketPlayOutBlockChange;
+ import net.minecraft.network.protocol.game.PacketPlayOutChat;
+ import net.minecraft.network.protocol.game.PacketPlayOutCustomPayload;
+-import net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect;
+ import net.minecraft.network.protocol.game.PacketPlayOutExperience;
+ import net.minecraft.network.protocol.game.PacketPlayOutMap;
+-import net.minecraft.network.protocol.game.PacketPlayOutNamedSoundEffect;
+ import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
+ import net.minecraft.network.protocol.game.PacketPlayOutPlayerListHeaderFooter;
+ import net.minecraft.network.protocol.game.PacketPlayOutSpawnPosition;
+@@ -135,6 +133,14 @@ import org.bukkit.metadata.MetadataValue;
+ import org.bukkit.plugin.Plugin;
+ import org.bukkit.plugin.messaging.StandardMessenger;
+ import org.bukkit.scoreboard.Scoreboard;
++// Parchment start
++import org.bukkit.util.Vector;
++import me.lexikiq.CraftSoundEvent;
++import me.lexikiq.event.sound.LocationNamedSoundEvent;
++import net.minecraft.network.protocol.Packet;
++import me.lexikiq.event.sound.LocationCustomSoundEvent;
++import me.lexikiq.event.sound.SoundEvent;
++// Parchment end
+ 
+ import net.md_5.bungee.api.chat.BaseComponent; // Spigot
+ 
+@@ -577,7 +583,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         }
+ 
+         float f = (float) Math.pow(2.0D, (note - 12.0D) / 12.0D);
+-        getHandle().playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(CraftSound.getSoundEffect("block.note_block." + instrumentName), net.minecraft.sounds.SoundCategory.RECORDS, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), 3.0f, f));
++        // Parchment start
++        Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(this, getWorld(), new Vector(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), Sound.valueOf("BLOCK_NOTE_BLOCK_" + instrumentName.toUpperCase()), org.bukkit.SoundCategory.RECORDS, 3f, f));
++        if (packet != null)
++            getHandle().playerConnection.sendPacket(packet);
++        // Parchment end
+     }
+ 
+     @Override
+@@ -639,7 +649,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+                 break;
+         }
+         float f = (float) Math.pow(2.0D, (note.getId() - 12.0D) / 12.0D);
+-        getHandle().playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(CraftSound.getSoundEffect("block.note_block." + instrumentName), net.minecraft.sounds.SoundCategory.RECORDS, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), 3.0f, f));
++        // Parchment start
++        Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(this, getWorld(), new Vector(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), Sound.valueOf("BLOCK_NOTE_BLOCK_" + instrumentName.toUpperCase()), org.bukkit.SoundCategory.RECORDS, 3f, f));
++        if (packet != null)
++            getHandle().playerConnection.sendPacket(packet);
++        // Parchment end
+     }
+ 
+     @Override
+@@ -655,17 +669,22 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+     @Override
+     public void playSound(Location loc, Sound sound, org.bukkit.SoundCategory category, float volume, float pitch) {
+         if (loc == null || sound == null || category == null || getHandle().playerConnection == null) return;
+-
+-        PacketPlayOutNamedSoundEffect packet = new PacketPlayOutNamedSoundEffect(CraftSound.getSoundEffect(sound), net.minecraft.sounds.SoundCategory.valueOf(category.name()), loc.getX(), loc.getY(), loc.getZ(), volume, pitch);
+-        getHandle().playerConnection.sendPacket(packet);
++        // Parchment start
++        Packet<?> packet = CraftSoundEvent.getPacket(new LocationNamedSoundEvent(this, getWorld(), loc.toVector(), sound, category, volume, pitch));
++        if (packet != null)
++            getHandle().playerConnection.sendPacket(packet);
++        // Parchment end
+     }
+ 
+     @Override
+     public void playSound(Location loc, String sound, org.bukkit.SoundCategory category, float volume, float pitch) {
+         if (loc == null || sound == null || category == null || getHandle().playerConnection == null) return;
+ 
+-        PacketPlayOutCustomSoundEffect packet = new PacketPlayOutCustomSoundEffect(new MinecraftKey(sound), net.minecraft.sounds.SoundCategory.valueOf(category.name()), new Vec3D(loc.getX(), loc.getY(), loc.getZ()), volume, pitch);
+-        getHandle().playerConnection.sendPacket(packet);
++        // Parchment start
++        Packet<?> packet = CraftSoundEvent.getPacket(new LocationCustomSoundEvent(this, getWorld(), loc.toVector(), CraftNamespacedKey.fromString(sound), category, volume, pitch));
++        if (packet != null)
++            getHandle().playerConnection.sendPacket(packet);
++        // Parchment end
+     }
+ 
+     @Override
+@@ -2211,11 +2230,18 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+     public void playSound(final net.kyori.adventure.sound.Sound sound, final double x, final double y, final double z) {
+         final MinecraftKey name = io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.name());
+         final java.util.Optional<net.minecraft.sounds.SoundEffect> event = net.minecraft.core.IRegistry.SOUND_EVENT.getOptional(name);
++        // Parchment start
++        SoundEvent soundEvent;
++        Vector pos = new Vector(x, y, z);
++        org.bukkit.SoundCategory category = org.bukkit.SoundCategory.valueOf(io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.source()).name());
+         if (event.isPresent()) {
+-            this.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedSoundEffect(event.get(), io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.source()), x, y, z, sound.volume(), sound.pitch()));
++            soundEvent = new LocationNamedSoundEvent(this, getWorld(), pos, CraftSound.getBukkit(event.get()), category, sound.volume(), sound.pitch());
+         } else {
+-            this.getHandle().playerConnection.sendPacket(new PacketPlayOutCustomSoundEffect(name, io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.source()), new Vec3D(x, y, z), sound.volume(), sound.pitch()));
++            soundEvent = new LocationCustomSoundEvent(this, getWorld(), pos, CraftNamespacedKey.fromMinecraft(name), category, sound.volume(), sound.pitch());
+         }
++        Packet<?> packet = CraftSoundEvent.getPacket(soundEvent);
++        if (packet != null)
++            this.getHandle().playerConnection.sendPacket(packet);
+     }
+ 
+     @Override

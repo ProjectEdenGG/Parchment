@@ -1,0 +1,359 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sun, 30 May 2021 00:16:59 -0400
+Subject: [PATCH] Add SoundEvent
+
+
+diff --git a/src/main/java/me/lexikiq/event/sound/EntitySoundEvent.java b/src/main/java/me/lexikiq/event/sound/EntitySoundEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..bf7cd3b9183925cdeef2969cad045bf766a54742
+--- /dev/null
++++ b/src/main/java/me/lexikiq/event/sound/EntitySoundEvent.java
+@@ -0,0 +1,44 @@
++package me.lexikiq.event.sound;
++
++import org.apache.commons.lang.Validate;
++import org.bukkit.Sound;
++import org.bukkit.SoundCategory;
++import org.bukkit.entity.Entity;
++import org.bukkit.entity.HumanEntity;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++/**
++ * Called when an entity sound is sent to a player. Cancelling this event will prevent the packet from sending.
++ * <p>
++ * This type of sound represents one that will follow the {@link #origin} entity.
++ */
++public class EntitySoundEvent extends NamedSoundEvent {
++	private @NotNull Entity origin;
++
++	public EntitySoundEvent(@Nullable HumanEntity receiver, @NotNull Entity origin, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
++		super(receiver, sound, category, volume, pitch);
++		Validate.notNull(origin, "origin cannot be null");
++		this.origin = origin;
++	}
++
++	/**
++	 * Gets the entity that the sound is originating from
++	 * @return originating entity
++	 */
++	public @NotNull Entity getOrigin() {
++		return origin;
++	}
++
++	/**
++	 * Sets the entity that the sound will originate from
++	 * @param origin originating entity
++	 */
++	public void setOrigin(@NotNull Entity origin) {
++		Validate.notNull(origin, "origin cannot be null");
++		if (!this.origin.getWorld().equals(origin.getWorld()))
++			throw new IllegalArgumentException("Entity must be in same world as originating location");
++		this.origin = origin;
++	}
++
++}
+diff --git a/src/main/java/me/lexikiq/event/sound/LocationCustomSoundEvent.java b/src/main/java/me/lexikiq/event/sound/LocationCustomSoundEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..8ce556953dd175336ef887c508ad8e027b9df4a6
+--- /dev/null
++++ b/src/main/java/me/lexikiq/event/sound/LocationCustomSoundEvent.java
+@@ -0,0 +1,73 @@
++package me.lexikiq.event.sound;
++
++import org.apache.commons.lang.Validate;
++import org.bukkit.Keyed;
++import org.bukkit.Location;
++import org.bukkit.NamespacedKey;
++import org.bukkit.SoundCategory;
++import org.bukkit.World;
++import org.bukkit.entity.HumanEntity;
++import org.bukkit.util.Vector;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++/**
++ * Called when a sound not available in {@link org.bukkit.Sound} is sent to a player from a {@link Location}. Cancelling this event will prevent the packet from sending.
++ */
++public class LocationCustomSoundEvent extends SoundEvent implements Keyed {
++	private @NotNull Vector vector;
++	private @NotNull NamespacedKey key;
++	private @NotNull final World world;
++
++	public LocationCustomSoundEvent(@Nullable HumanEntity receiver, @NotNull World world, @NotNull Vector vector, @NotNull NamespacedKey key, @NotNull SoundCategory category, float volume, float pitch) {
++		super(receiver, category, volume, pitch);
++		Validate.notNull(world, "world cannot be null");
++		Validate.notNull(vector, "vector cannot be null");
++		Validate.notNull(key, "key cannot be null");
++		this.world = world;
++		this.vector = vector;
++		this.key = key;
++	}
++
++	/**
++	 * Gets the position in the world of the sound
++	 * @return position in the world
++	 */
++	public @NotNull Vector getVector() {
++		return vector;
++	}
++
++	/**
++	 * Gets the resource pack key of the sound
++	 * @return asset key
++	 */
++	public @NotNull NamespacedKey getKey() {
++		return key;
++	}
++
++	/**
++	 * Gets the world in which the sound is being played
++	 * @return sound's world
++	 */
++	public @NotNull World getWorld() {
++		return world;
++	}
++
++	/**
++	 * Sets the position in the world of the sound
++	 * @param vector position in the world
++	 */
++	public void setVector(@NotNull Vector vector) {
++		Validate.notNull(vector, "vector cannot be null");
++		this.vector = vector;
++	}
++
++	/**
++	 * Sets the resource pack key of the sound
++	 * @param key asset key
++	 */
++	public void setKey(@NotNull NamespacedKey key) {
++		Validate.notNull(key, "key cannot be null");
++		this.key = key;
++	}
++}
+diff --git a/src/main/java/me/lexikiq/event/sound/LocationNamedSoundEvent.java b/src/main/java/me/lexikiq/event/sound/LocationNamedSoundEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..242a7f3d4d6ab6ff7000e544605a69eac35f03a8
+--- /dev/null
++++ b/src/main/java/me/lexikiq/event/sound/LocationNamedSoundEvent.java
+@@ -0,0 +1,52 @@
++package me.lexikiq.event.sound;
++
++import org.apache.commons.lang.Validate;
++import org.bukkit.Location;
++import org.bukkit.Sound;
++import org.bukkit.SoundCategory;
++import org.bukkit.World;
++import org.bukkit.entity.HumanEntity;
++import org.bukkit.util.Vector;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++/**
++ * Called when a sound available in {@link Sound} is sent to a player from a {@link Location}. Cancelling this event will prevent the packet from sending.
++ */
++public class LocationNamedSoundEvent extends NamedSoundEvent {
++	private @NotNull Vector vector;
++	private @NotNull final World world;
++
++	public LocationNamedSoundEvent(@Nullable HumanEntity receiver, @NotNull World world, @NotNull Vector vector, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
++		super(receiver, sound, category, volume, pitch);
++		Validate.notNull(world, "world cannot be null");
++		Validate.notNull(vector, "vector cannot be null");
++		this.world = world;
++		this.vector = vector;
++	}
++
++	/**
++	 * Gets the position in the world of the sound
++	 * @return position in the world
++	 */
++	public @NotNull Vector getVector() {
++		return vector;
++	}
++
++	/**
++	 * Gets the world in which the sound is being played
++	 * @return sound's world
++	 */
++	public @NotNull World getWorld() {
++		return world;
++	}
++
++	/**
++	 * Sets the position in the world of the sound
++	 * @param vector position in the world
++	 */
++	public void setVector(@NotNull Vector vector) {
++		Validate.notNull(vector, "vector cannot be null");
++		this.vector = vector;
++	}
++}
+diff --git a/src/main/java/me/lexikiq/event/sound/NamedSoundEvent.java b/src/main/java/me/lexikiq/event/sound/NamedSoundEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..516352ffb64fd025be018f5389a7c80e62743c9a
+--- /dev/null
++++ b/src/main/java/me/lexikiq/event/sound/NamedSoundEvent.java
+@@ -0,0 +1,40 @@
++package me.lexikiq.event.sound;
++
++import org.apache.commons.lang.Validate;
++import org.bukkit.Sound;
++import org.bukkit.SoundCategory;
++import org.bukkit.entity.HumanEntity;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++/**
++ * Called when a sound available in {@link Sound} is sent to a player. Cancelling this event will prevent the packet from sending.
++ * <p>
++ * Note: this does not directly correspond to any given sound packet. It is provided for listening convenience.
++ */
++public class NamedSoundEvent extends SoundEvent {
++	private @NotNull Sound sound;
++
++	public NamedSoundEvent(@Nullable HumanEntity receiver, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
++		super(receiver, category, volume, pitch);
++		Validate.notNull(sound, "sound cannot be null");
++		this.sound = sound;
++	}
++
++	/**
++	 * Gets the sound being played
++	 * @return sound to play
++	 */
++	public @NotNull Sound getSound() {
++		return sound;
++	}
++
++	/**
++	 * Sets the sound yo played
++	 * @param sound sound to play
++	 */
++	public void setSound(@NotNull Sound sound) {
++		Validate.notNull(sound, "sound cannot be null");
++		this.sound = sound;
++	}
++}
+diff --git a/src/main/java/me/lexikiq/event/sound/SoundEvent.java b/src/main/java/me/lexikiq/event/sound/SoundEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..18ea948380e9decd55a6f2a4ea689041f1b810ee
+--- /dev/null
++++ b/src/main/java/me/lexikiq/event/sound/SoundEvent.java
+@@ -0,0 +1,114 @@
++package me.lexikiq.event.sound;
++
++import me.lexikiq.OptionalHumanEntity;
++import org.apache.commons.lang.Validate;
++import org.bukkit.SoundCategory;
++import org.bukkit.entity.HumanEntity;
++import org.bukkit.event.Cancellable;
++import org.bukkit.event.Event;
++import org.bukkit.event.HandlerList;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++/**
++ * Called when a sound is sent to a player. Cancelling this event will prevent the packet from sending.
++ * <p>
++ * Note: this does not directly correspond to any given sound packet. It is provided for listening convenience.
++ */
++public class SoundEvent extends Event implements Cancellable, OptionalHumanEntity {
++	private @Nullable final HumanEntity receiver;
++	private @NotNull SoundCategory category;
++	private float volume;
++	private float pitch;
++	private boolean cancelled;
++
++	public SoundEvent(@Nullable HumanEntity receiver, @NotNull SoundCategory category, float volume, float pitch) {
++		Validate.notNull(category, "category cannot be null");
++		this.receiver = receiver;
++		this.category = category;
++		this.volume = volume;
++		this.pitch = pitch;
++	}
++
++	/**
++	 * Gets the player that this sound will be sent to. May be null if the sound is being played to several players.
++	 * @return player receiving the sound
++	 */
++	@Override
++	public @Nullable HumanEntity getPlayer() {
++		return receiver;
++	}
++
++	/**
++	 * Gets the category of sounds this will be played with.
++	 * @return category of sounds
++	 */
++	public @NotNull SoundCategory getCategory() {
++		return category;
++	}
++
++	/**
++	 * Gets the volume of the sound to be played. Should be non-negative.
++	 * @return sound volume
++	 */
++	public float getVolume() {
++		return volume;
++	}
++
++	/**
++	 * Gets the pitch of the sound to be played. Should be within the range [0,2].
++	 * @return sound pitch
++	 */
++	public float getPitch() {
++		return pitch;
++	}
++
++	/**
++	 * Sets the category of sounds this will be played with.
++	 * @param category category of sounds
++	 */
++	public void setCategory(@NotNull SoundCategory category) {
++		Validate.notNull(category, "category cannot be null");
++		this.category = category;
++	}
++
++	/**
++	 * Sets the volume of the sound to be played. Must be non-negative.
++	 * @param volume sound volume
++	 */
++	public void setVolume(float volume) {
++		Validate.isTrue(volume >= 0, "volume should be non-negative");
++		this.volume = volume;
++	}
++
++	/**
++	 * Sets the pitch of the sound to be played. Must be within the range [0,2].
++	 * @param pitch sound pitch
++	 */
++	public void setPitch(float pitch) {
++		Validate.isTrue(pitch >= 0 && pitch <= 2, "pitch should be within range [0,2]");
++		this.pitch = pitch;
++	}
++
++	@Override
++	public boolean isCancelled() {
++		return cancelled;
++	}
++
++	@Override
++	public void setCancelled(boolean cancelled) {
++		this.cancelled = cancelled;
++	}
++
++	private static final HandlerList handlers = new HandlerList();
++
++	@Override
++	public @NotNull HandlerList getHandlers() {
++		return handlers;
++	}
++
++	@NotNull
++	public static HandlerList getHandlerList() {
++		return handlers;
++	}
++}
