@@ -105,6 +105,7 @@ fi
 # import Foo
 import world/item/context/BlockActionContext
 import world/level/block/BlockRespawnAnchor
+import server/commands/CommandPlaySound
 
 ########################################################
 ########################################################
