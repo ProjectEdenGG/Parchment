@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Sat, 5 Jun 2021 01:20:22 -0400
+Date: Sat, 5 Jun 2021 12:00:14 -0400
 Subject: [PATCH] Add SoundEvent
 
 
@@ -471,10 +471,18 @@ index 05248f560d643080a3eac581c01aa89fb3709e6c..7ccf0619cafe3c1bf83333ac2235d1fd
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index f0bd5b57ffd7e55299180b382551afe06bd764f8..6565ca7b3bd42faf985998d76f4c55b8c4620b6d 100644
+index f0bd5b57ffd7e55299180b382551afe06bd764f8..5985509e3b3696c293cb7261ccec2addd3f78e6d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -228,6 +228,19 @@ import org.bukkit.inventory.meta.BookMeta;
+@@ -71,6 +71,7 @@ import net.minecraft.world.phys.MovingObjectPositionBlock;
+ import net.minecraft.world.phys.MovingObjectPositionEntity;
+ import net.minecraft.world.phys.Vec3D;
+ import io.papermc.paper.event.block.BlockPreDispenseEvent; // Paper
++import org.apache.commons.lang.Validate;
+ import org.bukkit.Bukkit;
+ import org.bukkit.Location; // Paper
+ import org.bukkit.Material;
+@@ -228,6 +229,19 @@ import org.bukkit.inventory.meta.BookMeta;
  import org.bukkit.potion.PotionEffect;
  
  import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
@@ -494,16 +502,21 @@ index f0bd5b57ffd7e55299180b382551afe06bd764f8..6565ca7b3bd42faf985998d76f4c55b8
  
  public class CraftEventFactory {
      public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
-@@ -1832,4 +1845,32 @@ public class CraftEventFactory {
+@@ -1832,4 +1846,36 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end
 +
 +    // Parchment start
 +    public static @org.jetbrains.annotations.Nullable Packet<?> handleSoundEvent(SoundEvent _event) {
-+        java.util.concurrent.CompletableFuture<Boolean> failure = java.util.concurrent.CompletableFuture.supplyAsync(_event::callEvent);
++        Validate.notNull(_event, "Sound event cannot be null");
++
++        if (!(_event instanceof LocationNamedSoundEvent || _event instanceof LocationCustomSoundEvent || _event instanceof EntitySoundEvent))
++            throw new IllegalArgumentException("Unknown sound event: " + _event.getClass().getName());
++
++        java.util.concurrent.CompletableFuture<Boolean> success = java.util.concurrent.CompletableFuture.supplyAsync(_event::callEvent);
 +        try {
-+            if (failure.get())
++            if (!success.get())
 +                return null;
 +        } catch (InterruptedException | java.util.concurrent.ExecutionException e) {
 +            return null;
@@ -519,11 +532,10 @@ index f0bd5b57ffd7e55299180b382551afe06bd764f8..6565ca7b3bd42faf985998d76f4c55b8
 +            LocationCustomSoundEvent event = (LocationCustomSoundEvent) _event;
 +            Vector pos = event.getVector();
 +            return new PacketPlayOutCustomSoundEffect(CraftNamespacedKey.toMinecraft(event.getKey()), SoundCategory.valueOf(event.getCategory().name()), CraftVector.toNMS(pos), volume, pitch);
-+        } else if (_event instanceof EntitySoundEvent) { // EntitySoundEvent
++        } else { // EntitySoundEvent
 +            EntitySoundEvent event = (EntitySoundEvent) _event;
 +            return new PacketPlayOutEntitySound(CraftSound.getSoundEffect(event.getSound()), SoundCategory.valueOf(event.getCategory().name()), ((CraftEntity) event.getOrigin()).getHandle(), volume, pitch);
 +        }
-+        throw new IllegalArgumentException("Unknown sound event: " + _event.getClass().getName());
 +    }
 +    // Parchment end
  }
