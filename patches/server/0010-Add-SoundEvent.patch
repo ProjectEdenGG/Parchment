@@ -45,7 +45,7 @@ index f896dd7447d8a8fbc6e3c1abad0c3da5448273c1..e61b9bc82641174e935516fc7c54d2f4
          }
  
 diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index 10e9e5328f783832b957113a8672f45f90ace813..89440aec276d919c784f0a43f8f398b84571cb1c 100644
+index 75bcfb3a2b4a104aeebb2fe3298714b2e5b569d2..00bc4f136e9fb0a450d83514be647b00e89f3f02 100644
 --- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
 @@ -53,7 +53,6 @@ import net.minecraft.network.protocol.game.PacketPlayOutExperience;
@@ -56,7 +56,7 @@ index 10e9e5328f783832b957113a8672f45f90ace813..89440aec276d919c784f0a43f8f398b8
  import net.minecraft.network.protocol.game.PacketPlayOutOpenBook;
  import net.minecraft.network.protocol.game.PacketPlayOutOpenSignEditor;
  import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
-@@ -173,6 +172,11 @@ import org.bukkit.event.player.PlayerTeleportEvent;
+@@ -174,6 +173,11 @@ import org.bukkit.event.player.PlayerTeleportEvent;
  import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
  import org.bukkit.inventory.MainHand;
  // CraftBukkit end
@@ -68,7 +68,7 @@ index 10e9e5328f783832b957113a8672f45f90ace813..89440aec276d919c784f0a43f8f398b8
  
  public class EntityPlayer extends EntityHuman implements ICrafting {
  
-@@ -2132,7 +2136,11 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -2158,7 +2162,11 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
  
      @Override
      public void a(SoundEffect soundeffect, SoundCategory soundcategory, float f, float f1) {
@@ -82,7 +82,7 @@ index 10e9e5328f783832b957113a8672f45f90ace813..89440aec276d919c784f0a43f8f398b8
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index 7e032845fe9a46d33236444d62405a41e29daa17..80801c60dd902d19d9c08f0692c96f0ee9612098 100644
+index f68a252378a94c8fcab622d2d89d738aceab45a4..0f24e5a5c837984636d4451620af9c35c0135e9b 100644
 --- a/src/main/java/net/minecraft/server/level/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/level/WorldServer.java
 @@ -58,11 +58,9 @@ import net.minecraft.network.protocol.Packet;
@@ -134,7 +134,7 @@ index 7e032845fe9a46d33236444d62405a41e29daa17..80801c60dd902d19d9c08f0692c96f0e
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 2a76c3624c64e93509a96579f48c507e29901625..9b76349d960b2d5a4d934dc2814f10c4a56e54b0 100644
+index 90776231b1faffb11e4394f555f336ca248e3004..7fa36b053f070f13b75cbdd7f7994cfc012b2fc6 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -43,7 +43,6 @@ import net.minecraft.network.protocol.game.PacketPlayOutGameStateChange;
@@ -328,7 +328,7 @@ index 457cbdab3fa96fdf7fad1b0206bec9c0aa7847d8..ce854033e098888c468d2c632fd6a877
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 3b3eda95c0ff8b129adedbae6561bba2d01c2f3a..c5d211806cff0d7053a4fd41088e357a184e22d1 100644
+index c0b49a0eaeda06b89a4fb425eec3d5bfa9717379..8892804079fd1c15dd4c6d96cc40ae18c3a38500 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -26,7 +26,6 @@ import net.minecraft.core.BlockPosition;
@@ -350,7 +350,7 @@ index 3b3eda95c0ff8b129adedbae6561bba2d01c2f3a..c5d211806cff0d7053a4fd41088e357a
  
  public class CraftWorld implements World {
      public static final int CUSTOM_DIMENSION_OFFSET = 10;
-@@ -2308,8 +2311,11 @@ public class CraftWorld implements World {
+@@ -2326,8 +2329,11 @@ public class CraftWorld implements World {
          double y = loc.getY();
          double z = loc.getZ();
  
@@ -365,7 +365,7 @@ index 3b3eda95c0ff8b129adedbae6561bba2d01c2f3a..c5d211806cff0d7053a4fd41088e357a
  
      private static Map<String, GameRules.GameRuleKey<?>> gamerules;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 05248f560d643080a3eac581c01aa89fb3709e6c..7ccf0619cafe3c1bf83333ac2235d1fd2c6fb7e2 100644
+index cfe6898dc373fe55a08acf5c90e200061aa7d0fc..fcd27e569919fa05703e694a1981db413551ed9e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -41,10 +41,8 @@ import net.minecraft.network.protocol.game.PacketPlayOutBlockBreakAnimation;
@@ -394,7 +394,7 @@ index 05248f560d643080a3eac581c01aa89fb3709e6c..7ccf0619cafe3c1bf83333ac2235d1fd
  
  import net.md_5.bungee.api.chat.BaseComponent; // Spigot
  
-@@ -577,7 +583,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -582,7 +588,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          }
  
          float f = (float) Math.pow(2.0D, (note - 12.0D) / 12.0D);
@@ -407,7 +407,7 @@ index 05248f560d643080a3eac581c01aa89fb3709e6c..7ccf0619cafe3c1bf83333ac2235d1fd
      }
  
      @Override
-@@ -639,7 +649,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -644,7 +654,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
                  break;
          }
          float f = (float) Math.pow(2.0D, (note.getId() - 12.0D) / 12.0D);
@@ -420,7 +420,7 @@ index 05248f560d643080a3eac581c01aa89fb3709e6c..7ccf0619cafe3c1bf83333ac2235d1fd
      }
  
      @Override
-@@ -655,17 +669,22 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -660,17 +674,22 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      @Override
      public void playSound(Location loc, Sound sound, org.bukkit.SoundCategory category, float volume, float pitch) {
          if (loc == null || sound == null || category == null || getHandle().playerConnection == null) return;
@@ -448,7 +448,7 @@ index 05248f560d643080a3eac581c01aa89fb3709e6c..7ccf0619cafe3c1bf83333ac2235d1fd
      }
  
      @Override
-@@ -2211,11 +2230,19 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2216,11 +2235,19 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public void playSound(final net.kyori.adventure.sound.Sound sound, final double x, final double y, final double z) {
          final MinecraftKey name = io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.name());
          final java.util.Optional<net.minecraft.sounds.SoundEffect> event = net.minecraft.core.IRegistry.SOUND_EVENT.getOptional(name);
@@ -471,10 +471,10 @@ index 05248f560d643080a3eac581c01aa89fb3709e6c..7ccf0619cafe3c1bf83333ac2235d1fd
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index f0bd5b57ffd7e55299180b382551afe06bd764f8..5985509e3b3696c293cb7261ccec2addd3f78e6d 100644
+index 0df40bc18dcd66a367b82e435316851eb99d077c..428f757ed01339db0d572d610b4ef77cb4b65b3c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -71,6 +71,7 @@ import net.minecraft.world.phys.MovingObjectPositionBlock;
+@@ -72,6 +72,7 @@ import net.minecraft.world.phys.MovingObjectPositionBlock;
  import net.minecraft.world.phys.MovingObjectPositionEntity;
  import net.minecraft.world.phys.Vec3D;
  import io.papermc.paper.event.block.BlockPreDispenseEvent; // Paper
@@ -482,7 +482,7 @@ index f0bd5b57ffd7e55299180b382551afe06bd764f8..5985509e3b3696c293cb7261ccec2add
  import org.bukkit.Bukkit;
  import org.bukkit.Location; // Paper
  import org.bukkit.Material;
-@@ -228,6 +229,19 @@ import org.bukkit.inventory.meta.BookMeta;
+@@ -231,6 +232,19 @@ import org.bukkit.inventory.meta.BookMeta;
  import org.bukkit.potion.PotionEffect;
  
  import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
@@ -502,7 +502,7 @@ index f0bd5b57ffd7e55299180b382551afe06bd764f8..5985509e3b3696c293cb7261ccec2add
  
  public class CraftEventFactory {
      public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
-@@ -1832,4 +1846,36 @@ public class CraftEventFactory {
+@@ -1841,4 +1855,36 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end

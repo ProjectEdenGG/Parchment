@@ -5,7 +5,7 @@ Subject: [PATCH] Bump to Java 15
 
 
 diff --git a/pom.xml b/pom.xml
-index dde8ac8aadd56c411f72c12124dcf301ea50e169..731610f136521d984508796a9d9fcea7ed477fac 100644
+index afa475f33bad218e77e5a6f373615409b3eb5d60..e5c61b389ac022e59c3abb3aac1afeb45d384913 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -14,8 +14,8 @@

@@ -5,7 +5,7 @@ Subject: [PATCH] Parchment POM Changes
 
 
 diff --git a/pom.xml b/pom.xml
-index c2e9ca1cc7f14d3a696385edc3cb341f902fa2fd..e5ed07236c358e9ea544f43b41533c92769192dd 100644
+index 73fbd5d5a591871a3a386fb5c455cd96a3992e7a..1e182b441771c7159dd4323c2c72364efb971407 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -3,18 +3,18 @@

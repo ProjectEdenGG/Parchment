@@ -284,7 +284,7 @@ index 95220ef8ad0602fae9f88c0231762ff50358d98f..27e837a0dbcf37fff9927deb1c34a3ca
      @Override
      @NotNull default OfflinePlayer getOfflinePlayer() {
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index c2866ecabc05edf48712f7fcd3596ae3bf0c46fd..206f5c00434b35fab27df6bc17c96c789fc8fb2a 100644
+index 2c9aa0cbce1450695b285a9e654b0e9f10e28c37..b7ce4b50a7f8f9488cb30a40f0e8acaf2b8d33e7 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -5,8 +5,8 @@ import java.util.Set; // Paper

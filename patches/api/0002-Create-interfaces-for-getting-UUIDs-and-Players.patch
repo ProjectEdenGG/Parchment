@@ -6,7 +6,7 @@ Subject: [PATCH] Create interfaces for getting UUIDs and Players
 Creates new interfaces for getting UUIDs, Human Entities, Offline Players, and Players. Features matching NotNull and Nullable interfaces. Lessens the required overloads for plugin developers when working with varying player objects.
 
 diff --git a/pom.xml b/pom.xml
-index e5ed07236c358e9ea544f43b41533c92769192dd..8a45c77963d3cd35d2cfa4a3af15c0e27bbbf165 100644
+index 1e182b441771c7159dd4323c2c72364efb971407..6857042b3475925f426cbe9f4858438a02bebd23 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -47,6 +47,14 @@
@@ -538,7 +538,7 @@ index 2ce774c81a93260a1464183d435b4c418ed61648..aaf08f8e2cce8c7f7f0520fbe3904d26
      /**
       * Returns the name of this player
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 34b51466ffb281b05f531b3f7deda245ae7fd96a..f37339692b027c0258d2f5bc20ee7db9c6c9b7fb 100644
+index a4b236d75e77176a163094edd31f81725bbf4eca..54138dae452714e73549ad1c1512b68267cad443 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -5,6 +5,7 @@ import java.util.Set; // Paper
