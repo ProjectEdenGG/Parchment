@@ -1,7 +1,0 @@
-[submodule "Paper"]
-	path = Paper
-	url = https://github.com/PaperMC/Paper
-	branch = master
-[submodule "work/Paperclip"]
-	path = work/Paperclip
-	url = https://github.com/ProjectEdenGG/Paperclip

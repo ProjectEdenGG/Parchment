@@ -1,11 +1,55 @@
-# Concrete
+.gradle/
+build/
+
+# Eclipse stuff
+.classpath
+.project
+.settings/
+
+# VSCode stuff
+.vscode/
+
+# netbeans
+nbproject/
+nbactions.xml
+
+# we use maven!
+build.xml
+
+# maven
+target/
+dependency-reduced-pom.xml
+
+# vim
+.*.sw[a-p]
+
+# various other potential build files
+build/
+bin/
+dist/
+manifest.mf
+
+# Mac filesystem dust
+.DS_Store/
+.DS_Store
+
+# intellij
+*.iml
+*.ipr
+*.iws
+.idea/
+out/
+
+# Linux temp files
+*~
+
+# other stuff
+run/
+
 Parchment-Server
 Parchment-API
-mc-dev
-.idea
-testserver
-run
-current-paper
+
+!gradle/wrapper/gradle-wrapper.jar
 
 # Compiled class file
 *.class
@@ -18,16 +62,6 @@ current-paper
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
-# IntelliJ
-*.iml
-*.ipr
-*.iws
-.idea/
-out/
-
-# Maven
-target/
 
 # Package Files #
 *.jar
