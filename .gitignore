@@ -24,7 +24,6 @@ dependency-reduced-pom.xml
 .*.sw[a-p]
 
 # various other potential build files
-build/
 bin/
 dist/
 manifest.mf
@@ -49,8 +48,6 @@ run/
 Parchment-Server
 Parchment-API
 
-!gradle/wrapper/gradle-wrapper.jar
-
 # Compiled class file
 *.class
 
@@ -65,6 +62,7 @@ Parchment-API
 
 # Package Files #
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 *.war
 *.nar
 *.ear
