@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sat, 19 Jun 2021 18:03:59 -0400
+Subject: [PATCH] Temporary Access Transformers
+
+
+diff --git a/src/main/java/net/minecraft/world/item/BlockItem.java b/src/main/java/net/minecraft/world/item/BlockItem.java
+index 44b28773fe8e79931e738d493bd9405e0ee3dca9..47ea90bc41998296d03f0039f769d43b2088d2a4 100644
+--- a/src/main/java/net/minecraft/world/item/BlockItem.java
++++ b/src/main/java/net/minecraft/world/item/BlockItem.java
+@@ -187,7 +187,7 @@ public class BlockItem extends Item {
+         }).orElse(state);
+     }
+ 
+-    protected boolean canPlace(BlockPlaceContext context, BlockState state) {
++    public boolean canPlace(BlockPlaceContext context, BlockState state) { // Parchment
+         Player entityhuman = context.getPlayer();
+         CollisionContext voxelshapecollision = entityhuman == null ? CollisionContext.empty() : CollisionContext.of((Entity) entityhuman);
+         // CraftBukkit start - store default return
