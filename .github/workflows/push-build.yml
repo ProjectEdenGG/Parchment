@@ -39,7 +39,7 @@ jobs:
           ./gradlew applyPatches
           ./gradlew reobfJar
         
-    - uses: actions/upload-artifact@v2
-      with:
-        name: Parchment-JDK${{ matrix.java }}
-        path: parchment-paperclip.jar
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Parchment-JDK${{ matrix.java }}
+          path: parchment-paperclip.jar
