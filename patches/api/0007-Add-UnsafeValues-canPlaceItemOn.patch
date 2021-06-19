@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Fri, 18 Jun 2021 03:18:47 -0400
+Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
+
+
+diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
+index 379acee1b5f2d06e6a96f3444783f4a29ca24095..c4f81d9a642005e52eb3d88daf6da6caa48a3f0d 100644
+--- a/src/main/java/org/bukkit/UnsafeValues.java
++++ b/src/main/java/org/bukkit/UnsafeValues.java
+@@ -184,4 +184,17 @@ public interface UnsafeValues {
+      */
+     int getProtocolVersion();
+     // Paper end
++
++    // Parchment start
++    /**
++     * Determines if this item can be placed on a block. Must be run synchronously.
++     * Factors in player location, blocking events, hitboxes, and more.
++     * @param item item to test
++     * @param player optional player placing the block
++     * @param block block that is being placed against
++     * @param face cardinal direction
++     * @return if the item can be placed
++     */
++    java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(@org.jetbrains.annotations.NotNull ItemStack item, @org.jetbrains.annotations.Nullable me.lexikiq.OptionalHumanEntity player, @org.jetbrains.annotations.NotNull org.bukkit.block.Block block, @org.jetbrains.annotations.NotNull org.bukkit.block.BlockFace face);
++    // Parchment end
+ }

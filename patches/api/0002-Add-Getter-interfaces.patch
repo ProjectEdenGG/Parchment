@@ -1,0 +1,1157 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Fri, 18 Jun 2021 14:12:56 -0400
+Subject: [PATCH] Add Getter interfaces
+
+Creates new interfaces for objects that have a reference to a player, offlineplayer, location, etc.
+
+Also creates interfaces for objects that are like players in that they use all other interfaces and can receive Adventure messages.
+
+diff --git a/src/main/java/com/destroystokyo/paper/event/block/BeaconEffectEvent.java b/src/main/java/com/destroystokyo/paper/event/block/BeaconEffectEvent.java
+index 978813b94a5eae0afccbd3b38b463091a46b56ac..14d057791db091e49b5be7cf9700435e8811edbc 100644
+--- a/src/main/java/com/destroystokyo/paper/event/block/BeaconEffectEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/block/BeaconEffectEvent.java
+@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Called when a beacon effect is being applied to a player.
+  */
+-public class BeaconEffectEvent extends BlockEvent implements Cancellable {
++public class BeaconEffectEvent extends BlockEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled;
+     private PotionEffect effect;
+diff --git a/src/main/java/com/destroystokyo/paper/event/entity/EndermanAttackPlayerEvent.java b/src/main/java/com/destroystokyo/paper/event/entity/EndermanAttackPlayerEvent.java
+index f530a3d9314e17d1da896cac633f6a422258d9a9..af6e9a654940ed0a9a434501d20dfe225155f4f2 100644
+--- a/src/main/java/com/destroystokyo/paper/event/entity/EndermanAttackPlayerEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/entity/EndermanAttackPlayerEvent.java
+@@ -38,7 +38,7 @@ import org.jetbrains.annotations.NotNull;
+  * at the Enderman, according to Vanilla rules.
+  *
+  */
+-public class EndermanAttackPlayerEvent extends EntityEvent implements Cancellable {
++public class EndermanAttackPlayerEvent extends EntityEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+     @NotNull private final Player player;
+ 
+     public EndermanAttackPlayerEvent(@NotNull Enderman entity, @NotNull Player player) {
+diff --git a/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java b/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java
+index a315c5185cd465dcf63c0ababef195da76dfc786..ea39b1dd25e00d9e8a8db86a05105297eb46d9bc 100644
+--- a/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java
+@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Fired when a Turtle lays eggs
+  */
+-public class TurtleLayEggEvent extends EntityEvent implements Cancellable {
++public class TurtleLayEggEvent extends EntityEvent implements Cancellable, me.lexikiq.HasLocation { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled = false;
+     @NotNull
+diff --git a/src/main/java/com/destroystokyo/paper/event/entity/TurtleStartDiggingEvent.java b/src/main/java/com/destroystokyo/paper/event/entity/TurtleStartDiggingEvent.java
+index abeb24fccda2acfdb0dfdadacb8fe688bd97cf78..03f8ddd864eac5d87aba29f791022a6719cd054f 100644
+--- a/src/main/java/com/destroystokyo/paper/event/entity/TurtleStartDiggingEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/entity/TurtleStartDiggingEvent.java
+@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Fired when a Turtle starts digging to lay eggs
+  */
+-public class TurtleStartDiggingEvent extends EntityEvent implements Cancellable {
++public class TurtleStartDiggingEvent extends EntityEvent implements Cancellable, me.lexikiq.HasLocation { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled = false;
+     @NotNull private final Location location;
+diff --git a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
+index a077962fa786a3291849abfa823c7f0ec4664fce..7895fe36f6f6f2e47d506a1704494d6cb71f3db7 100644
+--- a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
+@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
+  *
+  * <p>WARNING: TAMPERING WITH THIS EVENT CAN BE DANGEROUS</p>
+  */
+-public class PlayerHandshakeEvent extends Event implements Cancellable {
++public class PlayerHandshakeEvent extends Event implements Cancellable, me.lexikiq.OptionalUniqueId { // Parchment
+ 
+     private static final HandlerList HANDLERS = new HandlerList();
+     @NotNull private final String originalHandshake;
+diff --git a/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java b/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java
+index 4dcf6242c9acc62d030a94f67b78729ed29f8c85..18fd6889457f1a9d7663c7631ce83b847eb458e2 100644
+--- a/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java
+@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
+  * No guarantees are made about thread execution context for this event. If you need to know, check
+  * event.isAsync()
+  */
+-public class PreLookupProfileEvent extends Event {
++public class PreLookupProfileEvent extends Event implements me.lexikiq.OptionalUniqueId { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     @NotNull private final String name;
+@@ -49,11 +49,27 @@ public class PreLookupProfileEvent extends Event {
+      * {@link LookupProfileEvent}
+      *
+      * @return The UUID of the profile if it has already been provided by a plugin
++     * @deprecated alias of {@link #getUniqueId()} <!-- Parchment: fix inconsistent naming -->
+      */
+     @Nullable
+-    public UUID getUUID() {
++    // Parchment start
++    @Deprecated
++    public final UUID getUUID() {
++        return getUniqueId();
++    }
++
++    /**
++     * If this value is left null by the completion of the event call, then the server will
++     * trigger a call to the Mojang API to look up the UUID (Network Request), and subsequently, fire a
++     * {@link LookupProfileEvent}
++     *
++     * @return The UUID of the profile if it has already been provided by a plugin
++     */
++    @Override
++    public @Nullable UUID getUniqueId() {
+         return uuid;
+     }
++    // Parchment end
+ 
+     /**
+      * Sets the UUID for this player name. This will skip the initial API call to find the players UUID.
+diff --git a/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java b/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java
+index 4cd97cb102e1ec53b3fe1a451b65b4b640fde099..2de2df06dcb7099e42a097ec2c74d45529cceb21 100644
+--- a/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java
+@@ -48,7 +48,7 @@ import org.jetbrains.annotations.Nullable;
+  *
+  * Only 1 process will be allowed to provide completions, the Async Event, or the standard process.
+  */
+-public class AsyncTabCompleteEvent extends Event implements Cancellable {
++public class AsyncTabCompleteEvent extends Event implements Cancellable, me.lexikiq.OptionalLocation { // Parchment
+     @NotNull private final CommandSender sender;
+     @NotNull private final String buffer;
+     private final boolean isCommand;
+diff --git a/src/main/java/com/destroystokyo/paper/exception/ServerPluginMessageException.java b/src/main/java/com/destroystokyo/paper/exception/ServerPluginMessageException.java
+index 89e132525cfae0ce979e37b3e2793df781e47227..c06d406f0644aa7380581f81442878b95f555843 100644
+--- a/src/main/java/com/destroystokyo/paper/exception/ServerPluginMessageException.java
++++ b/src/main/java/com/destroystokyo/paper/exception/ServerPluginMessageException.java
+@@ -8,7 +8,7 @@ import static com.google.common.base.Preconditions.*;
+ /**
+  * Thrown when an incoming plugin message channel throws an exception
+  */
+-public class ServerPluginMessageException extends ServerPluginException {
++public class ServerPluginMessageException extends ServerPluginException implements me.lexikiq.HasPlayer { // Parchment
+ 
+     private final Player player;
+     private final String channel;
+diff --git a/src/main/java/io/papermc/paper/event/packet/PlayerChunkLoadEvent.java b/src/main/java/io/papermc/paper/event/packet/PlayerChunkLoadEvent.java
+index 2c1cda1126e577a88f19071e958eddb5a38785af..a0994a7613a2b34a6b9ec850a8a0fc9254c89751 100644
+--- a/src/main/java/io/papermc/paper/event/packet/PlayerChunkLoadEvent.java
++++ b/src/main/java/io/papermc/paper/event/packet/PlayerChunkLoadEvent.java
+@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
+  * Should only be used for packet/clientside related stuff.
+  * Not intended for modifying server side state.
+  */
+-public class PlayerChunkLoadEvent extends ChunkEvent {
++public class PlayerChunkLoadEvent extends ChunkEvent implements me.lexikiq.HasPlayer { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private final Player player;
+diff --git a/src/main/java/io/papermc/paper/event/packet/PlayerChunkUnloadEvent.java b/src/main/java/io/papermc/paper/event/packet/PlayerChunkUnloadEvent.java
+index 12163a7b0591a7d022dc7eb9ee6608a1b6c39d9b..80e7db5cbc82e0ed69ea1a0f659fd3259ef0beb2 100644
+--- a/src/main/java/io/papermc/paper/event/packet/PlayerChunkUnloadEvent.java
++++ b/src/main/java/io/papermc/paper/event/packet/PlayerChunkUnloadEvent.java
+@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
+  * Should only be used for packet/clientside related stuff.
+  * Not intended for modifying server side.
+  */
+-public class PlayerChunkUnloadEvent extends ChunkEvent {
++public class PlayerChunkUnloadEvent extends ChunkEvent implements me.lexikiq.HasPlayer { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private final Player player;
+diff --git a/src/main/java/me/lexikiq/HasHumanEntity.java b/src/main/java/me/lexikiq/HasHumanEntity.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..46efc8787afe2eda000fc71a6a1f3c0f0d7da320
+--- /dev/null
++++ b/src/main/java/me/lexikiq/HasHumanEntity.java
+@@ -0,0 +1,19 @@
++package me.lexikiq;
++
++import org.bukkit.entity.HumanEntity;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * Represents an object that has a {@link HumanEntity}
++ * @see me.lexikiq.OptionalHumanEntity
++ */
++@FunctionalInterface
++public interface HasHumanEntity extends OptionalHumanEntity {
++    /**
++     * Gets a {@link HumanEntity} object that this represents
++     *
++     * @return human entity
++     */
++    @Override
++    @NotNull HumanEntity getPlayer();
++}
+diff --git a/src/main/java/me/lexikiq/HasLocation.java b/src/main/java/me/lexikiq/HasLocation.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..ac380c3f767f2d7a86ca2f9a3f7dbfcfc172e2be
+--- /dev/null
++++ b/src/main/java/me/lexikiq/HasLocation.java
+@@ -0,0 +1,18 @@
++package me.lexikiq;
++
++import org.bukkit.Location;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * Represents an object that has a {@link Location}
++ * @see OptionalLocation
++ */
++public interface HasLocation extends OptionalLocation {
++    /**
++     * Gets a {@link Location} attached to this object
++     *
++     * @return attached location
++     */
++    @Override
++    @NotNull Location getLocation();
++}
+diff --git a/src/main/java/me/lexikiq/HasOfflinePlayer.java b/src/main/java/me/lexikiq/HasOfflinePlayer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..33b04ae2dee02e53ffa070de6631f71e2ddaf998
+--- /dev/null
++++ b/src/main/java/me/lexikiq/HasOfflinePlayer.java
+@@ -0,0 +1,17 @@
++package me.lexikiq;
++
++import org.bukkit.OfflinePlayer;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * Represents an object that has a {@link OfflinePlayer}
++ */
++@FunctionalInterface
++public interface HasOfflinePlayer {
++    /**
++     * Gets an {@link OfflinePlayer} object that this represents
++     *
++     * @return offline player
++     */
++    @NotNull OfflinePlayer getOfflinePlayer();
++}
+diff --git a/src/main/java/me/lexikiq/HasPlayer.java b/src/main/java/me/lexikiq/HasPlayer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..117e3994ffec1830f471b8810746f6e4088db298
+--- /dev/null
++++ b/src/main/java/me/lexikiq/HasPlayer.java
+@@ -0,0 +1,19 @@
++package me.lexikiq;
++
++import org.bukkit.entity.Player;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * Represents an object that has a {@link Player}
++ * @see me.lexikiq.OptionalPlayer
++ */
++@FunctionalInterface
++public interface HasPlayer extends OptionalPlayer, HasHumanEntity {
++    /**
++     * Gets a {@link Player} object that this represents
++     *
++     * @return player
++     */
++    @Override
++    @NotNull Player getPlayer();
++}
+diff --git a/src/main/java/me/lexikiq/OptionalHumanEntity.java b/src/main/java/me/lexikiq/OptionalHumanEntity.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..139887822a853876508b937f5288bfd117d15da6
+--- /dev/null
++++ b/src/main/java/me/lexikiq/OptionalHumanEntity.java
+@@ -0,0 +1,18 @@
++package me.lexikiq;
++
++import org.bukkit.entity.HumanEntity;
++import org.jetbrains.annotations.Nullable;
++
++/**
++ * Represents an object that may have a {@link HumanEntity}
++ * @see HasHumanEntity
++ */
++@FunctionalInterface
++public interface OptionalHumanEntity {
++    /**
++     * Gets a {@link HumanEntity} object that this represents, if there is one
++     *
++     * @return human entity or null
++     */
++    @Nullable HumanEntity getPlayer();
++}
+diff --git a/src/main/java/me/lexikiq/OptionalLocation.java b/src/main/java/me/lexikiq/OptionalLocation.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..10d06b9af2a9cfb2e80991d9916ca9953a25e42c
+--- /dev/null
++++ b/src/main/java/me/lexikiq/OptionalLocation.java
+@@ -0,0 +1,18 @@
++package me.lexikiq;
++
++import org.bukkit.Location;
++import org.jetbrains.annotations.Nullable;
++
++/**
++ * Represents an object that may have a {@link Location}
++ * @see HasLocation
++ */
++@FunctionalInterface
++public interface OptionalLocation {
++    /**
++     * Gets a {@link Location} attached to this object if present
++     *
++     * @return attached location
++     */
++    @Nullable Location getLocation();
++}
+diff --git a/src/main/java/me/lexikiq/OptionalPlayer.java b/src/main/java/me/lexikiq/OptionalPlayer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..6de254b174966ff9cc9e0ec091639885cd925b56
+--- /dev/null
++++ b/src/main/java/me/lexikiq/OptionalPlayer.java
+@@ -0,0 +1,19 @@
++package me.lexikiq;
++
++import org.bukkit.entity.Player;
++import org.jetbrains.annotations.Nullable;
++
++/**
++ * Represents an object that may have a {@link Player}
++ * @see HasPlayer
++ */
++@FunctionalInterface
++public interface OptionalPlayer extends OptionalHumanEntity {
++    /**
++     * Gets a {@link Player} object that this represents, if there is one. This may be null if the
++     * player is online or the player object being optional.
++     *
++     * @return player or null
++     */
++    @Nullable Player getPlayer();
++}
+diff --git a/src/main/java/me/lexikiq/OptionalPlayerLike.java b/src/main/java/me/lexikiq/OptionalPlayerLike.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..9ea2385c1f4de8bfd59bae284fb47e5a15026b55
+--- /dev/null
++++ b/src/main/java/me/lexikiq/OptionalPlayerLike.java
+@@ -0,0 +1,189 @@
++package me.lexikiq;
++
++import net.kyori.adventure.audience.Audience;
++import net.kyori.adventure.audience.MessageType;
++import net.kyori.adventure.bossbar.BossBar;
++import net.kyori.adventure.identity.Identified;
++import net.kyori.adventure.identity.Identity;
++import net.kyori.adventure.inventory.Book;
++import net.kyori.adventure.sound.Sound;
++import net.kyori.adventure.sound.SoundStop;
++import net.kyori.adventure.text.Component;
++import net.kyori.adventure.title.Title;
++import org.apache.commons.lang3.Validate;
++import org.bukkit.Location;
++import org.bukkit.entity.Player;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++import java.util.function.Consumer;
++
++/**
++ * Class that may be like a {@link org.bukkit.entity.Player} in that it has a {@link java.util.UUID}, {@link org.bukkit.OfflinePlayer}, {@link Identity}, and a nullable Player.
++ * @see me.lexikiq.PlayerLike
++ */
++public interface OptionalPlayerLike extends OptionalPlayer, HasUniqueId, HasOfflinePlayer, OptionalLocation, Identified, Audience {
++    /**
++     * Gets the identity associated with this object
++     *
++     * @return associated identity
++     */
++    @Override
++    default @NotNull Identity identity() {
++        return Identity.identity(getUniqueId());
++    }
++
++    /**
++     * Returns if the {@link Player} associated with this object is online.
++     *
++     * @return if the player is online
++     */
++    default boolean isOnline() {
++        return getPlayer() != null;
++    }
++
++    /**
++     * Run a consumer with the {@link Player} associated with this object if the player is online.
++     * <p>
++     * Allows easily running a code on the player only if they are connected.
++     *
++     * @param consumer function that accepts a Player
++     */
++    default void consumeIfOnline(final @NotNull Consumer<@NotNull Player> consumer) {
++        Validate.notNull(consumer, "Consumer<Player> should not be null");
++
++        final Player player = getPlayer();
++        if (player != null)
++            consumer.accept(player);
++    }
++
++    /**
++     * Sends a chat message.
++     *
++     * @param source the identity of the source of the message
++     * @param message a message
++     * @param type the type
++     */
++    @Override
++    default void sendMessage(final @NotNull Identity source, final @NotNull Component message, final @NotNull MessageType type) {
++        consumeIfOnline(player -> player.sendMessage(source, message, type));
++    }
++
++    /**
++     * Sends a message on the action bar.
++     *
++     * @param message a message
++     */
++    @Override
++    default void sendActionBar(final @NotNull Component message) {
++        consumeIfOnline(player -> player.sendActionBar(message));
++    }
++
++    /**
++     * Sends the player list header and footer.
++     *
++     * @param header the header
++     * @param footer the footer
++     */
++    @Override
++    default void sendPlayerListHeaderAndFooter(final @NotNull Component header, final @NotNull Component footer) {
++        consumeIfOnline(player -> player.sendPlayerListHeaderAndFooter(header, footer));
++    }
++
++    /**
++     * Shows a title.
++     *
++     * @param title a title
++     */
++    @Override
++    default void showTitle(final @NotNull Title title) {
++        consumeIfOnline(player -> player.showTitle(title));
++    }
++
++    /**
++     * Clears the title, if one is being displayed.
++     */
++    @Override
++    default void clearTitle() {
++        consumeIfOnline(Audience::clearTitle);
++    }
++
++    /**
++     * Resets the title and timings back to their default.
++     */
++    @Override
++    default void resetTitle() {
++        consumeIfOnline(Audience::resetTitle);
++    }
++
++    /**
++     * Shows a boss bar.
++     *
++     * @param bar a boss bar
++     */
++    @Override
++    default void showBossBar(final @NotNull BossBar bar) {
++        consumeIfOnline(player -> player.showBossBar(bar));
++    }
++
++    /**
++     * Hides a boss bar.
++     *
++     * @param bar a boss bar
++     */
++    @Override
++    default void hideBossBar(final @NotNull BossBar bar) {
++        consumeIfOnline(player -> player.hideBossBar(bar));
++    }
++
++    /**
++     * Plays a sound.
++     *
++     * @param sound a sound
++     */
++    @Override
++    default void playSound(final @NotNull Sound sound) {
++        consumeIfOnline(player -> player.playSound(sound));
++    }
++
++    /**
++     * Plays a sound at a location.
++     *
++     * @param sound a sound
++     * @param x x coordinate
++     * @param y y coordinate
++     * @param z z coordinate
++     */
++    @Override
++    default void playSound(final @NotNull Sound sound, final double x, final double y, final double z) {
++        consumeIfOnline(player -> player.playSound(sound, x, y, z));
++    }
++
++    /**
++     * Stops a sound, or many sounds.
++     *
++     * @param stop a sound stop
++     */
++    @Override
++    default void stopSound(final @NotNull SoundStop stop) {
++        consumeIfOnline(player -> player.stopSound(stop));
++    }
++
++    /**
++     * Opens a book.
++     *
++     * <p>When possible, no item should persist after closing the book.</p>
++     *
++     * @param book a book
++     */
++    @Override
++    default void openBook(final @NotNull Book book) {
++        consumeIfOnline(player -> player.openBook(book));
++    }
++
++    @Override
++    default @Nullable Location getLocation() {
++        final Player player = getPlayer();
++        return player == null ? null : player.getLocation();
++    }
++}
+diff --git a/src/main/java/me/lexikiq/PlayerLike.java b/src/main/java/me/lexikiq/PlayerLike.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..314bf6e8cacfe8891f1354952c5ccfe7d2e21939
+--- /dev/null
++++ b/src/main/java/me/lexikiq/PlayerLike.java
+@@ -0,0 +1,28 @@
++package me.lexikiq;
++
++import org.bukkit.Location;
++import org.bukkit.entity.Player;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.function.Consumer;
++
++/**
++ * Class that is like a {@link org.bukkit.entity.Player} in that it has a Player, {@link java.util.UUID}, {@link org.bukkit.OfflinePlayer}, and an {@link net.kyori.adventure.identity.Identity}.
++ * @see me.lexikiq.OptionalPlayerLike
++ */
++public interface PlayerLike extends HasPlayer, HasLocation, OptionalPlayerLike {
++    @Override
++    default void consumeIfOnline(final @NotNull Consumer<@NotNull Player> consumer) {
++        consumer.accept(getPlayer());
++    }
++
++    @Override
++    default boolean isOnline() {
++        return true;
++    }
++
++    @Override
++    default @NotNull Location getLocation() {
++        return getPlayer().getLocation();
++    }
++}
+diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
+index 432d5711b7ec34eafeb27df82d367612dfe1fe54..7be8b69aa1b617273b5c3c17022fec2386d22bf7 100644
+--- a/src/main/java/org/bukkit/Location.java
++++ b/src/main/java/org/bukkit/Location.java
+@@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
+  * magnitude than 360 are valid, but may be normalized to any other equivalent
+  * representation by the implementation.
+  */
+-public class Location implements Cloneable, ConfigurationSerializable {
++public class Location implements Cloneable, ConfigurationSerializable, me.lexikiq.HasLocation { // Parchment
+     private Reference<World> world;
+     private double x;
+     private double y;
+@@ -72,6 +72,13 @@ public class Location implements Cloneable, ConfigurationSerializable {
+         this.yaw = yaw;
+     }
+ 
++    // Parchment start
++    @Override
++    public @NotNull Location getLocation() {
++        return this;
++    }
++    // Parchment end
++
+     /**
+      * Sets the world that this location resides in
+      *
+diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
+index 3afd5f5c0208a4ee93b5dbfc2aab2b9d2e8a7544..5898a13f0f90547ff6ecabee18969c7891d0beee 100644
+--- a/src/main/java/org/bukkit/OfflinePlayer.java
++++ b/src/main/java/org/bukkit/OfflinePlayer.java
+@@ -9,7 +9,7 @@ import org.bukkit.permissions.ServerOperator;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+ 
+-public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable {
++public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, me.lexikiq.HasOfflinePlayer, me.lexikiq.OptionalPlayer { // Parchment
+ 
+     /**
+      * Checks if this player is currently online
+@@ -126,6 +126,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
+     @Nullable
+     public Player getPlayer();
+ 
++    // Parchment start
++    @Override
++    default @org.jetbrains.annotations.NotNull OfflinePlayer getOfflinePlayer() {
++        return this;
++    }
++    // Parchment end
++
+     /**
+      * Gets the first date and time that this player was witnessed on this
+      * server.
+diff --git a/src/main/java/org/bukkit/Raid.java b/src/main/java/org/bukkit/Raid.java
+index 983a8c20a06d2b509602b27f49c090598b8ecc42..bc6b6739ad46a076f3ac8f92814a027f9d2840a7 100644
+--- a/src/main/java/org/bukkit/Raid.java
++++ b/src/main/java/org/bukkit/Raid.java
+@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Represents a raid event.
+  */
+-public interface Raid {
++public interface Raid extends me.lexikiq.HasLocation { // Parchment
+ 
+     /**
+      * Get whether this raid started.
+diff --git a/src/main/java/org/bukkit/Vibration.java b/src/main/java/org/bukkit/Vibration.java
+index 8d568d21fcbf706f55cda087bd7222ac60889c0a..51b214313e7ee6b5eb1f0fa6f1e1fe383c6d04e1 100644
+--- a/src/main/java/org/bukkit/Vibration.java
++++ b/src/main/java/org/bukkit/Vibration.java
+@@ -64,7 +64,7 @@ public class Vibration {
+             }
+         }
+ 
+-        public static class BlockDestination implements Destination {
++        public static class BlockDestination implements Destination, me.lexikiq.HasLocation { // Parchment
+ 
+             private final Location block;
+ 
+diff --git a/src/main/java/org/bukkit/attribute/AttributeModifier.java b/src/main/java/org/bukkit/attribute/AttributeModifier.java
+index ff8f1231f3e2e71740fd24fa8d4dac5d0e550ae7..4a1e40e0c7cff6ef8898771adf3bc600c715ee8d 100644
+--- a/src/main/java/org/bukkit/attribute/AttributeModifier.java
++++ b/src/main/java/org/bukkit/attribute/AttributeModifier.java
+@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
+ /**
+  * Concrete implementation of an attribute modifier.
+  */
+-public class AttributeModifier implements ConfigurationSerializable {
++public class AttributeModifier implements ConfigurationSerializable, me.lexikiq.HasUniqueId { // Parchment
+ 
+     private final UUID uuid;
+     private final String name;
+diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
+index ca488173a20bcf3427906f0a6548f06a97c9dc36..6ebf6f2bf02550ad69fad45cb79b6d92549df980 100644
+--- a/src/main/java/org/bukkit/block/Block.java
++++ b/src/main/java/org/bukkit/block/Block.java
+@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
+  * (i.e. lighting and power) may not be able to be safely accessed during world
+  * generation when used in cases like BlockPhysicsEvent!!!!
+  */
+-public interface Block extends Metadatable {
++public interface Block extends Metadatable, me.lexikiq.HasLocation { // Parchment
+ 
+     /**
+      * Gets the metadata for this block
+diff --git a/src/main/java/org/bukkit/block/BlockState.java b/src/main/java/org/bukkit/block/BlockState.java
+index 631cbf2be51040eee00aa39a39c5ec4003f91843..71ce90d8eb69cc2071f0b78534ded55a857998c4 100644
+--- a/src/main/java/org/bukkit/block/BlockState.java
++++ b/src/main/java/org/bukkit/block/BlockState.java
+@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
+  * change the state of the block and you will not know, or they may change the
+  * block to another type entirely, causing your BlockState to become invalid.
+  */
+-public interface BlockState extends Metadatable {
++public interface BlockState extends Metadatable, me.lexikiq.HasLocation { // Parchment
+ 
+     /**
+      * Gets the block represented by this block state.
+diff --git a/src/main/java/org/bukkit/block/DoubleChest.java b/src/main/java/org/bukkit/block/DoubleChest.java
+index a39d2f1acbbd84ae0e2cf29f85594e09e55e9355..19b54fc9f05a88849538a1ed28d8440306b8c81e 100644
+--- a/src/main/java/org/bukkit/block/DoubleChest.java
++++ b/src/main/java/org/bukkit/block/DoubleChest.java
+@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
+ /**
+  * Represents a double chest.
+  */
+-public class DoubleChest implements InventoryHolder {
++public class DoubleChest implements InventoryHolder, me.lexikiq.HasLocation { // Parchment
+     private DoubleChestInventory inventory;
+ 
+     public DoubleChest(@NotNull DoubleChestInventory chest) {
+diff --git a/src/main/java/org/bukkit/entity/AnimalTamer.java b/src/main/java/org/bukkit/entity/AnimalTamer.java
+index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..3f87365f96b220cf58b5ab9405ec77b70d24039b 100644
+--- a/src/main/java/org/bukkit/entity/AnimalTamer.java
++++ b/src/main/java/org/bukkit/entity/AnimalTamer.java
+@@ -4,7 +4,7 @@ import java.util.UUID;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+ 
+-public interface AnimalTamer {
++public interface AnimalTamer extends me.lexikiq.HasUniqueId { // Parchment
+ 
+     /**
+      * This is the name of the specified AnimalTamer.
+diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
+index a9e455c5b3bbe4edbdb71f86f5c6eebc2f605547..a1a82de1631bf70534a5f29f4c3becc4dd91eb95 100644
+--- a/src/main/java/org/bukkit/entity/Entity.java
++++ b/src/main/java/org/bukkit/entity/Entity.java
+@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
+ /**
+  * Represents a base entity in the world
+  */
+-public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity> { // Paper
++public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, me.lexikiq.HasUniqueId, me.lexikiq.HasLocation { // Paper // Parchment
+ 
+     /**
+      * Gets the entity's current position
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index da83b4cbed0be6f693c7cbb1cc032356f12d7883..081d372190a176b62999c4e28636370d5a9129e4 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
+ /**
+  * Represents a player, connected or not
+  */
+-public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, com.destroystokyo.paper.network.NetworkClient { // Paper
++public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, com.destroystokyo.paper.network.NetworkClient, me.lexikiq.HasPlayer { // Paper // Parchment
+ 
+     // Paper start
+     @Override
+diff --git a/src/main/java/org/bukkit/event/block/BlockBreakEvent.java b/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
+index c05cd9cadcff827a2eb236cf955bc898fa5e8b52..cc3c009be9756a5fcc8e579c1854721edc4a650f 100644
+--- a/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
++++ b/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
+@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
+  * If a Block Break event is cancelled, the block will not break and
+  * experience will not drop.
+  */
+-public class BlockBreakEvent extends BlockExpEvent implements Cancellable {
++public class BlockBreakEvent extends BlockExpEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+     private final Player player;
+     private boolean dropItems;
+     private boolean cancel;
+diff --git a/src/main/java/org/bukkit/event/block/BlockCanBuildEvent.java b/src/main/java/org/bukkit/event/block/BlockCanBuildEvent.java
+index a1350c0f74d445dca09eea6e10abac050bb06990..7d9573f88ab4333db2da42379344580087f7f561 100644
+--- a/src/main/java/org/bukkit/event/block/BlockCanBuildEvent.java
++++ b/src/main/java/org/bukkit/event/block/BlockCanBuildEvent.java
+@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
+  *     #getMaterial()} instead.
+  * </ul>
+  */
+-public class BlockCanBuildEvent extends BlockEvent {
++public class BlockCanBuildEvent extends BlockEvent implements me.lexikiq.OptionalPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     protected boolean buildable;
+ 
+diff --git a/src/main/java/org/bukkit/event/block/BlockDamageEvent.java b/src/main/java/org/bukkit/event/block/BlockDamageEvent.java
+index f70871e1ae7b1a1d77405d942d82666f03bf0498..fc40801a3d314b20b4334cffff7e6beeceba80cf 100644
+--- a/src/main/java/org/bukkit/event/block/BlockDamageEvent.java
++++ b/src/main/java/org/bukkit/event/block/BlockDamageEvent.java
+@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
+  * <p>
+  * If a Block Damage event is cancelled, the block will not be damaged.
+  */
+-public class BlockDamageEvent extends BlockEvent implements Cancellable {
++public class BlockDamageEvent extends BlockEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private final Player player;
+     private boolean instaBreak;
+diff --git a/src/main/java/org/bukkit/event/block/BlockDropItemEvent.java b/src/main/java/org/bukkit/event/block/BlockDropItemEvent.java
+index 3dd4bd38e72c04e74e5787fb38ca9abd10bad06b..440792fcdd618b75d9387e8104562b86bfe33c13 100644
+--- a/src/main/java/org/bukkit/event/block/BlockDropItemEvent.java
++++ b/src/main/java/org/bukkit/event/block/BlockDropItemEvent.java
+@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
+  * AIR in most cases. Use #getBlockState() for more Information about the broken
+  * block.
+  */
+-public class BlockDropItemEvent extends BlockEvent implements Cancellable {
++public class BlockDropItemEvent extends BlockEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private final Player player;
+diff --git a/src/main/java/org/bukkit/event/block/BlockFertilizeEvent.java b/src/main/java/org/bukkit/event/block/BlockFertilizeEvent.java
+index 695309b4b7ef269ba2496408a5f874f61cd6c445..535e94fb4c2a021a89111ec98c7dbfef1534ac53 100644
+--- a/src/main/java/org/bukkit/event/block/BlockFertilizeEvent.java
++++ b/src/main/java/org/bukkit/event/block/BlockFertilizeEvent.java
+@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
+  * block with bonemeal. Will be called after the applicable
+  * {@link StructureGrowEvent}.
+  */
+-public class BlockFertilizeEvent extends BlockEvent implements Cancellable {
++public class BlockFertilizeEvent extends BlockEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled;
+diff --git a/src/main/java/org/bukkit/event/block/BlockIgniteEvent.java b/src/main/java/org/bukkit/event/block/BlockIgniteEvent.java
+index 6dcd9f828c6c40e48593b0bad5a44a656eb01645..542cfd60a1f4775544fb040a7d8c05daaf7a5c67 100644
+--- a/src/main/java/org/bukkit/event/block/BlockIgniteEvent.java
++++ b/src/main/java/org/bukkit/event/block/BlockIgniteEvent.java
+@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
+  * <p>
+  * If a Block Ignite event is cancelled, the block will not be ignited.
+  */
+-public class BlockIgniteEvent extends BlockEvent implements Cancellable {
++public class BlockIgniteEvent extends BlockEvent implements Cancellable, me.lexikiq.OptionalPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private final IgniteCause cause;
+     private final Entity ignitingEntity;
+diff --git a/src/main/java/org/bukkit/event/block/BlockPlaceEvent.java b/src/main/java/org/bukkit/event/block/BlockPlaceEvent.java
+index be0a2d1f234d8265d98e54e518a994957b1f3ab7..ef5471f00a6c308368dd92f40fd1f3abe60e3e2b 100644
+--- a/src/main/java/org/bukkit/event/block/BlockPlaceEvent.java
++++ b/src/main/java/org/bukkit/event/block/BlockPlaceEvent.java
+@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
+  * <p>
+  * If a Block Place event is cancelled, the block will not be placed.
+  */
+-public class BlockPlaceEvent extends BlockEvent implements Cancellable {
++public class BlockPlaceEvent extends BlockEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     protected boolean cancel;
+     protected boolean canBuild;
+diff --git a/src/main/java/org/bukkit/event/block/SignChangeEvent.java b/src/main/java/org/bukkit/event/block/SignChangeEvent.java
+index 1f79f704abf339150df08900b8ea7da4cefef258..d08d9a87c89effcc4882aeda67019f7278aa099c 100644
+--- a/src/main/java/org/bukkit/event/block/SignChangeEvent.java
++++ b/src/main/java/org/bukkit/event/block/SignChangeEvent.java
+@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
+  * <p>
+  * If a Sign Change event is cancelled, the sign will not be changed.
+  */
+-public class SignChangeEvent extends BlockEvent implements Cancellable {
++public class SignChangeEvent extends BlockEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancel = false;
+     private final Player player;
+diff --git a/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java b/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java
+index 59aab10c2d27247eb77bd71d75b5f9126aa0fb12..6794fe6835ad8a5b1a3194288631f7178fa94b72 100644
+--- a/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java
+@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
+  * This can be cancelled but the item will still be consumed that was used to
+  * make the entity enter into love mode.
+  */
+-public class EntityEnterLoveModeEvent extends EntityEvent implements Cancellable {
++public class EntityEnterLoveModeEvent extends EntityEvent implements Cancellable, me.lexikiq.OptionalHumanEntity { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancel;
+@@ -42,11 +42,27 @@ public class EntityEnterLoveModeEvent extends EntityEvent implements Cancellable
+      *
+      * @return The Human entity that caused the animal to enter love mode, or
+      * null if there wasn't one.
++     * @deprecated alias of {@link #getPlayer()} <!-- Parchment: fix inconsistent naming -->
+      */
+     @Nullable
+-    public HumanEntity getHumanEntity() {
++    // Parchment start
++    @Deprecated
++    public final HumanEntity getHumanEntity() {
++        return getPlayer();
++    }
++
++    /**
++     * Gets the Human Entity that caused the animal to enter love mode.
++     *
++     * @return The Human entity that caused the animal to enter love mode, or
++     * null if there wasn't one.
++     */
++    @Override
++    @Nullable
++    public HumanEntity getPlayer() {
+         return humanEntity;
+     }
++    // Parchment end
+ 
+     /**
+      * Gets the amount of ticks that the animal will fall in love for.
+diff --git a/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java b/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
+index 10d0e18dfd423b108fe381e8142867eb10399359..9877ca9ee25f4f10b130085b70e02eedf7b5b469 100644
+--- a/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
+@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Called when an entity explodes
+  */
+-public class EntityExplodeEvent extends EntityEvent implements Cancellable {
++public class EntityExplodeEvent extends EntityEvent implements Cancellable, me.lexikiq.HasLocation { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancel;
+     private final Location location;
+diff --git a/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java b/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java
+index ea8f9ed43d8e4158e6c9c345252a94a5000c5561..d9000c142b4097ba17f7333864f0fa197f259300 100644
+--- a/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java
+@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
+  * Note that this event is currently only fired for four specific placements:
+  * armor stands, boats, minecarts, and end crystals.
+  */
+-public class EntityPlaceEvent extends EntityEvent implements Cancellable {
++public class EntityPlaceEvent extends EntityEvent implements Cancellable, me.lexikiq.OptionalPlayer { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled;
+diff --git a/src/main/java/org/bukkit/event/entity/EntityPortalEnterEvent.java b/src/main/java/org/bukkit/event/entity/EntityPortalEnterEvent.java
+index 6818e9f0ba32ca1a1e612703f7526b29f5a6438f..9bcc13260ed26a75a1325fe6598bfed51f63496c 100644
+--- a/src/main/java/org/bukkit/event/entity/EntityPortalEnterEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntityPortalEnterEvent.java
+@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Called when an entity comes into contact with a portal
+  */
+-public class EntityPortalEnterEvent extends EntityEvent {
++public class EntityPortalEnterEvent extends EntityEvent implements me.lexikiq.HasLocation { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private final Location location;
+ 
+diff --git a/src/main/java/org/bukkit/event/entity/EntitySpawnEvent.java b/src/main/java/org/bukkit/event/entity/EntitySpawnEvent.java
+index 961ee511342cd3a12ff2ff74d7b4683c6753123d..35aaa2479ef2ede010162230a1b683de5811c4bb 100644
+--- a/src/main/java/org/bukkit/event/entity/EntitySpawnEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntitySpawnEvent.java
+@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
+  * <p>
+  * If an Entity Spawn event is cancelled, the entity will not spawn.
+  */
+-public class EntitySpawnEvent extends EntityEvent implements Cancellable {
++public class EntitySpawnEvent extends EntityEvent implements Cancellable, me.lexikiq.HasLocation { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private boolean canceled;
+diff --git a/src/main/java/org/bukkit/event/entity/ItemDespawnEvent.java b/src/main/java/org/bukkit/event/entity/ItemDespawnEvent.java
+index 6fc66197eb2c5d59c70d8d028b7963748371edbe..f4c02474f16a009fccd480f6a59bb937c96bbfb7 100644
+--- a/src/main/java/org/bukkit/event/entity/ItemDespawnEvent.java
++++ b/src/main/java/org/bukkit/event/entity/ItemDespawnEvent.java
+@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
+  * Cancelling the event results in the item being allowed to exist for 5 more
+  * minutes. This behavior is not guaranteed and may change in future versions.
+  */
+-public class ItemDespawnEvent extends EntityEvent implements Cancellable {
++public class ItemDespawnEvent extends EntityEvent implements Cancellable, me.lexikiq.HasLocation { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean canceled;
+     private final Location location;
+diff --git a/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java b/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java
+index 5eb3fb72a13881b8bf0e40037b0002cb0a6eb883..6ab6bb4237418479156bd24d77bc1f24db637969 100644
+--- a/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java
++++ b/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java
+@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Called immediately prior to a creature being leashed by a player.
+  */
+-public class PlayerLeashEntityEvent extends Event implements Cancellable {
++public class PlayerLeashEntityEvent extends Event implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private final Entity leashHolder;
+     private final Entity entity;
+diff --git a/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java b/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
+index 959b9f3fb41f8de6c8fb9a3b2df13212e29cf0e7..a92dbe0a21a4b8571813dbc9ff504694239d025b 100644
+--- a/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
++++ b/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
+@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
+ /**
+  * Triggered when a hanging entity is created in the world
+  */
+-public class HangingPlaceEvent extends HangingEvent implements Cancellable {
++public class HangingPlaceEvent extends HangingEvent implements Cancellable, me.lexikiq.OptionalPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled;
+     private final Player player;
+diff --git a/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java b/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java
+index 020739697a0b535cad0b15b574f77cdabbdfa3eb..db95a2096f12c42d84b44bada6048184074a20b4 100644
+--- a/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java
++++ b/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java
+@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * This event is called when a player takes items out of the furnace
+  */
+-public class FurnaceExtractEvent extends BlockExpEvent {
++public class FurnaceExtractEvent extends BlockExpEvent implements me.lexikiq.HasPlayer { // Parchment
+     private final Player player;
+     private final Material itemType;
+     private final int itemAmount;
+diff --git a/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java b/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java
+index 21ad8888c0e403bfc63518502577d651c02dda05..4dd6182476a4a9b961089f34d5376780e1774fc4 100644
+--- a/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java
++++ b/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java
+@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Represents a player related inventory event
+  */
+-public class InventoryCloseEvent extends InventoryEvent {
++public class InventoryCloseEvent extends InventoryEvent implements me.lexikiq.HasHumanEntity { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     // Paper start
+     private final Reason reason;
+diff --git a/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java b/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
+index 9013d043503d175004ad276799e5935b7fa59dc4..2af2c43ba34de3ff6f6a82f5abb4f94f2fa5d19e 100644
+--- a/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
++++ b/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
+@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Represents a player related inventory event
+  */
+-public class InventoryOpenEvent extends InventoryEvent implements Cancellable {
++public class InventoryOpenEvent extends InventoryEvent implements Cancellable, me.lexikiq.HasHumanEntity { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled;
+ 
+diff --git a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
+index 77aefda5aac4602bf5bf71c29600e7450defdd4e..0a7c4936bc97da1d7defe3c370d95376455baae2 100644
+--- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
++++ b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
+@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
+  * <p>
+  * This event is asynchronous, and not run using main thread.
+  */
+-public class AsyncPlayerPreLoginEvent extends Event {
++public class AsyncPlayerPreLoginEvent extends Event implements me.lexikiq.HasUniqueId { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private Result result;
+     private net.kyori.adventure.text.Component message; // Paper
+diff --git a/src/main/java/org/bukkit/event/player/PlayerEvent.java b/src/main/java/org/bukkit/event/player/PlayerEvent.java
+index f6d3b817de3001f04ea4554c7c39a1290af3fd6d..309d4526816853dfc2d5c3061bd772238776ab74 100644
+--- a/src/main/java/org/bukkit/event/player/PlayerEvent.java
++++ b/src/main/java/org/bukkit/event/player/PlayerEvent.java
+@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Represents a player related event
+  */
+-public abstract class PlayerEvent extends Event {
++public abstract class PlayerEvent extends Event implements me.lexikiq.HasPlayer { // Parchment
+     protected Player player;
+ 
+     public PlayerEvent(@NotNull final Player who) {
+diff --git a/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
+index 123979ed64939d615b061f91c19c630e1e1db8c7..0220c4f087fd6b5769a0fa4f03bfd096a1462359 100644
+--- a/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
++++ b/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
+@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
+  */
+ @Deprecated
+ @Warning(reason = "This event causes a login thread to synchronize with the main thread")
+-public class PlayerPreLoginEvent extends Event {
++public class PlayerPreLoginEvent extends Event implements me.lexikiq.HasUniqueId { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private Result result;
+     private net.kyori.adventure.text.Component message; // Paper
+diff --git a/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java b/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
+index 68eab1563caba1ee4f52b308f390e4e172667fc5..7ebf60f80ac29f3969d2d70fa0cf668f2933b647 100644
+--- a/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
++++ b/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
+@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Called prior to an entity being unleashed due to a player's action.
+  */
+-public class PlayerUnleashEntityEvent extends EntityUnleashEvent implements Cancellable {
++public class PlayerUnleashEntityEvent extends EntityUnleashEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+     private final Player player;
+     private boolean cancelled = false;
+ 
+diff --git a/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java b/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java
+index 128e43cf12205f82f2b119a773208502cdccfdd4..f0a5fc39fa35ec71cf9cadb7d0cff379f5d8c6cb 100644
+--- a/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java
++++ b/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java
+@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
+  * Called when a {@link Raid} is triggered (e.g: a player with Bad Omen effect
+  * enters a village).
+  */
+-public class RaidTriggerEvent extends RaidEvent implements Cancellable {
++public class RaidTriggerEvent extends RaidEvent implements Cancellable, me.lexikiq.HasPlayer { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     //
+diff --git a/src/main/java/org/bukkit/event/server/TabCompleteEvent.java b/src/main/java/org/bukkit/event/server/TabCompleteEvent.java
+index f96c4ba53ab41ea66d4f9a4d54eeabb63f992b58..39fa65a2b130c00b2ba5d90e2fa673a6d9c85f4b 100644
+--- a/src/main/java/org/bukkit/event/server/TabCompleteEvent.java
++++ b/src/main/java/org/bukkit/event/server/TabCompleteEvent.java
+@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
+  * advised to ensure the client does not have permission for the relevant
+  * commands, or use {@link PlayerCommandSendEvent}.
+  */
+-public class TabCompleteEvent extends Event implements Cancellable {
++public class TabCompleteEvent extends Event implements Cancellable, me.lexikiq.OptionalLocation { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     //
+diff --git a/src/main/java/org/bukkit/event/world/GenericGameEvent.java b/src/main/java/org/bukkit/event/world/GenericGameEvent.java
+index fed29b2cb2a2c2997a7a3f42e9be84a8cb1c6425..629fd7abf0bea441cf8f2578c894a5426a9c877a 100644
+--- a/src/main/java/org/bukkit/event/world/GenericGameEvent.java
++++ b/src/main/java/org/bukkit/event/world/GenericGameEvent.java
+@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
+  * Specific Bukkit events should be used where possible, this event is mainly
+  * used internally by Sculk sensors.
+  */
+-public class GenericGameEvent extends WorldEvent implements Cancellable {
++public class GenericGameEvent extends WorldEvent implements Cancellable, me.lexikiq.HasLocation { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private final GameEvent event;
+diff --git a/src/main/java/org/bukkit/event/world/StructureGrowEvent.java b/src/main/java/org/bukkit/event/world/StructureGrowEvent.java
+index 7af8d6e51c824cf0592b722b834f1d4986e3cc08..8baaa32094bacb181848904f18184fe6f90289df 100644
+--- a/src/main/java/org/bukkit/event/world/StructureGrowEvent.java
++++ b/src/main/java/org/bukkit/event/world/StructureGrowEvent.java
+@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
+  * Event that is called when an organic structure attempts to grow (Sapling {@literal ->}
+  * Tree), (Mushroom {@literal ->} Huge Mushroom), naturally or using bonemeal.
+  */
+-public class StructureGrowEvent extends WorldEvent implements Cancellable {
++public class StructureGrowEvent extends WorldEvent implements Cancellable, me.lexikiq.OptionalPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled = false;
+     private final Location location;
+diff --git a/src/main/java/org/bukkit/inventory/Inventory.java b/src/main/java/org/bukkit/inventory/Inventory.java
+index 8f00cb2e3bc9963e9657c1b2493e8b015a6664d0..7029f3e6fe4a5167265a70eb3113f25836c6e121 100644
+--- a/src/main/java/org/bukkit/inventory/Inventory.java
++++ b/src/main/java/org/bukkit/inventory/Inventory.java
+@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
+  * @see #getContents()
+  * @see #getStorageContents()
+  */
+-public interface Inventory extends Iterable<ItemStack> {
++public interface Inventory extends Iterable<ItemStack>, me.lexikiq.OptionalLocation { // Parchment
+ 
+     /**
+      * Returns the size of the inventory
+diff --git a/src/main/java/org/bukkit/inventory/InventoryView.java b/src/main/java/org/bukkit/inventory/InventoryView.java
+index b06995aa57aa9cba0bb59f1d26d81015619a08e6..d599b72c2441a023dff8ee4bdaf587b21471f11f 100644
+--- a/src/main/java/org/bukkit/inventory/InventoryView.java
++++ b/src/main/java/org/bukkit/inventory/InventoryView.java
+@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
+  * contracts of certain methods, there's no guarantee that the game will work
+  * as it should.
+  */
+-public abstract class InventoryView {
++public abstract class InventoryView implements me.lexikiq.HasHumanEntity { // Parchment
+     public static final int OUTSIDE = -999;
+     /**
+      * Represents various extra properties of certain inventory windows.
+diff --git a/src/main/java/org/bukkit/loot/LootContext.java b/src/main/java/org/bukkit/loot/LootContext.java
+index e307f9fc45a4e5d742b78c4cda9a41d7f259a515..ab532552e4a10e03125b64e0884650a841275cca 100644
+--- a/src/main/java/org/bukkit/loot/LootContext.java
++++ b/src/main/java/org/bukkit/loot/LootContext.java
+@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
+  * Represents additional information a {@link LootTable} can use to modify it's
+  * generated loot.
+  */
+-public final class LootContext {
++public final class LootContext implements me.lexikiq.HasLocation { // Parchment
+ 
+     public static final int DEFAULT_LOOT_MODIFIER = -1;
+ 

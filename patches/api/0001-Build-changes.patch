@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Thu, 17 Jun 2021 14:38:59 -0400
+Subject: [PATCH] Build changes
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 6d04816e22f44a33c001d2b7e080402fba6af86c..8dea8af5898cfe89e6aa4a8d278eba32fc4214cf 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -27,6 +27,7 @@ dependencies {
+     api("org.ow2.asm:asm:9.0")
+     api("org.ow2.asm:asm-commons:9.0")
+     api("org.apache.logging.log4j:log4j-api:2.14.1") // Paper
++    api(project(":Parchment-Common")) // Parchment
+ 
+     compileOnly("org.apache.maven:maven-resolver-provider:3.8.1")
+     compileOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.0")

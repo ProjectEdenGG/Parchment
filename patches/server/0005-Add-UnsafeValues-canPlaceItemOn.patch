@@ -1,0 +1,66 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Fri, 18 Jun 2021 03:18:47 -0400
+Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
+index a2a62bfb747994c43b8b0b607af90d3be2836873..57ccac39c2c8b8a5c6d9a317ab514b337f7491ef 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
+@@ -512,6 +512,55 @@ public final class CraftMagicNumbers implements UnsafeValues {
+     }
+     // Paper end
+ 
++    // Parchment start
++    @Override
++    public java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(ItemStack item, me.lexikiq.OptionalHumanEntity player, org.bukkit.block.Block block, org.bukkit.block.BlockFace face) {
++        org.apache.commons.lang3.Validate.notNull(item, "item");
++        org.apache.commons.lang3.Validate.notNull(block, "block");
++        org.apache.commons.lang3.Validate.notNull(face, "face");
++        org.bukkit.entity.HumanEntity human = player == null ? null : player.getPlayer();
++        java.util.concurrent.CompletableFuture<Boolean> future = new java.util.concurrent.CompletableFuture<>();
++        if (block.getType().isEmpty() || block.isLiquid()) {
++            future.complete(false);
++            return future;
++        } else if (!face.isCartesian()) {
++            throw new IllegalArgumentException("face must be cartesian");
++        }
++
++
++        net.minecraft.world.entity.player.Player nmsPlayer = human == null ? null : ((org.bukkit.craftbukkit.entity.CraftHumanEntity) human).getHandle();
++        CraftBlock cBlock = (CraftBlock) block;
++        CraftBlock relativeBlock = (CraftBlock) block.getRelative(face);
++        if (!relativeBlock.isReplaceable()) {
++            future.complete(false);
++            return future;
++        }
++
++        org.bukkit.Location playerLoc = human != null ? human.getLocation() : relativeBlock.getLocation();
++        net.minecraft.core.Direction dir = net.minecraft.core.Direction.valueOf(face.name());
++        net.minecraft.world.item.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
++        Item nmsItem = nmsStack.getItem();
++        if (!(nmsItem instanceof net.minecraft.world.item.BlockItem blockItem)) {
++            future.complete(false);
++            return future;
++        }
++
++        net.minecraft.world.item.context.BlockPlaceContext context = new net.minecraft.world.item.context.BlockPlaceContext(new net.minecraft.world.item.context.UseOnContext(cBlock.getCraftWorld().getHandle(), nmsPlayer, net.minecraft.world.InteractionHand.MAIN_HAND, nmsStack, new net.minecraft.world.phys.BlockHitResult(CraftVector.toNMS(playerLoc.toVector()), dir, cBlock.getPosition(), false)));
++        context = blockItem.updatePlacementContext(context);
++        if (context == null) {
++            future.complete(false);
++            return future;
++        }
++        BlockState blockState = blockItem.getBlock().getStateForPlacement(context);
++        if (blockState == null) {
++            future.complete(false);
++            return future;
++        }
++        final net.minecraft.world.item.context.BlockPlaceContext ctx = context;
++        return future.completeAsync(() -> blockItem.canPlace(ctx, blockState), net.minecraft.server.MCUtil.MAIN_EXECUTOR);
++    }
++    // Parchment end
++
+     /**
+      * This helper class represents the different NBT Tags.
+      * <p>

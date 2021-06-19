@@ -1,0 +1,206 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sat, 19 Jun 2021 16:30:39 -0400
+Subject: [PATCH] Add SoundEvent
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index f893d8ab74293feec6ef69c5a4ddec57b11ca751..d6dbd903316ec16088ce7022b173285cd2fe80cd 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -55,8 +55,8 @@ import net.minecraft.network.protocol.game.ClientboundExplodePacket;
+ import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
+ import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
+ import net.minecraft.network.protocol.game.ClientboundSetDefaultSpawnPositionPacket;
+-import net.minecraft.network.protocol.game.ClientboundSoundEntityPacket;
+-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
++//import net.minecraft.network.protocol.game.ClientboundSoundEntityPacket; // Parchment
++//import net.minecraft.network.protocol.game.ClientboundSoundPacket; // Parchment
+ import net.minecraft.network.protocol.game.DebugPackets;
+ import net.minecraft.resources.ResourceKey;
+ import net.minecraft.server.MCUtil;
+@@ -1335,12 +1335,12 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+ 
+     @Override
+     public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
+-        this.server.getPlayerList().broadcast(player, x, y, z, volume > 1.0F ? (double) (16.0F * volume) : 16.0D, this.dimension(), new ClientboundSoundPacket(sound, category, x, y, z, volume, pitch));
++        CraftEventFactory.playSoundEvent(new me.lexikiq.event.sound.LocationNamedSoundEvent(player == null ? null : player.getBukkitEntity(), getWorld(), new org.bukkit.util.Vector(x, y, z), org.bukkit.craftbukkit.CraftSound.getBukkit(sound), org.bukkit.SoundCategory.valueOf(category.name()), volume, pitch), this.server, volume > 1.0F ? (double) (16.0F * volume) : 16.0D); // Parchment
+     }
+ 
+     @Override
+     public void playSound(@Nullable Player player, Entity entity, SoundEvent sound, SoundSource category, float volume, float pitch) {
+-        this.server.getPlayerList().broadcast(player, entity.getX(), entity.getY(), entity.getZ(), volume > 1.0F ? (double) (16.0F * volume) : 16.0D, this.dimension(), new ClientboundSoundEntityPacket(sound, category, entity, volume, pitch));
++        CraftEventFactory.playSoundEvent(new me.lexikiq.event.sound.EntitySoundEvent(player == null ? null : player.getBukkitEntity(), entity.getBukkitEntity(), org.bukkit.craftbukkit.CraftSound.getBukkit(sound), org.bukkit.SoundCategory.valueOf(category.name()), volume, pitch), this.server, volume > 1.0F ? (double) (16.0F * volume) : 16.0D); // Parchment
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 53f6a45a505725c81ab15bd2daa1c61b024f1d68..bbe27b5334578e547eefd8eaca3d2ce23d3ff854 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -67,7 +67,7 @@ import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
+ import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
+ import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
+ import net.minecraft.network.protocol.game.ClientboundSetHealthPacket;
+-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
++//import net.minecraft.network.protocol.game.ClientboundSoundPacket; // Parchment
+ import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
+ import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
+ import net.minecraft.resources.ResourceKey;
+@@ -2134,7 +2134,7 @@ public class ServerPlayer extends Player {
+ 
+     @Override
+     public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
+-        this.connection.send(new ClientboundSoundPacket(event, category, this.getX(), this.getY(), this.getZ(), volume, pitch));
++        CraftEventFactory.playSoundEvent(new me.lexikiq.event.sound.LocationNamedSoundEvent(getBukkitEntity(), org.bukkit.craftbukkit.CraftSound.getBukkit(event), org.bukkit.SoundCategory.valueOf(category.name()), volume, pitch), this); // Parchment
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index bc3fe18dd32da2d381b9546aae675a475c073696..fae458c2ec53e8663536c183d2487a2a6041d24e 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -58,7 +58,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
+ import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
+ import net.minecraft.network.protocol.game.ClientboundSetPlayerTeamPacket;
+ import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
+-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
++//import net.minecraft.network.protocol.game.ClientboundSoundPacket; // Parchment
+ import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
+ import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
+ import net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket;
+@@ -951,7 +951,7 @@ public abstract class PlayerList {
+         if (flag2 && !isLocAltered) {
+             BlockState data = worldserver1.getBlockState(blockposition);
+             worldserver1.setBlock(blockposition, data.setValue(RespawnAnchorBlock.CHARGE, data.getValue(RespawnAnchorBlock.CHARGE) - 1), 3);
+-            entityplayer1.connection.send(new ClientboundSoundPacket(SoundEvents.RESPAWN_ANCHOR_DEPLETE, SoundSource.BLOCKS, (double) location.getX(), (double) location.getY(), (double) location.getZ(), 1.0F, 1.0F));
++            entityplayer1.playNotifySound(SoundEvents.RESPAWN_ANCHOR_DEPLETE, SoundSource.BLOCKS, 1.0F, 1.0F); // Parchment
+         // Paper end
+         }
+         // Added from changeDimension
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index d286d88a3c3f93dbfa92de9421e320c92cd96350..eea377ccf09afd2c175041bdd8226e1009fe6914 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -30,7 +30,7 @@ import net.minecraft.network.chat.MutableComponent;
+ import net.minecraft.network.chat.TextComponent;
+ import net.minecraft.network.chat.TranslatableComponent;
+ import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
+-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
++//import net.minecraft.network.protocol.game.ClientboundSoundPacket; // Parchment
+ import net.minecraft.network.syncher.EntityDataAccessor;
+ import net.minecraft.network.syncher.EntityDataSerializers;
+ import net.minecraft.network.syncher.SynchedEntityData;
+@@ -1824,7 +1824,7 @@ public abstract class Player extends LivingEntity {
+     private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
+         fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
+         if (fromEntity instanceof ServerPlayer) {
+-            ((ServerPlayer) fromEntity).connection.send(new ClientboundSoundPacket(soundEffect, soundCategory, x, y, z, volume, pitch));
++            CraftEventFactory.playSoundEvent(new me.lexikiq.event.sound.LocationNamedSoundEvent(fromEntity.getBukkitEntity(), new org.bukkit.util.Vector(x, y, z), org.bukkit.craftbukkit.CraftSound.getBukkit(soundEffect), org.bukkit.SoundCategory.valueOf(soundCategory.name()), volume, pitch), (ServerPlayer) fromEntity); // Parchment
+         }
+     }
+     // Paper end
+diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+index a79ba23ecf887ecbb6e095140f019ebb6fd0a6f7..5112edc5e68a386e9bb16ac0ec9d998e7df06f3c 100644
+--- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
++++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+@@ -27,7 +27,7 @@ import net.minecraft.nbt.ListTag;
+ import net.minecraft.nbt.NbtUtils;
+ import net.minecraft.network.chat.Component;
+ import net.minecraft.network.chat.TranslatableComponent;
+-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
++//import net.minecraft.network.protocol.game.ClientboundSoundPacket; // Parchment
+ import net.minecraft.server.level.ServerBossEvent;
+ import net.minecraft.server.level.ServerLevel;
+ import net.minecraft.server.level.ServerPlayer;
+@@ -537,7 +537,7 @@ public class Raid {
+             double d2 = vec3d.z + 13.0D / d0 * (vec3d1.z - vec3d.z);
+ 
+             if (d0 <= 64.0D || collection.contains(entityplayer)) {
+-                entityplayer.connection.send(new ClientboundSoundPacket(SoundEvents.RAID_HORN, SoundSource.NEUTRAL, d1, entityplayer.getY(), d2, 64.0F, 1.0F));
++                entityplayer.playNotifySound(SoundEvents.RAID_HORN, SoundSource.NEUTRAL, 64.0F, 1.0F); // Parchment
+             }
+         }
+ 
+diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+index 71571868090062f02579d50ae483d9f367de5016..e94fc60cd34678d7ce052e70728040f9999a9d00 100644
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -1835,4 +1835,77 @@ public class CraftEventFactory {
+         return event.callEvent();
+     }
+     // Paper end
++
++    // Parchment start
++    private static net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> handleSoundEvent(me.lexikiq.event.sound.SoundEvent _event) {
++        if (!_event.callEvent()) {
++            return null;
++        } else {
++            float volume = _event.getVolume();
++            float pitch = _event.getPitch();
++            net.minecraft.sounds.SoundSource source = net.minecraft.sounds.SoundSource.valueOf(_event.getCategory().name());
++
++            if (_event instanceof me.lexikiq.event.sound.NamedSoundEvent namedSoundEvent) {
++                net.minecraft.sounds.SoundEvent sound = org.bukkit.craftbukkit.CraftSound.getSoundEffect(namedSoundEvent.getSound());
++
++                if (_event instanceof me.lexikiq.event.sound.LocationNamedSoundEvent event) {
++                    org.bukkit.util.Vector pos = event.getVector();
++                    return new net.minecraft.network.protocol.game.ClientboundSoundPacket(sound, source, pos.getX(), pos.getY(), pos.getZ(), volume, pitch);
++                } else {
++                    me.lexikiq.event.sound.EntitySoundEvent event = (me.lexikiq.event.sound.EntitySoundEvent) _event;
++                    return new net.minecraft.network.protocol.game.ClientboundSoundEntityPacket(sound, source, ((CraftEntity) event.getOrigin()).getHandle(), volume, pitch);
++                }
++            } else {
++                me.lexikiq.event.sound.LocationCustomSoundEvent event = (me.lexikiq.event.sound.LocationCustomSoundEvent) _event;
++                org.bukkit.util.Vector pos = event.getVector();
++                return new net.minecraft.network.protocol.game.ClientboundCustomSoundPacket(CraftNamespacedKey.toMinecraft(event.getKey()), source, org.bukkit.craftbukkit.util.CraftVector.toNMS(pos), volume, pitch);
++            }
++        }
++    }
++
++    public static void playSoundEvent(me.lexikiq.event.sound.SoundEvent event, java.util.function.Consumer<net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener>> soundPlayer) {
++        org.apache.commons.lang3.Validate.notNull(event, "event");
++        org.apache.commons.lang3.Validate.notNull(soundPlayer, "soundPlayer");
++        if (!(event instanceof me.lexikiq.event.sound.LocationNamedSoundEvent || event instanceof me.lexikiq.event.sound.LocationCustomSoundEvent || event instanceof me.lexikiq.event.sound.EntitySoundEvent)) {
++            throw new IllegalArgumentException("Unknown sound event: " + event.getClass().getName());
++        }
++        java.util.concurrent.CompletableFuture.supplyAsync(() -> handleSoundEvent(event), net.minecraft.server.MCUtil.asyncExecutor).thenAcceptAsync(packet -> {
++            if (packet != null)
++                soundPlayer.accept(packet);
++        }, net.minecraft.server.MCUtil.asyncExecutor);
++    }
++
++    public static void playSoundEvent(me.lexikiq.event.sound.SoundEvent event, CraftPlayer sendTo) {
++        playSoundEvent(event, sendTo.getHandle());
++    }
++
++    public static void playSoundEvent(me.lexikiq.event.sound.SoundEvent event, ServerPlayer sendTo) {
++        playSoundEvent(event, sendTo.connection);
++    }
++
++    public static void playSoundEvent(me.lexikiq.event.sound.SoundEvent event, net.minecraft.server.network.ServerPlayerConnection sendTo) {
++        playSoundEvent(event, sendTo::send);
++    }
++
++    public static void playSoundEvent(me.lexikiq.event.sound.SoundEvent event, net.minecraft.server.MinecraftServer server, double radius) {
++        playSoundEvent(event, server.getPlayerList(), radius);
++    }
++
++    public static void playSoundEvent(me.lexikiq.event.sound.SoundEvent event, net.minecraft.server.players.PlayerList playerList, double radius) {
++        final net.minecraft.world.entity.player.Player player = event.getPlayer() == null ? null : ((org.bukkit.craftbukkit.entity.CraftHumanEntity) event.getPlayer()).getHandle();
++        final net.minecraft.resources.ResourceKey<Level> world = ((CraftWorld) event.getWorld()).getHandle().dimension();
++        final org.bukkit.util.Vector pos;
++        if (event instanceof me.lexikiq.HasLocation hasLoc) {
++            pos = hasLoc.getLocation().toVector();
++        } else if (event instanceof me.lexikiq.event.sound.EntitySoundEvent entityEvent) {
++            pos = entityEvent.getOrigin().getLocation().toVector();
++        } else {
++            throw new IllegalArgumentException("Could not determine location of sound event");
++        }
++        final double posX = pos.getX();
++        final double posY = pos.getY();
++        final double posZ = pos.getZ();
++        playSoundEvent(event, packet -> playerList.broadcast(player, posX, posY, posZ, radius, world, packet));
++    }
++    // Parchment end
+ }

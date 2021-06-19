@@ -1,17 +1,18 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
 Date: Thu, 13 May 2021 23:55:02 -0400
-Subject: [PATCH] Create PlayerUseRespawnAnchorEvent
+Subject: [PATCH] Add PlayerUseRespawnAnchorEvent
 
 
 diff --git a/src/main/java/me/lexikiq/event/player/PlayerUseRespawnAnchorEvent.java b/src/main/java/me/lexikiq/event/player/PlayerUseRespawnAnchorEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..96b552fe0bd6e6507c1c4f9380cab32e725cb129
+index 0000000000000000000000000000000000000000..fcf552bb84a10794dda178b337768efe4781facd
 --- /dev/null
 +++ b/src/main/java/me/lexikiq/event/player/PlayerUseRespawnAnchorEvent.java
-@@ -0,0 +1,102 @@
+@@ -0,0 +1,117 @@
 +package me.lexikiq.event.player;
 +
++import com.google.common.base.Preconditions;
 +import org.bukkit.block.Block;
 +import org.bukkit.entity.Player;
 +import org.bukkit.event.Cancellable;
@@ -20,7 +21,8 @@ index 0000000000000000000000000000000000000000..96b552fe0bd6e6507c1c4f9380cab32e
 +import org.jetbrains.annotations.NotNull;
 +
 +/**
-+ * This event is fired immediately before the result of using a respawn anchor is executed
++ * This event is fired after determining what action should result from a player interacting with
++ * a respawn anchor.
 + */
 +public class PlayerUseRespawnAnchorEvent extends PlayerEvent implements Cancellable {
 +
@@ -39,12 +41,16 @@ index 0000000000000000000000000000000000000000..96b552fe0bd6e6507c1c4f9380cab32e
 +		/**
 +		 * The player will charge the respawn anchor
 +		 */
-+		CHARGE
++		CHARGE,
++		/**
++		 * The respawn anchor will do nothing
++		 */
++		NOTHING
 +	}
 +
 +	private static final HandlerList handlers = new HandlerList();
 +	private final Block respawnAnchor;
-+	private final RespawnAnchorResult respawnAnchorResult;
++	private RespawnAnchorResult respawnAnchorResult;
 +	private boolean cancelled = false;
 +
 +	public PlayerUseRespawnAnchorEvent(@NotNull Player who, @NotNull Block respawnAnchor, @NotNull RespawnAnchorResult respawnAnchorResult) {
@@ -69,8 +75,17 @@ index 0000000000000000000000000000000000000000..96b552fe0bd6e6507c1c4f9380cab32e
 +	 * @return the respawn anchor result for the outcome of the event
 +	 */
 +	@NotNull
-+	public RespawnAnchorResult getRespawnAnchorResult() {
++	public RespawnAnchorResult getResult() {
 +		return this.respawnAnchorResult;
++	}
++
++	/**
++	* Sets the outcome of the event.
++   *
++	* @param result event to set
++   */
++	public void setResult(@NotNull RespawnAnchorResult result) {
++		this.respawnAnchorResult = Preconditions.checkNotNull(result, "result");
 +	}
 +
 +	/**
