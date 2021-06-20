@@ -5,19 +5,18 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index f111042223f0d7974785c37245bb60b75388163e..63d62bdc61c50a06d594a6635caeb61ea1445370 100644
+index 04938bb10c35d2e424043adb7ed8fec2e42bb816..753dd00f2ef45be97240ce92ce63aaef8f67cb86 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -5,6 +5,8 @@ import io.papermc.paperweight.util.path
- import shadow.org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor.PLUGIN_CACHE_FILE
+@@ -6,6 +6,7 @@ import shadow.org.apache.logging.log4j.core.config.plugins.processor.PluginProce
  import java.text.SimpleDateFormat
  import java.util.Date
-+import java.util.Locale // Parchment
+ import java.util.Locale
 +import java.net.URI // Parchment
  
  plugins {
      java
-@@ -19,8 +21,8 @@ repositories {
+@@ -18,8 +19,8 @@ repositories {
  }
  
  dependencies {
@@ -28,10 +27,10 @@ index f111042223f0d7974785c37245bb60b75388163e..63d62bdc61c50a06d594a6635caeb61e
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -87,6 +89,26 @@ configure<PublishingExtension> {
-         artifact(tasks.reobfJar) {
-             classifier = "reobf"
+@@ -86,6 +87,26 @@ publishing {
+             classifier = null
          }
+         artifact(tasks.shadowJar)
 +// Parchment start
 +        groupId = project.group as String?
 +        artifactId = "parchment"
@@ -55,8 +54,8 @@ index f111042223f0d7974785c37245bb60b75388163e..63d62bdc61c50a06d594a6635caeb61e
      }
  }
  
-@@ -95,7 +117,7 @@ val generatePom = tasks.named<GenerateMavenPom>("generatePomFileForMavenPublicat
- tasks.shadowJar {
+@@ -96,7 +117,7 @@ tasks.shadowJar {
+ 
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
 -        into("META-INF/maven/io.papermc.paper/paper")
@@ -64,7 +63,7 @@ index f111042223f0d7974785c37245bb60b75388163e..63d62bdc61c50a06d594a6635caeb61e
          rename { "pom.xml" }
      }
  
-@@ -119,7 +141,7 @@ tasks.test {
+@@ -122,7 +143,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -87,7 +86,7 @@ index 218f5bafeed8551b55b91c7fccaf6935c8b631ca..52126870f1fc15a9ddce4452673b236e
  
      /**
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c6747f49ae8ddc9fc1bad82ab480f85d0883da5d..648f062c5d0e5a73d12e1174ea35dfb5b2eb0228 100644
+index 3bf39c2d2aa3fc4fd0815dacea57e4899ec0da0e..f891a5c0e6547913e2b46987e37226731630974d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1649,7 +1649,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -100,7 +99,7 @@ index c6747f49ae8ddc9fc1bad82ab480f85d0883da5d..648f062c5d0e5a73d12e1174ea35dfb5
  
      public SystemReport fillSystemReport(SystemReport systemreport) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8a98bd1018afd934696fedbed24e271ab6b75f51..852ebc691af6a356182ecbc08c27165f2b1b2052 100644
+index 3948fd10d8bd0994d97dfd5f26fb0dc5f0b5ac8e..5a4eb1eac2bdcba7990f9eb39a8d2ee2852bca21 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
@@ -113,7 +112,7 @@ index 8a98bd1018afd934696fedbed24e271ab6b75f51..852ebc691af6a356182ecbc08c27165f
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index ba01312f7615d0507c1bd1cd175588197f8d122e..4b2a4c7a14923b2ea78c97ec1544b338bc8d42b6 100644
+index 32f82c60b680180b256edff127e5a6ded42fccf4..cf6ccc83b3c91722125f7f0cd84e18e6181679fe 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -269,7 +269,7 @@ public class Main {

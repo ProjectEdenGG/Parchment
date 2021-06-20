@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 6d04816e22f44a33c001d2b7e080402fba6af86c..f24243834c48f31613a36c3d1f8e779bfe93041e 100644
+index e142072f31a41b25ac637970f79e71ab70c2f28c..2d3160cc96fa3783ec9863ff3f7325a90291ce91 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -1,4 +1,5 @@
@@ -22,9 +22,9 @@ index 6d04816e22f44a33c001d2b7e080402fba6af86c..f24243834c48f31613a36c3d1f8e779b
  
      compileOnly("org.apache.maven:maven-resolver-provider:3.8.1")
      compileOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.0")
-@@ -45,6 +47,26 @@ dependencies {
- configure<PublishingExtension> {
+@@ -46,6 +48,26 @@ configure<PublishingExtension> {
      publications.create<MavenPublication>("maven") {
+         artifactId = project.name.toLowerCase(Locale.ENGLISH)
          from(components["java"])
 +// Parchment start
 +        groupId = project.group as String?

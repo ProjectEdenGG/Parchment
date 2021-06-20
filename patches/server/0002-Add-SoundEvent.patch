@@ -5,7 +5,7 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index f893d8ab74293feec6ef69c5a4ddec57b11ca751..d6dbd903316ec16088ce7022b173285cd2fe80cd 100644
+index b3312fa2fd218ffcfaa61d98584003c97fbda4ce..1938251c9214932837e0bf0937fb31465d7c0ed3 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -55,8 +55,8 @@ import net.minecraft.network.protocol.game.ClientboundExplodePacket;
@@ -19,7 +19,7 @@ index f893d8ab74293feec6ef69c5a4ddec57b11ca751..d6dbd903316ec16088ce7022b173285c
  import net.minecraft.network.protocol.game.DebugPackets;
  import net.minecraft.resources.ResourceKey;
  import net.minecraft.server.MCUtil;
-@@ -1335,12 +1335,12 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+@@ -1308,12 +1308,12 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
  
      @Override
      public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
@@ -35,7 +35,7 @@ index f893d8ab74293feec6ef69c5a4ddec57b11ca751..d6dbd903316ec16088ce7022b173285c
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 53f6a45a505725c81ab15bd2daa1c61b024f1d68..bbe27b5334578e547eefd8eaca3d2ce23d3ff854 100644
+index 935b22199ebdf84db591f8442e0506d8fcc92e02..ad7ed7b967855f6b1702760fe96f33cf776c773d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -67,7 +67,7 @@ import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
@@ -47,7 +47,7 @@ index 53f6a45a505725c81ab15bd2daa1c61b024f1d68..bbe27b5334578e547eefd8eaca3d2ce2
  import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
  import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
  import net.minecraft.resources.ResourceKey;
-@@ -2134,7 +2134,7 @@ public class ServerPlayer extends Player {
+@@ -2136,7 +2136,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -57,7 +57,7 @@ index 53f6a45a505725c81ab15bd2daa1c61b024f1d68..bbe27b5334578e547eefd8eaca3d2ce2
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index bc3fe18dd32da2d381b9546aae675a475c073696..fae458c2ec53e8663536c183d2487a2a6041d24e 100644
+index a6ecbb7eb1df7923d58366327e0f00512a3a1677..43dc36e6da0b044279021ef48bed29a9d4f59bbe 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -58,7 +58,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
@@ -69,7 +69,7 @@ index bc3fe18dd32da2d381b9546aae675a475c073696..fae458c2ec53e8663536c183d2487a2a
  import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
  import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
  import net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket;
-@@ -951,7 +951,7 @@ public abstract class PlayerList {
+@@ -957,7 +957,7 @@ public abstract class PlayerList {
          if (flag2 && !isLocAltered) {
              BlockState data = worldserver1.getBlockState(blockposition);
              worldserver1.setBlock(blockposition, data.setValue(RespawnAnchorBlock.CHARGE, data.getValue(RespawnAnchorBlock.CHARGE) - 1), 3);
@@ -123,7 +123,7 @@ index a79ba23ecf887ecbb6e095140f019ebb6fd0a6f7..5112edc5e68a386e9bb16ac0ec9d998e
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 71571868090062f02579d50ae483d9f367de5016..e94fc60cd34678d7ce052e70728040f9999a9d00 100644
+index a59a449c0a7b76527f009031aee2d11d6b43cadf..0e6820b173bc01f5e314205fe1e593107beea45d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -1835,4 +1835,77 @@ public class CraftEventFactory {
