@@ -10,12 +10,11 @@ Requirements:
    On Windows you need to run from git bash.
 - You need `jdk` 16+ installed to compile (and `jre` 16+ to run).
 
-If all you want is a paperclip server jar, just run `./gradlew reobfJar`.
+If all you want is a paperclip server jar, just run `./gradlew paperclipJar`.
 
 Otherwise, to setup the `Parchment-API` and `Parchment-Server` repo, just run
 `./gradlew applyPatches` in your project root. Afterwards you can run `./gradlew build`
 to build the respective API and server jars.
-
 
 `./gradlew applyPatches` should initialize the repo such that you can now start modifying and
 creating patches. The folder `Parchment-API` is the API repository and the `Parchment-Server`
@@ -30,9 +29,5 @@ corresponding patch file.
 
 ## License
 
-See https://github.com/PaperMC/paperweight-examples for the license of material used/modified by
-this project.
-
-### Note
-
-The fork is based off of [paperweight-example](https://github.com/PaperMC/paperweight-examples).
+The fork is based off of [paperweight-examples](https://github.com/PaperMC/paperweight-examples).
+See its project page for the license of material used/modified by this project.
