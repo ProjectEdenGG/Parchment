@@ -1,14 +1,23 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Fri, 18 Jun 2021 02:01:12 -0400
+Date: Sat, 19 Jun 2021 23:31:14 -0400
 Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index f111042223f0d7974785c37245bb60b75388163e..a7beb454b194f3e93cc1c5dc6d8ea783eafdf11b 100644
+index f111042223f0d7974785c37245bb60b75388163e..63d62bdc61c50a06d594a6635caeb61ea1445370 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -19,8 +19,8 @@ repositories {
+@@ -5,6 +5,8 @@ import io.papermc.paperweight.util.path
+ import shadow.org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor.PLUGIN_CACHE_FILE
+ import java.text.SimpleDateFormat
+ import java.util.Date
++import java.util.Locale // Parchment
++import java.net.URI // Parchment
+ 
+ plugins {
+     java
+@@ -19,8 +21,8 @@ repositories {
  }
  
  dependencies {
@@ -19,12 +28,48 @@ index f111042223f0d7974785c37245bb60b75388163e..a7beb454b194f3e93cc1c5dc6d8ea783
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -119,7 +119,7 @@ tasks.test {
+@@ -87,6 +89,26 @@ configure<PublishingExtension> {
+         artifact(tasks.reobfJar) {
+             classifier = "reobf"
+         }
++// Parchment start
++        groupId = project.group as String?
++        artifactId = "parchment"
++        version = project.version as String?
++
++        pom {
++            name.set(project.name)
++            description.set("Minecraft server software forked from Paper")
++        }
++    }
++
++    repositories {
++        maven {
++            credentials {
++                username = properties["edenusr"] as String?
++                password = properties["edenpwd"] as String?
++            }
++            url = URI.create("https://sonatype.projecteden.gg/repository/maven-snapshots/")
++        }
++// Parchment end
+     }
+ }
+ 
+@@ -95,7 +117,7 @@ val generatePom = tasks.named<GenerateMavenPom>("generatePomFileForMavenPublicat
+ tasks.shadowJar {
+     // Needed for Paperclip's install to maven local feature
+     from(generatePom) {
+-        into("META-INF/maven/io.papermc.paper/paper")
++        into("META-INF/maven/${project.group}/${project.name.toLowerCase(Locale.ENGLISH)}") // Parchment
+         rename { "pom.xml" }
+     }
+ 
+@@ -119,7 +141,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
 -    group = "paper"
-+    group = "paperweight"
++    group = "paperweight" // Parchment
      standardInput = System.`in`
      workingDir = rootProject.layout.projectDirectory.dir(
          providers.gradleProperty("runWorkDir").forUseAtConfigurationTime().orElse("run")
