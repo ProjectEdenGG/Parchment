@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sun, 20 Jun 2021 19:39:38 -0400
+Subject: [PATCH] Expose MCUtil Executors
+
+
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index e88b47a838dc472ad64271a518ee1789f7be19fa..f7baef9e08c0e6a8cb89f7a2643693ff9115f555 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1716,4 +1716,20 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     @NotNull
+     io.papermc.paper.datapack.DatapackManager getDatapackManager();
+     // Paper end
++
++    // Parchment start
++    /**
++     * Gets the executor which runs tasks on an asynchronous thread pool.
++     * @return async executor
++     */
++    @NotNull
++    java.util.concurrent.Executor getAsyncExecutor();
++
++    /**
++     * Gets the executor which runs tasks on the main thread.
++     * @return main executor
++     */
++    @NotNull
++    java.util.concurrent.Executor getMainExecutor();
++    // Parchment end
+ }

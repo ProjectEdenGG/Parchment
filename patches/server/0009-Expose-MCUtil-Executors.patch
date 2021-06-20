@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sun, 20 Jun 2021 19:39:38 -0400
+Subject: [PATCH] Expose MCUtil Executors
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 5a4eb1eac2bdcba7990f9eb39a8d2ee2852bca21..c298fbda4916fed6e1716af58da00f75e793fe99 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -2518,4 +2518,16 @@ public final class CraftServer implements Server {
+     }
+ 
+     // Paper end
++
++    // Parchment start
++    @Override
++    public java.util.concurrent.Executor getAsyncExecutor() {
++        return net.minecraft.server.MCUtil.asyncExecutor;
++    }
++
++    @Override
++    public java.util.concurrent.Executor getMainExecutor() {
++        return net.minecraft.server.MCUtil.MAIN_EXECUTOR;
++    }
++    // Parchment end
+ }
