@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Sun, 20 Jun 2021 16:50:28 -0400
+Date: Sun, 20 Jun 2021 17:18:07 -0400
 Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 04938bb10c35d2e424043adb7ed8fec2e42bb816..34b0eeb46ea774d4abbf343f198b4aa1d8071aeb 100644
+index 04938bb10c35d2e424043adb7ed8fec2e42bb816..12746377cbe6cf3104de1b041154a92ce8db4547 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -6,6 +6,7 @@ import shadow.org.apache.logging.log4j.core.config.plugins.processor.PluginProce
@@ -62,6 +62,15 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..34b0eeb46ea774d4abbf343f198b4aa1
 +// Parchment end
      }
  }
+ 
+@@ -96,7 +117,7 @@ tasks.shadowJar {
+ 
+     // Needed for Paperclip's install to maven local feature
+     from(generatePom) {
+-        into("META-INF/maven/io.papermc.paper/paper")
++        into("META-INF/maven/${project.group}/${project.name.toLowerCase(Locale.ENGLISH)}") // Parchment
+         rename { "pom.xml" }
+     }
  
 @@ -122,7 +143,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
@@ -148,6 +157,19 @@ index 32f82c60b680180b256edff127e5a6ded42fccf4..cf6ccc83b3c91722125f7f0cd84e18e6
                          //System.err.println("*** Server will start in 20 seconds ***");
                          //Thread.sleep(TimeUnit.SECONDS.toMillis(20));
                          // Paper End
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+index 774556a62eb240da42e84db4502e2ed43495be17..fbba763d909c4636174e79c680745b83c41409bb 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+@@ -11,7 +11,7 @@ public final class Versioning {
+     public static String getBukkitVersion() {
+         String result = "Unknown-Version";
+ 
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/io.papermc.paper/paper-api/pom.properties");
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/me.lexikiq/parchment-api/pom.properties");
+         Properties properties = new Properties();
+ 
+         if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
 index 4d271cae88c16ed2419f896c728fdff612540500..437c53dadd1ea9aed1995bce55779b2bb4f733dc 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
