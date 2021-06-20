@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sun, 20 Jun 2021 18:47:01 -0400
+Subject: [PATCH] Expose NMS ordinals
+
+
+diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
+index c4f81d9a642005e52eb3d88daf6da6caa48a3f0d..b03756881694238103c136380af60ea5fa105700 100644
+--- a/src/main/java/org/bukkit/UnsafeValues.java
++++ b/src/main/java/org/bukkit/UnsafeValues.java
+@@ -196,5 +196,12 @@ public interface UnsafeValues {
+      * @return if the item can be placed
+      */
+     java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(@org.jetbrains.annotations.NotNull ItemStack item, @org.jetbrains.annotations.Nullable me.lexikiq.OptionalHumanEntity player, @org.jetbrains.annotations.NotNull org.bukkit.block.Block block, @org.jetbrains.annotations.NotNull org.bukkit.block.BlockFace face);
++
++    /**
++     * Gets the ID/ordinal of an entity according to NMS.
++     * @param type entity to get
++     * @return entity's ID
++     */
++    int entityID(org.bukkit.entity.EntityType type);
+     // Parchment end
+ }

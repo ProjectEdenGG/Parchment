@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sun, 20 Jun 2021 19:09:16 -0400
+Subject: [PATCH] Add Player#setGameProfile
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index eea377ccf09afd2c175041bdd8226e1009fe6914..b5b6102bd1f841157f258d79d02a7d2ca90ba200 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -1443,6 +1443,12 @@ public abstract class Player extends LivingEntity {
+         return this.gameProfile;
+     }
+ 
++    // Parchment start
++    public void setProfile(GameProfile gameProfile) {
++        this.gameProfile = gameProfile;
++    }
++    // Parchment end
++
+     public Inventory getInventory() {
+         return this.inventory;
+     }

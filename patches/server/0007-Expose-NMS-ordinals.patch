@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Sun, 20 Jun 2021 18:47:01 -0400
+Subject: [PATCH] Expose NMS ordinals
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
+index ac99265aacd4a28490705e3079ed04023fb1c54a..e5f9919797d7ad8c88b92f5d69dddf78cab75785 100644
+--- a/src/main/java/net/minecraft/world/entity/EntityType.java
++++ b/src/main/java/net/minecraft/world/entity/EntityType.java
+@@ -281,11 +281,35 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
+     @Nullable
+     private ResourceLocation lootTable;
+     private final EntityDimensions dimensions;
++    private static int ordinal = 0; // Parchment
++    private static final java.util.Map<EntityType, Integer> ordinals = new java.util.HashMap<>(); // Parchment
+ 
+     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder type) { // CraftBukkit - decompile error
+-        return (EntityType) Registry.register((Registry) Registry.ENTITY_TYPE, id, (Object) type.build(id));
++        // Parchment start
++        EntityType build = type.build(id);
++        ordinals.put(build, ordinal);
++        ordinal += 1;
++        return (EntityType) Registry.register((Registry) Registry.ENTITY_TYPE, id, (Object) build);
+     }
+ 
++    public int ordinal() {
++        return ordinals.get(this);
++    }
++
++    @Override
++    public boolean equals(Object o) {
++        if (this == o) return true;
++        if (o == null || getClass() != o.getClass()) return false;
++        EntityType<?> that = (EntityType<?>) o;
++        return id.equals(that.id);
++    }
++
++    @Override
++    public int hashCode() {
++        return java.util.Objects.hash(id);
++    }
++    // Parchment end
++
+     public static ResourceLocation getKey(EntityType<?> type) {
+         return Registry.ENTITY_TYPE.getKey(type);
+     }
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
+index ade8807ef37b853c59944480bc539bf1c4a64357..f0c331599e629a9c0f4b062cc3a4dc0e1d07962b 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
+@@ -559,6 +559,18 @@ public final class CraftMagicNumbers implements UnsafeValues {
+         final net.minecraft.world.item.context.BlockPlaceContext ctx = context;
+         return future.completeAsync(() -> blockItem.canPlace(ctx, blockState), net.minecraft.server.MCUtil.MAIN_EXECUTOR);
+     }
++
++    @Override
++    public int entityID(org.bukkit.entity.EntityType type) {
++        String name = type.getName();
++        if (name == null) {
++            throw new IllegalArgumentException("Entity name is undefined");
++        }
++        return net.minecraft.world.entity.EntityType.byString(name)
++            .orElseThrow(() -> new IllegalArgumentException("Could not find corresponding NMS entity"))
++            .ordinal();
++    }
++
+     // Parchment end
+ 
+     /**
