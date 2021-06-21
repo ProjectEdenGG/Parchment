@@ -5,10 +5,10 @@ Subject: [PATCH] Add Player#setGameProfile
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index eea377ccf09afd2c175041bdd8226e1009fe6914..b5b6102bd1f841157f258d79d02a7d2ca90ba200 100644
+index 855a25c1a788039ac0d0ac340fd2b0e0064ce816..c3283f471ffde214b6d771a2df554697e57ba124 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1443,6 +1443,12 @@ public abstract class Player extends LivingEntity {
+@@ -1448,6 +1448,12 @@ public abstract class Player extends LivingEntity {
          return this.gameProfile;
      }
  
