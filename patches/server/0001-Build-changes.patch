@@ -5,10 +5,10 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 04938bb10c35d2e424043adb7ed8fec2e42bb816..12746377cbe6cf3104de1b041154a92ce8db4547 100644
+index f427c6f5adf20f9e1b1fa4ab56041506d8240c92..54731cdd58b4271c897c42449ea08096fb2fbd09 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -6,6 +6,7 @@ import shadow.org.apache.logging.log4j.core.config.plugins.processor.PluginProce
+@@ -10,6 +10,7 @@ import java.nio.file.Files
  import java.text.SimpleDateFormat
  import java.util.Date
  import java.util.Locale
@@ -16,7 +16,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..12746377cbe6cf3104de1b041154a92c
  
  plugins {
      java
-@@ -18,8 +19,8 @@ repositories {
+@@ -30,8 +31,8 @@ repositories {
  }
  
  dependencies {
@@ -27,7 +27,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..12746377cbe6cf3104de1b041154a92c
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -66,7 +67,7 @@ tasks.jar {
+@@ -80,7 +81,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -36,7 +36,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..12746377cbe6cf3104de1b041154a92c
              "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -86,6 +87,26 @@ publishing {
+@@ -100,6 +101,26 @@ publishing {
              classifier = null
          }
          artifact(tasks.shadowJar)
@@ -63,7 +63,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..12746377cbe6cf3104de1b041154a92c
      }
  }
  
-@@ -96,7 +117,7 @@ tasks.shadowJar {
+@@ -110,7 +131,7 @@ tasks.shadowJar {
  
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
@@ -72,7 +72,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..12746377cbe6cf3104de1b041154a92c
          rename { "pom.xml" }
      }
  
-@@ -122,7 +143,7 @@ tasks.test {
+@@ -174,7 +195,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -132,7 +132,7 @@ index 3bf39c2d2aa3fc4fd0815dacea57e4899ec0da0e..f891a5c0e6547913e2b46987e3722673
  
      public SystemReport fillSystemReport(SystemReport systemreport) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 3948fd10d8bd0994d97dfd5f26fb0dc5f0b5ac8e..5a4eb1eac2bdcba7990f9eb39a8d2ee2852bca21 100644
+index 0bcb3b4f156221521e4a2289196a7bee0767f494..7368fe3ea2a28cdc6f1b743e72d1654327ad5884 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
