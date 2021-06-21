@@ -1,19 +1,24 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Sun, 20 Jun 2021 18:47:01 -0400
-Subject: [PATCH] Expose NMS ordinals
+Date: Sun, 20 Jun 2021 23:15:44 -0400
+Subject: [PATCH] Expose EntityType Ordinals
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index ac99265aacd4a28490705e3079ed04023fb1c54a..e5f9919797d7ad8c88b92f5d69dddf78cab75785 100644
+index ac99265aacd4a28490705e3079ed04023fb1c54a..598b28021d5dc270dc018f5178c0f190aa74750e 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -281,11 +281,35 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
-     @Nullable
-     private ResourceLocation lootTable;
-     private final EntityDimensions dimensions;
+@@ -149,6 +149,8 @@ import org.apache.logging.log4j.Logger;
+ 
+ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
+ 
 +    private static int ordinal = 0; // Parchment
 +    private static final java.util.Map<EntityType, Integer> ordinals = new java.util.HashMap<>(); // Parchment
+     private static final Logger LOGGER = LogManager.getLogger();
+     public static final String ENTITY_TAG = "EntityTag";
+     private static final float MAGIC_HORSE_WIDTH = 1.3964844F;
+@@ -283,9 +285,31 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
+     private final EntityDimensions dimensions;
  
      private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder type) { // CraftBukkit - decompile error
 -        return (EntityType) Registry.register((Registry) Registry.ENTITY_TYPE, id, (Object) type.build(id));
