@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Fri, 18 Jun 2021 14:12:56 -0400
+Date: Sun, 20 Jun 2021 20:24:14 -0400
 Subject: [PATCH] Add Getter interfaces
 
 Creates new interfaces for objects that have a reference to a player, offlineplayer, location, etc.
@@ -723,8 +723,29 @@ index a9e455c5b3bbe4edbdb71f86f5c6eebc2f605547..a1a82de1631bf70534a5f29f4c3becc4
  
      /**
       * Gets the entity's current position
+diff --git a/src/main/java/org/bukkit/entity/HumanEntity.java b/src/main/java/org/bukkit/entity/HumanEntity.java
+index 0ad7a3d4d40d58eb950e34668f9554bb73f934fb..0a5aa083d9a69403c76ab280254d259aac116151 100644
+--- a/src/main/java/org/bukkit/entity/HumanEntity.java
++++ b/src/main/java/org/bukkit/entity/HumanEntity.java
+@@ -19,7 +19,15 @@ import org.jetbrains.annotations.Nullable;
+ /**
+  * Represents a human entity, such as an NPC or a player
+  */
+-public interface HumanEntity extends LivingEntity, AnimalTamer, InventoryHolder {
++// Parchment start
++public interface HumanEntity extends LivingEntity, AnimalTamer, InventoryHolder, me.lexikiq.HasHumanEntity {
++
++    @NotNull
++    @Override
++    default HumanEntity getPlayer() {
++        return this;
++    }
++// Parchment end
+ 
+     /**
+      * Returns the name of this player
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index da83b4cbed0be6f693c7cbb1cc032356f12d7883..081d372190a176b62999c4e28636370d5a9129e4 100644
+index da83b4cbed0be6f693c7cbb1cc032356f12d7883..8cc6f8b22eb338af923a206f33d637a989ee35c3 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
@@ -736,6 +757,23 @@ index da83b4cbed0be6f693c7cbb1cc032356f12d7883..081d372190a176b62999c4e28636370d
  
      // Paper start
      @Override
+@@ -50,6 +50,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+         return net.kyori.adventure.identity.Identity.identity(this.getUniqueId());
+     }
+ 
++    // Parchment start - fix defaults
++    /**
++     * Returns this player object.
++     *
++     * @return this player
++     */
++    @Override
++    @NotNull Player getPlayer();
++    // Parchment end
++
+     /**
+      * Gets the "friendly" name to display of this player.
+      *
 diff --git a/src/main/java/org/bukkit/event/block/BlockBreakEvent.java b/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
 index c05cd9cadcff827a2eb236cf955bc898fa5e8b52..cc3c009be9756a5fcc8e579c1854721edc4a650f 100644
 --- a/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
