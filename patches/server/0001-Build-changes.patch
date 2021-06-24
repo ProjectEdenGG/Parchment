@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Sun, 20 Jun 2021 17:18:07 -0400
+Date: Thu, 24 Jun 2021 02:16:25 -0400
 Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index f427c6f5adf20f9e1b1fa4ab56041506d8240c92..54731cdd58b4271c897c42449ea08096fb2fbd09 100644
+index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c4ec5a42e 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -10,6 +10,7 @@ import java.nio.file.Files
@@ -27,20 +27,20 @@ index f427c6f5adf20f9e1b1fa4ab56041506d8240c92..54731cdd58b4271c897c42449ea08096
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -80,7 +81,7 @@ tasks.jar {
+@@ -82,7 +83,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
--            "Implementation-Version" to "git-Paper-\"$gitHash\"",
-+            "Implementation-Version" to "git-Parchment-\"$gitHash\"",
+-            "Implementation-Version" to "git-Paper-$implementationVersion",
++            "Implementation-Version" to "git-Parchment-$implementationVersion", // Parchment
              "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -100,6 +101,26 @@ publishing {
+@@ -104,6 +105,26 @@ publishing {
              classifier = null
          }
          artifact(tasks.shadowJar)
-+// Parchment start
++    // Parchment start
 +        groupId = project.group as String?
 +        artifactId = "parchment"
 +        version = project.version as String?
@@ -59,11 +59,11 @@ index f427c6f5adf20f9e1b1fa4ab56041506d8240c92..54731cdd58b4271c897c42449ea08096
 +            }
 +            url = URI.create("https://sonatype.projecteden.gg/repository/maven-snapshots/")
 +        }
-+// Parchment end
++    // Parchment end
      }
  }
  
-@@ -110,7 +131,7 @@ tasks.shadowJar {
+@@ -114,7 +135,7 @@ tasks.shadowJar {
  
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
@@ -72,7 +72,7 @@ index f427c6f5adf20f9e1b1fa4ab56041506d8240c92..54731cdd58b4271c897c42449ea08096
          rename { "pom.xml" }
      }
  
-@@ -174,7 +195,7 @@ tasks.test {
+@@ -178,7 +199,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -119,7 +119,7 @@ index 580bae0d414d371a07a6bfeefc41fdd989dc0083..e744a4c6de5beae4161d855da6dcab93
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 3bf39c2d2aa3fc4fd0815dacea57e4899ec0da0e..f891a5c0e6547913e2b46987e37226731630974d 100644
+index a24bab6095b85fe208bb0f467b267a9d0680c6fc..24f9cc4e117916d872a8410202cef771992a5c62 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1649,7 +1649,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -132,7 +132,7 @@ index 3bf39c2d2aa3fc4fd0815dacea57e4899ec0da0e..f891a5c0e6547913e2b46987e3722673
  
      public SystemReport fillSystemReport(SystemReport systemreport) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0bcb3b4f156221521e4a2289196a7bee0767f494..7368fe3ea2a28cdc6f1b743e72d1654327ad5884 100644
+index 746b4d6ba5d2f0c38fd562e859d40697be361ef4..99e2e040157a333a63ff875ff2670e3134ac397c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
@@ -171,7 +171,7 @@ index 774556a62eb240da42e84db4502e2ed43495be17..fbba763d909c4636174e79c680745b83
  
          if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 4d271cae88c16ed2419f896c728fdff612540500..437c53dadd1ea9aed1995bce55779b2bb4f733dc 100644
+index dcfbe77bdb25d9c58ffb7b75c48bdb580bc0de47..ace8cde0cb0d44e0df9d57ddabc664bf4f79802f 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -91,7 +91,7 @@ public class WatchdogThread extends Thread
