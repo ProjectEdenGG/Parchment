@@ -1,0 +1,60 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Thu, 1 Jul 2021 21:36:03 -0400
+Subject: [PATCH] Add BlockDropResourcesEvent
+
+Adds an event which allows plugin developers
+to easily get the items being dropped by any
+block instead of only blocks broken by players.
+
+diff --git a/src/main/java/me/lexikiq/event/block/BlockDropResourcesEvent.java b/src/main/java/me/lexikiq/event/block/BlockDropResourcesEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..5ac4994b3e530f7e7636dddfdf24dec12e74ebf7
+--- /dev/null
++++ b/src/main/java/me/lexikiq/event/block/BlockDropResourcesEvent.java
+@@ -0,0 +1,45 @@
++package me.lexikiq.event.block;
++
++import org.bukkit.block.Block;
++import org.bukkit.event.HandlerList;
++import org.bukkit.event.block.BlockEvent;
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.List;
++
++/**
++ * Called when a block drops resources in the world. The block will exist in the world at the time.
++ * <p>
++ * This event fires in between {@link org.bukkit.event.block.BlockBreakEvent BlockBreakEvent}
++ * and {@link org.bukkit.event.block.BlockDropItemEvent BlockDropItemEvent}.
++ */
++public class BlockDropResourcesEvent extends BlockEvent {
++    private static final HandlerList handlers = new HandlerList();
++    private final @NotNull List<ItemStack> resources;
++
++    public BlockDropResourcesEvent(@NotNull Block block, @NotNull List<ItemStack> resources) {
++        super(block);
++        this.resources = resources;
++    }
++
++    /**
++     * Gets the resources being dropped by the block. This list is guaranteed to be mutable
++     * and may be safely altered.
++     * @return mutable list of items
++     */
++    public @NotNull List<ItemStack> getResources() {
++        return resources;
++    }
++
++    @NotNull
++    @Override
++    public HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++}

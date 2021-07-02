@@ -1,0 +1,65 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Thu, 1 Jul 2021 21:36:03 -0400
+Subject: [PATCH] Add BlockDropResourcesEvent
+
+Adds an event which allows plugin developers
+to easily get the items being dropped by any
+block instead of only blocks broken by players.
+
+diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
+index 878cdfc49253e7916d038495f79fec7cce75aa50..18e93574d3634dc6e48ca224ec6b72c745f04a86 100644
+--- a/src/main/java/net/minecraft/world/level/block/Block.java
++++ b/src/main/java/net/minecraft/world/level/block/Block.java
+@@ -306,7 +306,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+         ServerLevel worldserver = lootContext.getLevel();
+         BlockPos blockposition = new BlockPos((Vec3) lootContext.getParameter(LootContextParams.ORIGIN));
+ 
+-        state.getDrops(lootContext).forEach((itemstack) -> {
++        org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(worldserver, blockposition, state.getDrops(lootContext)).forEach((itemstack) -> { // Parchment
+             Block.popResource((Level) worldserver, blockposition, itemstack);
+         });
+         state.spawnAfterBreak(worldserver, blockposition, ItemStack.EMPTY);
+@@ -314,7 +314,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+ 
+     public static void dropResources(BlockState state, Level world, BlockPos pos) {
+         if (world instanceof ServerLevel) {
+-            Block.getDrops(state, (ServerLevel) world, pos, (BlockEntity) null).forEach((itemstack) -> {
++            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, (BlockEntity) null)).forEach((itemstack) -> { // Parchment
+                 Block.popResource(world, pos, itemstack);
+             });
+             state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY);
+@@ -324,7 +324,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+ 
+     public static void dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity) {
+         if (world instanceof ServerLevel) {
+-            Block.getDrops(state, (ServerLevel) world, pos, blockEntity).forEach((itemstack) -> {
++            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, blockEntity)).forEach((itemstack) -> { // Parchment
+                 Block.popResource((Level) ((ServerLevel) world), pos, itemstack);
+             });
+             state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY);
+@@ -334,7 +334,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+ 
+     public static void dropResources(BlockState state, Level world, BlockPos pos, @Nullable BlockEntity blockEntity, Entity entity, ItemStack stack) {
+         if (world instanceof ServerLevel) {
+-            Block.getDrops(state, (ServerLevel) world, pos, blockEntity, entity, stack).forEach((itemstack1) -> {
++            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, blockEntity, entity, stack)).forEach((itemstack1) -> { // Parchment
+                 Block.popResource(world, pos, itemstack1);
+             });
+             state.spawnAfterBreak((ServerLevel) world, pos, stack);
+diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+index 5f2124a463eb4bd7d34091ed799d038926cfd763..5b03b806a1670de23f049cc219afda8afffaa92f 100644
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -1907,5 +1907,11 @@ public class CraftEventFactory {
+         final double posZ = pos.getZ();
+         playSoundEvent(event, packet -> playerList.broadcast(player, posX, posY, posZ, radius, world, packet));
+     }
++
++    public static List<ItemStack> callBlockDropResourcesEvent(LevelAccessor world, BlockPos pos, List<ItemStack> items) {
++        me.lexikiq.event.block.BlockDropResourcesEvent event = new me.lexikiq.event.block.BlockDropResourcesEvent(CraftBlock.at(world, pos), items.stream().map(CraftItemStack::asBukkitCopy).collect(Collectors.toCollection(ArrayList::new)));
++        event.callEvent();
++        return event.getResources().stream().map(CraftItemStack::asNMSCopy).collect(Collectors.toList());
++    }
+     // Parchment end
+ }
