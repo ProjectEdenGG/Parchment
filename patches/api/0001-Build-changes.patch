@@ -1,14 +1,20 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Fri, 2 Jul 2021 01:33:12 -0400
+Date: Sun, 20 Jun 2021 17:18:07 -0400
 Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index e142072f31a41b25ac637970f79e71ab70c2f28c..3a2e308a5897cd99257ca9e4e836f4eced881246 100644
+index e142072f31a41b25ac637970f79e71ab70c2f28c..2d3160cc96fa3783ec9863ff3f7325a90291ce91 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -27,6 +27,7 @@ dependencies {
+@@ -1,4 +1,5 @@
+ import java.util.Locale
++import java.net.URI
+ 
+ plugins {
+     `java-library`
+@@ -27,6 +28,7 @@ dependencies {
      api("org.ow2.asm:asm:9.0")
      api("org.ow2.asm:asm-commons:9.0")
      api("org.apache.logging.log4j:log4j-api:2.14.1") // Paper
@@ -16,3 +22,30 @@ index e142072f31a41b25ac637970f79e71ab70c2f28c..3a2e308a5897cd99257ca9e4e836f4ec
  
      compileOnly("org.apache.maven:maven-resolver-provider:3.8.1")
      compileOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.0")
+@@ -46,6 +48,26 @@ configure<PublishingExtension> {
+     publications.create<MavenPublication>("maven") {
+         artifactId = project.name.toLowerCase(Locale.ENGLISH)
+         from(components["java"])
++// Parchment start
++        groupId = project.group as String?
++        artifactId = project.name.toLowerCase(Locale.ENGLISH)
++        version = project.version as String?
++
++        pom {
++            name.set(project.name)
++            description.set("Minecraft server software forked from Paper")
++        }
++    }
++
++    repositories {
++        maven {
++            credentials {
++                username = properties["edenusr"] as String?
++                password = properties["edenpwd"] as String?
++            }
++            url = URI.create("https://sonatype.projecteden.gg/repository/maven-snapshots/")
++        }
++// Parchment end
+     }
+ }
+ 
