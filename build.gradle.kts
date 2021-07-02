@@ -25,6 +25,7 @@ dependencies {
 
 subprojects {
     apply(plugin = "java")
+    apply(plugin = "maven-publish")
 
     java {
         toolchain {
@@ -35,6 +36,19 @@ subprojects {
     tasks.withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8"
         options.release.set(16)
+    }
+
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                name = "projectEdenSnapshots"
+                url = uri("https://sonatype.projecteden.gg/repository/maven-snapshots/")
+                credentials {
+                    username = properties["edenusr"] as String?
+                    password = properties["edenpwd"] as String?
+                }
+            }
+        }
     }
 
     repositories {

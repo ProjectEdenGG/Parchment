@@ -1,22 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: lexikiq <noellekiq@gmail.com>
-Date: Thu, 24 Jun 2021 02:16:25 -0400
+Date: Fri, 2 Jul 2021 01:33:12 -0400
 Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c4ec5a42e 100644
+index 5540da58e66f83b283863d3158a9b4ab5ba636db..58cd2219db2a770dddced9af8086f465eb9d2ea1 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -10,6 +10,7 @@ import java.nio.file.Files
- import java.text.SimpleDateFormat
- import java.util.Date
- import java.util.Locale
-+import java.net.URI // Parchment
- 
- plugins {
-     java
-@@ -30,8 +31,8 @@ repositories {
+@@ -30,8 +30,8 @@ repositories {
  }
  
  dependencies {
@@ -27,7 +19,7 @@ index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -82,7 +83,7 @@ tasks.jar {
+@@ -82,7 +82,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -36,34 +28,7 @@ index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c
              "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -104,6 +105,26 @@ publishing {
-             classifier = null
-         }
-         artifact(tasks.shadowJar)
-+    // Parchment start
-+        groupId = project.group as String?
-+        artifactId = "parchment"
-+        version = project.version as String?
-+
-+        pom {
-+            name.set(project.name)
-+            description.set("Minecraft server software forked from Paper")
-+        }
-+    }
-+
-+    repositories {
-+        maven {
-+            credentials {
-+                username = properties["edenusr"] as String?
-+                password = properties["edenpwd"] as String?
-+            }
-+            url = URI.create("https://sonatype.projecteden.gg/repository/maven-snapshots/")
-+        }
-+    // Parchment end
-     }
- }
- 
-@@ -114,7 +135,7 @@ tasks.shadowJar {
+@@ -114,7 +114,7 @@ tasks.shadowJar {
  
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
@@ -72,7 +37,7 @@ index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c
          rename { "pom.xml" }
      }
  
-@@ -178,7 +199,7 @@ tasks.test {
+@@ -178,7 +178,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -119,7 +84,7 @@ index 580bae0d414d371a07a6bfeefc41fdd989dc0083..e744a4c6de5beae4161d855da6dcab93
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a24bab6095b85fe208bb0f467b267a9d0680c6fc..24f9cc4e117916d872a8410202cef771992a5c62 100644
+index 7682bd72c3932a9b20f14e552711d74f70b969b1..7790687dc94ba6c38ecd919fcdfa882856860cda 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1649,7 +1649,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -132,7 +97,7 @@ index a24bab6095b85fe208bb0f467b267a9d0680c6fc..24f9cc4e117916d872a8410202cef771
  
      public SystemReport fillSystemReport(SystemReport systemreport) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 746b4d6ba5d2f0c38fd562e859d40697be361ef4..99e2e040157a333a63ff875ff2670e3134ac397c 100644
+index 2ba3b01092cef23bcc958244992ef44103bc7e74..f8f34e40e9090d1fa9eeddca46f44746b6c5c185 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
@@ -145,7 +110,7 @@ index 746b4d6ba5d2f0c38fd562e859d40697be361ef4..99e2e040157a333a63ff875ff2670e31
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 32f82c60b680180b256edff127e5a6ded42fccf4..cf6ccc83b3c91722125f7f0cd84e18e6181679fe 100644
+index c3c7b34ceb1b8f0ed042b29924c633fa7519dc30..31b56b031e57684d9f0849390badf9057fbf4ffa 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -269,7 +269,7 @@ public class Main {
