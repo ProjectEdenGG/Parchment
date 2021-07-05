@@ -5,7 +5,7 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index b3312fa2fd218ffcfaa61d98584003c97fbda4ce..1938251c9214932837e0bf0937fb31465d7c0ed3 100644
+index 8154ca39ec7e2e8559cd125d73a59b8d2b00714c..fe1697874af3d64c0fb143b742375750047b8888 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -55,8 +55,8 @@ import net.minecraft.network.protocol.game.ClientboundExplodePacket;
@@ -35,7 +35,7 @@ index b3312fa2fd218ffcfaa61d98584003c97fbda4ce..1938251c9214932837e0bf0937fb3146
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 935b22199ebdf84db591f8442e0506d8fcc92e02..ad7ed7b967855f6b1702760fe96f33cf776c773d 100644
+index a0acaac510aa2206a5c58f2b7aafdbc2bdf7a3dd..9e98937b653b0b95b9d0b171d6d5aec7e93992e6 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -67,7 +67,7 @@ import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
@@ -47,7 +47,7 @@ index 935b22199ebdf84db591f8442e0506d8fcc92e02..ad7ed7b967855f6b1702760fe96f33cf
  import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
  import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
  import net.minecraft.resources.ResourceKey;
-@@ -2136,7 +2136,7 @@ public class ServerPlayer extends Player {
+@@ -2141,7 +2141,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -57,7 +57,7 @@ index 935b22199ebdf84db591f8442e0506d8fcc92e02..ad7ed7b967855f6b1702760fe96f33cf
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a6ecbb7eb1df7923d58366327e0f00512a3a1677..43dc36e6da0b044279021ef48bed29a9d4f59bbe 100644
+index b46e64a386d256d30eac330c463c71396452563d..45c4ec17aad79e0b05e8b83b9c7c55ac8d550f19 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -58,7 +58,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
