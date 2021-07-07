@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c4ec5a42e 100644
+index 4605634d1e0d2c6592d4152e697680e078380868..b0c652f2cb1b9f860a685a126864d72e44856654 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -10,6 +10,7 @@ import java.nio.file.Files
@@ -27,7 +27,7 @@ index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -82,7 +83,7 @@ tasks.jar {
+@@ -80,7 +81,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -36,7 +36,7 @@ index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c
              "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -104,6 +105,26 @@ publishing {
+@@ -102,6 +103,26 @@ publishing {
              classifier = null
          }
          artifact(tasks.shadowJar)
@@ -63,7 +63,7 @@ index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c
      }
  }
  
-@@ -114,7 +135,7 @@ tasks.shadowJar {
+@@ -112,7 +133,7 @@ tasks.shadowJar {
  
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
@@ -72,7 +72,7 @@ index 39beb0331282b297f4f3857560d24ce6a616210d..b18b93e4f99005885f70f01d8a17487c
          rename { "pom.xml" }
      }
  
-@@ -178,7 +199,7 @@ tasks.test {
+@@ -176,7 +197,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -119,10 +119,10 @@ index 580bae0d414d371a07a6bfeefc41fdd989dc0083..e744a4c6de5beae4161d855da6dcab93
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a24bab6095b85fe208bb0f467b267a9d0680c6fc..24f9cc4e117916d872a8410202cef771992a5c62 100644
+index 3dded5c491ace6b073a7bc3178976bd70f0b9393..2373f056cbe868491bafa02e3b711a63f2e428aa 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1649,7 +1649,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1651,7 +1651,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -130,9 +130,9 @@ index a24bab6095b85fe208bb0f467b267a9d0680c6fc..24f9cc4e117916d872a8410202cef771
 +        return "Parchment"; //Parchment - Parchment > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
      }
  
-     public SystemReport fillSystemReport(SystemReport systemreport) {
+     public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 746b4d6ba5d2f0c38fd562e859d40697be361ef4..99e2e040157a333a63ff875ff2670e3134ac397c 100644
+index c79b193ad822b8c246f24a87cd418892bc18ff5a..190d673c65aad82c044a4291a637af723e08267e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
@@ -145,7 +145,7 @@ index 746b4d6ba5d2f0c38fd562e859d40697be361ef4..99e2e040157a333a63ff875ff2670e31
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 32f82c60b680180b256edff127e5a6ded42fccf4..cf6ccc83b3c91722125f7f0cd84e18e6181679fe 100644
+index c3c7b34ceb1b8f0ed042b29924c633fa7519dc30..31b56b031e57684d9f0849390badf9057fbf4ffa 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -269,7 +269,7 @@ public class Main {

@@ -5,10 +5,10 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index e142072f31a41b25ac637970f79e71ab70c2f28c..3a2e308a5897cd99257ca9e4e836f4eced881246 100644
+index 7ad3e5153718f6d4ce8293a9790bc3c1158aeb8e..14caef3d68aab390de482e9ea33a91641492279b 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -27,6 +27,7 @@ dependencies {
+@@ -29,6 +29,7 @@ dependencies {
      api("org.ow2.asm:asm:9.0")
      api("org.ow2.asm:asm-commons:9.0")
      api("org.apache.logging.log4j:log4j-api:2.14.1") // Paper

@@ -5,7 +5,7 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8154ca39ec7e2e8559cd125d73a59b8d2b00714c..fe1697874af3d64c0fb143b742375750047b8888 100644
+index 6ecf60c69a27f8db1c245db15449bba581c3dbf5..07207bc7aa610da2151fceaeddcf00f4464fd41d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -55,8 +55,8 @@ import net.minecraft.network.protocol.game.ClientboundExplodePacket;
@@ -35,7 +35,7 @@ index 8154ca39ec7e2e8559cd125d73a59b8d2b00714c..fe1697874af3d64c0fb143b742375750
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index a0acaac510aa2206a5c58f2b7aafdbc2bdf7a3dd..9e98937b653b0b95b9d0b171d6d5aec7e93992e6 100644
+index 8e2bccc3a9ddb17a4978596056189eb776976338..26215724174178056b915fc4ce927abae8a2b8d5 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -67,7 +67,7 @@ import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
@@ -47,7 +47,7 @@ index a0acaac510aa2206a5c58f2b7aafdbc2bdf7a3dd..9e98937b653b0b95b9d0b171d6d5aec7
  import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
  import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
  import net.minecraft.resources.ResourceKey;
-@@ -2141,7 +2141,7 @@ public class ServerPlayer extends Player {
+@@ -2137,7 +2137,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -57,10 +57,10 @@ index a0acaac510aa2206a5c58f2b7aafdbc2bdf7a3dd..9e98937b653b0b95b9d0b171d6d5aec7
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index b46e64a386d256d30eac330c463c71396452563d..45c4ec17aad79e0b05e8b83b9c7c55ac8d550f19 100644
+index 65657c009f6d5a5d5740e80f912a5893333c7085..13a32945865a5c2143cdfdd16859a95dd8eb0014 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -58,7 +58,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
+@@ -60,7 +60,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
  import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
  import net.minecraft.network.protocol.game.ClientboundSetPlayerTeamPacket;
  import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
@@ -69,7 +69,7 @@ index b46e64a386d256d30eac330c463c71396452563d..45c4ec17aad79e0b05e8b83b9c7c55ac
  import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
  import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
  import net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket;
-@@ -957,7 +957,7 @@ public abstract class PlayerList {
+@@ -959,7 +959,7 @@ public abstract class PlayerList {
          if (flag2 && !isLocAltered) {
              BlockState data = worldserver1.getBlockState(blockposition);
              worldserver1.setBlock(blockposition, data.setValue(RespawnAnchorBlock.CHARGE, data.getValue(RespawnAnchorBlock.CHARGE) - 1), 3);
@@ -79,7 +79,7 @@ index b46e64a386d256d30eac330c463c71396452563d..45c4ec17aad79e0b05e8b83b9c7c55ac
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 1bccd932851045c374e3092d33dc77fab680d0db..855a25c1a788039ac0d0ac340fd2b0e0064ce816 100644
+index 19980b2d627eb3cacf8d0c3e6785ad2206910fbc..f1b7ff2b4e08bac81d742691003a3c4d7549e01b 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -30,7 +30,7 @@ import net.minecraft.network.chat.MutableComponent;
@@ -91,7 +91,7 @@ index 1bccd932851045c374e3092d33dc77fab680d0db..855a25c1a788039ac0d0ac340fd2b0e0
  import net.minecraft.network.syncher.EntityDataAccessor;
  import net.minecraft.network.syncher.EntityDataSerializers;
  import net.minecraft.network.syncher.SynchedEntityData;
-@@ -1829,7 +1829,7 @@ public abstract class Player extends LivingEntity {
+@@ -1825,7 +1825,7 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
          fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {
@@ -123,10 +123,10 @@ index a79ba23ecf887ecbb6e095140f019ebb6fd0a6f7..5112edc5e68a386e9bb16ac0ec9d998e
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index a59a449c0a7b76527f009031aee2d11d6b43cadf..0e6820b173bc01f5e314205fe1e593107beea45d 100644
+index 9e08668ecf224dae91405da994cc7d346499a969..bfe1fa69aa1cea111421b1664e20128e0e8a96a3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1835,4 +1835,77 @@ public class CraftEventFactory {
+@@ -1836,4 +1836,77 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end
