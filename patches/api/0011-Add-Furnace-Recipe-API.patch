@@ -1,0 +1,114 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Tue, 13 Jul 2021 17:27:45 -0400
+Subject: [PATCH] Add Furnace Recipe API
+
+Temporary API to get the result of smelting an item in a (type of) furnace.
+
+Will eventually (hopefully) be replaced by a more extensive Paper PR with support for all recipes.
+
+diff --git a/src/main/java/me/lexikiq/inventory/RecipeType.java b/src/main/java/me/lexikiq/inventory/RecipeType.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..f8f707483bf08142cdaf6c6ff9b1241832e9134f
+--- /dev/null
++++ b/src/main/java/me/lexikiq/inventory/RecipeType.java
+@@ -0,0 +1,50 @@
++package me.lexikiq.inventory;
++
++/**
++ * A type of crafting recipe.
++ */
++public enum RecipeType {
++    /**
++     * Recipes crafted in the standard crafting table.
++     */
++    CRAFTING(false),
++    /**
++     * Recipes for smelting an item inside of a furnace.
++     */
++    SMELTING(true),
++    /**
++     * Recipes for smelting an item inside of a blasting furnace.
++     */
++    BLASTING(true),
++    /**
++     * Recipes for smelting an item inside of a smoker.
++     */
++    SMOKING(true),
++    /**
++     * Recipes for cooking an item on a campfire.
++     */
++    CAMPFIRE_COOKING(true),
++    /**
++     * Recipes for carving stones in a stonecutter.
++     */
++    STONECUTTING(true),
++    /**
++     * Recipes for smithing an item in a smithing table.
++     */
++    SMITHING(false),
++    ;
++
++    private final boolean singleInput;
++
++    RecipeType(boolean singleInput) {
++        this.singleInput = singleInput;
++    }
++
++    /**
++     * Determines if the recipe only accepts a single item for input.
++     * @return true if the recipe only accepts a single item for input
++     */
++    public boolean isSingleInput() {
++        return singleInput;
++    }
++}
+diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
+index 8ae9198ba7fdb006dc420504a984627add20dbb5..a01e98c1128bd5e21a9b6e1eee1ab6f862ea66b5 100644
+--- a/src/main/java/org/bukkit/World.java
++++ b/src/main/java/org/bukkit/World.java
+@@ -26,7 +26,6 @@ import org.bukkit.entity.LightningStrike;
+ import org.bukkit.entity.LivingEntity;
+ import org.bukkit.entity.Player;
+ import org.bukkit.generator.BlockPopulator;
+-import org.bukkit.generator.ChunkGenerator;
+ import org.bukkit.inventory.ItemStack;
+ import org.bukkit.material.MaterialData;
+ import org.bukkit.metadata.Metadatable;
+@@ -3706,6 +3705,36 @@ public interface World extends PluginMessageRecipient, Metadatable, net.kyori.ad
+     @Nullable
+     public DragonBattle getEnderDragonBattle();
+ 
++    // Parchment start
++    /**
++     * Returns the item that will result from smelting the input item, if applicable.
++     *
++     * @param toSmelt the item to simulate smelting
++     * @return the resulting item, or null
++     */
++    @Nullable
++    default ItemStack smeltItem(@NotNull ItemStack toSmelt) {
++        return smeltItem(toSmelt, me.lexikiq.inventory.RecipeType.SMELTING);
++    }
++
++    /**
++     * Returns the item that will result from smelting the input item, if applicable.
++     * <p>
++     * Applicable values for {@code recipeType} are
++     * {@link me.lexikiq.inventory.RecipeType#SMELTING SMELTING},
++     * {@link me.lexikiq.inventory.RecipeType#BLASTING BLASTING},
++     * {@link me.lexikiq.inventory.RecipeType#SMOKING SMOKING},
++     * and {@link me.lexikiq.inventory.RecipeType#CAMPFIRE_COOKING CAMPFIRE_COOKING}.
++     * An {@link IllegalArgumentException} will be thrown if another value is supplied.
++     *
++     * @param toSmelt the item to simulate smelting
++     * @param recipeType type of furnace to simulate smelting
++     * @return the resulting item, or null
++     */
++    @Nullable
++    ItemStack smeltItem(@NotNull ItemStack toSmelt, me.lexikiq.inventory.@NotNull RecipeType recipeType);
++    // Parchment end
++
+     /**
+      * Represents various map environment types that a world may be
+      */

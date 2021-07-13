@@ -1,0 +1,256 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: lexikiq <noellekiq@gmail.com>
+Date: Tue, 13 Jul 2021 17:27:45 -0400
+Subject: [PATCH] Add Furnace Recipe API
+
+Temporary API to get the result of smelting an item in a (type of) furnace.
+
+Will eventually (hopefully) be replaced by a more extensive Paper PR with support for all recipes.
+
+diff --git a/src/main/java/me/lexikiq/inventory/CraftRecipeType.java b/src/main/java/me/lexikiq/inventory/CraftRecipeType.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..6a28791b12c309661e79e0e6a8f7a9ec8fd706a3
+--- /dev/null
++++ b/src/main/java/me/lexikiq/inventory/CraftRecipeType.java
+@@ -0,0 +1,44 @@
++package me.lexikiq.inventory;
++
++import net.minecraft.world.item.crafting.AbstractCookingRecipe;
++
++public class CraftRecipeType {
++    public static net.minecraft.world.item.crafting.RecipeType asNMS(RecipeType recipeType) {
++        return switch (recipeType) {
++            case CRAFTING -> net.minecraft.world.item.crafting.RecipeType.CRAFTING;
++            case SMELTING -> net.minecraft.world.item.crafting.RecipeType.SMELTING;
++            case BLASTING -> net.minecraft.world.item.crafting.RecipeType.BLASTING;
++            case SMOKING -> net.minecraft.world.item.crafting.RecipeType.SMOKING;
++            case CAMPFIRE_COOKING -> net.minecraft.world.item.crafting.RecipeType.CAMPFIRE_COOKING;
++            case STONECUTTING -> net.minecraft.world.item.crafting.RecipeType.STONECUTTING;
++            case SMITHING -> net.minecraft.world.item.crafting.RecipeType.SMITHING;
++        };
++    }
++
++    public static RecipeType asBukkit(net.minecraft.world.item.crafting.RecipeType recipeType) {
++        if (recipeType == net.minecraft.world.item.crafting.RecipeType.CRAFTING) {
++            return RecipeType.CRAFTING;
++        } else if (recipeType == net.minecraft.world.item.crafting.RecipeType.SMELTING) {
++            return RecipeType.SMELTING;
++        } else if (recipeType == net.minecraft.world.item.crafting.RecipeType.BLASTING) {
++            return RecipeType.BLASTING;
++        } else if (recipeType == net.minecraft.world.item.crafting.RecipeType.SMOKING) {
++            return RecipeType.SMOKING;
++        } else if (recipeType == net.minecraft.world.item.crafting.RecipeType.CAMPFIRE_COOKING) {
++            return RecipeType.CAMPFIRE_COOKING;
++        } else if (recipeType == net.minecraft.world.item.crafting.RecipeType.STONECUTTING) {
++            return RecipeType.STONECUTTING;
++        } else if (recipeType == net.minecraft.world.item.crafting.RecipeType.SMITHING) {
++            return RecipeType.SMITHING;
++        }
++        throw new IllegalArgumentException("Unknown recipe type");
++    }
++
++    public static net.minecraft.world.item.crafting.RecipeType<AbstractCookingRecipe> asCookingRecipe(RecipeType recipeType) {
++        try {
++            return (net.minecraft.world.item.crafting.RecipeType<AbstractCookingRecipe>) asNMS(recipeType);
++        } catch (ClassCastException exc) {
++            throw new IllegalArgumentException("Recipe type must be a cooking recipe");
++        }
++    }
++}
+diff --git a/src/main/java/me/lexikiq/inventory/SingletonContainer.java b/src/main/java/me/lexikiq/inventory/SingletonContainer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..e6d1e8faafe3fec48df51e5a25acef56a8428db3
+--- /dev/null
++++ b/src/main/java/me/lexikiq/inventory/SingletonContainer.java
+@@ -0,0 +1,151 @@
++package me.lexikiq.inventory;
++
++import com.google.common.base.Preconditions;
++import net.minecraft.world.Container;
++import net.minecraft.world.entity.player.Player;
++import net.minecraft.world.item.ItemStack;
++import org.bukkit.Location;
++import org.bukkit.Material;
++import org.bukkit.craftbukkit.entity.CraftHumanEntity;
++import org.bukkit.craftbukkit.inventory.CraftItemStack;
++import org.bukkit.entity.HumanEntity;
++import org.bukkit.inventory.InventoryHolder;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.Collections;
++import java.util.List;
++
++/**
++ * A container which holds only one item and returns similar values to that of
++ * {@link net.minecraft.world.SimpleContainer SimpleContainer}, meaning it will raise
++ * {@link IndexOutOfBoundsException IndexOutOfBoundsExceptions} and return empty item stacks
++ * where applicable to mirror that class.
++ */
++public class SingletonContainer implements net.minecraft.world.Container {
++
++    private @NotNull ItemStack item;
++    private int maxStackSize = Container.MAX_STACK;
++
++    public SingletonContainer() {
++        this.item = ItemStack.EMPTY;
++    }
++
++    public SingletonContainer(@NotNull ItemStack item) {
++        this.item = Preconditions.checkNotNull(item, "item");
++    }
++
++    public SingletonContainer(org.bukkit.inventory.@NotNull ItemStack item) {
++        this.item = CraftItemStack.asNMSCopy(Preconditions.checkNotNull(item, "item"));
++    }
++
++    public SingletonContainer(@NotNull Material material) {
++        this(new org.bukkit.inventory.ItemStack(Preconditions.checkNotNull(material, "material")));
++    }
++
++    private static void throwIndexException(int index) {
++        throw new IndexOutOfBoundsException("Received slot " + index + ", expected 0");
++    }
++
++    @Override
++    public int getContainerSize() {
++        return 1;
++    }
++
++    @Override
++    public boolean isEmpty() {
++        return item.isEmpty();
++    }
++
++    @Override
++    public ItemStack getItem(int slot) {
++        if (slot < 0) {
++            throwIndexException(slot);
++        }
++        return slot == 0 ? item : ItemStack.EMPTY;
++    }
++
++    @Override
++    public ItemStack removeItem(int slot, int amount) {
++        if (slot < 0) {
++            throwIndexException(slot);
++        }
++        ItemStack itemStack = slot == 0 && !item.isEmpty() ? item.split(amount) : ItemStack.EMPTY;
++        if (!itemStack.isEmpty()) {
++            setChanged();
++        }
++        return itemStack;
++    }
++
++    @Override
++    public ItemStack removeItemNoUpdate(int slot) {
++        if (slot != 0) {
++            throwIndexException(slot);
++        }
++        ItemStack oldItem = item;
++        item = ItemStack.EMPTY;
++        return oldItem.isEmpty() ? ItemStack.EMPTY : oldItem;
++    }
++
++    @Override
++    public void setItem(int slot, ItemStack stack) {
++        if (slot != 0) {
++            throwIndexException(slot);
++        }
++        item = stack;
++    }
++
++    @Override
++    public int getMaxStackSize() {
++        return maxStackSize;
++    }
++
++    @Override
++    public void setMaxStackSize(int size) {
++        maxStackSize = size;
++    }
++
++    @Override
++    public void setChanged() {
++
++    }
++
++    @Override
++    public boolean stillValid(Player player) {
++        return true;
++    }
++
++    @Override
++    public List<ItemStack> getContents() {
++        return Collections.singletonList(item);
++    }
++
++    @Override
++    public void onOpen(CraftHumanEntity who) {
++
++    }
++
++    @Override
++    public void onClose(CraftHumanEntity who) {
++
++    }
++
++    @Override
++    public List<HumanEntity> getViewers() {
++        return Collections.emptyList();
++    }
++
++    @Override
++    public InventoryHolder getOwner() {
++        return null;
++    }
++
++    @Override
++    public Location getLocation() {
++        return null;
++    }
++
++    @Override
++    public void clearContent() {
++        item = ItemStack.EMPTY;
++    }
++}
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index 3403b75c8311f1e52a0533363c5f0307442f8a15..714d9f9f99172ff66cf4f2a6a9eac482fb449e20 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -91,7 +91,6 @@ import org.bukkit.Sound;
+ import org.bukkit.StructureType;
+ import org.bukkit.TreeType;
+ import org.bukkit.World;
+-import org.bukkit.World.Environment;
+ import org.bukkit.WorldBorder;
+ import org.bukkit.block.Biome;
+ import org.bukkit.block.Block;
+@@ -100,7 +99,6 @@ import org.bukkit.block.BlockState;
+ import org.bukkit.block.data.BlockData;
+ import org.bukkit.boss.DragonBattle;
+ import org.bukkit.craftbukkit.block.CraftBlock;
+-import org.bukkit.craftbukkit.block.CraftBlockState;
+ import org.bukkit.craftbukkit.block.data.CraftBlockData;
+ import org.bukkit.craftbukkit.boss.CraftDragonBattle;
+ import org.bukkit.craftbukkit.entity.CraftEntity;
+@@ -241,7 +239,6 @@ import org.bukkit.entity.minecart.PoweredMinecart;
+ import org.bukkit.entity.minecart.SpawnerMinecart;
+ import org.bukkit.entity.minecart.StorageMinecart;
+ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+-import org.bukkit.event.world.SpawnChangeEvent;
+ import org.bukkit.event.world.TimeSkipEvent;
+ import org.bukkit.generator.BlockPopulator;
+ import org.bukkit.generator.ChunkGenerator;
+@@ -2749,4 +2746,11 @@ public class CraftWorld implements World {
+         return this.spigot;
+     }
+     // Spigot end
++
++    // Parchment start
++    @Override
++    public ItemStack smeltItem(ItemStack toSmelt, me.lexikiq.inventory.RecipeType recipeType) {
++        return world.getRecipeManager().getRecipeFor(me.lexikiq.inventory.CraftRecipeType.asCookingRecipe(recipeType), new me.lexikiq.inventory.SingletonContainer(toSmelt), world).map(recipe -> recipe.getResultItem().getBukkitStack()).orElse(null);
++    }
++    // Parchment end
+ }
