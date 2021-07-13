@@ -5,7 +5,7 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 6ecf60c69a27f8db1c245db15449bba581c3dbf5..07207bc7aa610da2151fceaeddcf00f4464fd41d 100644
+index c2e0417ee15018ec31c4aa8eec3dff7a0d16aa9e..55929e0c397bc557de9d035c353f736f9d24d43f 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -55,8 +55,8 @@ import net.minecraft.network.protocol.game.ClientboundExplodePacket;
@@ -19,7 +19,7 @@ index 6ecf60c69a27f8db1c245db15449bba581c3dbf5..07207bc7aa610da2151fceaeddcf00f4
  import net.minecraft.network.protocol.game.DebugPackets;
  import net.minecraft.resources.ResourceKey;
  import net.minecraft.server.MCUtil;
-@@ -1308,12 +1308,12 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+@@ -1269,12 +1269,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
      public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
@@ -57,7 +57,7 @@ index 8e2bccc3a9ddb17a4978596056189eb776976338..26215724174178056b915fc4ce927aba
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 65657c009f6d5a5d5740e80f912a5893333c7085..13a32945865a5c2143cdfdd16859a95dd8eb0014 100644
+index 48045993c8ad4b014cf4a67f7c4db42e014d1c81..9be83da618d2359951c602fa5dfcdd608270a23e 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -60,7 +60,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
@@ -69,7 +69,7 @@ index 65657c009f6d5a5d5740e80f912a5893333c7085..13a32945865a5c2143cdfdd16859a95d
  import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
  import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
  import net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket;
-@@ -959,7 +959,7 @@ public abstract class PlayerList {
+@@ -964,7 +964,7 @@ public abstract class PlayerList {
          if (flag2 && !isLocAltered) {
              BlockState data = worldserver1.getBlockState(blockposition);
              worldserver1.setBlock(blockposition, data.setValue(RespawnAnchorBlock.CHARGE, data.getValue(RespawnAnchorBlock.CHARGE) - 1), 3);
