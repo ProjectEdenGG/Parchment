@@ -79,7 +79,7 @@ index 80d19af2ad423bd3de0e039c5bb8f97af536aaa9..2cafb9edf4020c0b8d747dbb4ff91d77
          return "DamageSource (" + this.msgId + ")";
      }
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index c98202092752a9015aaf95bd1471135b88e84425..3acdb4d8ab90af1919a190502d6295559c78e041 100644
+index 29aa428e019681af8d6b0020c12b18660ff6af6c..9b2276555e0d52996cb84cc6ca492263e6905780 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 @@ -101,10 +101,11 @@ public class EnderDragon extends Mob implements Enemy {
@@ -96,7 +96,7 @@ index c98202092752a9015aaf95bd1471135b88e84425..3acdb4d8ab90af1919a190502d629555
          this.setHealth(this.getMaxHealth());
          this.noPhysics = true;
 diff --git a/src/main/java/net/minecraft/world/level/Explosion.java b/src/main/java/net/minecraft/world/level/Explosion.java
-index 822a8dbfaea0a312c4eb2849f2386ecd401b13e9..e5632b4e763076730768fd627610ccdb90be7137 100644
+index 132140e00865fcf84ebe03ffcbc2f30ac11a0b35..8245ec990c7a37839b0eedbcdbf834df2b421e61 100644
 --- a/src/main/java/net/minecraft/world/level/Explosion.java
 +++ b/src/main/java/net/minecraft/world/level/Explosion.java
 @@ -453,6 +453,13 @@ public class Explosion {
@@ -146,7 +146,7 @@ index 93fae52a7531e1697e4fa63c82aef6ef24d0fb25..2620b42f7a6088aaecf3ccf8f05c5f4d
  
      public static boolean canSetSpawn(Level world) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index e94fc60cd34678d7ce052e70728040f9999a9d00..5f5836c69ad437c3fc801dab032aa0c27d76b71e 100644
+index bfe1fa69aa1cea111421b1664e20128e0e8a96a3..06f49a860bc650ec422f706a35fe2970fd7389ba 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -934,7 +934,7 @@ public class CraftEventFactory {
