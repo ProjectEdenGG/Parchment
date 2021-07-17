@@ -215,34 +215,10 @@ index 0000000000000000000000000000000000000000..e6d1e8faafe3fec48df51e5a25acef56
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 3403b75c8311f1e52a0533363c5f0307442f8a15..714d9f9f99172ff66cf4f2a6a9eac482fb449e20 100644
+index 7dc26321e20e26821096e79356a358879306cd78..b8e6da2bd68df0001da1638e511e79f4729d633e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -91,7 +91,6 @@ import org.bukkit.Sound;
- import org.bukkit.StructureType;
- import org.bukkit.TreeType;
- import org.bukkit.World;
--import org.bukkit.World.Environment;
- import org.bukkit.WorldBorder;
- import org.bukkit.block.Biome;
- import org.bukkit.block.Block;
-@@ -100,7 +99,6 @@ import org.bukkit.block.BlockState;
- import org.bukkit.block.data.BlockData;
- import org.bukkit.boss.DragonBattle;
- import org.bukkit.craftbukkit.block.CraftBlock;
--import org.bukkit.craftbukkit.block.CraftBlockState;
- import org.bukkit.craftbukkit.block.data.CraftBlockData;
- import org.bukkit.craftbukkit.boss.CraftDragonBattle;
- import org.bukkit.craftbukkit.entity.CraftEntity;
-@@ -241,7 +239,6 @@ import org.bukkit.entity.minecart.PoweredMinecart;
- import org.bukkit.entity.minecart.SpawnerMinecart;
- import org.bukkit.entity.minecart.StorageMinecart;
- import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
--import org.bukkit.event.world.SpawnChangeEvent;
- import org.bukkit.event.world.TimeSkipEvent;
- import org.bukkit.generator.BlockPopulator;
- import org.bukkit.generator.ChunkGenerator;
-@@ -2749,4 +2746,11 @@ public class CraftWorld implements World {
+@@ -2750,4 +2750,11 @@ public class CraftWorld implements World {
          return this.spigot;
      }
      // Spigot end

@@ -146,10 +146,10 @@ index 93fae52a7531e1697e4fa63c82aef6ef24d0fb25..2620b42f7a6088aaecf3ccf8f05c5f4d
  
      public static boolean canSetSpawn(Level world) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index bfe1fa69aa1cea111421b1664e20128e0e8a96a3..06f49a860bc650ec422f706a35fe2970fd7389ba 100644
+index 67e87bc1e2dbac1d905c144e4bd8b1600d9557a2..b70468351e8470112ab3e3a1d5479d11c101fa1f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -934,7 +934,7 @@ public class CraftEventFactory {
+@@ -949,7 +949,7 @@ public class CraftEventFactory {
              CraftEventFactory.entityDamage = null;
              EntityDamageEvent event;
              if (damager == null) {
@@ -158,7 +158,7 @@ index bfe1fa69aa1cea111421b1664e20128e0e8a96a3..06f49a860bc650ec422f706a35fe2970
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
-@@ -970,7 +970,7 @@ public class CraftEventFactory {
+@@ -985,7 +985,7 @@ public class CraftEventFactory {
  
              return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled);
          } else if (source == DamageSource.OUT_OF_WORLD) {
@@ -167,7 +167,7 @@ index bfe1fa69aa1cea111421b1664e20128e0e8a96a3..06f49a860bc650ec422f706a35fe2970
              event.setCancelled(cancelled);
              CraftEventFactory.callEvent(event);
              if (!event.isCancelled()) {
-@@ -978,7 +978,7 @@ public class CraftEventFactory {
+@@ -993,7 +993,7 @@ public class CraftEventFactory {
              }
              return event;
          } else if (source == DamageSource.LAVA) {
