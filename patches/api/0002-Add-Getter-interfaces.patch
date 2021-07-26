@@ -566,7 +566,7 @@ index 0000000000000000000000000000000000000000..314bf6e8cacfe8891f1354952c5ccfe7
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index 432d5711b7ec34eafeb27df82d367612dfe1fe54..7be8b69aa1b617273b5c3c17022fec2386d22bf7 100644
+index c9b953aa55eeee87e81b9b712c0f501a58e641fb..87188e22137243d91e1c8d0fc4a2062cccb394db 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
@@ -745,7 +745,7 @@ index 0ad7a3d4d40d58eb950e34668f9554bb73f934fb..0a5aa083d9a69403c76ab280254d259a
      /**
       * Returns the name of this player
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index da83b4cbed0be6f693c7cbb1cc032356f12d7883..8cc6f8b22eb338af923a206f33d637a989ee35c3 100644
+index 5e8814cc317a705eaf8bdd9f3876a5366c0a0226..31c118dbe08f6d00f76f002ba8746eb89026b5b9 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
@@ -999,10 +999,10 @@ index 5eb3fb72a13881b8bf0e40037b0002cb0a6eb883..6ab6bb4237418479156bd24d77bc1f24
      private final Entity leashHolder;
      private final Entity entity;
 diff --git a/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java b/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
-index 959b9f3fb41f8de6c8fb9a3b2df13212e29cf0e7..a92dbe0a21a4b8571813dbc9ff504694239d025b 100644
+index 1bcff119ecd95012c568c777e5ca2e891e56831e..a92f0b6a1337cb09896291f3d7da39ae011ce9ce 100644
 --- a/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
 +++ b/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
-@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Triggered when a hanging entity is created in the world
   */
@@ -1051,7 +1051,7 @@ index 9013d043503d175004ad276799e5935b7fa59dc4..2af2c43ba34de3ff6f6a82f5abb4f94f
      private boolean cancelled;
  
 diff --git a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
-index 77aefda5aac4602bf5bf71c29600e7450defdd4e..0a7c4936bc97da1d7defe3c370d95376455baae2 100644
+index 694a81769076ea58aae9f14f076ab80c9952c957..bea28949cc37a652427fc4ab1dfb225c65ea1d9b 100644
 --- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
@@ -1129,7 +1129,7 @@ index f96c4ba53ab41ea66d4f9a4d54eeabb63f992b58..39fa65a2b130c00b2ba5d90e2fa673a6
      private static final HandlerList handlers = new HandlerList();
      //
 diff --git a/src/main/java/org/bukkit/event/world/GenericGameEvent.java b/src/main/java/org/bukkit/event/world/GenericGameEvent.java
-index fed29b2cb2a2c2997a7a3f42e9be84a8cb1c6425..629fd7abf0bea441cf8f2578c894a5426a9c877a 100644
+index 1746b66510e7b9c8708018582034b04714c29867..8f667cd2f05144bdc863f81b213f0a99b7f695b6 100644
 --- a/src/main/java/org/bukkit/event/world/GenericGameEvent.java
 +++ b/src/main/java/org/bukkit/event/world/GenericGameEvent.java
 @@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
