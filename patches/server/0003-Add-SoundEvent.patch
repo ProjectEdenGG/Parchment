@@ -5,7 +5,7 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index c2e0417ee15018ec31c4aa8eec3dff7a0d16aa9e..55929e0c397bc557de9d035c353f736f9d24d43f 100644
+index baa25df9f446c8edea9666983425df31c32a13ff..5feb2a6877f1731ff50343d481b54d79a62bbd8a 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -55,8 +55,8 @@ import net.minecraft.network.protocol.game.ClientboundExplodePacket;
@@ -35,7 +35,7 @@ index c2e0417ee15018ec31c4aa8eec3dff7a0d16aa9e..55929e0c397bc557de9d035c353f736f
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8e2bccc3a9ddb17a4978596056189eb776976338..26215724174178056b915fc4ce927abae8a2b8d5 100644
+index e32da100eabf0d3de12375402e9378c726811358..977bb52e7b7ddafb5e766ec670d27109c998bbea 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -67,7 +67,7 @@ import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
@@ -79,7 +79,7 @@ index 48045993c8ad4b014cf4a67f7c4db42e014d1c81..9be83da618d2359951c602fa5dfcdd60
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 19980b2d627eb3cacf8d0c3e6785ad2206910fbc..f1b7ff2b4e08bac81d742691003a3c4d7549e01b 100644
+index d8780f06efc261a42389e466573a0bcf10c333f6..c2034b711e5b3f2b82d86776c58dac4db83ea44d 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -30,7 +30,7 @@ import net.minecraft.network.chat.MutableComponent;
@@ -91,7 +91,7 @@ index 19980b2d627eb3cacf8d0c3e6785ad2206910fbc..f1b7ff2b4e08bac81d742691003a3c4d
  import net.minecraft.network.syncher.EntityDataAccessor;
  import net.minecraft.network.syncher.EntityDataSerializers;
  import net.minecraft.network.syncher.SynchedEntityData;
-@@ -1825,7 +1825,7 @@ public abstract class Player extends LivingEntity {
+@@ -1827,7 +1827,7 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
          fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {
@@ -123,10 +123,10 @@ index a79ba23ecf887ecbb6e095140f019ebb6fd0a6f7..5112edc5e68a386e9bb16ac0ec9d998e
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 21471cec1c8403b2b18744210ffe59a729d48105..67e87bc1e2dbac1d905c144e4bd8b1600d9557a2 100644
+index d01d4ca873f8225d3503ecb102ce2eb7bfced421..7c2583ed7b39a5a906131a487d6f8a93603cfb54 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1851,4 +1851,77 @@ public class CraftEventFactory {
+@@ -1855,4 +1855,77 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end

@@ -48,10 +48,10 @@ index d6a3f3a2edae806b0ebf5bf5ac445116c0d64535..de47a0db1a2e439dbbbc7d5e34a38a05
              });
              state.spawnAfterBreak((ServerLevel) world, pos, stack);
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index b70468351e8470112ab3e3a1d5479d11c101fa1f..8a3735baa02410197c2043cf41f615805edaa7b4 100644
+index 3c37bf3683abccd4533ccbff0aa7f4848df2494c..1dafdb27b3bdd528d2e3b1c29372e2d8b8eb517a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1923,5 +1923,11 @@ public class CraftEventFactory {
+@@ -1927,5 +1927,11 @@ public class CraftEventFactory {
          final double posZ = pos.getZ();
          playSoundEvent(event, packet -> playerList.broadcast(player, posX, posY, posZ, radius, world, packet));
      }
