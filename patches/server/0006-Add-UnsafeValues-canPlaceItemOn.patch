@@ -29,8 +29,8 @@ index 72cfffd80ad76abe7cb16bc9133730338c07b6f6..cb34cf21a536ade5689062651ad9c694
 +
 +
 +        net.minecraft.world.entity.player.Player nmsPlayer = human == null ? null : ((org.bukkit.craftbukkit.entity.CraftHumanEntity) human).getHandle();
-+        CraftBlock cBlock = (CraftBlock) block;
-+        CraftBlock relativeBlock = (CraftBlock) block.getRelative(face);
++        org.bukkit.craftbukkit.block.CraftBlock cBlock = (org.bukkit.craftbukkit.block.CraftBlock) block;
++        org.bukkit.craftbukkit.block.CraftBlock relativeBlock = (org.bukkit.craftbukkit.block.CraftBlock) block.getRelative(face);
 +        if (!relativeBlock.isReplaceable()) {
 +            future.complete(false);
 +            return future;
