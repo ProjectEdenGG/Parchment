@@ -24,10 +24,10 @@ index cebaf0fb8187335ca303621a2cb412bb22584e23..429eb67fb264a0d8ec7900c02c1abdfa
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 483df59a805d2724551042aa4470bc439fc2e7e9..f7fbd53b371598789e2450d59cc948d1940c6f0c 100644
+index 6d2d2ba4a83d887f4d52188305a4a28c2ee2f014..c3b6e93aeec88db773db83122ad35026377216c9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2176,7 +2176,7 @@ public class ServerPlayer extends Player {
+@@ -2175,7 +2175,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
