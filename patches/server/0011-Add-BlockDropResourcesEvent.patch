@@ -8,7 +8,7 @@ to easily get the items being dropped by any
 block instead of only blocks broken by players.
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index d6a3f3a2edae806b0ebf5bf5ac445116c0d64535..de47a0db1a2e439dbbbc7d5e34a38a05fe2ebeab 100644
+index 8c30e28b97ac7e8b54322c903e0b75ee8135620b..4ca85a02a1eb46b5958aae55946c67cefb85f461 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
 @@ -306,7 +306,7 @@ public class Block extends BlockBehaviour implements ItemLike {
@@ -38,7 +38,7 @@ index d6a3f3a2edae806b0ebf5bf5ac445116c0d64535..de47a0db1a2e439dbbbc7d5e34a38a05
                  Block.popResource((Level) ((ServerLevel) world), pos, itemstack);
              });
              state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY);
-@@ -334,7 +334,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -351,7 +351,7 @@ public class Block extends BlockBehaviour implements ItemLike {
  
      public static void dropResources(BlockState state, Level world, BlockPos pos, @Nullable BlockEntity blockEntity, Entity entity, ItemStack stack) {
          if (world instanceof ServerLevel) {
@@ -48,10 +48,10 @@ index d6a3f3a2edae806b0ebf5bf5ac445116c0d64535..de47a0db1a2e439dbbbc7d5e34a38a05
              });
              state.spawnAfterBreak((ServerLevel) world, pos, stack);
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 3c37bf3683abccd4533ccbff0aa7f4848df2494c..1dafdb27b3bdd528d2e3b1c29372e2d8b8eb517a 100644
+index 3d4ff819bb46b346cb84844c68a9e963cf4b0890..9f35b873f928d4cbf5b6653e1e2dd3148ff03483 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1927,5 +1927,11 @@ public class CraftEventFactory {
+@@ -1930,5 +1930,11 @@ public class CraftEventFactory {
          final double posZ = pos.getZ();
          playSoundEvent(event, packet -> playerList.broadcast(player, posX, posY, posZ, radius, world, packet));
      }

@@ -64,18 +64,10 @@ index 0000000000000000000000000000000000000000..f8f707483bf08142cdaf6c6ff9b12418
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 8ae9198ba7fdb006dc420504a984627add20dbb5..a01e98c1128bd5e21a9b6e1eee1ab6f862ea66b5 100644
+index dc497606ebf9903c2d32276ecddda3231457346a..021f24fdbc6e711faabaa2955b7acdde219f1990 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -26,7 +26,6 @@ import org.bukkit.entity.LightningStrike;
- import org.bukkit.entity.LivingEntity;
- import org.bukkit.entity.Player;
- import org.bukkit.generator.BlockPopulator;
--import org.bukkit.generator.ChunkGenerator;
- import org.bukkit.inventory.ItemStack;
- import org.bukkit.material.MaterialData;
- import org.bukkit.metadata.Metadatable;
-@@ -3706,6 +3705,36 @@ public interface World extends PluginMessageRecipient, Metadatable, net.kyori.ad
+@@ -3669,6 +3669,36 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
      @Nullable
      public DragonBattle getEnderDragonBattle();
  

@@ -566,7 +566,7 @@ index 0000000000000000000000000000000000000000..314bf6e8cacfe8891f1354952c5ccfe7
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index c9b953aa55eeee87e81b9b712c0f501a58e641fb..87188e22137243d91e1c8d0fc4a2062cccb394db 100644
+index 8321441b8f528a05e297f485672f928e76fe017d..e6a66494941ccaeb62ec13c26a0e05c52e3af159 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
@@ -659,15 +659,15 @@ index ff8f1231f3e2e71740fd24fa8d4dac5d0e550ae7..4a1e40e0c7cff6ef8898771adf3bc600
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index ca488173a20bcf3427906f0a6548f06a97c9dc36..6ebf6f2bf02550ad69fad45cb79b6d92549df980 100644
+index ad8bce01ba459a036cd4ebbbe4fc974021924fe2..e328ec2b922a839dd57bcc33d02a94eb90fbf307 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
   * (i.e. lighting and power) may not be able to be safely accessed during world
   * generation when used in cases like BlockPhysicsEvent!!!!
   */
--public interface Block extends Metadatable {
-+public interface Block extends Metadatable, me.lexikiq.HasLocation { // Parchment
+-public interface Block extends Metadatable, net.kyori.adventure.translation.Translatable { // Paper - translatable
++public interface Block extends Metadatable, net.kyori.adventure.translation.Translatable, me.lexikiq.HasLocation { // Paper - translatable
  
      /**
       * Gets the metadata for this block
@@ -745,7 +745,7 @@ index 0ad7a3d4d40d58eb950e34668f9554bb73f934fb..0a5aa083d9a69403c76ab280254d259a
      /**
       * Returns the name of this player
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 5e8814cc317a705eaf8bdd9f3876a5366c0a0226..31c118dbe08f6d00f76f002ba8746eb89026b5b9 100644
+index afa245018192a63e5db8bc568ddea2790bf5b8a2..69f5047f2bd2a7d42c972a38a76ca53f47f273d6 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;

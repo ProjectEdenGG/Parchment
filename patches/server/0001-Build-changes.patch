@@ -5,21 +5,21 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index b50463c2356301a1b47a0bf4f50dc1f121d363a1..de932184e6bfe6e620ad7f3e43b22ae8bd5a0f48 100644
+index b3687f632bbf06c933a6ef04dc2236ccf3c030b8..6e14fe7fed362d470555445b053a2653be53a62d 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -28,8 +28,8 @@ repositories {
+@@ -29,8 +29,8 @@ repositories {
  }
  
  dependencies {
 -    implementation(project(":Paper-API"))
 -    implementation(project(":Paper-MojangAPI"))
 +    implementation(project(":Parchment-API")) // Parchment
-+    implementation("com.destroystokyo.paper:paper-mojangapi:1.16.5-R0.1-SNAPSHOT") // Parchment
++    implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Parchment
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -80,7 +80,7 @@ tasks.jar {
+@@ -82,7 +82,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -28,7 +28,7 @@ index b50463c2356301a1b47a0bf4f50dc1f121d363a1..de932184e6bfe6e620ad7f3e43b22ae8
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -102,6 +102,26 @@ publishing {
+@@ -104,6 +104,26 @@ publishing {
              classifier = null
          }
          artifact(tasks.shadowJar)
@@ -55,7 +55,7 @@ index b50463c2356301a1b47a0bf4f50dc1f121d363a1..de932184e6bfe6e620ad7f3e43b22ae8
      }
  }
  
-@@ -112,7 +132,7 @@ tasks.shadowJar {
+@@ -147,7 +167,7 @@ tasks.shadowJar {
  
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
@@ -64,7 +64,7 @@ index b50463c2356301a1b47a0bf4f50dc1f121d363a1..de932184e6bfe6e620ad7f3e43b22ae8
          rename { "pom.xml" }
      }
  
-@@ -176,7 +196,7 @@ tasks.test {
+@@ -207,7 +227,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -111,10 +111,10 @@ index 580bae0d414d371a07a6bfeefc41fdd989dc0083..e744a4c6de5beae4161d855da6dcab93
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 3dded5c491ace6b073a7bc3178976bd70f0b9393..2373f056cbe868491bafa02e3b711a63f2e428aa 100644
+index 099db3a627c1d3c08f3b923bb02a1cb8a0a268ab..457e46324bb2abb6aacfea66f4274c1a8e06c40c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1651,7 +1651,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1721,7 +1721,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -124,10 +124,10 @@ index 3dded5c491ace6b073a7bc3178976bd70f0b9393..2373f056cbe868491bafa02e3b711a63
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 9954e45c32a4b6d80fe912ed9d55cd4fc8c4e98b..65e520dbfaf294ef500f263aeb8fb0adf98e8321 100644
+index 4687827c096ecf8872ab39b00fbf9261ba5c3689..cbf96eeaed245632e5386f824168ba42113038e1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -239,7 +239,7 @@ import javax.annotation.Nullable; // Paper
+@@ -246,7 +246,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -137,7 +137,7 @@ index 9954e45c32a4b6d80fe912ed9d55cd4fc8c4e98b..65e520dbfaf294ef500f263aeb8fb0ad
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index ea7df53656766a8dc4ab5fe66de894301db634e1..6de638292a6126460c8b0e0a5d3ab6e4d28c2892 100644
+index 22e9dd17f62103c5061435099ce96a3d70d54808..3344a9f976c0eaf88c62831ed8ec4952b400cca1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -269,7 +269,7 @@ public class Main {
@@ -163,10 +163,10 @@ index 774556a62eb240da42e84db4502e2ed43495be17..fbba763d909c4636174e79c680745b83
  
          if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index dcfbe77bdb25d9c58ffb7b75c48bdb580bc0de47..ace8cde0cb0d44e0df9d57ddabc664bf4f79802f 100644
+index bee38307494188800886a1622fed229b88dbd8f1..104d9f4fcad6d5895a1f4e3cd1966dccc4530da7 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
-@@ -91,7 +91,7 @@ public class WatchdogThread extends Thread
+@@ -163,7 +163,7 @@ public class WatchdogThread extends Thread
                  log.log( Level.SEVERE, "\t If this is the case, consider increasing timeout-time in spigot.yml but note that this will replace the crash with LARGE lag spikes" );
                  log.log( Level.SEVERE, "If you are unsure or still think this is a Paper bug, please report this to https://github.com/PaperMC/Paper/issues" );
                  log.log( Level.SEVERE, "Be sure to include ALL relevant console errors and Minecraft crash reports" );

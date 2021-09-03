@@ -5,18 +5,10 @@ Subject: [PATCH] Add PlayerUseRespawnAnchorEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-index af4eb4a8814491afef449a2874521636957d7557..93fae52a7531e1697e4fa63c82aef6ef24d0fb25 100644
+index 0a5d563700c9f806139001181f01fa9d0111f792..88439b8f82a97a9763dadfc6c9dbaf0912ab3eb7 100644
 --- a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
- import com.google.common.collect.ImmutableList.Builder;
- import java.util.Optional;
- import java.util.Random;
-+import me.lexikiq.event.player.PlayerUseRespawnAnchorEvent; // Parchment
- import net.minecraft.core.BlockPos;
- import net.minecraft.core.Direction;
- import net.minecraft.core.Vec3i;
-@@ -52,33 +53,51 @@ public class RespawnAnchorBlock extends Block {
+@@ -52,33 +52,51 @@ public class RespawnAnchorBlock extends Block {
      @Override
      public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
          ItemStack itemStack = player.getItemInHand(hand);
@@ -24,30 +16,30 @@ index af4eb4a8814491afef449a2874521636957d7557..93fae52a7531e1697e4fa63c82aef6ef
 +        // Parchment start -- PlayerUseRespawnAnchorEvent
 +        org.bukkit.entity.Player bukkitPlayer = player.getBukkitEntity() instanceof org.bukkit.entity.Player ? (org.bukkit.entity.Player) player.getBukkitEntity() : null;
 +        org.bukkit.block.Block block = org.bukkit.craftbukkit.block.CraftBlock.at(world, pos);
-+        PlayerUseRespawnAnchorEvent.RespawnAnchorResult result;
++        me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult result;
          if (hand == InteractionHand.MAIN_HAND && !isRespawnFuel(itemStack) && isRespawnFuel(player.getItemInHand(InteractionHand.OFF_HAND))) {
              return InteractionResult.PASS;
          } else if (isRespawnFuel(itemStack) && canBeCharged(state)) {
-+            result = PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE;
++            result = me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE;
 +        } else if (state.getValue(CHARGE) == 0) {
-+            result = PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING;
++            result = me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING;
 +        } else if (!canSetSpawn(world) && !world.isClientSide) {
-+            result = PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE;
++            result = me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE;
 +        } else if (!world.isClientSide) {
-+            result = PlayerUseRespawnAnchorEvent.RespawnAnchorResult.SET_SPAWN;
++            result = me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.SET_SPAWN;
 +        } else {
 +            return InteractionResult.SUCCESS;
 +        }
 +
 +        if (bukkitPlayer != null) {
-+            PlayerUseRespawnAnchorEvent event = new PlayerUseRespawnAnchorEvent(bukkitPlayer, block, result);
++            me.lexikiq.event.player.PlayerUseRespawnAnchorEvent event = new me.lexikiq.event.player.PlayerUseRespawnAnchorEvent(bukkitPlayer, block, result);
 +            event.callEvent();
 +            result = event.getResult();
 +        }
 +
-+        if (result == PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING) {
++        if (result == me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING) {
 +            return InteractionResult.PASS;
-+        } else if (result == PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE) {
++        } else if (result == me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE) {
              charge(world, pos, state);
              if (!player.getAbilities().instabuild) {
                  itemStack.shrink(1);
@@ -62,20 +54,20 @@ index af4eb4a8814491afef449a2874521636957d7557..93fae52a7531e1697e4fa63c82aef6ef
 -            }
 -
 -            return InteractionResult.sidedSuccess(world.isClientSide);
-+        } else if (result == PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE) {
++        } else if (result == me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE) {
 +            this.explode(state, world, pos);
 +            return InteractionResult.CONSUME;
          } else {
 -            if (!world.isClientSide) {
 -                ServerPlayer serverPlayer = (ServerPlayer)player;
 -                if (serverPlayer.getRespawnDimension() != world.dimension() || !pos.equals(serverPlayer.getRespawnPosition())) {
--                    serverPlayer.setRespawnPosition(world.dimension(), pos, 0.0F, false, true);
+-                    serverPlayer.setRespawnPosition(world.dimension(), pos, 0.0F, false, true, com.destroystokyo.paper.event.player.PlayerSetSpawnEvent.Cause.RESPAWN_ANCHOR); // Paper - PlayerSetSpawnEvent
 -                    world.playSound((Player)null, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F);
 -                    return InteractionResult.SUCCESS;
 -                }
 +            ServerPlayer serverPlayer = (ServerPlayer)player;
 +            if (serverPlayer.getRespawnDimension() != world.dimension() || !pos.equals(serverPlayer.getRespawnPosition())) {
-+                serverPlayer.setRespawnPosition(world.dimension(), pos, 0.0F, false, true);
++                serverPlayer.setRespawnPosition(world.dimension(), pos, 0.0F, false, true, com.destroystokyo.paper.event.player.PlayerSetSpawnEvent.Cause.RESPAWN_ANCHOR); // Paper - PlayerSetSpawnEvent
 +                world.playSound((Player)null, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F);
 +                return InteractionResult.SUCCESS;
              }
