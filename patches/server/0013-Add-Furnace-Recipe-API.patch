@@ -215,13 +215,13 @@ index 0000000000000000000000000000000000000000..e6d1e8faafe3fec48df51e5a25acef56
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 7e56d6e60f1e1bd8dbf768afcbe06addcd5c5a60..a054852d253a428a0845742939f1f046bf769c08 100644
+index 883b2070fcf99cf10d44aef6dece0f7f84bfeeed..8a4cba8d201819541d835d27afd94d24bb8f7fc1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2103,4 +2103,11 @@ public class CraftWorld extends CraftRegionAccessor implements World {
-         return this.spigot;
+@@ -2119,4 +2119,11 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+         return this.adventure$pointers;
      }
-     // Spigot end
+     // Paper end
 +
 +    // Parchment start
 +    @Override
