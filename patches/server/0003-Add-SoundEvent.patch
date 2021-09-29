@@ -5,7 +5,7 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index cebaf0fb8187335ca303621a2cb412bb22584e23..429eb67fb264a0d8ec7900c02c1abdfac0c9bd7d 100644
+index 9e4ad810dd6348ad95c9a7e6d1bd63f6ec37c986..2d61128dd328a2acd10d19033b251fca405f9ac9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1489,12 +1489,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -24,10 +24,10 @@ index cebaf0fb8187335ca303621a2cb412bb22584e23..429eb67fb264a0d8ec7900c02c1abdfa
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 6d2d2ba4a83d887f4d52188305a4a28c2ee2f014..c3b6e93aeec88db773db83122ad35026377216c9 100644
+index cd4ccb208baebd74780443fc575f0ce5b745fdc8..e440b7edb4ea88082d04adef8bf03265c043b800 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2175,7 +2175,7 @@ public class ServerPlayer extends Player {
+@@ -2174,7 +2174,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -85,7 +85,7 @@ index a79ba23ecf887ecbb6e095140f019ebb6fd0a6f7..5112edc5e68a386e9bb16ac0ec9d998e
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 31bbf018e3b7cafb1e186c7d00b421fb133331a3..b39b05c7f6bd83f39a76c71735cfdee0f46339ba 100644
+index 4b06275f2939a351a965f51177a01b3124e2513e..b7d03f3c2707d55176964766ed0f85c9840f6025 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -1873,4 +1873,77 @@ public class CraftEventFactory {
