@@ -5,12 +5,12 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 379acee1b5f2d06e6a96f3444783f4a29ca24095..c4f81d9a642005e52eb3d88daf6da6caa48a3f0d 100644
+index 0b15fe8b5da29bf691c394098f0203a49504242e..3e455fa189c6f2ebe5452affab4256fd8dbc72cb 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -184,4 +184,17 @@ public interface UnsafeValues {
+@@ -201,4 +201,17 @@ public interface UnsafeValues {
       */
-     int getProtocolVersion();
+     @org.jetbrains.annotations.NotNull org.bukkit.attribute.Attributable getDefaultEntityAttributes(@org.jetbrains.annotations.NotNull NamespacedKey entityKey);
      // Paper end
 +
 +    // Parchment start

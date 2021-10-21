@@ -30,13 +30,13 @@ index f5a18fb39eb69b2a9842d3f96aa1cd6a8dff6d9b..456d93305f524da6142bad320edb817b
      public Component getLocalizedDeathMessage(LivingEntity entity) {
          Component component = ComponentUtils.wrapInSquareBrackets(new TranslatableComponent("death.attack.badRespawnPoint.link")).withStyle((style) -> {
 diff --git a/src/main/java/net/minecraft/world/damagesource/DamageSource.java b/src/main/java/net/minecraft/world/damagesource/DamageSource.java
-index 80d19af2ad423bd3de0e039c5bb8f97af536aaa9..2cafb9edf4020c0b8d747dbb4ff91d7759bcd8c3 100644
+index 57bf7dba266b4df7b36bab2d58a609a1ce8948ef..2b65370654a6143bb3a6a1e02c30046bf447d398 100644
 --- a/src/main/java/net/minecraft/world/damagesource/DamageSource.java
 +++ b/src/main/java/net/minecraft/world/damagesource/DamageSource.java
-@@ -64,6 +64,18 @@ public class DamageSource {
+@@ -77,6 +77,18 @@ public class DamageSource {
          return this;
      }
-     // CraftBukkit end
+     // Paper end
 +    // Parchment start
 +    private @Nullable org.bukkit.Location location;
 +
@@ -52,7 +52,7 @@ index 80d19af2ad423bd3de0e039c5bb8f97af536aaa9..2cafb9edf4020c0b8d747dbb4ff91d77
  
      public static DamageSource sting(LivingEntity attacker) {
          return new EntityDamageSource("sting", attacker);
-@@ -114,17 +126,24 @@ public class DamageSource {
+@@ -127,17 +139,24 @@ public class DamageSource {
      }
  
      public static DamageSource explosion(@Nullable Explosion explosion) {
@@ -146,10 +146,10 @@ index 88439b8f82a97a9763dadfc6c9dbaf0912ab3eb7..73a9b765b58bb547712c014c8b908653
  
      public static boolean canSetSpawn(Level world) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index b39b05c7f6bd83f39a76c71735cfdee0f46339ba..d70a223533210fe582ee8b05dd2dd3e3763ba14c 100644
+index 576f01eb7c6fce8955f760c0b36e23c16c97e7a6..a3245218525f538aaba00c72f3500880853dd9d0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -954,7 +954,7 @@ public class CraftEventFactory {
+@@ -955,7 +955,7 @@ public class CraftEventFactory {
              CraftEventFactory.entityDamage = null;
              EntityDamageEvent event;
              if (damager == null) {
@@ -158,16 +158,16 @@ index b39b05c7f6bd83f39a76c71735cfdee0f46339ba..d70a223533210fe582ee8b05dd2dd3e3
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
-@@ -990,7 +990,7 @@ public class CraftEventFactory {
+@@ -991,7 +991,7 @@ public class CraftEventFactory {
  
-             return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled);
+             return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritcal()); // Paper - add critical damage API
          } else if (source == DamageSource.OUT_OF_WORLD) {
 -            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, modifiers, modifierFunctions);
 +            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, entity.getBukkitEntity().getLocation(), modifiers, modifierFunctions); // Parchment
              event.setCancelled(cancelled);
              CraftEventFactory.callEvent(event);
              if (!event.isCancelled()) {
-@@ -998,7 +998,7 @@ public class CraftEventFactory {
+@@ -999,7 +999,7 @@ public class CraftEventFactory {
              }
              return event;
          } else if (source == DamageSource.LAVA) {

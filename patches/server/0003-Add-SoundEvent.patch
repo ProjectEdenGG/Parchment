@@ -5,10 +5,10 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 9e4ad810dd6348ad95c9a7e6d1bd63f6ec37c986..2d61128dd328a2acd10d19033b251fca405f9ac9 100644
+index a62abcb2e05198001516cf2402dc7ead09761905..57743bb179ddb2c32641f45b5b1587e7cb998626 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1489,12 +1489,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1495,12 +1495,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
      public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
@@ -24,7 +24,7 @@ index 9e4ad810dd6348ad95c9a7e6d1bd63f6ec37c986..2d61128dd328a2acd10d19033b251fca
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index cd4ccb208baebd74780443fc575f0ce5b745fdc8..e440b7edb4ea88082d04adef8bf03265c043b800 100644
+index 11f46c1b8f4c8414e0667d1873542c17d6e01f2a..1d446104099856fd0ddbff28a1d280ee80613f39 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2174,7 +2174,7 @@ public class ServerPlayer extends Player {
@@ -37,10 +37,10 @@ index cd4ccb208baebd74780443fc575f0ce5b745fdc8..e440b7edb4ea88082d04adef8bf03265
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index ad9fb50791779a5fe7d22268b71bd10d9c9ff3f0..4032f499fd533e8d35d050758ea2358ad6878b94 100644
+index eaa005c1c9b4386bcdbe1d6eb28c3eca7635066c..32279bda7f5fe3400216d8cb0e6b75e29aa4156f 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -964,7 +964,7 @@ public abstract class PlayerList {
+@@ -965,7 +965,7 @@ public abstract class PlayerList {
          if (flag2 && !isLocAltered) {
              BlockState data = worldserver1.getBlockState(blockposition);
              worldserver1.setBlock(blockposition, data.setValue(RespawnAnchorBlock.CHARGE, data.getValue(RespawnAnchorBlock.CHARGE) - 1), 3);
@@ -50,7 +50,7 @@ index ad9fb50791779a5fe7d22268b71bd10d9c9ff3f0..4032f499fd533e8d35d050758ea2358a
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index cea92f1dc663bf0648b2bd877d86ca380a517bc9..266d676118e17af48e21370211c015898eba9691 100644
+index 94e76e295dbd0f3bac4b30a3e7338cd56a971207..4f55f1bd49137b60957a05faad0e0c2a9dec07dc 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -1832,7 +1832,7 @@ public abstract class Player extends LivingEntity {
@@ -85,10 +85,10 @@ index a79ba23ecf887ecbb6e095140f019ebb6fd0a6f7..5112edc5e68a386e9bb16ac0ec9d998e
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 4b06275f2939a351a965f51177a01b3124e2513e..b7d03f3c2707d55176964766ed0f85c9840f6025 100644
+index 771a00ae7f467660b0c39ffeee05281e114df378..576f01eb7c6fce8955f760c0b36e23c16c97e7a6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1873,4 +1873,77 @@ public class CraftEventFactory {
+@@ -1882,4 +1882,77 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end
