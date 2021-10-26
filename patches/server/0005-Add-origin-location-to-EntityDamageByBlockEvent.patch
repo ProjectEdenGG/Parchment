@@ -30,7 +30,7 @@ index f5a18fb39eb69b2a9842d3f96aa1cd6a8dff6d9b..456d93305f524da6142bad320edb817b
      public Component getLocalizedDeathMessage(LivingEntity entity) {
          Component component = ComponentUtils.wrapInSquareBrackets(new TranslatableComponent("death.attack.badRespawnPoint.link")).withStyle((style) -> {
 diff --git a/src/main/java/net/minecraft/world/damagesource/DamageSource.java b/src/main/java/net/minecraft/world/damagesource/DamageSource.java
-index 57bf7dba266b4df7b36bab2d58a609a1ce8948ef..2b65370654a6143bb3a6a1e02c30046bf447d398 100644
+index a828cad27fcd39f8bfbaefa97052a2a3b6650ee7..52cce7422c2a99e3de37f87ac704151682578718 100644
 --- a/src/main/java/net/minecraft/world/damagesource/DamageSource.java
 +++ b/src/main/java/net/minecraft/world/damagesource/DamageSource.java
 @@ -77,6 +77,18 @@ public class DamageSource {
@@ -146,7 +146,7 @@ index 88439b8f82a97a9763dadfc6c9dbaf0912ab3eb7..73a9b765b58bb547712c014c8b908653
  
      public static boolean canSetSpawn(Level world) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 576f01eb7c6fce8955f760c0b36e23c16c97e7a6..a3245218525f538aaba00c72f3500880853dd9d0 100644
+index b2f49ee945dae88c15a76e7ba5433b7ca150e9d6..a7679036d31f0262a68dd1bfb2871901b1d41825 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -955,7 +955,7 @@ public class CraftEventFactory {
@@ -160,7 +160,7 @@ index 576f01eb7c6fce8955f760c0b36e23c16c97e7a6..a3245218525f538aaba00c72f3500880
              } else {
 @@ -991,7 +991,7 @@ public class CraftEventFactory {
  
-             return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritcal()); // Paper - add critical damage API
+             return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritical()); // Paper - add critical damage API
          } else if (source == DamageSource.OUT_OF_WORLD) {
 -            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, modifiers, modifierFunctions);
 +            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, entity.getBukkitEntity().getLocation(), modifiers, modifierFunctions); // Parchment
