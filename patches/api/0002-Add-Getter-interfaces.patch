@@ -659,7 +659,7 @@ index ff8f1231f3e2e71740fd24fa8d4dac5d0e550ae7..4a1e40e0c7cff6ef8898771adf3bc600
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index ad8bce01ba459a036cd4ebbbe4fc974021924fe2..e328ec2b922a839dd57bcc33d02a94eb90fbf307 100644
+index 70caaf05be813ba390412714ba0a39981edc2475..84525ded139292612256cba0ae3933a3b07f6fab 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
@@ -672,7 +672,7 @@ index ad8bce01ba459a036cd4ebbbe4fc974021924fe2..e328ec2b922a839dd57bcc33d02a94eb
      /**
       * Gets the metadata for this block
 diff --git a/src/main/java/org/bukkit/block/BlockState.java b/src/main/java/org/bukkit/block/BlockState.java
-index 631cbf2be51040eee00aa39a39c5ec4003f91843..71ce90d8eb69cc2071f0b78534ded55a857998c4 100644
+index 96cde879922c796f3ac8d14ee99d7b190ff67bd9..5b7a4a1c4e210ad7e8c81e2958e26d0394060fdb 100644
 --- a/src/main/java/org/bukkit/block/BlockState.java
 +++ b/src/main/java/org/bukkit/block/BlockState.java
 @@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
@@ -711,15 +711,15 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..3f87365f96b220cf58b5ab9405ec77b7
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index b02704b0535522c5535b560105eec2885fdd3e77..9ee1baa776985e5e120c128436911b40da031939 100644
+index bafad5764cc3933fcd9602d37bd2e68424cbd575..c01d0c2bdd90a54ce853be610ed4554ce2030af4 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a base entity in the world
   */
--public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity> { // Paper
-+public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, me.lexikiq.HasUniqueId, me.lexikiq.HasLocation { // Paper // Parchment
+-public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, net.kyori.adventure.sound.Sound.Emitter { // Paper
++public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, net.kyori.adventure.sound.Sound.Emitter, me.lexikiq.HasUniqueId, me.lexikiq.HasLocation { // Paper // Parchment
  
      /**
       * Gets the entity's current position
@@ -745,10 +745,10 @@ index 28d1ff809e44bda0324ffac957c1d455be02e783..8b72f9e7514cffa5631186a4fd21671c
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 3e8cd3971ac8256a40d9b85cd7514998c965512c..892d7ea32ffd1a4a50b35a7e2d15407a3a8be880 100644
+index 9a6e410206852029f1fea0c4409352d5743dcf64..2b38fdc2dad244927a38c779f9c87073d017c259 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -41,7 +41,7 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */
@@ -757,7 +757,7 @@ index 3e8cd3971ac8256a40d9b85cd7514998c965512c..892d7ea32ffd1a4a50b35a7e2d15407a
  
      // Paper start
      @Override
-@@ -50,6 +50,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -49,6 +49,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
          return net.kyori.adventure.identity.Identity.identity(this.getUniqueId());
      }
  
@@ -775,7 +775,7 @@ index 3e8cd3971ac8256a40d9b85cd7514998c965512c..892d7ea32ffd1a4a50b35a7e2d15407a
       * Gets the "friendly" name to display of this player.
       *
 diff --git a/src/main/java/org/bukkit/event/block/BlockBreakEvent.java b/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
-index c05cd9cadcff827a2eb236cf955bc898fa5e8b52..cc3c009be9756a5fcc8e579c1854721edc4a650f 100644
+index 691733a642b3295bbe6d484be728c77cd32803bd..4481f9ea86fa18ea1fd2ea815784020cd2568740 100644
 --- a/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
 +++ b/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
 @@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;

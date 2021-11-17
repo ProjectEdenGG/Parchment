@@ -5,10 +5,10 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index dcaa189c17dd928d7a19e820ec2ff521e7243b7a..d83eeac033164ff7007c2b8c6aaff40efda69262 100644
+index 424f3a9a645d57ad43c52932f5b388b5f146b9f0..a50eb7ba668ba4410c7a7fee629bdac958734311 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -523,6 +523,55 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -559,6 +559,55 @@ public final class CraftMagicNumbers implements UnsafeValues {
      }
      // Paper end
  
