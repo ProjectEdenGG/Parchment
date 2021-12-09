@@ -1,2 +1,0 @@
-# Add UnsafeValues#canPlaceItemOn
-public net.minecraft.world.item.BlockItem canPlace(Lnet/minecraft/world/item/context/BlockPlaceContext;Lnet/minecraft/world/level/block/state/BlockState;)Z
