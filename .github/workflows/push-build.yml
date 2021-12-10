@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [17]
+        java: [16]
       fail-fast: true
 
     steps:
