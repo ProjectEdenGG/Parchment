@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index e067c69fea1dec79ef8e97cad1c74020b6a3a235..1a906b8a29e8359dda43985a37c1857c4f6f74cd 100644
+index f442236efe30d7d9e0c6a8dfb0f040540dc62753..fdb196e44535eebf63a6c0e0ee98280e21d9b450 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -22,8 +22,8 @@ repositories {
@@ -19,7 +19,7 @@ index e067c69fea1dec79ef8e97cad1c74020b6a3a235..1a906b8a29e8359dda43985a37c1857c
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -74,7 +74,7 @@ tasks.jar {
+@@ -75,7 +75,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -28,7 +28,7 @@ index e067c69fea1dec79ef8e97cad1c74020b6a3a235..1a906b8a29e8359dda43985a37c1857c
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -96,6 +96,26 @@ publishing {
+@@ -97,6 +97,26 @@ publishing {
              classifier = null
          }
          artifact(tasks.shadowJar)
@@ -55,7 +55,7 @@ index e067c69fea1dec79ef8e97cad1c74020b6a3a235..1a906b8a29e8359dda43985a37c1857c
      }
  }
  
-@@ -140,7 +160,7 @@ tasks.shadowJar {
+@@ -141,7 +161,7 @@ tasks.shadowJar {
  
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
@@ -64,7 +64,7 @@ index e067c69fea1dec79ef8e97cad1c74020b6a3a235..1a906b8a29e8359dda43985a37c1857c
          rename { "pom.xml" }
      }
  
-@@ -201,7 +221,7 @@ tasks.test {
+@@ -202,7 +222,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
