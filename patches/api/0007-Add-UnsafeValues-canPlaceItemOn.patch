@@ -5,10 +5,10 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 014c9984018ad5e51a26228a137e1ba4eb3e80c8..532040d23ef01513d1700f2fa3f09dc580784fc2 100644
+index 81e17ebb54f8b5c085842f223081f3d6d33a317d..701ac7a2cbce1567487e2ffff8e9cb24222fe9ab 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -218,4 +218,17 @@ public interface UnsafeValues {
+@@ -219,4 +219,17 @@ public interface UnsafeValues {
       */
      boolean isCollidable(@org.jetbrains.annotations.NotNull Material material);
      // Paper end
