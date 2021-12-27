@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index da31e84cb558e6fad9cab015cfae753ce7be7db0..a1aecd789f09ef1e89e2a9c237cd8e1f9a47567b 100644
+index da31e84cb558e6fad9cab015cfae753ce7be7db0..bc67fde546f837f73fd8bed4d37b35db787523b9 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,8 +18,8 @@ repositories {
@@ -28,11 +28,13 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..a1aecd789f09ef1e89e2a9c237cd8e1f
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -85,6 +85,26 @@ tasks.jar {
+@@ -84,7 +84,27 @@ tasks.jar {
+ 
  publishing {
      publications.create<MavenPublication>("maven") {
-         artifact(tasks.shadowJar)
-+    // Parchment start
+-        artifact(tasks.shadowJar)
++        // Parchment start
++        artifact(tasks.reobfJar)
 +        groupId = project.group as String?
 +        artifactId = "parchment"
 +        version = project.version as String?
