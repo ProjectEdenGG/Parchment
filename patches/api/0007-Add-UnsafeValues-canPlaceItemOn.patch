@@ -5,7 +5,7 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 014c9984018ad5e51a26228a137e1ba4eb3e80c8..5606c09f62b7ad0cf33bb507d71830581114afd4 100644
+index 014c9984018ad5e51a26228a137e1ba4eb3e80c8..532040d23ef01513d1700f2fa3f09dc580784fc2 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
 @@ -218,4 +218,17 @@ public interface UnsafeValues {
@@ -23,6 +23,6 @@ index 014c9984018ad5e51a26228a137e1ba4eb3e80c8..5606c09f62b7ad0cf33bb507d7183058
 +     * @param face cardinal direction
 +     * @return if the item can be placed
 +     */
-+    java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(@org.jetbrains.annotations.NotNull ItemStack item, @org.jetbrains.annotations.Nullable me.lexikiq.OptionalHumanEntity player, @org.jetbrains.annotations.NotNull org.bukkit.block.Block block, @org.jetbrains.annotations.NotNull org.bukkit.block.BlockFace face);
++    java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(@org.jetbrains.annotations.NotNull ItemStack item, @org.jetbrains.annotations.Nullable gg.projecteden.parchment.OptionalHumanEntity player, @org.jetbrains.annotations.NotNull org.bukkit.block.Block block, @org.jetbrains.annotations.NotNull org.bukkit.block.BlockFace face);
 +    // Parchment end
  }

@@ -7,13 +7,13 @@ Adds an event which allows plugin developers
 to easily get the items being dropped by any
 block instead of only blocks broken by players.
 
-diff --git a/src/main/java/me/lexikiq/event/block/BlockDropResourcesEvent.java b/src/main/java/me/lexikiq/event/block/BlockDropResourcesEvent.java
+diff --git a/src/main/java/gg/projecteden/parchment/event/block/BlockDropResourcesEvent.java b/src/main/java/gg/projecteden/parchment/event/block/BlockDropResourcesEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..5ac4994b3e530f7e7636dddfdf24dec12e74ebf7
+index 0000000000000000000000000000000000000000..1547d962e9c27411915a34efe0db0c3dff99c6e5
 --- /dev/null
-+++ b/src/main/java/me/lexikiq/event/block/BlockDropResourcesEvent.java
++++ b/src/main/java/gg/projecteden/parchment/event/block/BlockDropResourcesEvent.java
 @@ -0,0 +1,45 @@
-+package me.lexikiq.event.block;
++package gg.projecteden.parchment.event.block;
 +
 +import org.bukkit.block.Block;
 +import org.bukkit.event.HandlerList;

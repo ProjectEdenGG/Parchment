@@ -4,13 +4,13 @@ Date: Sat, 19 Jun 2021 22:55:10 -0400
 Subject: [PATCH] Add SoundEvent
 
 
-diff --git a/src/main/java/me/lexikiq/event/sound/EntitySoundEvent.java b/src/main/java/me/lexikiq/event/sound/EntitySoundEvent.java
+diff --git a/src/main/java/gg/projecteden/parchment/event/sound/EntitySoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/EntitySoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..af2a2e87c8e266e908a9a72df1e469842cb7f19d
+index 0000000000000000000000000000000000000000..5b74910e441a943597d3170ff00a9b9debab1d38
 --- /dev/null
-+++ b/src/main/java/me/lexikiq/event/sound/EntitySoundEvent.java
++++ b/src/main/java/gg/projecteden/parchment/event/sound/EntitySoundEvent.java
 @@ -0,0 +1,49 @@
-+package me.lexikiq.event.sound;
++package gg.projecteden.parchment.event.sound;
 +
 +import org.apache.commons.lang.Validate;
 +import org.bukkit.Sound;
@@ -59,15 +59,15 @@ index 0000000000000000000000000000000000000000..af2a2e87c8e266e908a9a72df1e46984
 +        return origin.getWorld();
 +    }
 +}
-diff --git a/src/main/java/me/lexikiq/event/sound/LocationCustomSoundEvent.java b/src/main/java/me/lexikiq/event/sound/LocationCustomSoundEvent.java
+diff --git a/src/main/java/gg/projecteden/parchment/event/sound/LocationCustomSoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/LocationCustomSoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..f007bc326bea341735e7313789f5d110af5ac4ca
+index 0000000000000000000000000000000000000000..59ad830329f31fdb13d402514b07ad851cb71dae
 --- /dev/null
-+++ b/src/main/java/me/lexikiq/event/sound/LocationCustomSoundEvent.java
++++ b/src/main/java/gg/projecteden/parchment/event/sound/LocationCustomSoundEvent.java
 @@ -0,0 +1,121 @@
-+package me.lexikiq.event.sound;
++package gg.projecteden.parchment.event.sound;
 +
-+import me.lexikiq.HasLocation;
++import gg.projecteden.parchment.HasLocation;
 +import org.apache.commons.lang.Validate;
 +import org.bukkit.Keyed;
 +import org.bukkit.Location;
@@ -186,15 +186,15 @@ index 0000000000000000000000000000000000000000..f007bc326bea341735e7313789f5d110
 +        return handlers;
 +    }
 +}
-diff --git a/src/main/java/me/lexikiq/event/sound/LocationNamedSoundEvent.java b/src/main/java/me/lexikiq/event/sound/LocationNamedSoundEvent.java
+diff --git a/src/main/java/gg/projecteden/parchment/event/sound/LocationNamedSoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/LocationNamedSoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..81ba14fea8d04347a0fd3931b27188028c5ac859
+index 0000000000000000000000000000000000000000..0872f3850860fe7cca28aeabed6235cc2a805c94
 --- /dev/null
-+++ b/src/main/java/me/lexikiq/event/sound/LocationNamedSoundEvent.java
++++ b/src/main/java/gg/projecteden/parchment/event/sound/LocationNamedSoundEvent.java
 @@ -0,0 +1,72 @@
-+package me.lexikiq.event.sound;
++package gg.projecteden.parchment.event.sound;
 +
-+import me.lexikiq.HasLocation;
++import gg.projecteden.parchment.HasLocation;
 +import org.apache.commons.lang.Validate;
 +import org.bukkit.Location;
 +import org.bukkit.Sound;
@@ -264,13 +264,13 @@ index 0000000000000000000000000000000000000000..81ba14fea8d04347a0fd3931b2718802
 +		this.vector = vector;
 +	}
 +}
-diff --git a/src/main/java/me/lexikiq/event/sound/NamedSoundEvent.java b/src/main/java/me/lexikiq/event/sound/NamedSoundEvent.java
+diff --git a/src/main/java/gg/projecteden/parchment/event/sound/NamedSoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/NamedSoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..8623e03aa5ca094629bf6a20669ea8c5086d938c
+index 0000000000000000000000000000000000000000..e51fd733424d9410fca24ba47883974efe9afad6
 --- /dev/null
-+++ b/src/main/java/me/lexikiq/event/sound/NamedSoundEvent.java
++++ b/src/main/java/gg/projecteden/parchment/event/sound/NamedSoundEvent.java
 @@ -0,0 +1,64 @@
-+package me.lexikiq.event.sound;
++package gg.projecteden.parchment.event.sound;
 +
 +import org.apache.commons.lang.Validate;
 +import org.bukkit.Sound;
@@ -334,15 +334,15 @@ index 0000000000000000000000000000000000000000..8623e03aa5ca094629bf6a20669ea8c5
 +        return handlers;
 +    }
 +}
-diff --git a/src/main/java/me/lexikiq/event/sound/SoundEvent.java b/src/main/java/me/lexikiq/event/sound/SoundEvent.java
+diff --git a/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..5cc39ee9ae52a52bebde46236162f1260b96b3a0
+index 0000000000000000000000000000000000000000..ae7abca5d88fc7f650559b220de73b6f20a6a899
 --- /dev/null
-+++ b/src/main/java/me/lexikiq/event/sound/SoundEvent.java
++++ b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 @@ -0,0 +1,97 @@
-+package me.lexikiq.event.sound;
++package gg.projecteden.parchment.event.sound;
 +
-+import me.lexikiq.OptionalHumanEntity;
++import gg.projecteden.parchment.OptionalHumanEntity;
 +import org.apache.commons.lang.Validate;
 +import org.bukkit.SoundCategory;
 +import org.bukkit.World;

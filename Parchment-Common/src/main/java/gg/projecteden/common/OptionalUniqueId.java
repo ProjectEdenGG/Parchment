@@ -1,4 +1,4 @@
-package me.lexikiq;
+package gg.projecteden.common;
 
 import org.jetbrains.annotations.Nullable;
 

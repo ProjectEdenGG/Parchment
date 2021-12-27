@@ -5,7 +5,7 @@ Subject: [PATCH] Add PlayerUseRespawnAnchorEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-index 0a5d563700c9f806139001181f01fa9d0111f792..88439b8f82a97a9763dadfc6c9dbaf0912ab3eb7 100644
+index 07e893f1859abe3c2a765694c21309d60346ca82..86692a83fb9acd3a501da58e6d509865b49931fe 100644
 --- a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
 @@ -52,33 +52,51 @@ public class RespawnAnchorBlock extends Block {
@@ -16,30 +16,30 @@ index 0a5d563700c9f806139001181f01fa9d0111f792..88439b8f82a97a9763dadfc6c9dbaf09
 +        // Parchment start -- PlayerUseRespawnAnchorEvent
 +        org.bukkit.entity.Player bukkitPlayer = player.getBukkitEntity() instanceof org.bukkit.entity.Player ? (org.bukkit.entity.Player) player.getBukkitEntity() : null;
 +        org.bukkit.block.Block block = org.bukkit.craftbukkit.block.CraftBlock.at(world, pos);
-+        me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult result;
++        gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult result;
          if (hand == InteractionHand.MAIN_HAND && !isRespawnFuel(itemStack) && isRespawnFuel(player.getItemInHand(InteractionHand.OFF_HAND))) {
              return InteractionResult.PASS;
          } else if (isRespawnFuel(itemStack) && canBeCharged(state)) {
-+            result = me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE;
++            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE;
 +        } else if (state.getValue(CHARGE) == 0) {
-+            result = me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING;
++            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING;
 +        } else if (!canSetSpawn(world) && !world.isClientSide) {
-+            result = me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE;
++            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE;
 +        } else if (!world.isClientSide) {
-+            result = me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.SET_SPAWN;
++            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.SET_SPAWN;
 +        } else {
 +            return InteractionResult.SUCCESS;
 +        }
 +
 +        if (bukkitPlayer != null) {
-+            me.lexikiq.event.player.PlayerUseRespawnAnchorEvent event = new me.lexikiq.event.player.PlayerUseRespawnAnchorEvent(bukkitPlayer, block, result);
++            gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent event = new gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent(bukkitPlayer, block, result);
 +            event.callEvent();
 +            result = event.getResult();
 +        }
 +
-+        if (result == me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING) {
++        if (result == gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING) {
 +            return InteractionResult.PASS;
-+        } else if (result == me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE) {
++        } else if (result == gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE) {
              charge(world, pos, state);
              if (!player.getAbilities().instabuild) {
                  itemStack.shrink(1);
@@ -54,7 +54,7 @@ index 0a5d563700c9f806139001181f01fa9d0111f792..88439b8f82a97a9763dadfc6c9dbaf09
 -            }
 -
 -            return InteractionResult.sidedSuccess(world.isClientSide);
-+        } else if (result == me.lexikiq.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE) {
++        } else if (result == gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE) {
 +            this.explode(state, world, pos);
 +            return InteractionResult.CONSUME;
          } else {
