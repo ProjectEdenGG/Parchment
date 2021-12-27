@@ -12,7 +12,7 @@ index a23b2bd8e1ca1ff8d0ad5ed5d5e41c89e4795090..590754921a6c7de54fa79d0a15c95a96
  }
  
  dependencies {
-+    api(project(":Parchment-Common")) // Parchment
++    api("gg.projecteden:eden-common:2.0.0-SNAPSHOT") // Parchment
      // api dependencies are listed transitively to API consumers
      api("commons-lang:commons-lang:2.6")
      api("com.google.guava:guava:31.0.1-jre")
