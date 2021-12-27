@@ -340,7 +340,7 @@ index 0000000000000000000000000000000000000000..db44b117423fa65979480c8922de5eeb
 + * Class that may be like a {@link org.bukkit.entity.Player} in that it has a {@link java.util.UUID}, {@link org.bukkit.OfflinePlayer}, {@link Identity}, and a nullable Player.
 + * @see gg.projecteden.parchment.PlayerLike
 + */
-+public interface OptionalPlayerLike extends OptionalPlayer, HasUniqueId, HasOfflinePlayer, OptionalLocation, Identified, Audience {
++public interface OptionalPlayerLike extends OptionalPlayer, gg.projecteden.common.HasUniqueId, HasOfflinePlayer, OptionalLocation, Identified, Audience {
 +    /**
 +     * Gets the identity associated with this object
 +     *
