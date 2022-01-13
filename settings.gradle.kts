@@ -5,6 +5,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Parchment"
+rootProject.name = "parchment"
 
-include("Parchment-API", "Parchment-Server")
+include("parchment-api", "parchment-server")

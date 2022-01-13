@@ -14,7 +14,7 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..bc67fde546f837f73fd8bed4d37b35db
  dependencies {
 -    implementation(project(":paper-api"))
 -    implementation(project(":paper-mojangapi"))
-+    implementation(project(":Parchment-API")) // Parchment
++    implementation(project(":parchment-api")) // Parchment
 +    implementation("io.papermc.paper:paper-mojangapi:1.18.1-R0.1-SNAPSHOT") // Parchment
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
