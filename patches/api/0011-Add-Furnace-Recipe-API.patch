@@ -64,10 +64,10 @@ index 0000000000000000000000000000000000000000..28c01caa9d6379046f6af6612719b404
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 1f8a51897d9de00f0004ab1de479198390483f7d..a74ee256922b220c1de31bb9784a78ffde59499d 100644
+index c808cc8dc96e325c543391048414880ed18a3ed3..9bd733282ed1aa1ac36d88a8da6bcbc20709ff12 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -3772,6 +3772,36 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -3797,6 +3797,36 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
      @Nullable
      public DragonBattle getEnderDragonBattle();
  

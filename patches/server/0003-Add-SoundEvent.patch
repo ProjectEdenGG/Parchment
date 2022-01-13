@@ -5,7 +5,7 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 28f605c3daa969c1a54745e552d55ecb874120a9..205b2a1c7db64cb0b23289e11d8b551a78fca5be 100644
+index a2abb8aa1a257ccd2b5dbddc037fffc6eb600758..c27a253179d49956ebdd9d7b7b294a13690e4ca7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1504,12 +1504,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -37,7 +37,7 @@ index 7b23535a680d2a8534dcb8dd87770f66fb982c13..d522d26b388dbd3b61ca82e5d5ea83f5
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 042be2cf60a9d01698808d84f2e537a5eb952079..9d624f8dc709bc43889bd5872582ac6f8e19da75 100644
+index f55f8c0b2c748a5442199c0a7f772b02ed533753..a05fa33f1525eb20d12163f8b3f34899c6da4fb1 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -963,7 +963,7 @@ public abstract class PlayerList {
@@ -50,10 +50,10 @@ index 042be2cf60a9d01698808d84f2e537a5eb952079..9d624f8dc709bc43889bd5872582ac6f
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 2c00a766130a7f682fc6c4c74321e10637ca7932..2f6a7bb94f8fee19f8575ed640b33b2badb5e641 100644
+index d85da02be7f1d494af8f2cc840c49073774f5f9c..a90cbb8d5c3231f3278bd4893fa1443827c6567b 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1834,7 +1834,7 @@ public abstract class Player extends LivingEntity {
+@@ -1833,7 +1833,7 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
          fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {
@@ -85,10 +85,10 @@ index 7131226de05bc57830f7a68ba545ebfd19d33a59..56b5f5f9992c9f9fea7a606684efd44c
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index c667baa2da8222eb66344c8f1cc0fed416c4df01..c73e771ce5b428864e7d4f5e852e2103f48f9cfb 100644
+index 35cc150adf51f79e2fccef8b094c90554aafbee2..d479d3f0228af7fa91056e4ef17a09f6c4ad9d73 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1888,4 +1888,77 @@ public class CraftEventFactory {
+@@ -1900,4 +1900,77 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end
