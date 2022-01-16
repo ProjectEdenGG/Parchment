@@ -37,10 +37,10 @@ index 7b23535a680d2a8534dcb8dd87770f66fb982c13..d522d26b388dbd3b61ca82e5d5ea83f5
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index f55f8c0b2c748a5442199c0a7f772b02ed533753..a05fa33f1525eb20d12163f8b3f34899c6da4fb1 100644
+index cd08f9b16c065be8f0eacaeba51d3e72d332daf9..02f373ecd9e4da1115da9c650b91893be9d0faf5 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -963,7 +963,7 @@ public abstract class PlayerList {
+@@ -967,7 +967,7 @@ public abstract class PlayerList {
          if (flag2 && !isLocAltered) {
              BlockState data = worldserver1.getBlockState(blockposition);
              worldserver1.setBlock(blockposition, data.setValue(RespawnAnchorBlock.CHARGE, data.getValue(RespawnAnchorBlock.CHARGE) - 1), 3);
