@@ -61,10 +61,10 @@ index 0000000000000000000000000000000000000000..5b74910e441a943597d3170ff00a9b9d
 +}
 diff --git a/src/main/java/gg/projecteden/parchment/event/sound/LocationCustomSoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/LocationCustomSoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..59ad830329f31fdb13d402514b07ad851cb71dae
+index 0000000000000000000000000000000000000000..eed6098d16e051484129396c694b9cfbb8172fce
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/sound/LocationCustomSoundEvent.java
-@@ -0,0 +1,121 @@
+@@ -0,0 +1,95 @@
 +package gg.projecteden.parchment.event.sound;
 +
 +import gg.projecteden.parchment.HasLocation;
@@ -159,32 +159,6 @@ index 0000000000000000000000000000000000000000..59ad830329f31fdb13d402514b07ad85
 +		Validate.notNull(key, "key cannot be null");
 +		this.key = key;
 +	}
-+
-+	// boilerplate
-+
-+    private boolean cancelled;
-+
-+    @Override
-+    public boolean isCancelled() {
-+        return cancelled;
-+    }
-+
-+    @Override
-+    public void setCancelled(boolean cancelled) {
-+        this.cancelled = cancelled;
-+    }
-+
-+    private static final org.bukkit.event.HandlerList handlers = new org.bukkit.event.HandlerList();
-+
-+    @Override
-+    public @NotNull org.bukkit.event.HandlerList getHandlers() {
-+        return handlers;
-+    }
-+
-+    @NotNull
-+    public static org.bukkit.event.HandlerList getHandlerList() {
-+        return handlers;
-+    }
 +}
 diff --git a/src/main/java/gg/projecteden/parchment/event/sound/LocationNamedSoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/LocationNamedSoundEvent.java
 new file mode 100644
@@ -266,10 +240,10 @@ index 0000000000000000000000000000000000000000..0872f3850860fe7cca28aeabed6235cc
 +}
 diff --git a/src/main/java/gg/projecteden/parchment/event/sound/NamedSoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/NamedSoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e51fd733424d9410fca24ba47883974efe9afad6
+index 0000000000000000000000000000000000000000..9c2e257de3487a73d4f5b796177061d8fea4c0f7
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/sound/NamedSoundEvent.java
-@@ -0,0 +1,64 @@
+@@ -0,0 +1,38 @@
 +package gg.projecteden.parchment.event.sound;
 +
 +import org.apache.commons.lang.Validate;
@@ -307,39 +281,13 @@ index 0000000000000000000000000000000000000000..e51fd733424d9410fca24ba47883974e
 +		Validate.notNull(sound, "sound cannot be null");
 +		this.sound = sound;
 +	}
-+
-+    // boilerplate
-+
-+    private boolean cancelled;
-+
-+    @Override
-+    public boolean isCancelled() {
-+        return cancelled;
-+    }
-+
-+    @Override
-+    public void setCancelled(boolean cancelled) {
-+        this.cancelled = cancelled;
-+    }
-+
-+    private static final org.bukkit.event.HandlerList handlers = new org.bukkit.event.HandlerList();
-+
-+    @Override
-+    public @NotNull org.bukkit.event.HandlerList getHandlers() {
-+        return handlers;
-+    }
-+
-+    @NotNull
-+    public static org.bukkit.event.HandlerList getHandlerList() {
-+        return handlers;
-+    }
 +}
 diff --git a/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ae7abca5d88fc7f650559b220de73b6f20a6a899
+index 0000000000000000000000000000000000000000..0506c9e461296aeb12da23b476b9b1c57702b7e1
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
-@@ -0,0 +1,97 @@
+@@ -0,0 +1,123 @@
 +package gg.projecteden.parchment.event.sound;
 +
 +import gg.projecteden.parchment.OptionalHumanEntity;
@@ -430,10 +378,36 @@ index 0000000000000000000000000000000000000000..ae7abca5d88fc7f650559b220de73b6f
 +		this.pitch = pitch;
 +	}
 +
++    // boilerplate
++
++    private boolean cancelled;
++
++    @Override
++    public boolean isCancelled() {
++        return cancelled;
++    }
++
++    @Override
++    public void setCancelled(boolean cancelled) {
++        this.cancelled = cancelled;
++    }
++
 +    /**
 +     * Gets the world in which the sound is being played
 +     * @return sound's world
 +     */
 +    @NotNull
 +	public abstract World getWorld();
++
++    private static final org.bukkit.event.HandlerList handlers = new org.bukkit.event.HandlerList();
++
++    @Override
++    public @NotNull org.bukkit.event.HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static org.bukkit.event.HandlerList getHandlerList() {
++        return handlers;
++    }
 +}
