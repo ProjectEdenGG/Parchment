@@ -5,10 +5,10 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 028f6a1795ceb99d1760c73b0980238677b4b8bc..603c4c12130c1be68eda955d89fb83f30b083ab3 100644
+index 028f6a1795ceb99d1760c73b0980238677b4b8bc..0466c22ca2325d090a5763c6b940252c32815a85 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -18,8 +18,9 @@ repositories {
+@@ -18,8 +18,8 @@ repositories {
  }
  
  dependencies {
@@ -16,11 +16,10 @@ index 028f6a1795ceb99d1760c73b0980238677b4b8bc..603c4c12130c1be68eda955d89fb83f3
 -    implementation(project(":paper-mojangapi"))
 +    implementation(project(":parchment-api")) // Parchment
 +    implementation("io.papermc.paper:paper-mojangapi:1.18.1-R0.1-SNAPSHOT") // Parchment
-+    compileOnly("gg.projecteden:eden-common:2.0.5-SNAPSHOT") // Parchment
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -68,7 +69,7 @@ tasks.jar {
+@@ -68,7 +68,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -29,7 +28,7 @@ index 028f6a1795ceb99d1760c73b0980238677b4b8bc..603c4c12130c1be68eda955d89fb83f3
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -84,7 +85,27 @@ tasks.jar {
+@@ -84,7 +84,27 @@ tasks.jar {
  
  publishing {
      publications.create<MavenPublication>("maven") {
@@ -58,7 +57,7 @@ index 028f6a1795ceb99d1760c73b0980238677b4b8bc..603c4c12130c1be68eda955d89fb83f3
      }
  }
  
-@@ -156,7 +177,7 @@ fun TaskContainer.registerRunTask(
+@@ -156,7 +176,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {

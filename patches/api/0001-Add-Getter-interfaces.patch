@@ -659,7 +659,7 @@ index ff8f1231f3e2e71740fd24fa8d4dac5d0e550ae7..ee19d7fd5bb1851af39320f1edd858e1
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 0dd0beee6800fb34520dfa2d05e5bdda76624d64..1c34b25d3c8a4ec098de6402de4c84fc663d5c27 100644
+index 5f35ba35f8517ec28c1b21b3007c9a20dea097a7..37c83fd0ed65bc8b65ffca01b7e051d2175b751d 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
@@ -745,7 +745,7 @@ index 28d1ff809e44bda0324ffac957c1d455be02e783..2b64852da2f22bd984216ef0164587e0
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 5e4a9ce5f899624255e806152c59f60664bcf701..366ea14e42c21bd43f51434ddbf2d91b1433dff0 100644
+index 7eda2ba17e39b8183e572c1cefa8afffbf17afcb..4d518881b845087730ae51e4baad569400c312e1 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -43,7 +43,7 @@ import org.jetbrains.annotations.Nullable;
@@ -1051,7 +1051,7 @@ index 9013d043503d175004ad276799e5935b7fa59dc4..4095ca19e6ceff2432e0cbd372e9475f
      private boolean cancelled;
  
 diff --git a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
-index 694a81769076ea58aae9f14f076ab80c9952c957..d6efe9d51f1c8e975a897a1b03cfe5ceef5358f3 100644
+index 356d1154b0732e2daf242d60fa715dba9f2dc9db..9722f420816246fee91eaf19d320a9b5b42e94fc 100644
 --- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;

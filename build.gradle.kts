@@ -48,6 +48,10 @@ subprojects {
         maven("https://papermc.io/repo/repository/maven-public/")
         maven("https://sonatype.projecteden.gg/repository/maven-public/")
     }
+
+    dependencies {
+        compileOnly("gg.projecteden:eden-common:2.0.5-SNAPSHOT")
+    }
 }
 
 paperweight {
