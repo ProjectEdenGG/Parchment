@@ -5,10 +5,10 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index da31e84cb558e6fad9cab015cfae753ce7be7db0..bc67fde546f837f73fd8bed4d37b35db787523b9 100644
+index 028f6a1795ceb99d1760c73b0980238677b4b8bc..603c4c12130c1be68eda955d89fb83f30b083ab3 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -18,8 +18,8 @@ repositories {
+@@ -18,8 +18,9 @@ repositories {
  }
  
  dependencies {
@@ -16,10 +16,11 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..bc67fde546f837f73fd8bed4d37b35db
 -    implementation(project(":paper-mojangapi"))
 +    implementation(project(":parchment-api")) // Parchment
 +    implementation("io.papermc.paper:paper-mojangapi:1.18.1-R0.1-SNAPSHOT") // Parchment
++    compileOnly("gg.projecteden:eden-common:2.0.5-SNAPSHOT") // Parchment
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -68,7 +68,7 @@ tasks.jar {
+@@ -68,7 +69,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -28,7 +29,7 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..bc67fde546f837f73fd8bed4d37b35db
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -84,7 +84,27 @@ tasks.jar {
+@@ -84,7 +85,27 @@ tasks.jar {
  
  publishing {
      publications.create<MavenPublication>("maven") {
@@ -57,7 +58,7 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..bc67fde546f837f73fd8bed4d37b35db
      }
  }
  
-@@ -156,7 +176,7 @@ fun TaskContainer.registerRunTask(
+@@ -156,7 +177,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -104,7 +105,7 @@ index ece77f5ea4b14bbed7c070131b3251ea86764538..71bf426f7fb58fff6739bb1332d1286d
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 481a5dbad82f3f8dd5b1bf8ab207d82ec73d5bbd..cc685535868f594e50b9595dc073f71f4e1a2966 100644
+index c4e8e6af67b57406012612b617a7dcaa6e391d09..c43e1eb98644466ca5725b622fe33e2f983805c5 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1709,7 +1709,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -117,7 +118,7 @@ index 481a5dbad82f3f8dd5b1bf8ab207d82ec73d5bbd..cc685535868f594e50b9595dc073f71f
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ba7023e7ca5d29375ff53c2951892138d155f69f..930772d4326aa106f9a267bc750eda11ca0ea355 100644
+index 54e8f0f367645f3aa8af5b1cb69c39c0cec9381f..6a5a6fbd31db4e0e3e562e506cb033778f4475c4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -254,7 +254,7 @@ import javax.annotation.Nullable; // Paper
