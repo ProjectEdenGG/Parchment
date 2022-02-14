@@ -104,7 +104,7 @@ index ece77f5ea4b14bbed7c070131b3251ea86764538..71bf426f7fb58fff6739bb1332d1286d
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c4e8e6af67b57406012612b617a7dcaa6e391d09..c43e1eb98644466ca5725b622fe33e2f983805c5 100644
+index eab93e1e3712c0a01cac187bf5944818c813d665..b0cf1f901fc0798e858be395ef349a42a7b3954a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1709,7 +1709,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -117,10 +117,10 @@ index c4e8e6af67b57406012612b617a7dcaa6e391d09..c43e1eb98644466ca5725b622fe33e2f
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 54e8f0f367645f3aa8af5b1cb69c39c0cec9381f..6a5a6fbd31db4e0e3e562e506cb033778f4475c4 100644
+index f0629cac377b29246e990a01d60601270cbd77bd..ba750e735bb856532a74dde2ef7dba32d4c970d1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -254,7 +254,7 @@ import javax.annotation.Nullable; // Paper
+@@ -251,7 +251,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -130,7 +130,7 @@ index 54e8f0f367645f3aa8af5b1cb69c39c0cec9381f..6a5a6fbd31db4e0e3e562e506cb03377
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 55bae3efbc630be6d40d415509de4c3e744a5004..c605f411cddfb9d952f26baf9094ac34527c985e 100644
+index f810bebfca3932c80e20646eb0680f7718506707..e7a94177d6cecc422fb20745549b09e117b5cdc7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -269,7 +269,7 @@ public class Main {

@@ -593,10 +593,10 @@ index 8321441b8f528a05e297f485672f928e76fe017d..e3b684a189b5c8e2d2b73ef9b0578690
       * Sets the world that this location resides in
       *
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index 3afd5f5c0208a4ee93b5dbfc2aab2b9d2e8a7544..53decf2105e68e62478acebc73e3483918ced370 100644
+index 23e853bae0e051cd43deb9eb24c54e74a56d8ab0..20cb99c906725ba3a67d2a71338ba8cacfe5072c 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
-@@ -9,7 +9,7 @@ import org.bukkit.permissions.ServerOperator;
+@@ -10,7 +10,7 @@ import org.bukkit.profile.PlayerProfile;
  import org.jetbrains.annotations.NotNull;
  import org.jetbrains.annotations.Nullable;
  
@@ -605,7 +605,7 @@ index 3afd5f5c0208a4ee93b5dbfc2aab2b9d2e8a7544..53decf2105e68e62478acebc73e34839
  
      /**
       * Checks if this player is currently online
-@@ -126,6 +126,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
+@@ -139,6 +139,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
      @Nullable
      public Player getPlayer();
  
@@ -659,7 +659,7 @@ index ff8f1231f3e2e71740fd24fa8d4dac5d0e550ae7..ee19d7fd5bb1851af39320f1edd858e1
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 5f35ba35f8517ec28c1b21b3007c9a20dea097a7..37c83fd0ed65bc8b65ffca01b7e051d2175b751d 100644
+index 3e980c630452c8ea72227bc4cd92c605253cd41b..01ce32234885363ddac10b2b277cbcfc19aad766 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
@@ -711,7 +711,7 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..6daf17848951eff23186583a7b4af4de
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 51ec2e4ec4239659272bba3d6ba2ad73926ebb88..2fa9309e9e015696c74332fb27350540e434f596 100644
+index 8bc6876c82935988436597161fa0ec94c032174b..ffd5fbc3e14be5439f1334c567b573c31528863c 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
@@ -724,7 +724,7 @@ index 51ec2e4ec4239659272bba3d6ba2ad73926ebb88..2fa9309e9e015696c74332fb27350540
      /**
       * Gets the entity's current position
 diff --git a/src/main/java/org/bukkit/entity/HumanEntity.java b/src/main/java/org/bukkit/entity/HumanEntity.java
-index 28d1ff809e44bda0324ffac957c1d455be02e783..2b64852da2f22bd984216ef0164587e085c445bf 100644
+index e8b6cfe7e454c666b4d60b702a3b211dab238830..b9196b22e5bf4dea7466d6a691f93969a2c72843 100644
 --- a/src/main/java/org/bukkit/entity/HumanEntity.java
 +++ b/src/main/java/org/bukkit/entity/HumanEntity.java
 @@ -19,7 +19,15 @@ import org.jetbrains.annotations.Nullable;
@@ -745,10 +745,10 @@ index 28d1ff809e44bda0324ffac957c1d455be02e783..2b64852da2f22bd984216ef0164587e0
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 7eda2ba17e39b8183e572c1cefa8afffbf17afcb..4d518881b845087730ae51e4baad569400c312e1 100644
+index 131daee2b29f7016463a00ce7927dff7b0a1b1b4..b3edc0c2afa0058b869e5aa2849084044b194e84 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -43,7 +43,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */
@@ -757,7 +757,7 @@ index 7eda2ba17e39b8183e572c1cefa8afffbf17afcb..4d518881b845087730ae51e4baad5694
  
      // Paper start
      @Override
-@@ -51,6 +51,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -46,6 +46,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
          return net.kyori.adventure.identity.Identity.identity(this.getUniqueId());
      }
  
@@ -1155,7 +1155,7 @@ index 7af8d6e51c824cf0592b722b834f1d4986e3cc08..c28d62fc3dc359f9ebcf926094198ee3
      private boolean cancelled = false;
      private final Location location;
 diff --git a/src/main/java/org/bukkit/inventory/Inventory.java b/src/main/java/org/bukkit/inventory/Inventory.java
-index 8864124c4a6ba48523ff217a78b9bac676da592f..b984678a49ff96fa7eca9a5450e1c690f6ec6953 100644
+index 1b577c03c3152d22b70f8bdb321b28ad8fbbc3af..b3449a874666bcd67950ec12da41738f7c24ddee 100644
 --- a/src/main/java/org/bukkit/inventory/Inventory.java
 +++ b/src/main/java/org/bukkit/inventory/Inventory.java
 @@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
