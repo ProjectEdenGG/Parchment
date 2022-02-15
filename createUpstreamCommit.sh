@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # requires curl & jq
+# borrowed from https://github.com/PurpurMC/Purpur which is licensed under the MIT license
 
 # createUpstreamCommit --paper HASH
 # flag: --paper HASH - the commit hash to use for comparing commits between paper (PaperMC/Paper/compare/HASH...HEAD)
