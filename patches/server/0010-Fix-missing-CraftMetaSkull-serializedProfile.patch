@@ -6,17 +6,10 @@ Subject: [PATCH] Fix missing CraftMetaSkull serializedProfile
 Plugins (ab)using NMS may change the "profile" field using reflections instead of the "setProfile" method, especially if they are targeted towards old Minecraft versions. This fixes the potential discrepancies and NPEs.
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-index 9f72e1623fc85301c4ca8751a7e03877a7745948..4b5fdb42a72f0730553e5c5ff2819a6798a99ed8 100644
+index 292ae4a68093b7d939a755e1062cee57da186ab1..4afa90cb68aa31820abce6ab051de405daef6562 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-@@ -83,12 +83,18 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
-     @Override
-     void serializeInternal(final Map<String, Tag> internalTags) {
-         if (this.profile != null) {
-+            refreshSerializedProfile(); // Parchment -- fix NPEs from plugins abusing NMS
-             internalTags.put(SKULL_PROFILE.NBT, serializedProfile);
-         }
-     }
+@@ -80,6 +80,11 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
  
      private void setProfile(GameProfile profile) {
          this.profile = profile;
@@ -28,7 +21,7 @@ index 9f72e1623fc85301c4ca8751a7e03877a7745948..4b5fdb42a72f0730553e5c5ff2819a67
          this.serializedProfile = (profile == null) ? null : NbtUtils.writeGameProfile(new CompoundTag(), profile);
      }
  
-@@ -97,6 +103,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -88,6 +93,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
          super.applyToItem(tag);
  
          if (this.profile != null) {
@@ -36,7 +29,7 @@ index 9f72e1623fc85301c4ca8751a7e03877a7745948..4b5fdb42a72f0730553e5c5ff2819a67
              // SPIGOT-6558: Set initial textures
              tag.put(SKULL_OWNER.NBT, serializedProfile);
              // Fill in textures
-@@ -252,6 +259,8 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -243,6 +249,8 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
          if (meta instanceof CraftMetaSkull) {
              CraftMetaSkull that = (CraftMetaSkull) meta;
  

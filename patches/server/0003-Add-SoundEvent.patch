@@ -5,10 +5,10 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index a2abb8aa1a257ccd2b5dbddc037fffc6eb600758..c27a253179d49956ebdd9d7b7b294a13690e4ca7 100644
+index 768017ba650f1bd96e3db0aad8fda939e2ea7add..47ccd16dd86072805359266b746ff9a70e4513ad 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1504,12 +1504,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1509,12 +1509,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
      public void playSound(@Nullable Player except, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
@@ -24,7 +24,7 @@ index a2abb8aa1a257ccd2b5dbddc037fffc6eb600758..c27a253179d49956ebdd9d7b7b294a13
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7b23535a680d2a8534dcb8dd87770f66fb982c13..d522d26b388dbd3b61ca82e5d5ea83f5e1fb89eb 100644
+index 470dbed47830e2f580c090bc762a7be5cf389ce5..c0ec32d2575bd9bfcea81ec60af22bb341b7802b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2189,7 +2189,7 @@ public class ServerPlayer extends Player {
@@ -37,7 +37,7 @@ index 7b23535a680d2a8534dcb8dd87770f66fb982c13..d522d26b388dbd3b61ca82e5d5ea83f5
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index cd08f9b16c065be8f0eacaeba51d3e72d332daf9..02f373ecd9e4da1115da9c650b91893be9d0faf5 100644
+index 7a0c1ba40156df69bbbf36d96bed0950130d2351..7d535b82ccfd3d5269ecaeb35a8cb9ac7d18a69a 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -967,7 +967,7 @@ public abstract class PlayerList {
