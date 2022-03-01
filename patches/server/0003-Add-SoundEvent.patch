@@ -5,10 +5,10 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 768017ba650f1bd96e3db0aad8fda939e2ea7add..47ccd16dd86072805359266b746ff9a70e4513ad 100644
+index 8e87aca16879d7dd1dc0bd17d3215fca40b547cd..8013aa65752e15217b5ae99e012fb745205b9853 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1509,12 +1509,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1510,12 +1510,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
      public void playSound(@Nullable Player except, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
@@ -24,10 +24,10 @@ index 768017ba650f1bd96e3db0aad8fda939e2ea7add..47ccd16dd86072805359266b746ff9a7
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 470dbed47830e2f580c090bc762a7be5cf389ce5..c0ec32d2575bd9bfcea81ec60af22bb341b7802b 100644
+index e74c13e7aaa144fcd07036de70e80bebf0be698a..397d2c48c57a58c32b96c712d1c9682ac7dd0b87 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2189,7 +2189,7 @@ public class ServerPlayer extends Player {
+@@ -2187,7 +2187,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -37,7 +37,7 @@ index 470dbed47830e2f580c090bc762a7be5cf389ce5..c0ec32d2575bd9bfcea81ec60af22bb3
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 7a0c1ba40156df69bbbf36d96bed0950130d2351..7d535b82ccfd3d5269ecaeb35a8cb9ac7d18a69a 100644
+index f5852341161b0d632e22af9b3e625ca1e786bd63..e3783298e50d8b75a00f7ad7ca1e7a7b8209e6d9 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -967,7 +967,7 @@ public abstract class PlayerList {
@@ -50,10 +50,10 @@ index 7a0c1ba40156df69bbbf36d96bed0950130d2351..7d535b82ccfd3d5269ecaeb35a8cb9ac
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index d85da02be7f1d494af8f2cc840c49073774f5f9c..a90cbb8d5c3231f3278bd4893fa1443827c6567b 100644
+index 9c767096ca950d55d6002282c7a3fe2884bcd630..c4db8912d3af42cc4da825e8b43f3fdf4d49e1b5 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1833,7 +1833,7 @@ public abstract class Player extends LivingEntity {
+@@ -1846,7 +1846,7 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
          fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {
@@ -63,7 +63,7 @@ index d85da02be7f1d494af8f2cc840c49073774f5f9c..a90cbb8d5c3231f3278bd4893fa14438
      }
      // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
-index 7131226de05bc57830f7a68ba545ebfd19d33a59..56b5f5f9992c9f9fea7a606684efd44c901e3525 100644
+index f50abfd058e3adf1cf8c0f4468a60bc04e8541e7..2ff60e8fa65626a9805597776b9163fd40e6807d 100644
 --- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
 +++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
 @@ -26,7 +26,7 @@ import net.minecraft.nbt.ListTag;

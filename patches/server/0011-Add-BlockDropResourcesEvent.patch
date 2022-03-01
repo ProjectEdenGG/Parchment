@@ -8,10 +8,10 @@ to easily get the items being dropped by any
 block instead of only blocks broken by players.
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index ab5b9f00123e2ede2931ffc520684e482aac49b4..51e69414e37d824d1d8b1e1b82bcf700d4afe0f0 100644
+index a80f4dc0a642c744223a155232291ace6e007636..f76849d67d71bf5bed1b9006adfee1c1b90b05d6 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -304,7 +304,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -306,7 +306,7 @@ public class Block extends BlockBehaviour implements ItemLike {
          ServerLevel worldserver = lootContext.getLevel();
          BlockPos blockposition = new BlockPos((Vec3) lootContext.getParameter(LootContextParams.ORIGIN));
  
@@ -20,7 +20,7 @@ index ab5b9f00123e2ede2931ffc520684e482aac49b4..51e69414e37d824d1d8b1e1b82bcf700
              Block.popResource(worldserver, blockposition, itemstack);
          });
          state.spawnAfterBreak(worldserver, blockposition, ItemStack.EMPTY);
-@@ -312,7 +312,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -314,7 +314,7 @@ public class Block extends BlockBehaviour implements ItemLike {
  
      public static void dropResources(BlockState state, Level world, BlockPos pos) {
          if (world instanceof ServerLevel) {
@@ -29,7 +29,7 @@ index ab5b9f00123e2ede2931ffc520684e482aac49b4..51e69414e37d824d1d8b1e1b82bcf700
                  Block.popResource(world, pos, itemstack);
              });
              state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY);
-@@ -322,7 +322,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -324,7 +324,7 @@ public class Block extends BlockBehaviour implements ItemLike {
  
      public static void dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity) {
          if (world instanceof ServerLevel) {
@@ -38,7 +38,7 @@ index ab5b9f00123e2ede2931ffc520684e482aac49b4..51e69414e37d824d1d8b1e1b82bcf700
                  Block.popResource((ServerLevel) world, pos, itemstack);
              });
              state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY);
-@@ -349,7 +349,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -351,7 +351,7 @@ public class Block extends BlockBehaviour implements ItemLike {
  
      public static void dropResources(BlockState state, Level world, BlockPos pos, @Nullable BlockEntity blockEntity, Entity entity, ItemStack stack) {
          if (world instanceof ServerLevel) {

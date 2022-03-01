@@ -5,19 +5,19 @@ Subject: [PATCH] Expose EntityType Ordinals
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 419a7e9614af2328ed401fc954196056243a984c..b657453b61a29c920b87e94d23fc09e9be7fc296 100644
+index 79abd84696ef099f6b12ddeaa6e398f18c53316a..13e277c9ff27a52fbf7041c36d7c5ff6d0028cfc 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -148,6 +148,8 @@ import org.apache.logging.log4j.Logger;
+@@ -150,6 +150,8 @@ import org.slf4j.Logger;
  
  public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
  
 +    private static int ordinal = 0; // Parchment
 +    private static final java.util.Map<EntityType, Integer> ordinals = new java.util.HashMap<>(); // Parchment
-     private static final Logger LOGGER = LogManager.getLogger();
+     private static final Logger LOGGER = LogUtils.getLogger();
      public static final String ENTITY_TAG = "EntityTag";
-     private static final float MAGIC_HORSE_WIDTH = 1.3964844F;
-@@ -282,9 +284,31 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
+     private final Holder.Reference<EntityType<?>> builtInRegistryHolder;
+@@ -285,9 +287,31 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
      private final EntityDimensions dimensions;
  
      private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder type) { // CraftBukkit - decompile error
@@ -51,7 +51,7 @@ index 419a7e9614af2328ed401fc954196056243a984c..b657453b61a29c920b87e94d23fc09e9
          return Registry.ENTITY_TYPE.getKey(type);
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 5d287d4cb1c9302479d8d2dd92939b4832991a92..fc03814909c0a128af74bdc09bc0b6a62859d05d 100644
+index 6fa8fdfeec2af4a669e60c5a238c81f90f19c546..b3c6cf1c6bd37815ef144965b8af7825b15e08e0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -634,6 +634,18 @@ public final class CraftMagicNumbers implements UnsafeValues {

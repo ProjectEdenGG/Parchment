@@ -79,10 +79,10 @@ index a828cad27fcd39f8bfbaefa97052a2a3b6650ee7..52cce7422c2a99e3de37f87ac7041516
          return "DamageSource (" + this.msgId + ")";
      }
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index e17a3afa41fd628d2c4a3637ae19418e258a99b8..5a4489dff8b6ef70d52ba19ee8604b77d9c73791 100644
+index 1eb76c456790b81b657090377dd5ea547898f9a5..7bd04a04461a89043f698c402d33efbd295f7449 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-@@ -101,10 +101,11 @@ public class EnderDragon extends Mob implements Enemy {
+@@ -99,10 +99,11 @@ public class EnderDragon extends Mob implements Enemy {
      private final Node[] nodes = new Node[24];
      private final int[] nodeAdjacency = new int[24];
      private final BinaryHeap openSet = new BinaryHeap();
@@ -96,7 +96,7 @@ index e17a3afa41fd628d2c4a3637ae19418e258a99b8..5a4489dff8b6ef70d52ba19ee8604b77
          this.setHealth(this.getMaxHealth());
          this.noPhysics = true;
 diff --git a/src/main/java/net/minecraft/world/level/Explosion.java b/src/main/java/net/minecraft/world/level/Explosion.java
-index 97f99a06b8954b08af9f4156abe8abdad359349a..4b40ba434a88f241ffbbb1a58ba9015f4fc35cec 100644
+index 29f6c10e2c2626a9726d295acf12efea2b463cd3..370bde9e458a11c504a52356524fd289569612f1 100644
 --- a/src/main/java/net/minecraft/world/level/Explosion.java
 +++ b/src/main/java/net/minecraft/world/level/Explosion.java
 @@ -471,6 +471,13 @@ public class Explosion {
