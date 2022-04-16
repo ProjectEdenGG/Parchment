@@ -5,26 +5,26 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index a62abcb2e05198001516cf2402dc7ead09761905..57743bb179ddb2c32641f45b5b1587e7cb998626 100644
+index a002713686e66faf0d18662586a7a236c27ca7d2..757dafc3150e52c5876679d8d121a69d6cd45b4e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1495,12 +1495,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
-     public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
--        this.server.getPlayerList().broadcast(player, x, y, z, volume > 1.0F ? (double) (16.0F * volume) : 16.0D, this.dimension(), new ClientboundSoundPacket(sound, category, x, y, z, volume, pitch));
-+        CraftEventFactory.playSoundEvent(new me.lexikiq.event.sound.LocationNamedSoundEvent(player == null ? null : player.getBukkitEntity(), getWorld(), new org.bukkit.util.Vector(x, y, z), org.bukkit.craftbukkit.CraftSound.getBukkit(sound), org.bukkit.SoundCategory.valueOf(category.name()), volume, pitch), this.server, volume > 1.0F ? (double) (16.0F * volume) : 16.0D); // Parchment
+     public void playSound(@Nullable Player except, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
+-        this.server.getPlayerList().broadcast(except, x, y, z, volume > 1.0F ? (double) (16.0F * volume) : 16.0D, this.dimension(), new ClientboundSoundPacket(sound, category, x, y, z, volume, pitch));
++        CraftEventFactory.playSoundEvent(new me.lexikiq.event.sound.LocationNamedSoundEvent(except == null ? null : except.getBukkitEntity(), getWorld(), new org.bukkit.util.Vector(x, y, z), org.bukkit.craftbukkit.CraftSound.getBukkit(sound), org.bukkit.SoundCategory.valueOf(category.name()), volume, pitch), this.server, volume > 1.0F ? (double) (16.0F * volume) : 16.0D); // Parchment
      }
  
      @Override
-     public void playSound(@Nullable Player player, Entity entity, SoundEvent sound, SoundSource category, float volume, float pitch) {
--        this.server.getPlayerList().broadcast(player, entity.getX(), entity.getY(), entity.getZ(), volume > 1.0F ? (double) (16.0F * volume) : 16.0D, this.dimension(), new ClientboundSoundEntityPacket(sound, category, entity, volume, pitch));
-+        CraftEventFactory.playSoundEvent(new me.lexikiq.event.sound.EntitySoundEvent(player == null ? null : player.getBukkitEntity(), entity.getBukkitEntity(), org.bukkit.craftbukkit.CraftSound.getBukkit(sound), org.bukkit.SoundCategory.valueOf(category.name()), volume, pitch), this.server, volume > 1.0F ? (double) (16.0F * volume) : 16.0D); // Parchment
+     public void playSound(@Nullable Player except, Entity entity, SoundEvent sound, SoundSource category, float volume, float pitch) {
+-        this.server.getPlayerList().broadcast(except, entity.getX(), entity.getY(), entity.getZ(), volume > 1.0F ? (double) (16.0F * volume) : 16.0D, this.dimension(), new ClientboundSoundEntityPacket(sound, category, entity, volume, pitch));
++        CraftEventFactory.playSoundEvent(new me.lexikiq.event.sound.EntitySoundEvent(except == null ? null : except.getBukkitEntity(), entity.getBukkitEntity(), org.bukkit.craftbukkit.CraftSound.getBukkit(sound), org.bukkit.SoundCategory.valueOf(category.name()), volume, pitch), this.server, volume > 1.0F ? (double) (16.0F * volume) : 16.0D); // Parchment
      }
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 11f46c1b8f4c8414e0667d1873542c17d6e01f2a..1d446104099856fd0ddbff28a1d280ee80613f39 100644
+index 78fda0c982810b8b881a87099f355247566e513a..24f59eb2899692302f5c5e39d96d0c5ed224a904 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2174,7 +2174,7 @@ public class ServerPlayer extends Player {
@@ -37,7 +37,7 @@ index 11f46c1b8f4c8414e0667d1873542c17d6e01f2a..1d446104099856fd0ddbff28a1d280ee
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index eaa005c1c9b4386bcdbe1d6eb28c3eca7635066c..32279bda7f5fe3400216d8cb0e6b75e29aa4156f 100644
+index 46e6e68f78d07c04cd2f4d477dca7a06313c20e9..f7d9316645ba94089a867c6348caaf77756c44f6 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -965,7 +965,7 @@ public abstract class PlayerList {
@@ -85,10 +85,10 @@ index a79ba23ecf887ecbb6e095140f019ebb6fd0a6f7..5112edc5e68a386e9bb16ac0ec9d998e
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 771a00ae7f467660b0c39ffeee05281e114df378..576f01eb7c6fce8955f760c0b36e23c16c97e7a6 100644
+index ea01507f96d81c6fbcfeb65902017bbc332de650..8e8b520ba2c8359bcf846e1977c1793122565d01 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1882,4 +1882,77 @@ public class CraftEventFactory {
+@@ -1888,4 +1888,77 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end
