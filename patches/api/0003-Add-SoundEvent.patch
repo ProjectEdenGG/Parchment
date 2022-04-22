@@ -6,10 +6,10 @@ Subject: [PATCH] Add SoundEvent
 
 diff --git a/src/main/java/me/lexikiq/event/sound/EntitySoundEvent.java b/src/main/java/me/lexikiq/event/sound/EntitySoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..74109b772f3d38fdd58721ec1e491ff0f8f4f122
+index 0000000000000000000000000000000000000000..19c9f7af91402d5f966915ebc80d76ab9ac92872
 --- /dev/null
 +++ b/src/main/java/me/lexikiq/event/sound/EntitySoundEvent.java
-@@ -0,0 +1,52 @@
+@@ -0,0 +1,67 @@
 +package me.lexikiq.event.sound;
 +
 +import org.apache.commons.lang.Validate;
@@ -18,8 +18,14 @@ index 0000000000000000000000000000000000000000..74109b772f3d38fdd58721ec1e491ff0
 +import org.bukkit.World;
 +import org.bukkit.entity.Entity;
 +import org.bukkit.entity.HumanEntity;
++import org.bukkit.entity.Player;
++import org.bukkit.util.Vector;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
++
++import java.util.List;
++import java.util.Objects;
++import java.util.function.Function;
 +
 +/**
 + * Called when an entity sound is sent to a player.
@@ -28,46 +34,55 @@ index 0000000000000000000000000000000000000000..74109b772f3d38fdd58721ec1e491ff0
 + * This type of sound represents one that will follow the {@link #getOrigin() originating} entity.
 + */
 +public class EntitySoundEvent extends NamedSoundEvent {
-+	private @NotNull Entity origin;
++    private @NotNull Entity origin;
 +
-+	public EntitySoundEvent(@Nullable HumanEntity except, @NotNull Entity origin, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+		super(except, sound, category, volume, pitch);
-+		Validate.notNull(origin, "origin cannot be null");
-+		this.origin = origin;
-+	}
++    @Deprecated
++    public EntitySoundEvent(@Nullable HumanEntity except, @NotNull Entity origin, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
++        this(except, origin, sound, category, volume, pitch, null, null);
++    }
 +
-+	/**
-+	 * Gets the entity that the sound is originating from.
++    public EntitySoundEvent(@Nullable HumanEntity except, @NotNull Entity origin, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch, @Nullable Function<SoundEvent, Double> distanceFunction, @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
++        super(except, sound, category, volume, pitch, distanceFunction, recipientsFunction);
++        this.origin = Objects.requireNonNull(origin, "origin cannot be null");
++    }
++
++    /**
++     * Gets the entity that the sound is originating from.
 +     *
-+	 * @return originating entity
-+	 */
-+	public @NotNull Entity getOrigin() {
-+		return origin;
-+	}
++     * @return originating entity
++     */
++    public @NotNull Entity getOrigin() {
++        return origin;
++    }
 +
-+	/**
-+	 * Sets the entity that the sound will originate from.
++    /**
++     * Sets the entity that the sound will originate from.
 +     *
-+	 * @param origin originating entity
-+	 */
-+	public void setOrigin(@NotNull Entity origin) {
-+		Validate.notNull(origin, "origin cannot be null");
-+		if (!this.origin.getWorld().equals(origin.getWorld()))
-+			throw new IllegalArgumentException("Entity must be in same world as originating location");
-+		this.origin = origin;
-+	}
++     * @param origin originating entity
++     */
++    public void setOrigin(@NotNull Entity origin) {
++        Validate.notNull(origin, "origin cannot be null");
++        if (!this.origin.getWorld().equals(origin.getWorld()))
++            throw new IllegalArgumentException("Entity must be in same world as originating location");
++        this.origin = origin;
++    }
 +
 +    @Override
 +    public @NotNull World getWorld() {
 +        return origin.getWorld();
 +    }
++
++    @Override
++    public @NotNull Vector getPosition() {
++        return origin.getLocation().toVector();
++    }
 +}
 diff --git a/src/main/java/me/lexikiq/event/sound/LocationCustomSoundEvent.java b/src/main/java/me/lexikiq/event/sound/LocationCustomSoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..6a8d2e64a1a69b4dfeaab63fa93a32d0dce9bcdd
+index 0000000000000000000000000000000000000000..9d7f3656c55a0bb7a8258a0418954563f8730551
 --- /dev/null
 +++ b/src/main/java/me/lexikiq/event/sound/LocationCustomSoundEvent.java
-@@ -0,0 +1,126 @@
+@@ -0,0 +1,139 @@
 +package me.lexikiq.event.sound;
 +
 +import me.lexikiq.HasLocation;
@@ -78,9 +93,15 @@ index 0000000000000000000000000000000000000000..6a8d2e64a1a69b4dfeaab63fa93a32d0
 +import org.bukkit.SoundCategory;
 +import org.bukkit.World;
 +import org.bukkit.entity.HumanEntity;
++import org.bukkit.entity.Player;
++import org.bukkit.event.HandlerList;
 +import org.bukkit.util.Vector;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
++
++import java.util.List;
++import java.util.Objects;
++import java.util.function.Function;
 +
 +import static com.google.common.base.Preconditions.checkNotNull;
 +
@@ -89,57 +110,80 @@ index 0000000000000000000000000000000000000000..6a8d2e64a1a69b4dfeaab63fa93a32d0
 + * {@link Location}. Cancelling this event will prevent the packet from sending.
 + */
 +public class LocationCustomSoundEvent extends SoundEvent implements Keyed, HasLocation {
-+    private static final org.bukkit.event.HandlerList handlers = new org.bukkit.event.HandlerList();
-+    private @NotNull
-+    final World world;
++    private @NotNull World world;
 +    private @NotNull Vector vector;
 +    private @NotNull NamespacedKey key;
-+    private boolean cancelled;
 +
-+    public LocationCustomSoundEvent(@Nullable HumanEntity except, @NotNull World world, @NotNull Vector vector, @NotNull NamespacedKey key, @NotNull SoundCategory category, float volume, float pitch) {
-+        super(except, category, volume, pitch);
-+        Validate.notNull(world, "world cannot be null");
-+        Validate.notNull(vector, "vector cannot be null");
-+        Validate.notNull(key, "key cannot be null");
-+        this.world = world;
-+        this.vector = vector;
-+        this.key = key;
++    @Deprecated
++    public LocationCustomSoundEvent(@Nullable HumanEntity except,
++                                    @NotNull World world,
++                                    @NotNull Vector vector,
++                                    @NotNull NamespacedKey key,
++                                    @NotNull SoundCategory category,
++                                    float volume,
++                                    float pitch) {
++        this(except, world, vector, key, category, volume, pitch, null, null);
 +    }
 +
-+    public LocationCustomSoundEvent(@Nullable HumanEntity except, @NotNull Location location, @NotNull NamespacedKey key, @NotNull SoundCategory category, float volume, float pitch) {
-+        this(except, checkNotNull(location, "location").getWorld(), location.toVector(), key, category, volume, pitch);
++    @Deprecated
++    public LocationCustomSoundEvent(@Nullable HumanEntity except,
++                                    @NotNull Location location,
++                                    @NotNull NamespacedKey key,
++                                    @NotNull SoundCategory category,
++                                    float volume,
++                                    float pitch) {
++        this(except, location, key, category, volume, pitch, null, null);
 +    }
 +
-+    public LocationCustomSoundEvent(@NotNull HumanEntity except, @NotNull Vector vector, @NotNull NamespacedKey key, @NotNull SoundCategory category, float volume, float pitch) {
-+        this(checkNotNull(except, "except"), except.getWorld(), vector, key, category, volume, pitch);
++    public LocationCustomSoundEvent(@Nullable HumanEntity except,
++                                    @NotNull World world,
++                                    @NotNull Vector vector,
++                                    @NotNull NamespacedKey key,
++                                    @NotNull SoundCategory category,
++                                    float volume,
++                                    float pitch,
++                                    @Nullable Function<SoundEvent, Double> distanceFunction,
++                                    @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
++        super(except, category, volume, pitch, distanceFunction, recipientsFunction);
++        this.world = Objects.requireNonNull(world, "world cannot be null");
++        this.vector = Objects.requireNonNull(vector, "vector cannot be null");
++        this.key = Objects.requireNonNull(key, "key cannot be null");
 +    }
 +
-+    public LocationCustomSoundEvent(@NotNull HumanEntity except, @NotNull NamespacedKey key, @NotNull SoundCategory category, float volume, float pitch) {
-+        this(checkNotNull(except, "except"), except.getLocation().toVector(), key, category, volume, pitch);
++    public LocationCustomSoundEvent(@Nullable HumanEntity except,
++                                    @NotNull Location location,
++                                    @NotNull NamespacedKey key,
++                                    @NotNull SoundCategory category,
++                                    float volume,
++                                    float pitch,
++                                    @Nullable Function<SoundEvent, Double> distanceFunction,
++                                    @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
++        this(except, checkNotNull(location, "location").getWorld(), location.toVector(), key, category, volume, pitch, distanceFunction, recipientsFunction);
 +    }
 +
-+    @NotNull
-+    public static org.bukkit.event.HandlerList getHandlerList() {
-+        return handlers;
-+    }
-+
-+    /**
-+     * Gets the position of the sound.
-+     *
-+     * @return position in the world
-+     */
-+    public @NotNull Vector getVector() {
++    @Override
++    public @NotNull Vector getPosition() {
 +        return vector;
 +    }
 +
 +    /**
 +     * Sets the position of the sound.
 +     *
-+     * @param vector position in the world
++     * @param position position in the world
 +     */
++    public void setPosition(@NotNull Vector position) {
++        this.vector = Objects.requireNonNull(position, "position cannot be null");
++    }
++
++    /**
++     * Sets the position of the sound.
++     *
++     * @param vector position in the world
++     * @deprecated use {@link #setPosition(Vector)} instead
++     */
++    @Deprecated
 +    public void setVector(@NotNull Vector vector) {
-+        Validate.notNull(vector, "vector cannot be null");
-+        this.vector = vector;
++        setPosition(vector);
 +    }
 +
 +    /**
@@ -159,8 +203,7 @@ index 0000000000000000000000000000000000000000..6a8d2e64a1a69b4dfeaab63fa93a32d0
 +     * @param key asset key
 +     */
 +    public void setKey(@NotNull NamespacedKey key) {
-+        Validate.notNull(key, "key cannot be null");
-+        this.key = key;
++        this.key = Objects.requireNonNull(key, "key cannot be null");
 +    }
 +
 +    @Override
@@ -169,96 +212,116 @@ index 0000000000000000000000000000000000000000..6a8d2e64a1a69b4dfeaab63fa93a32d0
 +    }
 +
 +    /**
-+     * Gets the location of the sound being played.
++     * Sets the world in which the sound is played.
++     * <p>
++     * This may not have an effect if the {@link #getRecipientsFunction()} has been modified.
 +     *
-+     * @return copy of sound location
-+     * @see #getVector()
-+     * @see #setVector(Vector)
++     * @param world world to play the sound in
 +     */
-+    public @NotNull Location getLocation() {
-+        return new Location(world, vector.getX(), vector.getY(), vector.getZ());
-+    }
-+
-+    @Override
-+    public boolean isCancelled() {
-+        return cancelled;
-+    }
-+
-+    @Override
-+    public void setCancelled(boolean cancelled) {
-+        this.cancelled = cancelled;
-+    }
-+
-+    @Override
-+    public @NotNull org.bukkit.event.HandlerList getHandlers() {
-+        return handlers;
++    public void setWorld(@NotNull World world) {
++        this.world = Objects.requireNonNull(world, "world cannot be null");
 +    }
 +}
 diff --git a/src/main/java/me/lexikiq/event/sound/LocationNamedSoundEvent.java b/src/main/java/me/lexikiq/event/sound/LocationNamedSoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..013472f40edbfea49785d48cc0f7ad7c5b69fe58
+index 0000000000000000000000000000000000000000..7f42c904362107c55cc5877eab1b513bcdf34571
 --- /dev/null
 +++ b/src/main/java/me/lexikiq/event/sound/LocationNamedSoundEvent.java
-@@ -0,0 +1,77 @@
+@@ -0,0 +1,112 @@
 +package me.lexikiq.event.sound;
 +
 +import me.lexikiq.HasLocation;
-+import org.apache.commons.lang.Validate;
 +import org.bukkit.Location;
 +import org.bukkit.Sound;
 +import org.bukkit.SoundCategory;
 +import org.bukkit.World;
 +import org.bukkit.entity.HumanEntity;
++import org.bukkit.entity.Player;
 +import org.bukkit.util.Vector;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
 +
-+import static com.google.common.base.Preconditions.checkNotNull;
++import java.util.List;
++import java.util.Objects;
++import java.util.function.Function;
 +
 +/**
 + * Called when a sound available in {@link Sound} is sent to a {@link Location}.
 + * Cancelling this event will prevent the packet from sending.
 + */
 +public class LocationNamedSoundEvent extends NamedSoundEvent implements HasLocation {
-+    private @NotNull
-+    final World world;
++    private @NotNull World world;
 +    private @NotNull Vector vector;
 +
-+    public LocationNamedSoundEvent(@Nullable HumanEntity receiver, @NotNull World world, @NotNull Vector vector, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+        super(receiver, sound, category, volume, pitch);
-+        this.world = checkNotNull(world, "world");
-+        this.vector = checkNotNull(vector, "vector");
++    @Deprecated
++    public LocationNamedSoundEvent(@Nullable HumanEntity except,
++                                   @NotNull World world,
++                                   @NotNull Vector vector,
++                                   @NotNull Sound sound,
++                                   @NotNull SoundCategory category,
++                                   float volume,
++                                   float pitch) {
++        this(except, world, vector, sound, category, volume, pitch, null, null);
 +    }
 +
-+    public LocationNamedSoundEvent(@Nullable HumanEntity receiver, @NotNull Location location, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+        this(receiver, checkNotNull(location, "location").getWorld(), location.toVector(), sound, category, volume, pitch);
++    @Deprecated
++    public LocationNamedSoundEvent(@Nullable HumanEntity except,
++                                   @NotNull Location location,
++                                   @NotNull Sound sound,
++                                   @NotNull SoundCategory category,
++                                   float volume,
++                                   float pitch) {
++        this(except, location, sound, category, volume, pitch, null, null);
 +    }
 +
-+    public LocationNamedSoundEvent(@NotNull HumanEntity receiver, @NotNull Vector vector, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+        this(checkNotNull(receiver, "receiver"), receiver.getWorld(), vector, sound, category, volume, pitch);
++    public LocationNamedSoundEvent(@Nullable HumanEntity except,
++                                   @NotNull World world,
++                                   @NotNull Vector vector,
++                                   @NotNull Sound sound,
++                                   @NotNull SoundCategory category,
++                                   float volume,
++                                   float pitch,
++                                   @Nullable Function<SoundEvent, Double> distanceFunction,
++                                   @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
++        super(except, sound, category, volume, pitch, distanceFunction, recipientsFunction);
++        this.world = Objects.requireNonNull(world, "world cannot be null");
++        this.vector = Objects.requireNonNull(vector, "vector cannot be null");
 +    }
 +
-+    public LocationNamedSoundEvent(@NotNull HumanEntity receiver, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+        this(checkNotNull(receiver, "receiver"), receiver.getLocation().toVector(), sound, category, volume, pitch);
++    public LocationNamedSoundEvent(@Nullable HumanEntity except,
++                                   @NotNull Location location,
++                                   @NotNull Sound sound,
++                                   @NotNull SoundCategory category,
++                                   float volume,
++                                   float pitch,
++                                   @Nullable Function<SoundEvent, Double> distanceFunction,
++                                   @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
++        this(except, Objects.requireNonNull(location, "location cannot be null").getWorld(), location.toVector(), sound, category, volume, pitch, distanceFunction, recipientsFunction);
 +    }
 +
-+    /**
-+     * Gets the position of the sound.
-+     *
-+     * @return position in the world
-+     */
-+    public @NotNull Vector getVector() {
++    @Override
++    public @NotNull Vector getPosition() {
 +        return vector;
 +    }
 +
 +    /**
 +     * Sets the position of the sound.
 +     *
-+     * @param vector position in the world
++     * @param position position in the world
 +     */
++    public void setPosition(@NotNull Vector position) {
++        this.vector = Objects.requireNonNull(position, "position cannot be null");
++    }
++
++    /**
++     * Sets the position of the sound.
++     *
++     * @param vector position in the world
++     * @deprecated use {@link #setPosition(Vector)} instead
++     */
++    @Deprecated
 +    public void setVector(@NotNull Vector vector) {
-+        Validate.notNull(vector, "vector cannot be null");
-+        this.vector = vector;
++        setPosition(vector);
 +    }
 +
 +    @Override
@@ -267,52 +330,57 @@ index 0000000000000000000000000000000000000000..013472f40edbfea49785d48cc0f7ad7c
 +    }
 +
 +    /**
-+     * Gets the location of the sound being played.
++     * Sets the world in which the sound is played.
++     * <p>
++     * This may not have an effect if the {@link #getRecipientsFunction()} has been modified.
 +     *
-+     * @return copy of sound location
-+     * @see #getVector()
-+     * @see #setVector(Vector)
++     * @param world world to play the sound in
 +     */
-+    public @NotNull Location getLocation() {
-+        return new Location(world, vector.getX(), vector.getY(), vector.getZ());
++    public void setWorld(@NotNull World world) {
++        this.world = Objects.requireNonNull(world, "world cannot be null");
 +    }
 +}
 diff --git a/src/main/java/me/lexikiq/event/sound/NamedSoundEvent.java b/src/main/java/me/lexikiq/event/sound/NamedSoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..9256d75f5bb9ed8f42a7ff0613433bb1b7e37769
+index 0000000000000000000000000000000000000000..3ca767cfeb7fc0982830e49cde6bb0e87075c3f9
 --- /dev/null
 +++ b/src/main/java/me/lexikiq/event/sound/NamedSoundEvent.java
-@@ -0,0 +1,65 @@
+@@ -0,0 +1,54 @@
 +package me.lexikiq.event.sound;
 +
 +import org.apache.commons.lang.Validate;
 +import org.bukkit.Sound;
 +import org.bukkit.SoundCategory;
 +import org.bukkit.entity.HumanEntity;
++import org.bukkit.entity.Player;
++import org.bukkit.event.HandlerList;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
++
++import java.util.List;
++import java.util.Objects;
++import java.util.function.Function;
 +
 +/**
 + * Called when a sound available in {@link Sound} is sent to a player.
 + * Cancelling this event will prevent the packet from sending.
 + */
 +public abstract class NamedSoundEvent extends SoundEvent {
-+    private static final org.bukkit.event.HandlerList handlers = new org.bukkit.event.HandlerList();
 +    private @NotNull Sound sound;
-+    private boolean cancelled;
 +
-+    public NamedSoundEvent(@Nullable HumanEntity except, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
++
++    @Deprecated
++    protected NamedSoundEvent(@Nullable HumanEntity except, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
 +        super(except, category, volume, pitch);
-+        Validate.notNull(sound, "sound cannot be null");
-+        this.sound = sound;
++        this.sound = Objects.requireNonNull(sound, "sound cannot be null");
++    }
++
++    public NamedSoundEvent(@Nullable HumanEntity except, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch, @Nullable Function<SoundEvent, Double> distanceFunction, @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
++        super(except, category, volume, pitch, distanceFunction, recipientsFunction);
++        this.sound = Objects.requireNonNull(sound, "sound cannot be null");
 +    }
 +
 +    // boilerplate
-+
-+    @NotNull
-+    public static org.bukkit.event.HandlerList getHandlerList() {
-+        return handlers;
-+    }
 +
 +    /**
 +     * Gets the sound being played.
@@ -329,60 +397,80 @@ index 0000000000000000000000000000000000000000..9256d75f5bb9ed8f42a7ff0613433bb1
 +     * @param sound sound to play
 +     */
 +    public void setSound(@NotNull Sound sound) {
-+        Validate.notNull(sound, "sound cannot be null");
-+        this.sound = sound;
-+    }
-+
-+    @Override
-+    public boolean isCancelled() {
-+        return cancelled;
-+    }
-+
-+    @Override
-+    public void setCancelled(boolean cancelled) {
-+        this.cancelled = cancelled;
-+    }
-+
-+    @Override
-+    public @NotNull org.bukkit.event.HandlerList getHandlers() {
-+        return handlers;
++        this.sound = Objects.requireNonNull(sound, "sound cannot be null");
 +    }
 +}
 diff --git a/src/main/java/me/lexikiq/event/sound/SoundEvent.java b/src/main/java/me/lexikiq/event/sound/SoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..48dac37d64561a890baca8d9fbd1bcc94aeae3ec
+index 0000000000000000000000000000000000000000..6cc614b9e1b187f43433d13624d74672c97c2174
 --- /dev/null
 +++ b/src/main/java/me/lexikiq/event/sound/SoundEvent.java
-@@ -0,0 +1,117 @@
+@@ -0,0 +1,313 @@
 +package me.lexikiq.event.sound;
 +
 +import me.lexikiq.OptionalHumanEntity;
 +import org.apache.commons.lang.Validate;
++import org.bukkit.Location;
 +import org.bukkit.SoundCategory;
 +import org.bukkit.World;
 +import org.bukkit.entity.HumanEntity;
++import org.bukkit.entity.Player;
 +import org.bukkit.event.Cancellable;
 +import org.bukkit.event.Event;
++import org.bukkit.util.Vector;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Objects;
++import java.util.function.Function;
 +
 +/**
 + * Called when a sound is sent to a player.
 + * Cancelling this event will prevent the packet from sending.
 + */
++// TODO 1.18: use sealed class
 +public abstract class SoundEvent extends Event implements Cancellable, OptionalHumanEntity {
-+    private @Nullable final HumanEntity except;
++
++    private static final org.bukkit.event.HandlerList handlers = new org.bukkit.event.HandlerList();
++    public static final @NotNull Function<SoundEvent, Double> DEFAULT_DISTANCE_FUNCTION = event -> event.getVolume() > 1.0F ? (double) (16.0F * event.getVolume()) : 16.0D;
++    public static final @NotNull Function<SoundEvent, List<Player>> DEFAULT_RECIPIENTS_FUNCTION = new WrappedRecipientsFunction(event -> {
++        final double distance = event.calculateDistance();
++        return event.getWorld().getPlayers().stream()
++            .filter(player -> {
++                Location pl = player.getLocation();
++                Vector sv = event.getPosition();
++                double x = sv.getX() - pl.getX();
++                double y = sv.getY() - pl.getY();
++                double z = sv.getZ() - pl.getZ();
++                return x * x + y * y + z * z < distance * distance;
++            })
++            .toList();
++    });
++
++    private @Nullable HumanEntity except;
++    private @NotNull Function<@NotNull SoundEvent, @NotNull Double> distanceFunction;
++    private @NotNull Function<@NotNull SoundEvent, @NotNull List<@NotNull Player>> recipientsFunction;
++    // <end to-do>
 +    private @NotNull SoundCategory category;
 +    private float volume;
 +    private float pitch;
++    private boolean cancelled;
 +
-+    public SoundEvent(@Nullable HumanEntity except, @NotNull SoundCategory category, float volume, float pitch) {
++    @Deprecated
++    protected SoundEvent(@Nullable HumanEntity except, @NotNull SoundCategory category, float volume, float pitch) {
++        this(except, category, volume, pitch, null, null);
++    }
++
++    protected SoundEvent(@Nullable HumanEntity except, @NotNull SoundCategory category, float volume, float pitch, @Nullable Function<SoundEvent, Double> distanceFunction, @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
 +        super(true);
-+        Validate.notNull(category, "category cannot be null");
 +        this.except = except;
-+        this.category = category;
++        this.category = Objects.requireNonNull(category, "category cannot be null");
 +        this.volume = volume;
 +        this.pitch = pitch;
++        this.distanceFunction = Objects.requireNonNullElse(distanceFunction, DEFAULT_DISTANCE_FUNCTION);
++        this.recipientsFunction = wrapRecipientsFunction(Objects.requireNonNullElse(recipientsFunction, DEFAULT_RECIPIENTS_FUNCTION));
 +    }
 +
 +    /**
@@ -407,6 +495,15 @@ index 0000000000000000000000000000000000000000..48dac37d64561a890baca8d9fbd1bcc9
 +    }
 +
 +    /**
++     * Sets the player that <b>won't</b> be receiving this sound.
++     *
++     * @param except player excluded from receiving this sound
++     */
++    public void setException(@Nullable HumanEntity except) {
++        this.except = except;
++    }
++
++    /**
 +     * Gets the category of sounds this will be played with.
 +     *
 +     * @return category of sounds
@@ -421,8 +518,7 @@ index 0000000000000000000000000000000000000000..48dac37d64561a890baca8d9fbd1bcc9
 +     * @param category category of sounds
 +     */
 +    public void setCategory(@NotNull SoundCategory category) {
-+        Validate.notNull(category, "category cannot be null");
-+        this.category = category;
++        this.category = Objects.requireNonNull(category, "category cannot be null");
 +    }
 +
 +    /**
@@ -464,10 +560,162 @@ index 0000000000000000000000000000000000000000..48dac37d64561a890baca8d9fbd1bcc9
 +    }
 +
 +    /**
++     * Calculates the distance of the sound.
++     * <p>
++     * The distance value is dynamically calculated using a
++     * {@link Function Function&lt;SoundEvent, Double&gt;}.
++     * In vanilla Minecraft, the default function is {@link #DEFAULT_DISTANCE_FUNCTION}
++     * ({@code event -> event.getVolume() > 1.0F ? (double) (16.0F * event.getVolume()) : 16.0D}).
++     * </p>
++     * This is used by the vanilla implementation of {@link #calculateRecipients()}, though custom
++     * implementations won't always use this method.
++     *
++     * @return calculated distance
++     * @see #getDistanceFunction()
++     * @see #setDistanceFunction(Function)
++     */
++    public double calculateDistance() {
++        return distanceFunction.apply(this);
++    }
++
++    /**
++     * Gets the function that calculates the distance of the sound.
++     *
++     * @return distance function
++     * @see #calculateDistance()
++     * @see #setDistanceFunction(Function)
++     */
++    public @NotNull Function<@NotNull SoundEvent, @NotNull Double> getDistanceFunction() {
++        return distanceFunction;
++    }
++
++    /**
++     * Sets the function that calculates the distance of the sound.
++     *
++     * @param distanceFunction distance function
++     * @see #calculateDistance()
++     * @see #getDistanceFunction()
++     */
++    public void setDistanceFunction(@NotNull Function<@NotNull SoundEvent, @NotNull Double> distanceFunction) {
++        this.distanceFunction = Objects.requireNonNull(distanceFunction, "distanceFunction cannot be null");
++    }
++
++    /**
++     * Determines which players will receive this sound packet.
++     *
++     * @return immutable list of players
++     * @see #getRecipientsFunction()
++     * @see #setRecipientsFunction(Function)
++     */
++    public @NotNull List<Player> calculateRecipients() {
++        return recipientsFunction.apply(this);
++    }
++
++    /**
++     * Gets the function that determines which players will receive the sound packet.
++     *
++     * @return recipients function
++     * @see #calculateRecipients()
++     * @see #setRecipientsFunction(Function)
++     */
++    public @NotNull Function<@NotNull SoundEvent, @NotNull List<@NotNull Player>> getRecipientsFunction() {
++        return recipientsFunction;
++    }
++
++    /**
++     * Sets the function that determines which players will receive the sound packet.
++     * <p>
++     * This function does not need to query {@link #getException()} as this is done automatically.
++     *
++     * @param recipientsFunction recipients function
++     * @see #calculateRecipients()
++     * @see #getRecipientsFunction()
++     */
++    public void setRecipientsFunction(@NotNull Function<@NotNull SoundEvent, @NotNull List<@NotNull Player>> recipientsFunction) {
++        this.recipientsFunction = wrapRecipientsFunction(Objects.requireNonNull(recipientsFunction, "recipientsFunction cannot be null"));
++    }
++
++    /**
 +     * Gets the world in which the sound is being played.
 +     *
 +     * @return sound's world
 +     */
 +    @NotNull
 +    public abstract World getWorld();
++
++    /**
++     * Gets the position at which the sound is being played.
++     *
++     * @return sound's position
++     */
++    @NotNull
++    public abstract Vector getPosition();
++
++    /**
++     * Gets the position at which the sound is being played.
++     *
++     * @return sound's position
++     * @deprecated use {@link #getPosition()} instead for clarity
++     */
++    @Deprecated
++    @NotNull
++    public Vector getVector() {
++        return getPosition();
++    }
++
++    /**
++     * Gets the location of the sound being played.
++     *
++     * @return copy of sound location
++     * @see #getPosition()
++     */
++    public @NotNull Location getLocation() {
++        Vector pos = getPosition();
++        return new Location(getWorld(), pos.getX(), pos.getY(), pos.getZ());
++    }
++
++    @Override
++    public boolean isCancelled() {
++        return cancelled;
++    }
++
++    @Override
++    public void setCancelled(boolean cancelled) {
++        this.cancelled = cancelled;
++    }
++
++    @NotNull
++    public static org.bukkit.event.HandlerList getHandlerList() {
++        return handlers;
++    }
++
++    @Override
++    public @NotNull org.bukkit.event.HandlerList getHandlers() {
++        return handlers;
++    }
++
++    private record WrappedRecipientsFunction(@NotNull Function<SoundEvent, List<Player>> wrapped) implements Function<SoundEvent, List<Player>> {
++        @Override
++        public List<Player> apply(SoundEvent event) {
++            List<Player> recipients = wrapped.apply(event);
++            HumanEntity except = event.getException();
++            if (except != null) {
++                List<Player> filteredRecipients = new ArrayList<>(recipients.size());
++                for (Player player : recipients) {
++                    if (!player.getUniqueId().equals(except.getUniqueId()))
++                        filteredRecipients.add(player);
++                }
++                return filteredRecipients;
++            }
++            return recipients;
++        }
++    }
++
++    @NotNull
++    private static Function<SoundEvent, List<Player>> wrapRecipientsFunction(@NotNull Function<SoundEvent, List<Player>> recipientsFunction) {
++        if (recipientsFunction instanceof WrappedRecipientsFunction)
++            return recipientsFunction;
++        else
++            return new WrappedRecipientsFunction(recipientsFunction);
++    }
 +}

@@ -146,10 +146,10 @@ index 88439b8f82a97a9763dadfc6c9dbaf0912ab3eb7..73a9b765b58bb547712c014c8b908653
  
      public static boolean canSetSpawn(Level world) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index b2f49ee945dae88c15a76e7ba5433b7ca150e9d6..a7679036d31f0262a68dd1bfb2871901b1d41825 100644
+index b774a27eb4d11cd1bef807193a6df6012dde3794..911c0dd8a5863ae93dbd82fd3d6aafc267994081 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -955,7 +955,7 @@ public class CraftEventFactory {
+@@ -961,7 +961,7 @@ public class CraftEventFactory {
              CraftEventFactory.entityDamage = null;
              EntityDamageEvent event;
              if (damager == null) {
@@ -158,7 +158,7 @@ index b2f49ee945dae88c15a76e7ba5433b7ca150e9d6..a7679036d31f0262a68dd1bfb2871901
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
-@@ -991,7 +991,7 @@ public class CraftEventFactory {
+@@ -997,7 +997,7 @@ public class CraftEventFactory {
  
              return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritical()); // Paper - add critical damage API
          } else if (source == DamageSource.OUT_OF_WORLD) {
@@ -167,7 +167,7 @@ index b2f49ee945dae88c15a76e7ba5433b7ca150e9d6..a7679036d31f0262a68dd1bfb2871901
              event.setCancelled(cancelled);
              CraftEventFactory.callEvent(event);
              if (!event.isCancelled()) {
-@@ -999,7 +999,7 @@ public class CraftEventFactory {
+@@ -1005,7 +1005,7 @@ public class CraftEventFactory {
              }
              return event;
          } else if (source == DamageSource.LAVA) {

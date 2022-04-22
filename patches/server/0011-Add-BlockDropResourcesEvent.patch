@@ -48,12 +48,12 @@ index 8c30e28b97ac7e8b54322c903e0b75ee8135620b..4ca85a02a1eb46b5958aae55946c67ce
              });
              state.spawnAfterBreak((ServerLevel) world, pos, stack);
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index a3245218525f538aaba00c72f3500880853dd9d0..760d35356591380a3e4a5cbd71ebe2ce13050dbc 100644
+index 911c0dd8a5863ae93dbd82fd3d6aafc267994081..7aafe7cd3a8dae6b8f7b662049bf48bc6d698789 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1954,5 +1954,11 @@ public class CraftEventFactory {
-         final double posZ = pos.getZ();
-         playSoundEvent(event, packet -> playerList.broadcast(player, posX, posY, posZ, radius, world, packet));
+@@ -1924,5 +1924,11 @@ public class CraftEventFactory {
+             return null;
+         }, net.minecraft.server.MCUtil.asyncExecutor);
      }
 +
 +    public static List<ItemStack> callBlockDropResourcesEvent(LevelAccessor world, BlockPos pos, List<ItemStack> items) {
