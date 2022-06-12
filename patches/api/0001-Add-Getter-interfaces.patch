@@ -60,10 +60,10 @@ index abeb24fccda2acfdb0dfdadacb8fe688bd97cf78..890069604ca78a9a3f3b4c5f40969a45
      private boolean cancelled = false;
      @NotNull private final Location location;
 diff --git a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
-index a077962fa786a3291849abfa823c7f0ec4664fce..900be9033fa8573158d2d6186d40fd14ebdb1996 100644
+index a79aa4834e700f845a625e9ab15760690726e81c..fd51dfa9218065b2ace87a92eedf4ec4584a7393 100644
 --- a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
 +++ b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
-@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -20,7 +20,7 @@ import java.util.UUID;
   *
   * <p>WARNING: TAMPERING WITH THIS EVENT CAN BE DANGEROUS</p>
   */
@@ -566,7 +566,7 @@ index 12163a7b0591a7d022dc7eb9ee6608a1b6c39d9b..d81c7307127b135417e06a3b244416be
      private static final HandlerList handlers = new HandlerList();
      private final Player player;
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index 8321441b8f528a05e297f485672f928e76fe017d..e3b684a189b5c8e2d2b73ef9b057869012f86c03 100644
+index ef0cb00ca4cb7d2f5e4ec1c950cce036566d1ae4..df53183beb4c438ea3c821e1ffd8e2719c08f269 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
@@ -659,7 +659,7 @@ index ff8f1231f3e2e71740fd24fa8d4dac5d0e550ae7..ee19d7fd5bb1851af39320f1edd858e1
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 3e980c630452c8ea72227bc4cd92c605253cd41b..01ce32234885363ddac10b2b277cbcfc19aad766 100644
+index e405c279f6135c94c775a856ab88fd3cace6bd5c..359cad4528e0c9b45ac3447655f24e7925bff7d2 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
@@ -672,7 +672,7 @@ index 3e980c630452c8ea72227bc4cd92c605253cd41b..01ce32234885363ddac10b2b277cbcfc
      /**
       * Gets the metadata for this block
 diff --git a/src/main/java/org/bukkit/block/BlockState.java b/src/main/java/org/bukkit/block/BlockState.java
-index 96cde879922c796f3ac8d14ee99d7b190ff67bd9..c17f34ceedc76ac489cb9f8576df1cdd520ef1ea 100644
+index 10cbe71917bc32cca61748bcb0aa3395c554dbf8..280df0fc6f7344863f0fd2ba7592494bcd8bf2da 100644
 --- a/src/main/java/org/bukkit/block/BlockState.java
 +++ b/src/main/java/org/bukkit/block/BlockState.java
 @@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
@@ -745,22 +745,16 @@ index e8b6cfe7e454c666b4d60b702a3b211dab238830..b9196b22e5bf4dea7466d6a691f93969
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 131daee2b29f7016463a00ce7927dff7b0a1b1b4..b3edc0c2afa0058b869e5aa2849084044b194e84 100644
+index 6cd0b10d1dc4506cfb1e4db5e1260cb705566cec..a3ff1cb4b2754900879c67638a3488cd9d76cdb1 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -40,7 +40,17 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */
 -public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, com.destroystokyo.paper.network.NetworkClient { // Paper
 +public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, com.destroystokyo.paper.network.NetworkClient, gg.projecteden.parchment.HasPlayer { // Paper // Parchment
- 
-     // Paper start
-     @Override
-@@ -46,6 +46,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-         return net.kyori.adventure.identity.Identity.identity(this.getUniqueId());
-     }
- 
++
 +    // Parchment start - fix defaults
 +    /**
 +     * Returns this player object.
@@ -770,10 +764,9 @@ index 131daee2b29f7016463a00ce7927dff7b0a1b1b4..b3edc0c2afa0058b869e5aa284908404
 +    @Override
 +    @NotNull Player getPlayer();
 +    // Parchment end
-+
-     /**
-      * Gets the "friendly" name to display of this player.
-      *
+ 
+     // Paper start
+     @Override
 diff --git a/src/main/java/org/bukkit/event/block/BlockBreakEvent.java b/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
 index 691733a642b3295bbe6d484be728c77cd32803bd..a2eae7a9bad13d1ba2bd954888a0373834d30078 100644
 --- a/src/main/java/org/bukkit/event/block/BlockBreakEvent.java
@@ -801,12 +794,12 @@ index a1350c0f74d445dca09eea6e10abac050bb06990..11bb6f8f7363f31061d5fd0f2e451509
      protected boolean buildable;
  
 diff --git a/src/main/java/org/bukkit/event/block/BlockDamageEvent.java b/src/main/java/org/bukkit/event/block/BlockDamageEvent.java
-index f70871e1ae7b1a1d77405d942d82666f03bf0498..e5bb8f4b75eb24fa507fcd93b62a4e7f5e2d3c98 100644
+index cd04a0bd9d232857408b38605787016a217cb8d2..7035fe7c0f5adb981ac41804605c4fbcf57968bf 100644
 --- a/src/main/java/org/bukkit/event/block/BlockDamageEvent.java
 +++ b/src/main/java/org/bukkit/event/block/BlockDamageEvent.java
-@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
-  * <p>
+@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
   * If a Block Damage event is cancelled, the block will not be damaged.
+  * @see BlockDamageAbortEvent
   */
 -public class BlockDamageEvent extends BlockEvent implements Cancellable {
 +public class BlockDamageEvent extends BlockEvent implements Cancellable, gg.projecteden.parchment.HasPlayer { // Parchment
@@ -866,7 +859,7 @@ index be0a2d1f234d8265d98e54e518a994957b1f3ab7..54cd6735fbcad009330927d760f8bd93
      protected boolean cancel;
      protected boolean canBuild;
 diff --git a/src/main/java/org/bukkit/event/block/SignChangeEvent.java b/src/main/java/org/bukkit/event/block/SignChangeEvent.java
-index 1f79f704abf339150df08900b8ea7da4cefef258..45355bb0dde0b1432054a1504f2dfe01bb696b27 100644
+index 1268066e30ddb0cd3792ea4b3de894eb04196669..1e20629da438651d3987258b93cf9caf9eff9452 100644
 --- a/src/main/java/org/bukkit/event/block/SignChangeEvent.java
 +++ b/src/main/java/org/bukkit/event/block/SignChangeEvent.java
 @@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
@@ -1051,7 +1044,7 @@ index 9013d043503d175004ad276799e5935b7fa59dc4..4095ca19e6ceff2432e0cbd372e9475f
      private boolean cancelled;
  
 diff --git a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
-index 356d1154b0732e2daf242d60fa715dba9f2dc9db..9722f420816246fee91eaf19d320a9b5b42e94fc 100644
+index 635b8787fc235b61c0d5677def034656e4ec4cef..2270ecbf5189ab42aac357534896c89bbc871a97 100644
 --- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
@@ -1077,7 +1070,7 @@ index f6d3b817de3001f04ea4554c7c39a1290af3fd6d..44efb5cc62149b34b994eadac488a902
  
      public PlayerEvent(@NotNull final Player who) {
 diff --git a/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
-index 123979ed64939d615b061f91c19c630e1e1db8c7..25b4e19d492cccdc0f37d4960a1206003a611456 100644
+index 6800132c6288b4588fd02b08d26f016c38f27129..f1a707adfe190090e2fa8cd0f497fb470959172f 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
 @@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
@@ -1168,7 +1161,7 @@ index 1b577c03c3152d22b70f8bdb321b28ad8fbbc3af..b3449a874666bcd67950ec12da41738f
      /**
       * Returns the size of the inventory
 diff --git a/src/main/java/org/bukkit/inventory/InventoryView.java b/src/main/java/org/bukkit/inventory/InventoryView.java
-index b06995aa57aa9cba0bb59f1d26d81015619a08e6..543d3cccc6dd04c66c89df09f4804333b8ce436e 100644
+index 2448e70d75ae7a678c6befac4506c103edb78875..65ca144618f74bc8e317a4b9c2732ad5ed13a208 100644
 --- a/src/main/java/org/bukkit/inventory/InventoryView.java
 +++ b/src/main/java/org/bukkit/inventory/InventoryView.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;

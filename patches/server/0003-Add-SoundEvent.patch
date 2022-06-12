@@ -5,10 +5,10 @@ Subject: [PATCH] Add SoundEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index b5b56d4549e97abbbe9e91d881b9bca8428f1eec..1f0624e96f17fd16658dc244aaf15d56da8243ab 100644
+index 98209532ad3e692d7e459640123f78bbd9a65889..53f5e22370f3bc0d29cc38641d67e869305ced86 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1510,12 +1510,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1520,12 +1520,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
      public void playSound(@Nullable Player except, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
@@ -24,10 +24,10 @@ index b5b56d4549e97abbbe9e91d881b9bca8428f1eec..1f0624e96f17fd16658dc244aaf15d56
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index e74c13e7aaa144fcd07036de70e80bebf0be698a..397d2c48c57a58c32b96c712d1c9682ac7dd0b87 100644
+index a6edf5117d4ae03d8294e7bb74dd2d77048895a5..0f29fd8768d4443211e85c96f624c12d60f488da 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2187,7 +2187,7 @@ public class ServerPlayer extends Player {
+@@ -2195,7 +2195,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -37,7 +37,7 @@ index e74c13e7aaa144fcd07036de70e80bebf0be698a..397d2c48c57a58c32b96c712d1c9682a
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 02dc93c394d37c9a84aa4a58d80615c403c54fb9..85d6690bf0a96654a4fb596a8e5d8e1afc01bbc5 100644
+index 624946f48f0811c94d05174f28d0b1fc6d5e6a00..ebc22dc4729146f9e28830a64204daf0084018a3 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -974,7 +974,7 @@ public abstract class PlayerList {
@@ -50,10 +50,10 @@ index 02dc93c394d37c9a84aa4a58d80615c403c54fb9..85d6690bf0a96654a4fb596a8e5d8e1a
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 9c767096ca950d55d6002282c7a3fe2884bcd630..c4db8912d3af42cc4da825e8b43f3fdf4d49e1b5 100644
+index 2483d7df7f1bf94344afd38b37602c645a4a2dff..ef8038587117829c84a237a52498496cd39ab91a 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1846,7 +1846,7 @@ public abstract class Player extends LivingEntity {
+@@ -1849,7 +1849,7 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
          fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {
@@ -85,10 +85,10 @@ index f50abfd058e3adf1cf8c0f4468a60bc04e8541e7..2ff60e8fa65626a9805597776b9163fd
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index a3c8a0291fa9ae6f3c96d937dd4621edd7c48535..d2a1368eeff0704760432166e0910343512bbe4f 100644
+index ceacb62aef0dd0f73f1542a1898ceb62c3f4c367..70d445429fec455f8188341ffd401e83f6bdab1c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1919,4 +1919,77 @@ public class CraftEventFactory {
+@@ -1917,4 +1917,77 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end

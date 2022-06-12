@@ -79,19 +79,23 @@ index a828cad27fcd39f8bfbaefa97052a2a3b6650ee7..52cce7422c2a99e3de37f87ac7041516
          return "DamageSource (" + this.msgId + ")";
      }
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index 1eb76c456790b81b657090377dd5ea547898f9a5..7bd04a04461a89043f698c402d33efbd295f7449 100644
+index 8c4db2f0e5158872879da52a96bc592145e52e13..2b25f719205bccd697e8b57e942005d0524728b1 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-@@ -99,10 +99,11 @@ public class EnderDragon extends Mob implements Enemy {
+@@ -99,7 +99,7 @@ public class EnderDragon extends Mob implements Enemy {
      private final Node[] nodes = new Node[24];
      private final int[] nodeAdjacency = new int[24];
      private final BinaryHeap openSet = new BinaryHeap();
 -    private Explosion explosionSource = new Explosion(null, this, null, null, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true, Explosion.BlockInteraction.DESTROY); // CraftBukkit - reusable source for CraftTNTPrimed.getSource()
-+    private Explosion explosionSource; // Parchment - moved into constructor to fix null world
++    private Explosion explosionSource;// = new Explosion(null, this, null, null, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true, Explosion.BlockInteraction.DESTROY); // CraftBukkit - reusable source for CraftTNTPrimed.getSource() // Parchment - moved into constructor to fix null world
+     // Paper start - add var for save custom podium
+     @Nullable
+     private BlockPos podium;
+@@ -107,6 +107,7 @@ public class EnderDragon extends Mob implements Enemy {
  
      public EnderDragon(EntityType<? extends EnderDragon> entitytypes, Level world) {
          super(EntityType.ENDER_DRAGON, world);
-+        explosionSource = new Explosion(world, this, null, null, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true, Explosion.BlockInteraction.DESTROY); // CraftBukkit - reusable source for CraftTNTPrimed.getSource() // Parchment - fix null world
++        explosionSource = new Explosion(world, this, null, null, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true, Explosion.BlockInteraction.DESTROY); // Parchment - fix null world
          this.subEntities = new EnderDragonPart[]{this.head, this.neck, this.body, this.tail1, this.tail2, this.tail3, this.wing1, this.wing2};
          this.setHealth(this.getMaxHealth());
          this.noPhysics = true;
@@ -130,10 +134,10 @@ index 20c0030d566012146021613325c6a979f392740e..a0a052095815ed63f06837155b48b0d8
              }
          }
 diff --git a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-index 86692a83fb9acd3a501da58e6d509865b49931fe..438ea548644aa9570a09fa4d4a06bde5f5c30567 100644
+index 7d33dae2617991bce244ad906df7053c22e3f515..797a583f0e3516b4a1bfec4c122eff438d174776 100644
 --- a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-@@ -138,7 +138,10 @@ public class RespawnAnchorBlock extends Block {
+@@ -148,7 +148,10 @@ public class RespawnAnchorBlock extends Block {
                  return pos.equals(explodedPos) && bl2 ? Optional.of(Blocks.WATER.getExplosionResistance()) : super.getBlockExplosionResistance(explosion, world, pos, blockState, fluidState);
              }
          };
@@ -146,10 +150,10 @@ index 86692a83fb9acd3a501da58e6d509865b49931fe..438ea548644aa9570a09fa4d4a06bde5
  
      public static boolean canSetSpawn(Level world) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index d2a1368eeff0704760432166e0910343512bbe4f..11ed21fb283a3ce80efd1d8a0ad027c47242ebc8 100644
+index 70d445429fec455f8188341ffd401e83f6bdab1c..7df4e2bab4d0773d8246011368c8e1c82c8e49d4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -971,7 +971,7 @@ public class CraftEventFactory {
+@@ -969,7 +969,7 @@ public class CraftEventFactory {
              CraftEventFactory.entityDamage = null;
              EntityDamageEvent event;
              if (damager == null) {
@@ -158,7 +162,7 @@ index d2a1368eeff0704760432166e0910343512bbe4f..11ed21fb283a3ce80efd1d8a0ad027c4
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
-@@ -1009,7 +1009,7 @@ public class CraftEventFactory {
+@@ -1007,7 +1007,7 @@ public class CraftEventFactory {
  
              return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritical()); // Paper - add critical damage API
          } else if (source == DamageSource.OUT_OF_WORLD) {
@@ -167,7 +171,7 @@ index d2a1368eeff0704760432166e0910343512bbe4f..11ed21fb283a3ce80efd1d8a0ad027c4
              event.setCancelled(cancelled);
              CraftEventFactory.callEvent(event);
              if (!event.isCancelled()) {
-@@ -1019,7 +1019,7 @@ public class CraftEventFactory {
+@@ -1017,7 +1017,7 @@ public class CraftEventFactory {
              }
              return event;
          } else if (source == DamageSource.LAVA) {

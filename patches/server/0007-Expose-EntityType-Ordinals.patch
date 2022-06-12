@@ -51,10 +51,10 @@ index 79abd84696ef099f6b12ddeaa6e398f18c53316a..13e277c9ff27a52fbf7041c36d7c5ff6
          return Registry.ENTITY_TYPE.getKey(type);
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 30a4ceccf2ac0244f91b64cc4864e186211c9042..d71c9ed269e321cfec20c2a5223fd7741fc24702 100644
+index 0507e40c97567fc379ebe4d0b001af16922ddb3e..5f86de03f280b2e3d9e32e11a8df5761ea6591ee 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -648,6 +648,18 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -653,6 +653,18 @@ public final class CraftMagicNumbers implements UnsafeValues {
          final net.minecraft.world.item.context.BlockPlaceContext ctx = context;
          return future.completeAsync(() -> blockItem.canPlace(ctx, blockState), net.minecraft.server.MCUtil.MAIN_EXECUTOR);
      }
