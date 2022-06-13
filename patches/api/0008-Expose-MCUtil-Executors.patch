@@ -5,10 +5,10 @@ Subject: [PATCH] Expose MCUtil Executors
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 79b26045a68ebb9b01e5bd06abbccaaef5489777..da7d4eb2beea848e60d8c8cfe2a5abf0d6761950 100644
+index 30b49aed62fa67276e8964922ea3f84458d854bb..c78ca045a0a7fa651a34f76c802bb82cd6ac4d13 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2055,4 +2055,20 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2065,4 +2065,20 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
      // Paper end

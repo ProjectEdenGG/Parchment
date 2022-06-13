@@ -5,10 +5,10 @@ Subject: [PATCH] Expose EntityType Ordinals
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 79abd84696ef099f6b12ddeaa6e398f18c53316a..13e277c9ff27a52fbf7041c36d7c5ff6d0028cfc 100644
+index ac0f0a4da4282c13f6e1f37710cb615d66b8ef2c..aa98cea349a3929cbb29fa01962ae98d9136cda7 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -150,6 +150,8 @@ import org.slf4j.Logger;
+@@ -154,6 +154,8 @@ import org.slf4j.Logger;
  
  public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
  
@@ -17,7 +17,7 @@ index 79abd84696ef099f6b12ddeaa6e398f18c53316a..13e277c9ff27a52fbf7041c36d7c5ff6
      private static final Logger LOGGER = LogUtils.getLogger();
      public static final String ENTITY_TAG = "EntityTag";
      private final Holder.Reference<EntityType<?>> builtInRegistryHolder;
-@@ -285,9 +287,31 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
+@@ -294,9 +296,31 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
      private final EntityDimensions dimensions;
  
      private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder type) { // CraftBukkit - decompile error
@@ -51,7 +51,7 @@ index 79abd84696ef099f6b12ddeaa6e398f18c53316a..13e277c9ff27a52fbf7041c36d7c5ff6
          return Registry.ENTITY_TYPE.getKey(type);
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 0507e40c97567fc379ebe4d0b001af16922ddb3e..5f86de03f280b2e3d9e32e11a8df5761ea6591ee 100644
+index ee4d1e3f0be4ac94bb03263425b2acfa97a85c0d..840017182f0c75af07bd461d59fc340b3c304b8a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -653,6 +653,18 @@ public final class CraftMagicNumbers implements UnsafeValues {

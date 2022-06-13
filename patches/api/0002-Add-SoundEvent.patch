@@ -4,383 +4,313 @@ Date: Sat, 19 Jun 2021 22:55:10 -0400
 Subject: [PATCH] Add SoundEvent
 
 
-diff --git a/src/main/java/gg/projecteden/parchment/event/sound/EntitySoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/EntitySoundEvent.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..5b74910e441a943597d3170ff00a9b9debab1d38
---- /dev/null
-+++ b/src/main/java/gg/projecteden/parchment/event/sound/EntitySoundEvent.java
-@@ -0,0 +1,49 @@
-+package gg.projecteden.parchment.event.sound;
-+
-+import org.apache.commons.lang.Validate;
-+import org.bukkit.Sound;
-+import org.bukkit.SoundCategory;
-+import org.bukkit.World;
-+import org.bukkit.entity.Entity;
-+import org.bukkit.entity.HumanEntity;
-+import org.jetbrains.annotations.NotNull;
-+import org.jetbrains.annotations.Nullable;
-+
-+/**
-+ * Called when an entity sound is sent to a player. Cancelling this event will prevent the packet from sending.
-+ * <p>
-+ * This type of sound represents one that will follow the {@link #origin} entity.
-+ */
-+public class EntitySoundEvent extends NamedSoundEvent {
-+	private @NotNull Entity origin;
-+
-+	public EntitySoundEvent(@Nullable HumanEntity receiver, @NotNull Entity origin, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+		super(receiver, sound, category, volume, pitch);
-+		Validate.notNull(origin, "origin cannot be null");
-+		this.origin = origin;
-+	}
-+
-+	/**
-+	 * Gets the entity that the sound is originating from
-+	 * @return originating entity
-+	 */
-+	public @NotNull Entity getOrigin() {
-+		return origin;
-+	}
-+
-+	/**
-+	 * Sets the entity that the sound will originate from
-+	 * @param origin originating entity
-+	 */
-+	public void setOrigin(@NotNull Entity origin) {
-+		Validate.notNull(origin, "origin cannot be null");
-+		if (!this.origin.getWorld().equals(origin.getWorld()))
-+			throw new IllegalArgumentException("Entity must be in same world as originating location");
-+		this.origin = origin;
-+	}
-+
-+    @Override
-+    public @org.jetbrains.annotations.NotNull World getWorld() {
-+        return origin.getWorld();
-+    }
-+}
-diff --git a/src/main/java/gg/projecteden/parchment/event/sound/LocationCustomSoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/LocationCustomSoundEvent.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..eed6098d16e051484129396c694b9cfbb8172fce
---- /dev/null
-+++ b/src/main/java/gg/projecteden/parchment/event/sound/LocationCustomSoundEvent.java
-@@ -0,0 +1,95 @@
-+package gg.projecteden.parchment.event.sound;
-+
-+import gg.projecteden.parchment.HasLocation;
-+import org.apache.commons.lang.Validate;
-+import org.bukkit.Keyed;
-+import org.bukkit.Location;
-+import org.bukkit.NamespacedKey;
-+import org.bukkit.SoundCategory;
-+import org.bukkit.World;
-+import org.bukkit.entity.HumanEntity;
-+import org.bukkit.util.Vector;
-+import org.jetbrains.annotations.NotNull;
-+import org.jetbrains.annotations.Nullable;
-+
-+import static com.google.common.base.Preconditions.checkNotNull;
-+
-+/**
-+ * Called when a sound not available in {@link org.bukkit.Sound} is sent to a player from a {@link Location}. Cancelling this event will prevent the packet from sending.
-+ */
-+public class LocationCustomSoundEvent extends SoundEvent implements Keyed, HasLocation {
-+	private @NotNull Vector vector;
-+	private @NotNull NamespacedKey key;
-+	private @NotNull final World world;
-+
-+	public LocationCustomSoundEvent(@Nullable HumanEntity receiver, @NotNull World world, @NotNull Vector vector, @NotNull NamespacedKey key, @NotNull SoundCategory category, float volume, float pitch) {
-+		super(receiver, category, volume, pitch);
-+		Validate.notNull(world, "world cannot be null");
-+		Validate.notNull(vector, "vector cannot be null");
-+		Validate.notNull(key, "key cannot be null");
-+		this.world = world;
-+		this.vector = vector;
-+		this.key = key;
-+	}
-+
-+    public LocationCustomSoundEvent(@Nullable HumanEntity receiver, @NotNull Location location, @NotNull NamespacedKey key, @NotNull SoundCategory category, float volume, float pitch) {
-+        this(receiver, checkNotNull(location, "location").getWorld(), location.toVector(), key, category, volume, pitch);
-+    }
-+
-+    public LocationCustomSoundEvent(@NotNull HumanEntity receiver, @NotNull Vector vector, @NotNull NamespacedKey key, @NotNull SoundCategory category, float volume, float pitch) {
-+	    this(checkNotNull(receiver, "receiver"), receiver.getWorld(), vector, key, category, volume, pitch);
-+    }
-+
-+    public LocationCustomSoundEvent(@NotNull HumanEntity receiver, @NotNull NamespacedKey key, @NotNull SoundCategory category, float volume, float pitch) {
-+        this(checkNotNull(receiver, "receiver"), receiver.getLocation().toVector(), key, category, volume, pitch);
-+    }
-+
-+	/**
-+	 * Gets the position in the world of the sound
-+	 * @return position in the world
-+	 */
-+	public @NotNull Vector getVector() {
-+		return vector;
-+	}
-+
-+	/**
-+	 * Gets the resource pack key of the sound
-+	 * @return asset key
-+	 */
-+	public @NotNull NamespacedKey getKey() {
-+		return key;
-+	}
-+
-+    @Override
-+	public @NotNull World getWorld() {
-+		return world;
-+	}
-+
-+    /**
-+     * Gets the location of the sound being played
-+     * @return copy of sound location
-+     * @see #getVector()
-+     * @see #setVector(Vector)
-+     */
-+    public @NotNull Location getLocation() {
-+        return new Location(world, vector.getX(), vector.getY(), vector.getZ());
-+    }
-+
-+	/**
-+	 * Sets the position in the world of the sound
-+	 * @param vector position in the world
-+	 */
-+	public void setVector(@NotNull Vector vector) {
-+		Validate.notNull(vector, "vector cannot be null");
-+		this.vector = vector;
-+	}
-+
-+	/**
-+	 * Sets the resource pack key of the sound
-+	 * @param key asset key
-+	 */
-+	public void setKey(@NotNull NamespacedKey key) {
-+		Validate.notNull(key, "key cannot be null");
-+		this.key = key;
-+	}
-+}
-diff --git a/src/main/java/gg/projecteden/parchment/event/sound/LocationNamedSoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/LocationNamedSoundEvent.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..0872f3850860fe7cca28aeabed6235cc2a805c94
---- /dev/null
-+++ b/src/main/java/gg/projecteden/parchment/event/sound/LocationNamedSoundEvent.java
-@@ -0,0 +1,72 @@
-+package gg.projecteden.parchment.event.sound;
-+
-+import gg.projecteden.parchment.HasLocation;
-+import org.apache.commons.lang.Validate;
-+import org.bukkit.Location;
-+import org.bukkit.Sound;
-+import org.bukkit.SoundCategory;
-+import org.bukkit.World;
-+import org.bukkit.entity.HumanEntity;
-+import org.bukkit.util.Vector;
-+import org.jetbrains.annotations.NotNull;
-+import org.jetbrains.annotations.Nullable;
-+
-+import static com.google.common.base.Preconditions.checkNotNull;
-+
-+/**
-+ * Called when a sound available in {@link Sound} is sent to a player from a {@link Location}. Cancelling this event will prevent the packet from sending.
-+ */
-+public class LocationNamedSoundEvent extends NamedSoundEvent implements HasLocation {
-+	private @NotNull Vector vector;
-+	private @NotNull final World world;
-+
-+	public LocationNamedSoundEvent(@Nullable HumanEntity receiver, @NotNull World world, @NotNull Vector vector, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+		super(receiver, sound, category, volume, pitch);
-+		this.world = checkNotNull(world, "world");
-+		this.vector = checkNotNull(vector, "vector");
-+	}
-+
-+    public LocationNamedSoundEvent(@Nullable HumanEntity receiver, @NotNull Location location, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+	    this(receiver, checkNotNull(location, "location").getWorld(), location.toVector(), sound, category, volume, pitch);
-+    }
-+
-+	public LocationNamedSoundEvent(@NotNull HumanEntity receiver, @NotNull Vector vector, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+	    this(checkNotNull(receiver, "receiver"), receiver.getWorld(), vector, sound, category, volume, pitch);
-+    }
-+
-+    public LocationNamedSoundEvent(@NotNull HumanEntity receiver, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+        this(checkNotNull(receiver, "receiver"), receiver.getLocation().toVector(), sound, category, volume, pitch);
-+    }
-+
-+	/**
-+	 * Gets the position in the world of the sound
-+	 * @return position in the world
-+	 */
-+	public @NotNull Vector getVector() {
-+		return vector;
-+	}
-+
-+	@Override
-+	public @NotNull World getWorld() {
-+		return world;
-+	}
-+
-+    /**
-+     * Gets the location of the sound being played
-+     * @return copy of sound location
-+     * @see #getVector()
-+     * @see #setVector(Vector)
-+     */
-+	public @NotNull Location getLocation() {
-+	    return new Location(world, vector.getX(), vector.getY(), vector.getZ());
-+    }
-+
-+	/**
-+	 * Sets the position in the world of the sound
-+	 * @param vector position in the world
-+	 */
-+	public void setVector(@NotNull Vector vector) {
-+		Validate.notNull(vector, "vector cannot be null");
-+		this.vector = vector;
-+	}
-+}
-diff --git a/src/main/java/gg/projecteden/parchment/event/sound/NamedSoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/NamedSoundEvent.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..9c2e257de3487a73d4f5b796177061d8fea4c0f7
---- /dev/null
-+++ b/src/main/java/gg/projecteden/parchment/event/sound/NamedSoundEvent.java
-@@ -0,0 +1,38 @@
-+package gg.projecteden.parchment.event.sound;
-+
-+import org.apache.commons.lang.Validate;
-+import org.bukkit.Sound;
-+import org.bukkit.SoundCategory;
-+import org.bukkit.entity.HumanEntity;
-+import org.jetbrains.annotations.NotNull;
-+import org.jetbrains.annotations.Nullable;
-+
-+/**
-+ * Called when a sound available in {@link Sound} is sent to a player. Cancelling this event will prevent the packet from sending.
-+ */
-+public abstract class NamedSoundEvent extends SoundEvent {
-+	private @NotNull Sound sound;
-+
-+	public NamedSoundEvent(@Nullable HumanEntity receiver, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch) {
-+		super(receiver, category, volume, pitch);
-+		Validate.notNull(sound, "sound cannot be null");
-+		this.sound = sound;
-+	}
-+
-+	/**
-+	 * Gets the sound being played
-+	 * @return sound to play
-+	 */
-+	public @NotNull Sound getSound() {
-+		return sound;
-+	}
-+
-+	/**
-+	 * Sets the sound yo played
-+	 * @param sound sound to play
-+	 */
-+	public void setSound(@NotNull Sound sound) {
-+		Validate.notNull(sound, "sound cannot be null");
-+		this.sound = sound;
-+	}
-+}
 diff --git a/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..0506c9e461296aeb12da23b476b9b1c57702b7e1
+index 0000000000000000000000000000000000000000..427161356c432b5dc5d69a53801c1cd3540d7c38
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
-@@ -0,0 +1,123 @@
+@@ -0,0 +1,380 @@
 +package gg.projecteden.parchment.event.sound;
 +
 +import gg.projecteden.parchment.OptionalHumanEntity;
-+import org.apache.commons.lang.Validate;
-+import org.bukkit.SoundCategory;
-+import org.bukkit.World;
++import net.kyori.adventure.sound.Sound;
++import org.bukkit.Location;
++import org.bukkit.entity.Entity;
 +import org.bukkit.entity.HumanEntity;
++import org.bukkit.entity.Player;
 +import org.bukkit.event.Cancellable;
 +import org.bukkit.event.Event;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
++import org.slf4j.Logger;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Objects;
++import java.util.function.Function;
 +
 +/**
-+ * Called when a sound is sent to a player. Cancelling this event will prevent the packet from sending.
++ * Called when a sound is sent to a player.
++ * Cancelling this event will prevent the packet from sending.
 + */
-+public abstract class SoundEvent extends Event implements Cancellable, OptionalHumanEntity {
-+	private @Nullable final HumanEntity receiver;
-+	private @NotNull SoundCategory category;
-+	private float volume;
-+	private float pitch;
++public final class SoundEvent extends Event implements Cancellable, OptionalHumanEntity {
++    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(SoundEvent.class);
 +
-+	public SoundEvent(@Nullable HumanEntity receiver, @NotNull SoundCategory category, float volume, float pitch) {
-+		super(true);
-+		Validate.notNull(category, "category cannot be null");
-+		this.receiver = receiver;
-+		this.category = category;
-+		this.volume = volume;
-+		this.pitch = pitch;
-+	}
++    private static final org.bukkit.event.HandlerList handlers = new org.bukkit.event.HandlerList();
++    public static final @NotNull Function<Sound, Double> DEFAULT_DISTANCE_FUNCTION = event -> event.volume() > 1.0F ? (double) (16.0F * event.volume()) : 16.0D;
++    public static final @NotNull Function<SoundEvent, List<Player>> DEFAULT_RECIPIENTS_FUNCTION = new WrappedRecipientsFunction(event -> {
++        final double distance = event.calculateDistance();
++        final Location loc = event.getEmitter().location();
++        return loc.getWorld().getPlayers().stream()
++            .filter(player -> {
++                Location pl = player.getLocation();
++                double x = loc.getX() - pl.getX();
++                double y = loc.getY() - pl.getY();
++                double z = loc.getZ() - pl.getZ();
++                return x * x + y * y + z * z < distance * distance;
++            })
++            .toList();
++    });
 +
-+	/**
-+	 * Gets the player that this sound will be sent to. May be null if the sound is being played to several players.
-+	 * @return player receiving the sound
-+	 */
-+	@Override
-+	public @Nullable HumanEntity getPlayer() {
-+		return receiver;
-+	}
-+
-+	/**
-+	 * Gets the category of sounds this will be played with.
-+	 * @return category of sounds
-+	 */
-+	public @NotNull SoundCategory getCategory() {
-+		return category;
-+	}
-+
-+	/**
-+	 * Gets the volume of the sound to be played. Should be non-negative.
-+	 * @return sound volume
-+	 */
-+	public float getVolume() {
-+		return volume;
-+	}
-+
-+	/**
-+	 * Gets the pitch of the sound to be played. Should be within the range [0,2].
-+	 * @return sound pitch
-+	 */
-+	public float getPitch() {
-+		return pitch;
-+	}
-+
-+	/**
-+	 * Sets the category of sounds this will be played with.
-+	 * @param category category of sounds
-+	 */
-+	public void setCategory(@NotNull SoundCategory category) {
-+		Validate.notNull(category, "category cannot be null");
-+		this.category = category;
-+	}
-+
-+	/**
-+	 * Sets the volume of the sound to be played. Must be non-negative.
-+	 * @param volume sound volume
-+	 */
-+	public void setVolume(float volume) {
-+		Validate.isTrue(volume >= 0, "volume should be non-negative");
-+		this.volume = volume;
-+	}
-+
-+	/**
-+	 * Sets the pitch of the sound to be played. Must be within the range [0,2].
-+	 * @param pitch sound pitch
-+	 */
-+	public void setPitch(float pitch) {
-+		Validate.isTrue(pitch >= 0 && pitch <= 2, "pitch should be within range [0,2]");
-+		this.pitch = pitch;
-+	}
-+
-+    // boilerplate
-+
++    private @Nullable HumanEntity except;
++    private @NotNull Function<@NotNull Sound, @NotNull Double> distanceFunction;
++    private @NotNull Function<@NotNull SoundEvent, @NotNull List<@NotNull Player>> recipientsFunction; // TODO replace with Player -> Nullable Sound function ?
++    private @NotNull Sound sound;
++    private @NotNull Emitter emitter;
 +    private boolean cancelled;
++    private long seed;
++    private @Nullable Function<@NotNull Player, @Nullable Sound> soundOverrideFunction;
++    private @Nullable Function<@NotNull Player, @Nullable Emitter> emitterOverrideFunction;
++
++    public SoundEvent(@Nullable HumanEntity except, @NotNull Sound sound, @NotNull Emitter emitter, long seed, @Nullable Function<Sound, Double> distanceFunction, @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
++        super(true);
++        this.except = except;
++        this.sound = Objects.requireNonNull(sound, "sound cannot be null");
++        this.emitter = Objects.requireNonNull(emitter, "emitter cannot be null");
++        this.seed = seed;
++        this.distanceFunction = Objects.requireNonNullElse(distanceFunction, DEFAULT_DISTANCE_FUNCTION);
++        this.recipientsFunction = wrapRecipientsFunction(Objects.requireNonNullElse(recipientsFunction, DEFAULT_RECIPIENTS_FUNCTION));
++    }
++
++    /**
++     * Gets the player that <b>won't</b> be receiving this sound.
++     *
++     * @return player excluded from receiving this sound
++     * @deprecated use {@link #getException()} for more clarity
++     */
++    @Override
++    @Deprecated
++    public @Nullable HumanEntity getPlayer() {
++        return getException();
++    }
++
++    /**
++     * Gets the player that <b>won't</b> be receiving this sound.
++     *
++     * @return player excluded from receiving this sound
++     */
++    public @Nullable HumanEntity getException() {
++        return except;
++    }
++
++    /**
++     * Sets the player that <b>won't</b> be receiving this sound.
++     *
++     * @param except player excluded from receiving this sound
++     */
++    public void setException(@Nullable HumanEntity except) {
++        this.except = except;
++    }
++
++    /**
++     * Gets the sound that will be sent.
++     *
++     * @return sound that will be sent
++     */
++    public @NotNull Sound getSound() {
++        return sound;
++    }
++
++    /**
++     * Sets the sound that will be sent.
++     *
++     * @param sound sound that will be sent
++     */
++    public void setSound(@NotNull Sound sound) {
++        this.sound = Objects.requireNonNull(sound, "sound cannot be null");
++    }
++
++    /**
++     * Gets the emitter which determines how and where the sound will be played from.
++     *
++     * @return emitter which determines how and where the sound will be played from
++     */
++    public @NotNull Emitter getEmitter() {
++        return emitter;
++    }
++
++    /**
++     * Sets the emitter which determines how and where the sound will be played from.
++     *
++     * @param emitter emitter which determines how and where the sound will be played from
++     */
++    public void setEmitter(@NotNull Emitter emitter) {
++        this.emitter = Objects.requireNonNull(emitter, "emitter cannot be null");
++    }
++
++    /**
++     * Gets the seed used to generate the sound.
++     *
++     * @return seed used to generate the sound
++     */
++    public long getSeed() {
++        return seed;
++    }
++
++    /**
++     * Sets the seed used to generate the sound.
++     *
++     * @param seed seed used to generate the sound
++     */
++    public void setSeed(long seed) {
++        this.seed = seed;
++    }
++
++    /**
++     * Calculates the distance of the sound.
++     * <p>
++     * The distance value is dynamically calculated using a
++     * {@link Function Function&lt;SoundEvent, Double&gt;}.
++     * In vanilla Minecraft, the default function is {@link #DEFAULT_DISTANCE_FUNCTION}
++     * ({@code event -> event.getVolume() > 1.0F ? (double) (16.0F * event.getVolume()) : 16.0D}).
++     * </p>
++     * This is used by the vanilla implementation of {@link #calculateRecipients()}, though custom
++     * implementations won't always use this method.
++     *
++     * @return calculated distance
++     * @see #getDistanceFunction()
++     * @see #setDistanceFunction(Function)
++     */
++    public double calculateDistance() {
++        return distanceFunction.apply(sound);
++    }
++
++    /**
++     * Gets the function that calculates the distance of the sound.
++     *
++     * @return distance function
++     * @see #calculateDistance()
++     * @see #setDistanceFunction(Function)
++     */
++    public @NotNull Function<@NotNull Sound, @NotNull Double> getDistanceFunction() {
++        return distanceFunction;
++    }
++
++    /**
++     * Sets the function that calculates the distance of the sound.
++     *
++     * @param distanceFunction distance function
++     * @see #calculateDistance()
++     * @see #getDistanceFunction()
++     */
++    public void setDistanceFunction(@NotNull Function<@NotNull Sound, @NotNull Double> distanceFunction) {
++        this.distanceFunction = Objects.requireNonNull(distanceFunction, "distanceFunction cannot be null");
++    }
++
++    /**
++     * Determines which players will receive this sound packet.
++     *
++     * @return immutable list of players
++     * @see #getRecipientsFunction()
++     * @see #setRecipientsFunction(Function)
++     */
++    public @NotNull List<Player> calculateRecipients() {
++        return recipientsFunction.apply(this);
++    }
++
++    /**
++     * Gets the function that determines which players will receive the sound packet.
++     *
++     * @return recipients function
++     * @see #calculateRecipients()
++     * @see #setRecipientsFunction(Function)
++     */
++    public @NotNull Function<@NotNull SoundEvent, @NotNull List<@NotNull Player>> getRecipientsFunction() {
++        return recipientsFunction;
++    }
++
++    /**
++     * Sets the function that determines which players will receive the sound packet.
++     * <p>
++     * This function does not need to query {@link #getException()} as this is done automatically.
++     *
++     * @param recipientsFunction recipients function
++     * @see #calculateRecipients()
++     * @see #getRecipientsFunction()
++     */
++    public void setRecipientsFunction(@NotNull Function<@NotNull SoundEvent, @NotNull List<@NotNull Player>> recipientsFunction) {
++        this.recipientsFunction = wrapRecipientsFunction(Objects.requireNonNull(recipientsFunction, "recipientsFunction cannot be null"));
++    }
++
++    /**
++     * Gets the function that overrides what {@link Sound} is sent to a {@link Player}.
++     *
++     * @return sound override function (or {@code null} if not overridden)
++     */
++    public @Nullable Function<@NotNull Player, @Nullable Sound> getSoundOverrideFunction() {
++        return soundOverrideFunction;
++    }
++
++    /**
++     * Sets the function that overrides what {@link Sound} is sent to a {@link Player}.
++     *
++     * @param soundOverrideFunction function which accepts a player and returns a sound
++     *                              (or {@code null} if the default sound should be used)
++     */
++    public void setSoundOverrideFunction(@Nullable Function<@NotNull Player, @Nullable Sound> soundOverrideFunction) {
++        this.soundOverrideFunction = soundOverrideFunction;
++    }
++
++    /**
++     * Calculates the sound that will be sent to a {@link Player}.
++     *
++     * @param player player to calculate the sound for
++     * @return sound that will be sent to the player
++     */
++    public @NotNull Sound calculateSound(@NotNull Player player) {
++        if (soundOverrideFunction != null) {
++            try {
++                Sound override = soundOverrideFunction.apply(player);
++                if (override != null) {
++                    return override;
++                }
++            } catch (Throwable e) {
++                LOGGER.error("Error while overriding sound for player " + player.getName(), e);
++            }
++        }
++        return sound;
++    }
++
++    /**
++     * Gets the function that overrides what {@link Emitter} is used when playing this sound to a
++     * {@link Player}.
++     *
++     * @return emitter override function (or {@code null} if not overridden)
++     */
++    public @Nullable Function<@NotNull Player, @Nullable Emitter> getEmitterOverrideFunction() {
++        return emitterOverrideFunction;
++    }
++
++    /**
++     * Sets the function that overrides what {@link Emitter} is used when playing this sound to a
++     * {@link Player}.
++     *
++     * @param emitterOverrideFunction function which accepts a player and returns an emitter
++     *                                (or {@code null} if the default emitter should be used)
++     */
++    public void setEmitterOverrideFunction(@Nullable Function<@NotNull Player, @Nullable Emitter> emitterOverrideFunction) {
++        this.emitterOverrideFunction = emitterOverrideFunction;
++    }
++
++    /**
++     * Calculates the emitter that will be used when playing this sound to a {@link Player}.
++     *
++     * @param player player to calculate the emitter for
++     * @return emitter that will be used when playing the sound to the player
++     */
++    public @NotNull Emitter calculateEmitter(@NotNull Player player) {
++        if (emitterOverrideFunction != null) {
++            try {
++                Emitter override = emitterOverrideFunction.apply(player);
++                if (override != null) {
++                    return override;
++                }
++            } catch (Throwable e) {
++                LOGGER.error("Error while overriding emitter for player " + player.getName(), e);
++            }
++        }
++        return emitter;
++    }
 +
 +    @Override
 +    public boolean isCancelled() {
@@ -392,22 +322,71 @@ index 0000000000000000000000000000000000000000..0506c9e461296aeb12da23b476b9b1c5
 +        this.cancelled = cancelled;
 +    }
 +
-+    /**
-+     * Gets the world in which the sound is being played
-+     * @return sound's world
-+     */
 +    @NotNull
-+	public abstract World getWorld();
-+
-+    private static final org.bukkit.event.HandlerList handlers = new org.bukkit.event.HandlerList();
++    public static org.bukkit.event.HandlerList getHandlerList() {
++        return handlers;
++    }
 +
 +    @Override
 +    public @NotNull org.bukkit.event.HandlerList getHandlers() {
 +        return handlers;
 +    }
 +
++    private record WrappedRecipientsFunction(@NotNull Function<SoundEvent, List<Player>> wrapped) implements Function<SoundEvent, List<Player>> {
++        @Override
++        public List<Player> apply(SoundEvent event) {
++            List<Player> recipients = wrapped.apply(event);
++            HumanEntity except = event.getException();
++            if (except != null) {
++                List<Player> filteredRecipients = new ArrayList<>(recipients.size());
++                for (Player player : recipients) {
++                    if (!player.getUniqueId().equals(except.getUniqueId()))
++                        filteredRecipients.add(player);
++                }
++                return filteredRecipients;
++            }
++            return recipients;
++        }
++    }
++
 +    @NotNull
-+    public static org.bukkit.event.HandlerList getHandlerList() {
-+        return handlers;
++    private static Function<SoundEvent, List<Player>> wrapRecipientsFunction(@NotNull Function<SoundEvent, List<Player>> recipientsFunction) {
++        if (recipientsFunction instanceof WrappedRecipientsFunction)
++            return recipientsFunction;
++        else
++            return new WrappedRecipientsFunction(recipientsFunction);
++    }
++
++    /**
++     * The class which determines where a sound will emit from.
++     */
++    public sealed interface Emitter permits EntityEmitter, LocationEmitter {
++        /**
++         * Gets the location at which the sound will be played.
++         *
++         * @return sound's location
++         */
++        @NotNull
++        Location location();
++    }
++
++    /**
++     * An emitter which plays a sound from an entity.
++     *
++     * @param entity the entity from which the sound will be played
++     */
++    public record EntityEmitter(@NotNull Entity entity) implements Emitter {
++        @Override
++        public @NotNull Location location() {
++            return entity.getLocation();
++        }
++    }
++
++    /**
++     * An emitter which plays a sound from a location.
++     *
++     * @param location the location from which the sound will be played
++     */
++    public record LocationEmitter(@NotNull Location location) implements Emitter {
 +    }
 +}

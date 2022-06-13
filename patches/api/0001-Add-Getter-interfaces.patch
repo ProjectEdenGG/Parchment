@@ -60,7 +60,7 @@ index abeb24fccda2acfdb0dfdadacb8fe688bd97cf78..890069604ca78a9a3f3b4c5f40969a45
      private boolean cancelled = false;
      @NotNull private final Location location;
 diff --git a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
-index a79aa4834e700f845a625e9ab15760690726e81c..fd51dfa9218065b2ace87a92eedf4ec4584a7393 100644
+index 59ae7bc3a0a2079fe4b3a92d777aca682a58e4e3..6aac09818b847ca6b25514a109f9b0e902840167 100644
 --- a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
 +++ b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
 @@ -20,7 +20,7 @@ import java.util.UUID;
@@ -115,10 +115,10 @@ index 4dcf6242c9acc62d030a94f67b78729ed29f8c85..d09aecb0b45f2ccf9badd308ef3e472b
      /**
       * Sets the UUID for this player name. This will skip the initial API call to find the players UUID.
 diff --git a/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java b/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java
-index 4cd97cb102e1ec53b3fe1a451b65b4b640fde099..871ff8bae4ac50049a6e23a0cd1263121f8fbad1 100644
+index 9be64a95c2345433b6142d611077dedadcef9f5d..e3cea810881868fb5869de72f331733e6893fcee 100644
 --- a/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java
 +++ b/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java
-@@ -48,7 +48,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -47,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
   *
   * Only 1 process will be allowed to provide completions, the Async Event, or the standard process.
   */
@@ -593,7 +593,7 @@ index ef0cb00ca4cb7d2f5e4ec1c950cce036566d1ae4..df53183beb4c438ea3c821e1ffd8e271
       * Sets the world that this location resides in
       *
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index 23e853bae0e051cd43deb9eb24c54e74a56d8ab0..20cb99c906725ba3a67d2a71338ba8cacfe5072c 100644
+index a7d1f1e701f23e851f735584a30bedadb0d8b9bd..7b37b6f596b4ac6b8049c7bd195139ac03ba63bc 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
 @@ -10,7 +10,7 @@ import org.bukkit.profile.PlayerProfile;
@@ -633,10 +633,10 @@ index 983a8c20a06d2b509602b27f49c090598b8ecc42..46dd8496f5a2c792ee7811e33c424e88
      /**
       * Get whether this raid started.
 diff --git a/src/main/java/org/bukkit/Vibration.java b/src/main/java/org/bukkit/Vibration.java
-index 8d568d21fcbf706f55cda087bd7222ac60889c0a..8bc5b7a0df5c8f5e5d973c2d2b348968f5b759b2 100644
+index 209a302c3a2ed333780ed760314a6ed352fc0767..9d29f1c5af56954bc452fa251d6bc0215ab3fe79 100644
 --- a/src/main/java/org/bukkit/Vibration.java
 +++ b/src/main/java/org/bukkit/Vibration.java
-@@ -64,7 +64,7 @@ public class Vibration {
+@@ -74,7 +74,7 @@ public class Vibration {
              }
          }
  
@@ -646,7 +646,7 @@ index 8d568d21fcbf706f55cda087bd7222ac60889c0a..8bc5b7a0df5c8f5e5d973c2d2b348968
              private final Location block;
  
 diff --git a/src/main/java/org/bukkit/attribute/AttributeModifier.java b/src/main/java/org/bukkit/attribute/AttributeModifier.java
-index ff8f1231f3e2e71740fd24fa8d4dac5d0e550ae7..ee19d7fd5bb1851af39320f1edd858e1f7bdd1cc 100644
+index d124768378d6f0c5573f28ee815ea3886fe74868..e790878186b64422dc4a3f52f4c7611441c82589 100644
 --- a/src/main/java/org/bukkit/attribute/AttributeModifier.java
 +++ b/src/main/java/org/bukkit/attribute/AttributeModifier.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
@@ -724,7 +724,7 @@ index 8bc6876c82935988436597161fa0ec94c032174b..ffd5fbc3e14be5439f1334c567b573c3
      /**
       * Gets the entity's current position
 diff --git a/src/main/java/org/bukkit/entity/HumanEntity.java b/src/main/java/org/bukkit/entity/HumanEntity.java
-index e8b6cfe7e454c666b4d60b702a3b211dab238830..b9196b22e5bf4dea7466d6a691f93969a2c72843 100644
+index 5dbbeb92aec212d2e849d16320ed9c084b99fc35..32e5150b14f5d7d19d82d15631065db376814e25 100644
 --- a/src/main/java/org/bukkit/entity/HumanEntity.java
 +++ b/src/main/java/org/bukkit/entity/HumanEntity.java
 @@ -19,7 +19,15 @@ import org.jetbrains.annotations.Nullable;
@@ -1109,10 +1109,10 @@ index 128e43cf12205f82f2b119a773208502cdccfdd4..ca1fed3081e2b0a3271a2dfa0f49cce7
      private static final HandlerList handlers = new HandlerList();
      //
 diff --git a/src/main/java/org/bukkit/event/server/TabCompleteEvent.java b/src/main/java/org/bukkit/event/server/TabCompleteEvent.java
-index f96c4ba53ab41ea66d4f9a4d54eeabb63f992b58..fdc3114adb18108ccd8acbab458bacededed4767 100644
+index 4a3451af454295ac3e1b688e6665cad9fc594c82..b88cebb219577d59cc338be89c6f391d10702095 100644
 --- a/src/main/java/org/bukkit/event/server/TabCompleteEvent.java
 +++ b/src/main/java/org/bukkit/event/server/TabCompleteEvent.java
-@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
   * advised to ensure the client does not have permission for the relevant
   * commands, or use {@link PlayerCommandSendEvent}.
   */
@@ -1122,7 +1122,7 @@ index f96c4ba53ab41ea66d4f9a4d54eeabb63f992b58..fdc3114adb18108ccd8acbab458baced
      private static final HandlerList handlers = new HandlerList();
      //
 diff --git a/src/main/java/org/bukkit/event/world/GenericGameEvent.java b/src/main/java/org/bukkit/event/world/GenericGameEvent.java
-index 1746b66510e7b9c8708018582034b04714c29867..9c1c1acb91fc36e8811c27f7a6d8347249d95c16 100644
+index 2a2a329877d8da45c2d6afecf78ce88d52635cad..22cdf3662b02fb5751ac6d913d781084cd7eee5b 100644
 --- a/src/main/java/org/bukkit/event/world/GenericGameEvent.java
 +++ b/src/main/java/org/bukkit/event/world/GenericGameEvent.java
 @@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
@@ -1174,7 +1174,7 @@ index 2448e70d75ae7a678c6befac4506c103edb78875..65ca144618f74bc8e317a4b9c2732ad5
      /**
       * Represents various extra properties of certain inventory windows.
 diff --git a/src/main/java/org/bukkit/loot/LootContext.java b/src/main/java/org/bukkit/loot/LootContext.java
-index e307f9fc45a4e5d742b78c4cda9a41d7f259a515..a66d59321915b0dc76f8e2dd95f01f9e3adaefa6 100644
+index 71b7aa9d675e1714e286e6fd4015ead036d912e0..95e120068a7c5c96b1b8553df9cf8654ba63a325 100644
 --- a/src/main/java/org/bukkit/loot/LootContext.java
 +++ b/src/main/java/org/bukkit/loot/LootContext.java
 @@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
