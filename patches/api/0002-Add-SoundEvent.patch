@@ -6,10 +6,10 @@ Subject: [PATCH] Add SoundEvent
 
 diff --git a/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..427161356c432b5dc5d69a53801c1cd3540d7c38
+index 0000000000000000000000000000000000000000..2a948f2c68cff28e4e0294b065020957dc34bc37
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
-@@ -0,0 +1,380 @@
+@@ -0,0 +1,382 @@
 +package gg.projecteden.parchment.event.sound;
 +
 +import gg.projecteden.parchment.OptionalHumanEntity;
@@ -27,6 +27,7 @@ index 0000000000000000000000000000000000000000..427161356c432b5dc5d69a53801c1cd3
 +import java.util.ArrayList;
 +import java.util.List;
 +import java.util.Objects;
++import java.util.function.BiFunction;
 +import java.util.function.Function;
 +
 +/**
@@ -59,8 +60,8 @@ index 0000000000000000000000000000000000000000..427161356c432b5dc5d69a53801c1cd3
 +    private @NotNull Emitter emitter;
 +    private boolean cancelled;
 +    private long seed;
-+    private @Nullable Function<@NotNull Player, @Nullable Sound> soundOverrideFunction;
-+    private @Nullable Function<@NotNull Player, @Nullable Emitter> emitterOverrideFunction;
++    private @Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Sound> soundOverrideFunction;
++    private @Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Emitter> emitterOverrideFunction;
 +
 +    public SoundEvent(@Nullable HumanEntity except, @NotNull Sound sound, @NotNull Emitter emitter, long seed, @Nullable Function<Sound, Double> distanceFunction, @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
 +        super(true);
@@ -237,17 +238,17 @@ index 0000000000000000000000000000000000000000..427161356c432b5dc5d69a53801c1cd3
 +     *
 +     * @return sound override function (or {@code null} if not overridden)
 +     */
-+    public @Nullable Function<@NotNull Player, @Nullable Sound> getSoundOverrideFunction() {
++    public @Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Sound> getSoundOverrideFunction() {
 +        return soundOverrideFunction;
 +    }
 +
 +    /**
 +     * Sets the function that overrides what {@link Sound} is sent to a {@link Player}.
 +     *
-+     * @param soundOverrideFunction function which accepts a player and returns a sound
-+     *                              (or {@code null} if the default sound should be used)
++     * @param soundOverrideFunction function which accepts a sound event and a player and returns
++     *                              a sound (or {@code null} if the default sound should be used)
 +     */
-+    public void setSoundOverrideFunction(@Nullable Function<@NotNull Player, @Nullable Sound> soundOverrideFunction) {
++    public void setSoundOverrideFunction(@Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Sound> soundOverrideFunction) {
 +        this.soundOverrideFunction = soundOverrideFunction;
 +    }
 +
@@ -260,7 +261,7 @@ index 0000000000000000000000000000000000000000..427161356c432b5dc5d69a53801c1cd3
 +    public @NotNull Sound calculateSound(@NotNull Player player) {
 +        if (soundOverrideFunction != null) {
 +            try {
-+                Sound override = soundOverrideFunction.apply(player);
++                Sound override = soundOverrideFunction.apply(this, player);
 +                if (override != null) {
 +                    return override;
 +                }
@@ -277,7 +278,7 @@ index 0000000000000000000000000000000000000000..427161356c432b5dc5d69a53801c1cd3
 +     *
 +     * @return emitter override function (or {@code null} if not overridden)
 +     */
-+    public @Nullable Function<@NotNull Player, @Nullable Emitter> getEmitterOverrideFunction() {
++    public @Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Emitter> getEmitterOverrideFunction() {
 +        return emitterOverrideFunction;
 +    }
 +
@@ -285,10 +286,11 @@ index 0000000000000000000000000000000000000000..427161356c432b5dc5d69a53801c1cd3
 +     * Sets the function that overrides what {@link Emitter} is used when playing this sound to a
 +     * {@link Player}.
 +     *
-+     * @param emitterOverrideFunction function which accepts a player and returns an emitter
++     * @param emitterOverrideFunction function which accepts a sound event and a player and returns
++     *                                an emitter
 +     *                                (or {@code null} if the default emitter should be used)
 +     */
-+    public void setEmitterOverrideFunction(@Nullable Function<@NotNull Player, @Nullable Emitter> emitterOverrideFunction) {
++    public void setEmitterOverrideFunction(@Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Emitter> emitterOverrideFunction) {
 +        this.emitterOverrideFunction = emitterOverrideFunction;
 +    }
 +
@@ -301,7 +303,7 @@ index 0000000000000000000000000000000000000000..427161356c432b5dc5d69a53801c1cd3
 +    public @NotNull Emitter calculateEmitter(@NotNull Player player) {
 +        if (emitterOverrideFunction != null) {
 +            try {
-+                Emitter override = emitterOverrideFunction.apply(player);
++                Emitter override = emitterOverrideFunction.apply(this, player);
 +                if (override != null) {
 +                    return override;
 +                }
