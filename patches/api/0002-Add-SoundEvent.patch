@@ -6,7 +6,7 @@ Subject: [PATCH] Add SoundEvent
 
 diff --git a/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..2a948f2c68cff28e4e0294b065020957dc34bc37
+index 0000000000000000000000000000000000000000..e612cecc89b060a9c0fc882754e45c0409febb9d
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 @@ -0,0 +1,382 @@
@@ -55,7 +55,7 @@ index 0000000000000000000000000000000000000000..2a948f2c68cff28e4e0294b065020957
 +
 +    private @Nullable HumanEntity except;
 +    private @NotNull Function<@NotNull Sound, @NotNull Double> distanceFunction;
-+    private @NotNull Function<@NotNull SoundEvent, @NotNull List<@NotNull Player>> recipientsFunction; // TODO replace with Player -> Nullable Sound function ?
++    private @NotNull Function<@NotNull SoundEvent, @NotNull List<@NotNull Player>> recipientsFunction;
 +    private @NotNull Sound sound;
 +    private @NotNull Emitter emitter;
 +    private boolean cancelled;
