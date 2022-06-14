@@ -210,7 +210,7 @@ index 6a0a1731fd6804eb69d3641213712d31bce085b2..81819d12e0becde85b6d66f3b3ffedde
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 1d8ec0f85ec42f2dcd9405df83b526ae1c59de6f..1547cd54b805e46ebcf8d7a910533f29537c2c55 100644
+index 1d8ec0f85ec42f2dcd9405df83b526ae1c59de6f..5204590757f5f0890f72e915d30a8c52497090a3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -2,7 +2,6 @@ package org.bukkit.craftbukkit.event;
@@ -259,9 +259,9 @@ index 1d8ec0f85ec42f2dcd9405df83b526ae1c59de6f..1547cd54b805e46ebcf8d7a910533f29
 +
 +    public static void playSoundEvent(gg.projecteden.parchment.event.sound.SoundEvent event) {
 +        org.apache.commons.lang3.Validate.notNull(event, "event");
-+        if (!event.callEvent())
-+            return;
 +        net.minecraft.server.MCUtil.asyncExecutor.execute(() -> {
++            if (!event.callEvent())
++                return;
 +            try {
 +                for (Player _player : event.calculateRecipients()) {
 +                    CraftPlayer player = (CraftPlayer) _player;
