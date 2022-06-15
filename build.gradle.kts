@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import io.papermc.paperweight.util.constants.*
 
 plugins {
@@ -50,7 +51,7 @@ subprojects {
     }
 
     dependencies {
-        implementation("gg.projecteden:eden-common:2.0.9-SNAPSHOT")
+        implementation("gg.projecteden:eden-interfaces:2.0.13-SNAPSHOT")
     }
 }
 
