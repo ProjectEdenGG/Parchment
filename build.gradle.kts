@@ -50,7 +50,7 @@ subprojects {
     }
 
     dependencies {
-        implementation("gg.projecteden:eden-common:2.0.9-SNAPSHOT")
+        implementation("gg.projecteden:eden-common:2.0.12-SNAPSHOT")
     }
 }
 
