@@ -60,7 +60,7 @@ index abeb24fccda2acfdb0dfdadacb8fe688bd97cf78..890069604ca78a9a3f3b4c5f40969a45
      private boolean cancelled = false;
      @NotNull private final Location location;
 diff --git a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
-index 59ae7bc3a0a2079fe4b3a92d777aca682a58e4e3..6aac09818b847ca6b25514a109f9b0e902840167 100644
+index 59ae7bc3a0a2079fe4b3a92d777aca682a58e4e3..b0cc7665e6591c71b7cd4388d028a5f8abd65e64 100644
 --- a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
 +++ b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
 @@ -20,7 +20,7 @@ import java.util.UUID;
@@ -68,12 +68,12 @@ index 59ae7bc3a0a2079fe4b3a92d777aca682a58e4e3..6aac09818b847ca6b25514a109f9b0e9
   * <p>WARNING: TAMPERING WITH THIS EVENT CAN BE DANGEROUS</p>
   */
 -public class PlayerHandshakeEvent extends Event implements Cancellable {
-+public class PlayerHandshakeEvent extends Event implements Cancellable, gg.projecteden.interfaces.OptionalUniqueId { // Parchment
++public class PlayerHandshakeEvent extends Event implements Cancellable, gg.projecteden.api.interfaces.OptionalUniqueId { // Parchment
  
      private static final HandlerList HANDLERS = new HandlerList();
      @NotNull private final String originalHandshake;
 diff --git a/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java b/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java
-index 4dcf6242c9acc62d030a94f67b78729ed29f8c85..d09aecb0b45f2ccf9badd308ef3e472ba36893a1 100644
+index 4dcf6242c9acc62d030a94f67b78729ed29f8c85..33550df23fea251368b16dbebad27bdcb1de2e78 100644
 --- a/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java
 +++ b/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java
 @@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
@@ -81,7 +81,7 @@ index 4dcf6242c9acc62d030a94f67b78729ed29f8c85..d09aecb0b45f2ccf9badd308ef3e472b
   * event.isAsync()
   */
 -public class PreLookupProfileEvent extends Event {
-+public class PreLookupProfileEvent extends Event implements gg.projecteden.interfaces.OptionalUniqueId { // Parchment
++public class PreLookupProfileEvent extends Event implements gg.projecteden.api.interfaces.OptionalUniqueId { // Parchment
  
      private static final HandlerList handlers = new HandlerList();
      @NotNull private final String name;
@@ -312,7 +312,7 @@ index 0000000000000000000000000000000000000000..31b9ab6512c9f06160c268e88d5bce48
 +}
 diff --git a/src/main/java/gg/projecteden/parchment/OptionalPlayerLike.java b/src/main/java/gg/projecteden/parchment/OptionalPlayerLike.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..5283df238c09c3fa2dda1ac41db1ea93580517a2
+index 0000000000000000000000000000000000000000..7c32d6cfc1c3f284701a147cfd4a7397d5415420
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/OptionalPlayerLike.java
 @@ -0,0 +1,189 @@
@@ -340,7 +340,7 @@ index 0000000000000000000000000000000000000000..5283df238c09c3fa2dda1ac41db1ea93
 + * Class that may be like a {@link org.bukkit.entity.Player} in that it has a {@link java.util.UUID}, {@link org.bukkit.OfflinePlayer}, {@link Identity}, and a nullable Player.
 + * @see gg.projecteden.parchment.PlayerLike
 + */
-+public interface OptionalPlayerLike extends OptionalPlayer, gg.projecteden.interfaces.HasUniqueId, HasOfflinePlayer, OptionalLocation, Identified, Audience {
++public interface OptionalPlayerLike extends OptionalPlayer, gg.projecteden.api.interfaces.HasUniqueId, HasOfflinePlayer, OptionalLocation, Identified, Audience {
 +    /**
 +     * Gets the identity associated with this object
 +     *
@@ -646,7 +646,7 @@ index 209a302c3a2ed333780ed760314a6ed352fc0767..9d29f1c5af56954bc452fa251d6bc021
              private final Location block;
  
 diff --git a/src/main/java/org/bukkit/attribute/AttributeModifier.java b/src/main/java/org/bukkit/attribute/AttributeModifier.java
-index d124768378d6f0c5573f28ee815ea3886fe74868..e790878186b64422dc4a3f52f4c7611441c82589 100644
+index d124768378d6f0c5573f28ee815ea3886fe74868..11a00998b1cb5ee582e225553f15b1b7c1a65b2a 100644
 --- a/src/main/java/org/bukkit/attribute/AttributeModifier.java
 +++ b/src/main/java/org/bukkit/attribute/AttributeModifier.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
@@ -654,7 +654,7 @@ index d124768378d6f0c5573f28ee815ea3886fe74868..e790878186b64422dc4a3f52f4c76114
   * Concrete implementation of an attribute modifier.
   */
 -public class AttributeModifier implements ConfigurationSerializable {
-+public class AttributeModifier implements ConfigurationSerializable, gg.projecteden.interfaces.HasUniqueId { // Parchment
++public class AttributeModifier implements ConfigurationSerializable, gg.projecteden.api.interfaces.HasUniqueId { // Parchment
  
      private final UUID uuid;
      private final String name;
@@ -698,7 +698,7 @@ index a39d2f1acbbd84ae0e2cf29f85594e09e55e9355..4348b8961afe7a57350856622aff8c98
  
      public DoubleChest(@NotNull DoubleChestInventory chest) {
 diff --git a/src/main/java/org/bukkit/entity/AnimalTamer.java b/src/main/java/org/bukkit/entity/AnimalTamer.java
-index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..6daf17848951eff23186583a7b4af4de2f88d129 100644
+index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bdb42b3338 100644
 --- a/src/main/java/org/bukkit/entity/AnimalTamer.java
 +++ b/src/main/java/org/bukkit/entity/AnimalTamer.java
 @@ -4,7 +4,7 @@ import java.util.UUID;
@@ -706,12 +706,12 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..6daf17848951eff23186583a7b4af4de
  import org.jetbrains.annotations.Nullable;
  
 -public interface AnimalTamer {
-+public interface AnimalTamer extends gg.projecteden.interfaces.HasUniqueId { // Parchment
++public interface AnimalTamer extends gg.projecteden.api.interfaces.HasUniqueId { // Parchment
  
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 8bc6876c82935988436597161fa0ec94c032174b..ffd5fbc3e14be5439f1334c567b573c31528863c 100644
+index 8bc6876c82935988436597161fa0ec94c032174b..b27576e9c7f22e203251487334288239be0dcb9e 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
@@ -719,7 +719,7 @@ index 8bc6876c82935988436597161fa0ec94c032174b..ffd5fbc3e14be5439f1334c567b573c3
   * Represents a base entity in the world
   */
 -public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, net.kyori.adventure.sound.Sound.Emitter { // Paper
-+public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, net.kyori.adventure.sound.Sound.Emitter, gg.projecteden.interfaces.HasUniqueId, gg.projecteden.parchment.HasLocation { // Paper // Parchment
++public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, net.kyori.adventure.sound.Sound.Emitter, gg.projecteden.api.interfaces.HasUniqueId, gg.projecteden.parchment.HasLocation { // Paper // Parchment
  
      /**
       * Gets the entity's current position
@@ -1044,7 +1044,7 @@ index 9013d043503d175004ad276799e5935b7fa59dc4..4095ca19e6ceff2432e0cbd372e9475f
      private boolean cancelled;
  
 diff --git a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
-index 635b8787fc235b61c0d5677def034656e4ec4cef..2270ecbf5189ab42aac357534896c89bbc871a97 100644
+index 635b8787fc235b61c0d5677def034656e4ec4cef..6f15f4adfa552e2f5960464663ee126282086bb1 100644
 --- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
@@ -1052,7 +1052,7 @@ index 635b8787fc235b61c0d5677def034656e4ec4cef..2270ecbf5189ab42aac357534896c89b
   * This event is asynchronous, and not run using main thread.
   */
 -public class AsyncPlayerPreLoginEvent extends Event {
-+public class AsyncPlayerPreLoginEvent extends Event implements gg.projecteden.interfaces.HasUniqueId { // Parchment
++public class AsyncPlayerPreLoginEvent extends Event implements gg.projecteden.api.interfaces.HasUniqueId { // Parchment
      private static final HandlerList handlers = new HandlerList();
      private Result result;
      private net.kyori.adventure.text.Component message; // Paper
@@ -1070,7 +1070,7 @@ index f6d3b817de3001f04ea4554c7c39a1290af3fd6d..44efb5cc62149b34b994eadac488a902
  
      public PlayerEvent(@NotNull final Player who) {
 diff --git a/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
-index 6800132c6288b4588fd02b08d26f016c38f27129..f1a707adfe190090e2fa8cd0f497fb470959172f 100644
+index 6800132c6288b4588fd02b08d26f016c38f27129..8e333a361cdee30a83e9472285dfb0b30b2e72ca 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
 @@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
@@ -1078,7 +1078,7 @@ index 6800132c6288b4588fd02b08d26f016c38f27129..f1a707adfe190090e2fa8cd0f497fb47
  @Deprecated
  @Warning(reason = "This event causes a login thread to synchronize with the main thread")
 -public class PlayerPreLoginEvent extends Event {
-+public class PlayerPreLoginEvent extends Event implements gg.projecteden.interfaces.HasUniqueId { // Parchment
++public class PlayerPreLoginEvent extends Event implements gg.projecteden.api.interfaces.HasUniqueId { // Parchment
      private static final HandlerList handlers = new HandlerList();
      private Result result;
      private net.kyori.adventure.text.Component message; // Paper
