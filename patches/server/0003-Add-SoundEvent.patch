@@ -76,10 +76,10 @@ index 3f25a9b1a74cfa0c9a4d0379ecda109d99f33db3..b954cda43afbfd367f7f8f436dca65f9
  
      public static @Nullable BinaryTagHolder asBinaryTagHolder(final @Nullable CompoundTag tag) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 0dc7a827aeacc7fae53b1f975f45883da7db6a0c..782be663520c27fccb58484ec56cc94def38f136 100644
+index 2b9669df574cf95c2643344a66ad18b213bd9cd7..ce354a3bd5deea844f86c89d555b438c50de31b8 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1540,12 +1540,40 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1541,12 +1541,40 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
      public void playSeededSound(@Nullable Player except, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, long seed) {
