@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Lexi <lexi@qixils.dev>
+Date: Fri, 17 Jun 2022 14:36:42 -0400
+Subject: [PATCH] Add config for ticking TIME_SINCE_REST
+
+
+diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+index 32f0cd29d1198fe320d10ccfe0b02f8632ac12aa..7154ca5d729f44a7cbd0d47f23c10f44c0aef6b3 100644
+--- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+@@ -252,6 +252,7 @@ public class WorldConfiguration extends ConfigurationPart {
+             }
+ 
+             public boolean disablePlayerCrits = false;
++            public boolean tickTimeSinceSleep = true; // Parchment
+             public boolean nerfPigmenFromNetherPortals = false;
+             public PillagerPatrols pillagerPatrols;
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index 05584d344c9f7d6d89bb8fbdfa254c1dca91b590..aea543059600f093b96df985468a61da048acdb6 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -293,7 +293,7 @@ public abstract class Player extends LivingEntity {
+                 this.awardStat(Stats.CROUCH_TIME);
+             }
+ 
+-            if (!this.isSleeping()) {
++            if (!this.isSleeping() && this.level.paperConfig().entities.behavior.tickTimeSinceSleep) { // Parchment
+                 this.awardStat(Stats.TIME_SINCE_REST);
+             }
+         }
