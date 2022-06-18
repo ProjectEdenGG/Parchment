@@ -312,35 +312,28 @@ index 0000000000000000000000000000000000000000..31b9ab6512c9f06160c268e88d5bce48
 +}
 diff --git a/src/main/java/gg/projecteden/parchment/OptionalPlayerLike.java b/src/main/java/gg/projecteden/parchment/OptionalPlayerLike.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..7c32d6cfc1c3f284701a147cfd4a7397d5415420
+index 0000000000000000000000000000000000000000..4b2fa7abc6ce8f7e21e137d3cafab1ab2ac192a2
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/OptionalPlayerLike.java
-@@ -0,0 +1,189 @@
+@@ -0,0 +1,48 @@
 +package gg.projecteden.parchment;
 +
 +import net.kyori.adventure.audience.Audience;
-+import net.kyori.adventure.audience.MessageType;
-+import net.kyori.adventure.bossbar.BossBar;
++import net.kyori.adventure.audience.ForwardingAudience;
 +import net.kyori.adventure.identity.Identified;
 +import net.kyori.adventure.identity.Identity;
-+import net.kyori.adventure.inventory.Book;
-+import net.kyori.adventure.sound.Sound;
-+import net.kyori.adventure.sound.SoundStop;
-+import net.kyori.adventure.text.Component;
-+import net.kyori.adventure.title.Title;
-+import org.apache.commons.lang3.Validate;
 +import org.bukkit.Location;
 +import org.bukkit.entity.Player;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
 +
-+import java.util.function.Consumer;
++import java.util.Objects;
 +
 +/**
 + * Class that may be like a {@link org.bukkit.entity.Player} in that it has a {@link java.util.UUID}, {@link org.bukkit.OfflinePlayer}, {@link Identity}, and a nullable Player.
 + * @see gg.projecteden.parchment.PlayerLike
 + */
-+public interface OptionalPlayerLike extends OptionalPlayer, gg.projecteden.api.interfaces.HasUniqueId, HasOfflinePlayer, OptionalLocation, Identified, Audience {
++public interface OptionalPlayerLike extends OptionalPlayer, gg.projecteden.api.interfaces.HasUniqueId, HasOfflinePlayer, OptionalLocation, Identified, ForwardingAudience.Single {
 +    /**
 +     * Gets the identity associated with this object
 +     *
@@ -360,143 +353,9 @@ index 0000000000000000000000000000000000000000..7c32d6cfc1c3f284701a147cfd4a7397
 +        return getPlayer() != null;
 +    }
 +
-+    /**
-+     * Run a consumer with the {@link Player} associated with this object if the player is online.
-+     * <p>
-+     * Allows easily running a code on the player only if they are connected.
-+     *
-+     * @param consumer function that accepts a Player
-+     */
-+    default void consumeIfOnline(final @NotNull Consumer<@NotNull Player> consumer) {
-+        Validate.notNull(consumer, "Consumer<Player> should not be null");
-+
-+        final Player player = getPlayer();
-+        if (player != null)
-+            consumer.accept(player);
-+    }
-+
-+    /**
-+     * Sends a chat message.
-+     *
-+     * @param source the identity of the source of the message
-+     * @param message a message
-+     * @param type the type
-+     */
 +    @Override
-+    default void sendMessage(final @NotNull Identity source, final @NotNull Component message, final @NotNull MessageType type) {
-+        consumeIfOnline(player -> player.sendMessage(source, message, type));
-+    }
-+
-+    /**
-+     * Sends a message on the action bar.
-+     *
-+     * @param message a message
-+     */
-+    @Override
-+    default void sendActionBar(final @NotNull Component message) {
-+        consumeIfOnline(player -> player.sendActionBar(message));
-+    }
-+
-+    /**
-+     * Sends the player list header and footer.
-+     *
-+     * @param header the header
-+     * @param footer the footer
-+     */
-+    @Override
-+    default void sendPlayerListHeaderAndFooter(final @NotNull Component header, final @NotNull Component footer) {
-+        consumeIfOnline(player -> player.sendPlayerListHeaderAndFooter(header, footer));
-+    }
-+
-+    /**
-+     * Shows a title.
-+     *
-+     * @param title a title
-+     */
-+    @Override
-+    default void showTitle(final @NotNull Title title) {
-+        consumeIfOnline(player -> player.showTitle(title));
-+    }
-+
-+    /**
-+     * Clears the title, if one is being displayed.
-+     */
-+    @Override
-+    default void clearTitle() {
-+        consumeIfOnline(Audience::clearTitle);
-+    }
-+
-+    /**
-+     * Resets the title and timings back to their default.
-+     */
-+    @Override
-+    default void resetTitle() {
-+        consumeIfOnline(Audience::resetTitle);
-+    }
-+
-+    /**
-+     * Shows a boss bar.
-+     *
-+     * @param bar a boss bar
-+     */
-+    @Override
-+    default void showBossBar(final @NotNull BossBar bar) {
-+        consumeIfOnline(player -> player.showBossBar(bar));
-+    }
-+
-+    /**
-+     * Hides a boss bar.
-+     *
-+     * @param bar a boss bar
-+     */
-+    @Override
-+    default void hideBossBar(final @NotNull BossBar bar) {
-+        consumeIfOnline(player -> player.hideBossBar(bar));
-+    }
-+
-+    /**
-+     * Plays a sound.
-+     *
-+     * @param sound a sound
-+     */
-+    @Override
-+    default void playSound(final @NotNull Sound sound) {
-+        consumeIfOnline(player -> player.playSound(sound));
-+    }
-+
-+    /**
-+     * Plays a sound at a location.
-+     *
-+     * @param sound a sound
-+     * @param x x coordinate
-+     * @param y y coordinate
-+     * @param z z coordinate
-+     */
-+    @Override
-+    default void playSound(final @NotNull Sound sound, final double x, final double y, final double z) {
-+        consumeIfOnline(player -> player.playSound(sound, x, y, z));
-+    }
-+
-+    /**
-+     * Stops a sound, or many sounds.
-+     *
-+     * @param stop a sound stop
-+     */
-+    @Override
-+    default void stopSound(final @NotNull SoundStop stop) {
-+        consumeIfOnline(player -> player.stopSound(stop));
-+    }
-+
-+    /**
-+     * Opens a book.
-+     *
-+     * <p>When possible, no item should persist after closing the book.</p>
-+     *
-+     * @param book a book
-+     */
-+    @Override
-+    default void openBook(final @NotNull Book book) {
-+        consumeIfOnline(player -> player.openBook(book));
++    default @NotNull Audience audience() {
++        return Objects.requireNonNullElse(getPlayer(), Audience.empty());
 +    }
 +
 +    @Override
@@ -507,26 +366,28 @@ index 0000000000000000000000000000000000000000..7c32d6cfc1c3f284701a147cfd4a7397
 +}
 diff --git a/src/main/java/gg/projecteden/parchment/PlayerLike.java b/src/main/java/gg/projecteden/parchment/PlayerLike.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..dd5840ab1fe9375e83a3a30563ae59620171d3d3
+index 0000000000000000000000000000000000000000..c70ddc6f92d62d2d5baa001c9009ddd30c31ae5d
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/PlayerLike.java
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,30 @@
 +package gg.projecteden.parchment;
 +
++import net.kyori.adventure.audience.Audience;
 +import org.bukkit.Location;
-+import org.bukkit.entity.Player;
 +import org.jetbrains.annotations.NotNull;
-+
-+import java.util.function.Consumer;
 +
 +/**
 + * Class that is like a {@link org.bukkit.entity.Player} in that it has a Player, {@link java.util.UUID}, {@link org.bukkit.OfflinePlayer}, and an {@link net.kyori.adventure.identity.Identity}.
 + * @see gg.projecteden.parchment.OptionalPlayerLike
 + */
 +public interface PlayerLike extends HasPlayer, HasLocation, OptionalPlayerLike {
++
++    // reduce nullability checks by re-implementing the methods from OptionalPlayerLike
++    // (but without the null checks)
++
 +    @Override
-+    default void consumeIfOnline(final @NotNull Consumer<@NotNull Player> consumer) {
-+        consumer.accept(getPlayer());
++    default @NotNull Audience audience() {
++        return getPlayer();
 +    }
 +
 +    @Override
