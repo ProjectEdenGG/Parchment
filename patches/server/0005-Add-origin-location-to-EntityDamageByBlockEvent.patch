@@ -80,7 +80,7 @@ index 67bce77093dcc126098731047447da2031e3388d..051cf78fe9f7700e1f639c804f35903c
          return "DamageSource (" + this.msgId + ")";
      }
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index 219877901fb5fc6401646253d6e5d7bd8416ffe1..caffd9b78d370019e98c9049a121c7d3734372e6 100644
+index 47d6236daca806878399890a8d08e55233f19fd9..343fe4de3067a451a02e1c68a726408ed81ec216 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 @@ -98,7 +98,7 @@ public class EnderDragon extends Mob implements Enemy {
@@ -151,10 +151,10 @@ index 6be6adf73dc48ebbac22fe2a9be635f675f18cb1..e814c791137da2a10f4d4dd65f201fc2
  
      public static boolean canSetSpawn(Level world) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 1547cd54b805e46ebcf8d7a910533f29537c2c55..de6ec4c6d59d1b9fa203b0d373452e466a89e1ec 100644
+index 419d85a7561d8d5cecb1a79d6900c3f37e5b5faa..fca3f20f5cb5d709eb333423641bdc538e86ba42 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -968,7 +968,7 @@ public class CraftEventFactory {
+@@ -969,7 +969,7 @@ public class CraftEventFactory {
              CraftEventFactory.entityDamage = null;
              EntityDamageEvent event;
              if (damager == null) {
@@ -163,7 +163,7 @@ index 1547cd54b805e46ebcf8d7a910533f29537c2c55..de6ec4c6d59d1b9fa203b0d373452e46
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
-@@ -1008,7 +1008,7 @@ public class CraftEventFactory {
+@@ -1009,7 +1009,7 @@ public class CraftEventFactory {
  
              return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritical()); // Paper - add critical damage API
          } else if (source == DamageSource.OUT_OF_WORLD) {
@@ -172,7 +172,7 @@ index 1547cd54b805e46ebcf8d7a910533f29537c2c55..de6ec4c6d59d1b9fa203b0d373452e46
              event.setCancelled(cancelled);
              CraftEventFactory.callEvent(event);
              if (!event.isCancelled()) {
-@@ -1018,7 +1018,7 @@ public class CraftEventFactory {
+@@ -1019,7 +1019,7 @@ public class CraftEventFactory {
              }
              return event;
          } else if (source == DamageSource.LAVA) {

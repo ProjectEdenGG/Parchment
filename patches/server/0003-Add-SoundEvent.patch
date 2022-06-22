@@ -76,7 +76,7 @@ index 3f25a9b1a74cfa0c9a4d0379ecda109d99f33db3..b954cda43afbfd367f7f8f436dca65f9
  
      public static @Nullable BinaryTagHolder asBinaryTagHolder(final @Nullable CompoundTag tag) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 2b9669df574cf95c2643344a66ad18b213bd9cd7..ce354a3bd5deea844f86c89d555b438c50de31b8 100644
+index e13fcd15ab00ab4aee7fb3774db6984743680259..a8f05ff6374d44afdb8e909c944aa978612b9c7e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1541,12 +1541,40 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -210,7 +210,7 @@ index 6a0a1731fd6804eb69d3641213712d31bce085b2..81819d12e0becde85b6d66f3b3ffedde
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 1d8ec0f85ec42f2dcd9405df83b526ae1c59de6f..5204590757f5f0890f72e915d30a8c52497090a3 100644
+index 03d389f3458cd77166a0319fa38c7207e8714e6f..419d85a7561d8d5cecb1a79d6900c3f37e5b5faa 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -2,7 +2,6 @@ package org.bukkit.craftbukkit.event;
@@ -221,7 +221,7 @@ index 1d8ec0f85ec42f2dcd9405df83b526ae1c59de6f..5204590757f5f0890f72e915d30a8c52
  import com.mojang.datafixers.util.Either;
  import java.net.InetAddress;
  import java.util.ArrayList;
-@@ -1919,4 +1918,52 @@ public class CraftEventFactory {
+@@ -1920,4 +1919,52 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end
