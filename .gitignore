@@ -45,8 +45,10 @@ out/
 # other stuff
 run/
 
-Parchment-Server
-Parchment-API
+/Parchment-Server/
+/parchment-server/
+/Parchment-API/
+/parchment-api/
 
 # Compiled class file
 *.class

@@ -6,7 +6,7 @@ Subject: [PATCH] Expanded Adventure support
 Adds support for Adventure in a few places where it was previously missing.
 
 diff --git a/src/main/java/org/bukkit/ChatColor.java b/src/main/java/org/bukkit/ChatColor.java
-index 4594701d77c5d0f744bece871b98d9f6f73eb5a7..136f87f6cd2f3a56cfa645084fd6446a20f2e88e 100644
+index f6eb30f53dad684f156102cf7147b2f00c82c71e..1b4e9840f0e829be533ad0bd1c918489642245c2 100644
 --- a/src/main/java/org/bukkit/ChatColor.java
 +++ b/src/main/java/org/bukkit/ChatColor.java
 @@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
@@ -120,10 +120,10 @@ index 4594701d77c5d0f744bece871b98d9f6f73eb5a7..136f87f6cd2f3a56cfa645084fd6446a
       * Gets the char value associated with this color
       *
 diff --git a/src/main/java/org/bukkit/Color.java b/src/main/java/org/bukkit/Color.java
-index deae003b7e9a96bbf1c0167d3e1d864e61b07f82..53afcd97fc34bceff741ee118f63226781f9c895 100644
+index d2f8f5a8e49f60422b6a41e51248a6710251d61b..40b09a861ba365b126c2b28bb7f18c8fb8b3e5b5 100644
 --- a/src/main/java/org/bukkit/Color.java
 +++ b/src/main/java/org/bukkit/Color.java
-@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
+@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
   * but subject to change.
   */
  @SerializableAs("Color")
@@ -132,7 +132,7 @@ index deae003b7e9a96bbf1c0167d3e1d864e61b07f82..53afcd97fc34bceff741ee118f632267
      private static final int BIT_MASK = 0xff;
  
      /**
-@@ -242,6 +242,13 @@ public final class Color implements ConfigurationSerializable {
+@@ -244,6 +244,13 @@ public final class Color implements ConfigurationSerializable {
          return getRed() << 16 | getGreen() << 8 | getBlue() << 0;
      }
  
@@ -188,28 +188,3 @@ index bd213cabddd8752e609544f24cfba95405726155..7e89cadecde96f9c2394446669dc4d98
      /**
       * Gets the DyeColor with the given wool data value.
       *
-diff --git a/src/main/java/org/bukkit/Keyed.java b/src/main/java/org/bukkit/Keyed.java
-index 32c92621c2c15eec14c50965f5ecda00c46e6c80..3876a03ab9df9a0aef7a5c05a38b39b07a6dd285 100644
---- a/src/main/java/org/bukkit/Keyed.java
-+++ b/src/main/java/org/bukkit/Keyed.java
-@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
- /**
-  * Represents an object which has a {@link NamespacedKey} attached to it.
-  */
--public interface Keyed {
-+public interface Keyed extends net.kyori.adventure.key.Keyed { // Parchment
- 
-     /**
-      * Return the namespaced identifier for this object.
-@@ -14,4 +14,11 @@ public interface Keyed {
-      */
-     @NotNull
-     NamespacedKey getKey();
-+
-+    // Parchment start
-+    @Override
-+    default net.kyori.adventure.key.@org.checkerframework.checker.nullness.qual.NonNull Key key() {
-+        return getKey();
-+    }
-+    // Parchment end
- }

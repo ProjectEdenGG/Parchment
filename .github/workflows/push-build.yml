@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [16]
+        java: [17]
       fail-fast: true
 
     steps:
@@ -37,9 +37,9 @@ jobs:
           git config --global user.email "no-reply@github.com"
           git config --global user.name "GitHub Actions"
           ./gradlew applyPatches
-          ./gradlew paperclipJar
+          ./gradlew createReobfPaperclipJar
         
       - uses: actions/upload-artifact@v2
         with:
           name: Parchment-JDK${{ matrix.java }}
-          path: build/libs/Parchment-*.jar
+          path: build/libs/parchment-paperclip-*-reobf.jar

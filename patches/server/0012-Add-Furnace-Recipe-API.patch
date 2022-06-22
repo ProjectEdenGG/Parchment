@@ -7,13 +7,13 @@ Temporary API to get the result of smelting an item in a (type of) furnace.
 
 Will eventually (hopefully) be replaced by a more extensive Paper PR with support for all recipes.
 
-diff --git a/src/main/java/me/lexikiq/inventory/CraftRecipeType.java b/src/main/java/me/lexikiq/inventory/CraftRecipeType.java
+diff --git a/src/main/java/gg/projecteden/parchment/inventory/CraftRecipeType.java b/src/main/java/gg/projecteden/parchment/inventory/CraftRecipeType.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..6a28791b12c309661e79e0e6a8f7a9ec8fd706a3
+index 0000000000000000000000000000000000000000..5549da2a0b0790699abff627148a6b15ca37febf
 --- /dev/null
-+++ b/src/main/java/me/lexikiq/inventory/CraftRecipeType.java
++++ b/src/main/java/gg/projecteden/parchment/inventory/CraftRecipeType.java
 @@ -0,0 +1,44 @@
-+package me.lexikiq.inventory;
++package gg.projecteden.parchment.inventory;
 +
 +import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 +
@@ -57,13 +57,13 @@ index 0000000000000000000000000000000000000000..6a28791b12c309661e79e0e6a8f7a9ec
 +        }
 +    }
 +}
-diff --git a/src/main/java/me/lexikiq/inventory/SingletonContainer.java b/src/main/java/me/lexikiq/inventory/SingletonContainer.java
+diff --git a/src/main/java/gg/projecteden/parchment/inventory/SingletonContainer.java b/src/main/java/gg/projecteden/parchment/inventory/SingletonContainer.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e6d1e8faafe3fec48df51e5a25acef56a8428db3
+index 0000000000000000000000000000000000000000..e7114e456f818d7bdd4081620f4b9b9376679145
 --- /dev/null
-+++ b/src/main/java/me/lexikiq/inventory/SingletonContainer.java
++++ b/src/main/java/gg/projecteden/parchment/inventory/SingletonContainer.java
 @@ -0,0 +1,151 @@
-+package me.lexikiq.inventory;
++package gg.projecteden.parchment.inventory;
 +
 +import com.google.common.base.Preconditions;
 +import net.minecraft.world.Container;
@@ -215,18 +215,18 @@ index 0000000000000000000000000000000000000000..e6d1e8faafe3fec48df51e5a25acef56
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 858e29ad77aee8a1b7797c2d82902abbfd662da2..cd98817b0dca964a5cbaa6c19169f37d0bee6682 100644
+index 25e56be9055c5c432e1180d45341f4e9d9fcb7ca..4e8dbefb953a8ca09dda1e195591c10ebd9b0243 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2162,4 +2162,11 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2321,4 +2321,11 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          return this.adventure$pointers;
      }
      // Paper end
 +
 +    // Parchment start
 +    @Override
-+    public ItemStack smeltItem(ItemStack toSmelt, me.lexikiq.inventory.RecipeType recipeType) {
-+        return world.getRecipeManager().getRecipeFor(me.lexikiq.inventory.CraftRecipeType.asCookingRecipe(recipeType), new me.lexikiq.inventory.SingletonContainer(toSmelt), world).map(recipe -> recipe.getResultItem().getBukkitStack()).orElse(null);
++    public ItemStack smeltItem(ItemStack toSmelt, gg.projecteden.parchment.inventory.RecipeType recipeType) {
++        return world.getRecipeManager().getRecipeFor(gg.projecteden.parchment.inventory.CraftRecipeType.asCookingRecipe(recipeType), new gg.projecteden.parchment.inventory.SingletonContainer(toSmelt), world).map(recipe -> recipe.getResultItem().getBukkitStack()).orElse(null);
 +    }
 +    // Parchment end
  }

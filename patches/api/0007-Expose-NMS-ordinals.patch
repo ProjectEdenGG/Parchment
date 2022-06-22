@@ -5,13 +5,13 @@ Subject: [PATCH] Expose NMS ordinals
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 5606c09f62b7ad0cf33bb507d71830581114afd4..91ce90be864c20cab92525693d37b07f94d978af 100644
+index 716d5371c0ceb5b97c7008a6ac0c7ddf58b01a9f..16a332a6f8dad6a2758fd2bf3ab37637b9f26711 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -230,5 +230,12 @@ public interface UnsafeValues {
+@@ -255,5 +255,12 @@ public interface UnsafeValues {
       * @return if the item can be placed
       */
-     java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(@org.jetbrains.annotations.NotNull ItemStack item, @org.jetbrains.annotations.Nullable me.lexikiq.OptionalHumanEntity player, @org.jetbrains.annotations.NotNull org.bukkit.block.Block block, @org.jetbrains.annotations.NotNull org.bukkit.block.BlockFace face);
+     java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(@org.jetbrains.annotations.NotNull ItemStack item, @org.jetbrains.annotations.Nullable gg.projecteden.parchment.OptionalHumanEntity player, @org.jetbrains.annotations.NotNull org.bukkit.block.Block block, @org.jetbrains.annotations.NotNull org.bukkit.block.BlockFace face);
 +
 +    /**
 +     * Gets the ID/ordinal of an entity according to NMS.

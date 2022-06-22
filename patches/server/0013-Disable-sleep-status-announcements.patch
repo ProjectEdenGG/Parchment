@@ -5,10 +5,10 @@ Subject: [PATCH] Disable sleep status announcements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 933b577dd582d1624cbd587b726e96fc9cfef68a..d92740433c908f54b724b9d0ce37f51e228c4dcc 100644
+index 782be663520c27fccb58484ec56cc94def38f136..e33d731d4689963fa9c5b2feef24a6b7b202988b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -994,7 +994,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -918,7 +918,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
      }
  
      private void announceSleepStatus() {
@@ -16,4 +16,4 @@ index 933b577dd582d1624cbd587b726e96fc9cfef68a..d92740433c908f54b724b9d0ce37f51e
 +        if (false && this.canSleepThroughNights()) {
              if (!this.getServer().isSingleplayer() || this.getServer().isPublished()) {
                  int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
-                 TranslatableComponent chatmessage;
+                 MutableComponent ichatmutablecomponent;

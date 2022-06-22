@@ -5,32 +5,32 @@ Subject: [PATCH] Expose EntityType Ordinals
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 1c446dba5de89698397041ee38a2e1a00bec8a56..d12e936920c03cafd18f6c9a509c85c31ab7ba45 100644
+index ac0f0a4da4282c13f6e1f37710cb615d66b8ef2c..aa98cea349a3929cbb29fa01962ae98d9136cda7 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -149,6 +149,8 @@ import org.apache.logging.log4j.Logger;
+@@ -154,6 +154,8 @@ import org.slf4j.Logger;
  
  public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
  
 +    private static int ordinal = 0; // Parchment
 +    private static final java.util.Map<EntityType, Integer> ordinals = new java.util.HashMap<>(); // Parchment
-     private static final Logger LOGGER = LogManager.getLogger();
+     private static final Logger LOGGER = LogUtils.getLogger();
      public static final String ENTITY_TAG = "EntityTag";
-     private static final float MAGIC_HORSE_WIDTH = 1.3964844F;
-@@ -283,9 +285,31 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
+     private final Holder.Reference<EntityType<?>> builtInRegistryHolder;
+@@ -294,9 +296,31 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
      private final EntityDimensions dimensions;
  
      private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder type) { // CraftBukkit - decompile error
--        return (EntityType) Registry.register((Registry) Registry.ENTITY_TYPE, id, (Object) type.build(id));
+-        return (EntityType) Registry.register(Registry.ENTITY_TYPE, id, (EntityType<T>) type.build(id)); // CraftBukkit - decompile error
 +        // Parchment start
 +        EntityType build = type.build(id);
 +        ordinals.put(build, ordinal);
 +        ordinal += 1;
-+        return (EntityType) Registry.register((Registry) Registry.ENTITY_TYPE, id, (Object) build);
++        return (EntityType) Registry.register(Registry.ENTITY_TYPE, id, (EntityType<T>) build);
      }
  
 +    public int ordinal() {
-+        return ordinals.get(this);
++        return ordinals.get(this); // CraftBukkit - decompile error
 +    }
 +
 +    @Override
@@ -51,10 +51,10 @@ index 1c446dba5de89698397041ee38a2e1a00bec8a56..d12e936920c03cafd18f6c9a509c85c3
          return Registry.ENTITY_TYPE.getKey(type);
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index a50eb7ba668ba4410c7a7fee629bdac958734311..00a8ded3ae58b00f2c833953908f1d43765f4557 100644
+index ee4d1e3f0be4ac94bb03263425b2acfa97a85c0d..840017182f0c75af07bd461d59fc340b3c304b8a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -606,6 +606,18 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -653,6 +653,18 @@ public final class CraftMagicNumbers implements UnsafeValues {
          final net.minecraft.world.item.context.BlockPlaceContext ctx = context;
          return future.completeAsync(() -> blockItem.canPlace(ctx, blockState), net.minecraft.server.MCUtil.MAIN_EXECUTOR);
      }

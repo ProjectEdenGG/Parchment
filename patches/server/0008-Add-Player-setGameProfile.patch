@@ -5,19 +5,19 @@ Subject: [PATCH] Add Player#setGameProfile
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 266d676118e17af48e21370211c015898eba9691..16bc55fb8efbbda971b704446a07e9f732c1dfa5 100644
+index bc6bdc8752718777ac698cfda2a0e7f35fcf9896..05584d344c9f7d6d89bb8fbdfa254c1dca91b590 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1451,6 +1451,12 @@ public abstract class Player extends LivingEntity {
+@@ -1511,6 +1511,12 @@ public abstract class Player extends LivingEntity {
          return this.gameProfile;
      }
  
-+    // Parchment start
++    // Parchment start | TODO: rename to match getter
 +    public void setProfile(GameProfile gameProfile) {
 +        this.gameProfile = gameProfile;
 +    }
 +    // Parchment end
 +
-     public Inventory getInventory() {
-         return this.inventory;
-     }
+     @Nullable
+     public ProfilePublicKey getProfilePublicKey() {
+         return this.profilePublicKey;
