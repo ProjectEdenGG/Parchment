@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Lexi <lexi@qixils.dev>
+Date: Thu, 23 Jun 2022 14:41:24 -0400
+Subject: [PATCH] Add HangingFrame Tick API
+
+
+diff --git a/src/main/java/org/bukkit/entity/Hanging.java b/src/main/java/org/bukkit/entity/Hanging.java
+index 2f07efac03f4d12fd2ae9a340d34cf92a90b6cfa..a16d681d5338fdb2a974a2c67dcc015594b8e271 100644
+--- a/src/main/java/org/bukkit/entity/Hanging.java
++++ b/src/main/java/org/bukkit/entity/Hanging.java
+@@ -20,4 +20,22 @@ public interface Hanging extends Entity, Attachable {
+      *     attach to in order to face the given direction.
+      */
+     public boolean setFacingDirection(@NotNull BlockFace face, boolean force);
++
++    // Parchment start
++    /**
++     * Determines whether the hanging entity is allowed to tick.
++     * Ticking is used to validate the hanging entity's placement.
++     *
++     * @return True if the entity is allowed to tick.
++     */
++    public boolean canTick();
++
++    /**
++     * Sets whether the hanging entity is allowed to tick.
++     * Ticking is used to validate the hanging entity's placement.
++     *
++     * @param tick True if the entity is allowed to tick.
++     */
++    public void setCanTick(boolean tick);
++    // Parchment end
+ }

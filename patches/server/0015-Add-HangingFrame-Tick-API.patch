@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Lexi <lexi@qixils.dev>
+Date: Thu, 23 Jun 2022 14:41:24 -0400
+Subject: [PATCH] Add HangingFrame Tick API
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
+index 334a47b5e0d205c57dfcbb17168cbd3f21d15606..1ffc318c12cde935aea58d6d1efff53818893bf9 100644
+--- a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
+@@ -41,6 +41,7 @@ public abstract class HangingEntity extends Entity {
+     private int checkInterval; { this.checkInterval = this.getId() % this.level.spigotConfig.hangingTickFrequency; } // Paper
+     public BlockPos pos;
+     protected Direction direction;
++    public boolean tick = true; // Parchment
+ 
+     protected HangingEntity(EntityType<? extends HangingEntity> type, Level world) {
+         super(type, world);
+@@ -116,7 +117,7 @@ public abstract class HangingEntity extends Entity {
+ 
+     @Override
+     public void tick() {
+-        if (!this.level.isClientSide) {
++        if (tick && !this.level.isClientSide) { // Parchment
+             this.checkOutOfWorld();
+             if (this.checkInterval++ == this.level.spigotConfig.hangingTickFrequency) { // Spigot
+                 this.checkInterval = 0;
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
+index 62e11bf104b8d39ac73883e2a5d207e5f7393253..639bd33ae91ed818bda29fed776adb8c169458d7 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
+@@ -72,4 +72,16 @@ public class CraftHanging extends CraftEntity implements Hanging {
+     public EntityType getType() {
+         return EntityType.UNKNOWN;
+     }
++
++    // Parchment start
++    @Override
++    public boolean canTick() {
++        return this.getHandle().tick;
++    }
++
++    @Override
++    public void setCanTick(boolean tick) {
++        this.getHandle().tick = tick;
++    }
++    // Parchment end
+ }
