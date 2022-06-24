@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Lexi <lexi@qixils.dev>
+Date: Thu, 23 Jun 2022 22:03:18 -0400
+Subject: [PATCH] Add Player#getHiddenEntities API
+
+
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index e185b33daf7054e226944d30cfa8f08c97b4ce5f..07b95d18aec6813e1ca1b8dc15a5329ea9b37ed8 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -1426,6 +1426,17 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     @org.jetbrains.annotations.ApiStatus.Experimental // Paper
+     public boolean canSee(@NotNull Entity entity);
+ 
++    // Parchment start
++    /**
++     * Gets a view of the hidden entity UUIDs.
++     *
++     * @param plugin Plugin that has hidden entities
++     * @return a view of hidden entity UUIDs
++     */
++    @org.jetbrains.annotations.ApiStatus.Experimental
++    public java.util.@NotNull Set<UUID> getHiddenEntities(@NotNull Plugin plugin);
++    // Parchment end
++
+     /**
+      * Checks to see if this player is currently flying or not.
+      *
