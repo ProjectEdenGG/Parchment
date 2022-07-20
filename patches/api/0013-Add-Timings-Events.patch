@@ -5,7 +5,7 @@ Subject: [PATCH] Add Timings Events
 
 
 diff --git a/src/main/java/co/aikar/timings/TimingsCommand.java b/src/main/java/co/aikar/timings/TimingsCommand.java
-index 3132dc98d26c54c5e46162e53aaed195d7335c8d..58c99863043b16996f52479a503deb3bba83434c 100644
+index 3132dc98d26c54c5e46162e53aaed195d7335c8d..b9b41e54a70f8f81e600fc435fc6c184e310bf09 100644
 --- a/src/main/java/co/aikar/timings/TimingsCommand.java
 +++ b/src/main/java/co/aikar/timings/TimingsCommand.java
 @@ -59,12 +59,14 @@ public class TimingsCommand extends BukkitCommand {
@@ -15,14 +15,14 @@ index 3132dc98d26c54c5e46162e53aaed195d7335c8d..58c99863043b16996f52479a503deb3b
 -            Timings.setTimingsEnabled(true);
 -            sender.sendMessage(text("Enabled Timings & Reset"));
 +            if (new co.aikar.timings.event.TimingsModifyEvent(sender, co.aikar.timings.event.TimingsModifyEvent.Action.ENABLE).callEvent()) {
-+                Timings.setTimingsEnabled(true);
++                Timings.setTimingsEnabled(true, sender);
 +            }
              return true;
          } else if ("off".equalsIgnoreCase(arg)) {
 -            Timings.setTimingsEnabled(false);
 -            sender.sendMessage(text("Disabled Timings"));
 +            if (new co.aikar.timings.event.TimingsModifyEvent(sender, co.aikar.timings.event.TimingsModifyEvent.Action.DISABLE).callEvent()) {
-+                Timings.setTimingsEnabled(false);
++                Timings.setTimingsEnabled(false, sender);
 +            }
              return true;
          }
@@ -57,41 +57,10 @@ index 3132dc98d26c54c5e46162e53aaed195d7335c8d..58c99863043b16996f52479a503deb3b
              }
          } else  if (
              "paste".equalsIgnoreCase(arg) ||
-@@ -97,7 +101,9 @@ public class TimingsCommand extends BukkitCommand {
-                 "merged".equalsIgnoreCase(arg) ||
-                 "separate".equalsIgnoreCase(arg)
-             ) {
--            Timings.generateReport(sender);
-+            TimingsReportListener listener = new TimingsReportListener(new ArrayList<>());
-+            listener.setOnDone(() -> new co.aikar.timings.event.TimingsGenerateReportEvent(sender, listener.getTimingsURL()));
-+            Timings.generateReport(listener);
-         } else {
-             sender.sendMessage(text("Usage: " + this.usageMessage, NamedTextColor.RED));
-         }
 diff --git a/src/main/java/co/aikar/timings/TimingsReportListener.java b/src/main/java/co/aikar/timings/TimingsReportListener.java
 index 34f4c02c3bdbe571a7efb1f8c61d8924b0c81268..e00b5149b10310b3b2bf7c9fcab1bce3d0b5c50e 100644
 --- a/src/main/java/co/aikar/timings/TimingsReportListener.java
 +++ b/src/main/java/co/aikar/timings/TimingsReportListener.java
-@@ -15,7 +15,7 @@ import java.util.List;
- @SuppressWarnings("WeakerAccess")
- public class TimingsReportListener implements net.kyori.adventure.audience.ForwardingAudience, MessageCommandSender {
-     private final List<CommandSender> senders;
--    private final Runnable onDone;
-+    private Runnable onDone;
-     private String timingsURL;
- 
-     public TimingsReportListener(@NotNull CommandSender senders) {
-@@ -35,6 +35,10 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
-         this.onDone = onDone;
-     }
- 
-+    public void setOnDone(Runnable onDone) {
-+        this.onDone = onDone;
-+    }
-+
-     @Nullable
-     public String getTimingsURL() {
-         return timingsURL;
 @@ -58,7 +62,9 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
  
      @Override
@@ -116,12 +85,13 @@ index 34f4c02c3bdbe571a7efb1f8c61d8924b0c81268..e00b5149b10310b3b2bf7c9fcab1bce3
      public void addConsoleIfNeeded() {
 diff --git a/src/main/java/co/aikar/timings/event/TimingsEvent.java b/src/main/java/co/aikar/timings/event/TimingsEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b25dc51f73a0c323dc1872c28c6d6bb7a103de57
+index 0000000000000000000000000000000000000000..2abce3d7a89b2dd1657870d86772ef5bc4623235
 --- /dev/null
 +++ b/src/main/java/co/aikar/timings/event/TimingsEvent.java
-@@ -0,0 +1,32 @@
+@@ -0,0 +1,34 @@
 +package co.aikar.timings.event;
 +
++import org.bukkit.Bukkit;
 +import org.bukkit.command.CommandSender;
 +import org.bukkit.event.Event;
 +import org.bukkit.event.HandlerList;
@@ -135,6 +105,7 @@ index 0000000000000000000000000000000000000000..b25dc51f73a0c323dc1872c28c6d6bb7
 +    private static final HandlerList handlers = new HandlerList();
 +
 +    public TimingsEvent(Set<CommandSender> audience) {
++        super(!Bukkit.isPrimaryThread());
 +        this.audience = audience;
 +    }
 +
@@ -262,3 +233,41 @@ index 0000000000000000000000000000000000000000..1fe9bbedf23fdf7b02de02f5d184d8d9
 +    }
 +
 +}
+diff --git a/src/main/java/co/aikar/timings/Timings.java b/src/main/java/co/aikar/timings/Timings.java
+index dd72a34eaa4bedd9ea0b92eaa79091b00eb4dd09..90f8f7a0996cf1a6f6b3e9eef0243b2d629a1214 100644
+--- a/src/main/java/co/aikar/timings/Timings.java
++++ b/src/main/java/co/aikar/timings/Timings.java
+@@ -23,6 +23,8 @@
+  */
+ package co.aikar.timings;
+
++import co.aikar.timings.event.TimingsModifyEvent;
++import co.aikar.timings.event.TimingsModifyEvent.Action;
+ import com.google.common.base.Preconditions;
+ import com.google.common.collect.EvictingQueue;
+ import com.google.common.collect.Lists;
+@@ -135,7 +137,24 @@ public final class Timings {
+      * @param enabled Should timings be reported
+      */
+     public static void setTimingsEnabled(boolean enabled) {
++        setTimingsEnabled(enabled, null);
++    }
++
++    /**
++     * <p>Sets whether or not the Spigot Timings system should be enabled</p>
++     *
++     * Calls a {@link TimingsModifyEvent}, if cancelled the timings will not be reset
++     *
++     * @param enabled Should timings be reported
++     * @param sender The sender asking to reset
++     */
++    public static void setTimingsEnabled(boolean enabled, CommandSender sender) {
+         timingsEnabled = enabled;
++        if (sender != null) {
++            if (!new co.aikar.timings.event.TimingsModifyEvent(sender, Action.RESET).callEvent()) {
++                return;
++            }
++        }
+         reset();
+     }
+
