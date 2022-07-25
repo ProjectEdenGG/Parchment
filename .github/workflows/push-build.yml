@@ -33,11 +33,15 @@ jobs:
           restore-keys: ${{ runner.os }}-parchment-2
 
       - name: Patch Parchment
+        env:
+          ORG_GRADLE_PROJECT_edenSnapshotsUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_edenSnapshotsPassword: ${{ secrets.SONATYPE_PASSWORD }}
         run: |
           git config --global user.email "no-reply@github.com"
           git config --global user.name "GitHub Actions"
           ./gradlew applyPatches
           ./gradlew createReobfPaperclipJar
+          ./gradlew publish
         
       - uses: actions/upload-artifact@v2
         with:
