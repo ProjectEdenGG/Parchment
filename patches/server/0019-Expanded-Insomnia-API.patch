@@ -1,0 +1,76 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Sun, 24 Jul 2022 19:37:33 -0400
+Subject: [PATCH] Expanded Insomnia API
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/EntitySelector.java b/src/main/java/net/minecraft/world/entity/EntitySelector.java
+index e39965c2e50bc8ee424ea07819346e0611398e28..752031332fa3d3d932b535cfb503197ce8d321be 100644
+--- a/src/main/java/net/minecraft/world/entity/EntitySelector.java
++++ b/src/main/java/net/minecraft/world/entity/EntitySelector.java
+@@ -27,7 +27,10 @@ public final class EntitySelector {
+         return !entity.isSpectator();
+     };
+     public static final Predicate<Entity> CAN_BE_COLLIDED_WITH = EntitySelector.NO_SPECTATORS.and(Entity::canBeCollidedWith);
+-    public static Predicate<Player> isInsomniac = (player) -> net.minecraft.util.Mth.clamp(((net.minecraft.server.level.ServerPlayer) player).getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE) >= 72000; // Paper
++    public static Predicate<Player> isInsomniac = (player) -> {
++        return net.minecraft.util.Mth.clamp(((net.minecraft.server.level.ServerPlayer) player).getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE) >= 72000 && // Paper
++            !((org.bukkit.entity.Player) player.getBukkitEntity()).doesBypassInsomnia(); // Parchment
++    };
+ 
+     private EntitySelector() {}
+     // Paper start
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 16af80579093c5e7f8c8183d36f606a5d13cbd93..99cb803906a982445835ded8028ff7c0e5033915 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -70,6 +70,7 @@ import net.minecraft.server.level.ServerPlayer;
+ import net.minecraft.server.network.ServerGamePacketListenerImpl;
+ import net.minecraft.server.players.UserWhiteListEntry;
+ import net.minecraft.world.entity.Entity;
++import net.minecraft.world.entity.EntitySelector;
+ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+ import net.minecraft.world.entity.ai.attributes.AttributeMap;
+ import net.minecraft.world.entity.ai.attributes.Attributes;
+@@ -171,6 +172,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+     private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
+     private long lastSaveTime;
+     // Paper end
++    private boolean bypassesInsomnia = false;
+ 
+     public CraftPlayer(CraftServer server, ServerPlayer entity) {
+         super(server, entity);
+@@ -1843,6 +1845,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         return this;
+     }
+ 
++    // Parchment start
++    @Override
++    public boolean isInsomniac() {
++        return EntitySelector.isInsomniac.test(this.getHandle());
++    }
++
++    @Override
++    public void setBypassInsomnia(boolean val) {
++        this.bypassesInsomnia = val;
++    }
++
++    @Override
++    public boolean doesBypassInsomnia() {
++        return this.bypassesInsomnia;
++    }
++
++    @Override
++    public void setTimeSinceLastRest(int ticks) {
++        this.getHandle().getStats().setValue(this.getHandle(), net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST), net.minecraft.util.Mth.clamp(ticks, 1, Integer.MAX_VALUE));
++    }
++
++    @Override
++    public int getTimeSinceLastRest() {
++        return net.minecraft.util.Mth.clamp(this.getHandle().getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
++    }
++    // Parchment end
++
+     @Override
+     public ServerPlayer getHandle() {
+         return (ServerPlayer) entity;

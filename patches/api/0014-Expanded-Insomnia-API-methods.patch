@@ -1,0 +1,56 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Sun, 24 Jul 2022 19:36:37 -0400
+Subject: [PATCH] Expanded Insomnia API methods
+
+
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index 1c42b484882a5e6f2c8276c428824b2cbf6a39e3..bce607d829c3ba45388ed31ef251bf19e2048ab4 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -50,6 +50,45 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      */
+     @Override
+     @NotNull Player getPlayer();
++
++    /**
++     * Checks if the player will spawn phantoms at night
++     * Uses time since last rest statistic
++     *
++     * {@link #getTimeSinceLastRest()}
++     *
++     * @return if the player will spawn phantoms at night
++     */
++    boolean isInsomniac();
++
++    /**
++     * Sets if the player bypasses phantom spawning if insomniac
++     *
++     * @param val
++     */
++    void setBypassInsomnia(boolean val);
++
++    /**
++     * Does the player bypass phantom spawning if insomniac
++     *
++     * @return if the player bypasses phantom spawning
++     */
++    boolean doesBypassInsomnia();
++
++    /**
++     * Set the time since last rest stat for the player
++     * This modifies the phantom spawning timer
++     *
++     * @param ticks how long since last rest, greater than or equal to 1
++     */
++    void setTimeSinceLastRest(int ticks);
++
++    /**
++     * Gets the time since the player last slept
++     *
++     * @return ticks since the player last slept
++     */
++    int getTimeSinceLastRest();
+     // Parchment end
+ 
+     // Paper start
