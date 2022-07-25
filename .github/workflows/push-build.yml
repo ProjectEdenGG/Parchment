@@ -41,7 +41,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           ./gradlew applyPatches
           ./gradlew createReobfPaperclipJar
-          ./gradlew publish
+          ./gradlew publishMavenPublicationToEdenSnapshotsRepository
         
       - uses: actions/upload-artifact@v2
         with:
