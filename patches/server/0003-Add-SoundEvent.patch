@@ -76,10 +76,10 @@ index 3f25a9b1a74cfa0c9a4d0379ecda109d99f33db3..b954cda43afbfd367f7f8f436dca65f9
  
      public static @Nullable BinaryTagHolder asBinaryTagHolder(final @Nullable CompoundTag tag) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index e13fcd15ab00ab4aee7fb3774db6984743680259..a8f05ff6374d44afdb8e909c944aa978612b9c7e 100644
+index 083349794d5ceb50322c5a645dd33fbfcc1c8155..12c27ed2ed3a31a26663d78b6429146d384ec0b1 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1541,12 +1541,40 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1542,12 +1542,40 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
      public void playSeededSound(@Nullable Player except, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, long seed) {
@@ -123,10 +123,10 @@ index e13fcd15ab00ab4aee7fb3774db6984743680259..a8f05ff6374d44afdb8e909c944aa978
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 353463084d90eb684717e65c56da52cd25a1e375..e7fb384822966c149777148792723f7f36681f76 100644
+index 94944ba458178f9e5b772224da329bb5d85f4394..39dbf7633cfdbd8eb89450d43d71d7f0def152a9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2227,7 +2227,19 @@ public class ServerPlayer extends Player {
+@@ -2217,7 +2217,19 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -148,10 +148,10 @@ index 353463084d90eb684717e65c56da52cd25a1e375..e7fb384822966c149777148792723f7f
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 20cdfdb3b9351f74e89bc45b3ab972384165659a..aaef762c95584103937955413629aa11f7cf2bd0 100644
+index 37d8a797bb590c30bf42ab04128489a9390684d3..00c435d8a98cdc2c3d82fe83f8952e17db02eaf7 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -977,7 +977,7 @@ public abstract class PlayerList {
+@@ -978,7 +978,7 @@ public abstract class PlayerList {
          if (flag2 && !isLocAltered) {
              BlockState data = worldserver1.getBlockState(blockposition);
              worldserver1.setBlock(blockposition, data.setValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE, data.getValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE) - 1), 3);
@@ -161,10 +161,10 @@ index 20cdfdb3b9351f74e89bc45b3ab972384165659a..aaef762c95584103937955413629aa11
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index cd9cbfa5ef94994b3f7f2ecdde843620e7e6c071..bc6bdc8752718777ac698cfda2a0e7f35fcf9896 100644
+index 9b131f0a827413e9f5d6d0f7491c5481576cb8b1..7d982b7735c09d87d139c34d1cda5cbfb5327c5f 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1898,7 +1898,21 @@ public abstract class Player extends LivingEntity {
+@@ -1908,7 +1908,21 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
          fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {

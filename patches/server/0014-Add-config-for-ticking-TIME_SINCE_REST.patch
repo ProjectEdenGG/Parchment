@@ -5,7 +5,7 @@ Subject: [PATCH] Add config for ticking TIME_SINCE_REST
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 32f0cd29d1198fe320d10ccfe0b02f8632ac12aa..7154ca5d729f44a7cbd0d47f23c10f44c0aef6b3 100644
+index e2c612dd55fcb2769fb06f7878b8d0873f2be139..e8df4b71ab6d3b8143a708d15e9b3d0495c0ee23 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 @@ -252,6 +252,7 @@ public class WorldConfiguration extends ConfigurationPart {
@@ -17,10 +17,10 @@ index 32f0cd29d1198fe320d10ccfe0b02f8632ac12aa..7154ca5d729f44a7cbd0d47f23c10f44
              public PillagerPatrols pillagerPatrols;
  
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 05584d344c9f7d6d89bb8fbdfa254c1dca91b590..aea543059600f093b96df985468a61da048acdb6 100644
+index 1b0eeb5df33bf68dff193117e6be8a0b88ea1392..c41925004c232eb8a5e1e000a9060254f074c3db 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -293,7 +293,7 @@ public abstract class Player extends LivingEntity {
+@@ -294,7 +294,7 @@ public abstract class Player extends LivingEntity {
                  this.awardStat(Stats.CROUCH_TIME);
              }
  

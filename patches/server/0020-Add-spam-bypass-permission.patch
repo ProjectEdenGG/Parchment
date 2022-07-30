@@ -5,59 +5,48 @@ Subject: [PATCH] Add spam bypass permission
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 935c482be4bf3767e197a576d0e38eac51115dd4..1e9a14bd200873bee3dcd2c05b77466eb03603e0 100644
+index ff7df8026f85b7ad51458a0b720a8baf71cd9bd1..3481e44c64924ebdfeec0a950efec22b0afb653d 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -830,15 +830,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -874,16 +874,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
      public void handleCustomCommandSuggestions(ServerboundCommandSuggestionPacket packet) {
          // PacketUtils.ensureRunningOnSameThread(packet, this, this.player.getLevel()); // Paper - run this async
          // CraftBukkit start
--        if (this.chatSpamTickCount.addAndGet(io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.tabSpamIncrement) > io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.tabSpamLimit && !this.server.getPlayerList().isOp(this.player.getGameProfile())) { // Paper start - split and make configurable
--            server.scheduleOnMain(() -> this.disconnect(Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
--            return;
--        }
--        // Paper start
--        String str = packet.getCommand(); int index = -1;
--        if (str.length() > 64 && ((index = str.indexOf(' ')) == -1 || index >= 64)) {
--            server.scheduleOnMain(() -> this.disconnect(Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
--            return;
-+        if (!this.getCraftPlayer().hasPermission("spam.bypass")) { // Parchment
-+            if (this.chatSpamTickCount.addAndGet(io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.tabSpamIncrement) > io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.tabSpamLimit && !this.server.getPlayerList().isOp(this.player.getGameProfile())) { // Paper start - split and make configurable
-+                server.scheduleOnMain(() -> this.disconnect(Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
-+                return;
-+            }
-+            // Paper start
-+            String str = packet.getCommand();
-+            int index = -1;
-+            if (str.length() > 64 && ((index = str.indexOf(' ')) == -1 || index >= 64)) {
-+                server.scheduleOnMain(() -> this.disconnect(Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
-+                return;
-+            }
++        if (!this.getCraftPlayer().hasPermission("spam.bypass")) { // Parchment - spam bypass
+         if (this.chatSpamTickCount.addAndGet(io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.tabSpamIncrement) > io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.tabSpamLimit && !this.server.getPlayerList().isOp(this.player.getGameProfile())) { // Paper start - split and make configurable
+             server.scheduleOnMain(() -> this.disconnect(Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
+             return;
          }
+         // Paper start
+-        String str = packet.getCommand(); int index = -1;
++        String str = packet.getCommand();
++        int index = -1;
+         if (str.length() > 64 && ((index = str.indexOf(' ')) == -1 || index >= 64)) {
+             server.scheduleOnMain(() -> this.disconnect(Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
+             return;
+         }
++        } // Parchment - spam bypass
          // Paper end
          // CraftBukkit end
-@@ -2395,6 +2398,9 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
-     // CraftBukkit start - replaced with thread safe throttle
+         // Paper start - Don't suggest if tab-complete is disabled
+@@ -2587,6 +2590,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+ 
      // Spigot start - spam exclusions
-     private void detectRateSpam(boolean isSync, String s) {
-+        if (this.getCraftPlayer().hasPermission("spam.bypass")) { // Parchment
-+            return;
-+        }
+     private void detectRateSpam(String s) {
++        if (this.getCraftPlayer().hasPermission("spam.bypass")) return; // Parchment - spam bypass
+         // CraftBukkit start - replaced with thread safe throttle
          boolean counted = true;
          for ( String exclude : org.spigotmc.SpigotConfig.spamExclusions )
-         {
-@@ -3142,9 +3148,11 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3363,10 +3367,12 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
      public void handlePlaceRecipe(ServerboundPlaceRecipePacket packet) {
          // Paper start
          if (!org.bukkit.Bukkit.isPrimaryThread()) {
--            if (recipeSpamPackets.addAndGet(io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.recipeSpamIncrement) > io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.recipeSpamLimit) {
--                server.scheduleOnMain(() -> this.disconnect(net.minecraft.network.chat.Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
--                return;
-+            if (!this.getCraftPlayer().hasPermission("spam.bypass")) { // Parchment
-+                if (recipeSpamPackets.addAndGet(io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.recipeSpamIncrement) > io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.recipeSpamLimit) {
-+                    server.scheduleOnMain(() -> this.disconnect(net.minecraft.network.chat.Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
-+                    return;
-+                }
++            if (!this.getCraftPlayer().hasPermission("spam.bypass")) { // Parchment - spam bypass
+             if (recipeSpamPackets.addAndGet(io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.recipeSpamIncrement) > io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.recipeSpamLimit) {
+                 server.scheduleOnMain(() -> this.disconnect(net.minecraft.network.chat.Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
+                 return;
              }
++            } // Parchment - spam bypass
          }
          // Paper end
+         PacketUtils.ensureRunningOnSameThread(packet, this, this.player.getLevel());

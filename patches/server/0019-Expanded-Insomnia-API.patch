@@ -20,8 +20,21 @@ index e39965c2e50bc8ee424ea07819346e0611398e28..752031332fa3d3d932b535cfb503197c
  
      private EntitySelector() {}
      // Paper start
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index c41925004c232eb8a5e1e000a9060254f074c3db..2966c5324c19066a5aa8a14183acca21209f96bd 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -294,7 +294,7 @@ public abstract class Player extends LivingEntity {
+                 this.awardStat(Stats.CROUCH_TIME);
+             }
+ 
+-            if (!this.isSleeping() && this.level.paperConfig().entities.behavior.tickTimeSinceSleep) { // Parchment
++            if (!this.isSleeping() && this.level.paperConfig().entities.behavior.tickTimeSinceSleep && !((org.bukkit.entity.Player) this.getBukkitEntity()).doesBypassInsomnia()) { // Parchment
+                 this.awardStat(Stats.TIME_SINCE_REST);
+             }
+         }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 16af80579093c5e7f8c8183d36f606a5d13cbd93..99cb803906a982445835ded8028ff7c0e5033915 100644
+index 21a5f34e12af4435982c73fb48c7c9f679c364a6..f96c810f0aafb70a2896c576b1ca0daab2cd114e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -70,6 +70,7 @@ import net.minecraft.server.level.ServerPlayer;
@@ -40,7 +53,7 @@ index 16af80579093c5e7f8c8183d36f606a5d13cbd93..99cb803906a982445835ded8028ff7c0
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -1843,6 +1845,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1871,6 +1873,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return this;
      }
  
@@ -74,16 +87,3 @@ index 16af80579093c5e7f8c8183d36f606a5d13cbd93..99cb803906a982445835ded8028ff7c0
      @Override
      public ServerPlayer getHandle() {
          return (ServerPlayer) entity;
-diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index aea543059600f093b96df985468a61da048acdb6..dd45039e7d476e092f1490c5c1e39d28c580ca3a 100644
---- a/src/main/java/net/minecraft/world/entity/player/Player.java
-+++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -293,7 +293,7 @@ public abstract class Player extends LivingEntity {
-                 this.awardStat(Stats.CROUCH_TIME);
-             }
-
--            if (!this.isSleeping() && this.level.paperConfig().entities.behavior.tickTimeSinceSleep) { // Parchment
-+            if (!this.isSleeping() && this.level.paperConfig().entities.behavior.tickTimeSinceSleep && !((org.bukkit.entity.Player) this.getBukkitEntity()).doesBypassInsomnia()) { // Parchment
-                 this.awardStat(Stats.TIME_SINCE_REST);
-             }
-         }
