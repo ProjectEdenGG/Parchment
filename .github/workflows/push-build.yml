@@ -41,7 +41,8 @@ jobs:
           git config --global user.name "GitHub Actions"
           ./gradlew applyPatches
           ./gradlew createReobfPaperclipJar
-          ./gradlew publishMavenPublicationToEdenSnapshotsRepository
+          ./gradlew :parchment-api:publishMavenPublicationToEdenSnapshotsRepository
+          ./gradlew publishDevBundlePublicationToEdenSnapshotsRepository -PpublishDevBundle
         
       - uses: actions/upload-artifact@v2
         with:
