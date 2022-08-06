@@ -39,7 +39,7 @@ index 0000000000000000000000000000000000000000..44245b61f64e4e2eb21ac4f5e540aa9a
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index 3f25a9b1a74cfa0c9a4d0379ecda109d99f33db3..b954cda43afbfd367f7f8f436dca65f900706ccb 100644
+index 6679038054796b9bdfeb6fb4b29e50aa63052101..0ba919d0e8ae347c6db4813d59adaec90eeed151 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 @@ -302,6 +302,32 @@ public final class PaperAdventure {
@@ -123,10 +123,10 @@ index 083349794d5ceb50322c5a645dd33fbfcc1c8155..12c27ed2ed3a31a26663d78b6429146d
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 94944ba458178f9e5b772224da329bb5d85f4394..39dbf7633cfdbd8eb89450d43d71d7f0def152a9 100644
+index 3615576c24d5d6790a6894a91180de25fa0e5a9c..63494f6248e0f339ad6b6418a5103a45be7450e4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2217,7 +2217,19 @@ public class ServerPlayer extends Player {
+@@ -2222,7 +2222,19 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -148,7 +148,7 @@ index 94944ba458178f9e5b772224da329bb5d85f4394..39dbf7633cfdbd8eb89450d43d71d7f0
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 37d8a797bb590c30bf42ab04128489a9390684d3..00c435d8a98cdc2c3d82fe83f8952e17db02eaf7 100644
+index 71623c84a5b15023189c14a6bf36e1b08f935fc1..61e2002dacb84f410cba0be34d921201e0d2ba27 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -978,7 +978,7 @@ public abstract class PlayerList {
