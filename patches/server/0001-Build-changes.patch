@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 2374cc9bab5039d0a0dc11d4b2ec573ab75778a7..2d10b9122ab07ab4ab72d2f33aeb12fc599e54d5 100644
+index 2374cc9bab5039d0a0dc11d4b2ec573ab75778a7..b374a31d6ebe3eed93a8aa2df328962091188f84 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -9,8 +9,8 @@ plugins {
@@ -15,7 +15,7 @@ index 2374cc9bab5039d0a0dc11d4b2ec573ab75778a7..2d10b9122ab07ab4ab72d2f33aeb12fc
 -    implementation(project(":paper-api"))
 -    implementation(project(":paper-mojangapi"))
 +    implementation(project(":parchment-api")) // Parchment
-+    implementation("io.papermc.paper:paper-mojangapi:1.18.1-R0.1-SNAPSHOT") // Parchment
++    implementation("io.papermc.paper:paper-mojangapi:${project.version}") // Parchment
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
@@ -104,10 +104,10 @@ index bf42969859545a8a520923ef1836ffa4a5cc24a0..2532e265c5dade55f71c34fcab6d1e74
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 35a5cc8ed861401d3dd28b08ebc5d40aad82b0df..101109e0ddf51231ab40e77a7d5a2013f826accd 100644
+index 081c7160cf727646cdec4cd551dbc2aad56326f6..1045015e11d7837501a272239bfac27ee2bf1232 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1655,7 +1655,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1656,7 +1656,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -130,7 +130,7 @@ index bfde5bbcccfaa754ec6bdf4f3817981a93e465bd..accf680b22a96bab80d3ccdcefe03c78
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index c55ae77807e0ec3698f0d0443caaf18928b41017..1f1ef3d4fc868d744f8f94f8143f69b089972d81 100644
+index 5b48047242e20c216b110502935763ea433c55cd..786008b85603103fe92fb78d50b3ce23545a3420 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -270,7 +270,7 @@ public class Main {
