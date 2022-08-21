@@ -5,10 +5,10 @@ Subject: [PATCH] Expose NMS ordinals
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 716d5371c0ceb5b97c7008a6ac0c7ddf58b01a9f..16a332a6f8dad6a2758fd2bf3ab37637b9f26711 100644
+index 780b15b4a06c521216fff7be5a2ec76c155aa919..1d43d3d49f30146f301a51b2b076f6616b9e27ae 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -255,5 +255,12 @@ public interface UnsafeValues {
+@@ -282,5 +282,12 @@ public interface UnsafeValues {
       * @return if the item can be placed
       */
      java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(@org.jetbrains.annotations.NotNull ItemStack item, @org.jetbrains.annotations.Nullable gg.projecteden.parchment.OptionalHumanEntity player, @org.jetbrains.annotations.NotNull org.bukkit.block.Block block, @org.jetbrains.annotations.NotNull org.bukkit.block.BlockFace face);

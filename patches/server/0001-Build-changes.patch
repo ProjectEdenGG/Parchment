@@ -104,10 +104,10 @@ index bf42969859545a8a520923ef1836ffa4a5cc24a0..2532e265c5dade55f71c34fcab6d1e74
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 081c7160cf727646cdec4cd551dbc2aad56326f6..1045015e11d7837501a272239bfac27ee2bf1232 100644
+index d2161a3c3b9a2b2d463ac778656c95167c10a49d..f73116c89a5bd3ab0110c162784bc4e44b6b3827 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1656,7 +1656,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1673,7 +1673,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -117,10 +117,10 @@ index 081c7160cf727646cdec4cd551dbc2aad56326f6..1045015e11d7837501a272239bfac27e
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index bfde5bbcccfaa754ec6bdf4f3817981a93e465bd..accf680b22a96bab80d3ccdcefe03c787e7501f6 100644
+index b777c1294370bdc68bc6265b039e2a405d89f2f5..4efa1bfe6638b29825ab040e1705f623624ccfd6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -246,7 +246,7 @@ import javax.annotation.Nullable; // Paper
+@@ -248,7 +248,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -130,10 +130,10 @@ index bfde5bbcccfaa754ec6bdf4f3817981a93e465bd..accf680b22a96bab80d3ccdcefe03c78
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 5b48047242e20c216b110502935763ea433c55cd..786008b85603103fe92fb78d50b3ce23545a3420 100644
+index 56a784e943cb5d8b15b41e3e66545ebf166c221c..e03ad8765c96e2ddb2622ca8483933648555e673 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -270,7 +270,7 @@ public class Main {
+@@ -276,7 +276,7 @@ public class Main {
                      if (buildDate.before(deadline.getTime())) {
                          // Paper start - This is some stupid bullshit
                          System.err.println("*** Warning, you've not updated in a while! ***");

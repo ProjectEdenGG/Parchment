@@ -5,12 +5,12 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 4fcafddf3792b66c618f91e04d102f374de565a8..716d5371c0ceb5b97c7008a6ac0c7ddf58b01a9f 100644
+index 88acc4d2bd56748630840dc9f1c2cb253711eb38..780b15b4a06c521216fff7be5a2ec76c155aa919 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -243,4 +243,17 @@ public interface UnsafeValues {
+@@ -270,4 +270,17 @@ public interface UnsafeValues {
       */
-     boolean isCollidable(@org.jetbrains.annotations.NotNull Material material);
+     void setBiomeKey(RegionAccessor accessor, int x, int y, int z, NamespacedKey biomeKey);
      // Paper end
 +
 +    // Parchment start
