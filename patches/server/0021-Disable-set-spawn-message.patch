@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Thu, 25 Aug 2022 20:09:40 -0400
+Subject: [PATCH] Disable set respawn message
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 63494f6248e0f339ad6b6418a5103a45be7450e4..a6735bb4cc9d1fc130947458ea1d04c1cc009435 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -2172,10 +2172,10 @@ public class ServerPlayer extends Player {
+             angle = (float) event.getLocation().getYaw();
+             forced = event.isForced();
+             // Paper end
+-
+-            if (event.willNotifyPlayer() && event.getNotification() != null) { // Paper
+-                this.sendSystemMessage(PaperAdventure.asVanilla(event.getNotification())); // Paper
+-            }
++              // Parchment
++//            if (event.willNotifyPlayer() && event.getNotification() != null) { // Paper
++//                this.sendSystemMessage(PaperAdventure.asVanilla(event.getNotification())); // Paper
++//            }
+ 
+             this.respawnPosition = pos;
+             this.respawnDimension = dimension;
