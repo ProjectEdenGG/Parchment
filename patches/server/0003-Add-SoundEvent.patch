@@ -76,10 +76,10 @@ index 6679038054796b9bdfeb6fb4b29e50aa63052101..0ba919d0e8ae347c6db4813d59adaec9
  
      public static @Nullable BinaryTagHolder asBinaryTagHolder(final @Nullable CompoundTag tag) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 083349794d5ceb50322c5a645dd33fbfcc1c8155..12c27ed2ed3a31a26663d78b6429146d384ec0b1 100644
+index b396e9b35f315db37ba070ad4baeec1f098d0cb8..532c32dbec9b3e33adaf49aec8a96a3705376ce4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1542,12 +1542,40 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1572,12 +1572,40 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
      public void playSeededSound(@Nullable Player except, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, long seed) {
@@ -123,10 +123,10 @@ index 083349794d5ceb50322c5a645dd33fbfcc1c8155..12c27ed2ed3a31a26663d78b6429146d
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 3615576c24d5d6790a6894a91180de25fa0e5a9c..63494f6248e0f339ad6b6418a5103a45be7450e4 100644
+index af7acb628b84539b1ee5ef1934f75f091c4cd91e..9fae1cd71bfe8832a9294ac0f51e667776ba1744 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2222,7 +2222,19 @@ public class ServerPlayer extends Player {
+@@ -2208,7 +2208,19 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -148,10 +148,10 @@ index 3615576c24d5d6790a6894a91180de25fa0e5a9c..63494f6248e0f339ad6b6418a5103a45
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 71623c84a5b15023189c14a6bf36e1b08f935fc1..61e2002dacb84f410cba0be34d921201e0d2ba27 100644
+index 06eda955f96b5fe2d08ed0d39229c7a6ebb88931..6f7261afd306da4f523718a80881ab9d6e4b4b41 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -978,7 +978,7 @@ public abstract class PlayerList {
+@@ -984,7 +984,7 @@ public abstract class PlayerList {
          if (flag2 && !isLocAltered) {
              BlockState data = worldserver1.getBlockState(blockposition);
              worldserver1.setBlock(blockposition, data.setValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE, data.getValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE) - 1), 3);

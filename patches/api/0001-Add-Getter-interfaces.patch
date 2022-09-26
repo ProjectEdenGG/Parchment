@@ -34,7 +34,7 @@ index f530a3d9314e17d1da896cac633f6a422258d9a9..08897d13a8af33ed1cd40c46b0f168e0
  
      public EndermanAttackPlayerEvent(@NotNull Enderman entity, @NotNull Player player) {
 diff --git a/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java b/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java
-index a315c5185cd465dcf63c0ababef195da76dfc786..a65eae92b9f369f0864d872817d9ce96679256bc 100644
+index bcc8dba50e3a3df0206c4827bb468bf884837b8b..83b23884d67e7600a3a3cc33050606e397106020 100644
 --- a/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java
 +++ b/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java
 @@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
@@ -494,7 +494,7 @@ index 983a8c20a06d2b509602b27f49c090598b8ecc42..46dd8496f5a2c792ee7811e33c424e88
      /**
       * Get whether this raid started.
 diff --git a/src/main/java/org/bukkit/Vibration.java b/src/main/java/org/bukkit/Vibration.java
-index 209a302c3a2ed333780ed760314a6ed352fc0767..9d29f1c5af56954bc452fa251d6bc0215ab3fe79 100644
+index bbc01e7c192ae6689c301670047ff114306c57cb..2a83ba61686caffb247f17a67af474299dae6be4 100644
 --- a/src/main/java/org/bukkit/Vibration.java
 +++ b/src/main/java/org/bukkit/Vibration.java
 @@ -74,7 +74,7 @@ public class Vibration {
@@ -520,7 +520,7 @@ index d124768378d6f0c5573f28ee815ea3886fe74868..11a00998b1cb5ee582e225553f15b1b7
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index e405c279f6135c94c775a856ab88fd3cace6bd5c..359cad4528e0c9b45ac3447655f24e7925bff7d2 100644
+index 9930ebe7a23d306c602840fd43652fbdaba481b3..531b8090a224c448c7316d77663d2cc2787ee621 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
@@ -572,10 +572,10 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 8bc6876c82935988436597161fa0ec94c032174b..b27576e9c7f22e203251487334288239be0dcb9e 100644
+index 6dd81f07ef4d6993187987d3352a01771ffb715e..8e79cdd0435dc7ec42566af24670f29ff78adb4e 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
-@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a base entity in the world
   */
@@ -585,10 +585,10 @@ index 8bc6876c82935988436597161fa0ec94c032174b..b27576e9c7f22e203251487334288239
      /**
       * Gets the entity's current position
 diff --git a/src/main/java/org/bukkit/entity/HumanEntity.java b/src/main/java/org/bukkit/entity/HumanEntity.java
-index 5dbbeb92aec212d2e849d16320ed9c084b99fc35..32e5150b14f5d7d19d82d15631065db376814e25 100644
+index 3b204144e2d245098b3dc23b8779f9ed817bb6d1..2d5a09bb8f31d6234ca8a3f343d45eee81cc1dd4 100644
 --- a/src/main/java/org/bukkit/entity/HumanEntity.java
 +++ b/src/main/java/org/bukkit/entity/HumanEntity.java
-@@ -19,7 +19,15 @@ import org.jetbrains.annotations.Nullable;
+@@ -20,7 +20,15 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a human entity, such as an NPC or a player
   */
@@ -606,10 +606,10 @@ index 5dbbeb92aec212d2e849d16320ed9c084b99fc35..32e5150b14f5d7d19d82d15631065db3
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 6cd0b10d1dc4506cfb1e4db5e1260cb705566cec..a3ff1cb4b2754900879c67638a3488cd9d76cdb1 100644
+index 1d98abff1ad0116f7a2599f078aa730cb84843c1..cea29fd3c3ea6b3f2e6d2f89022cc4f4fdab93b2 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -40,7 +40,17 @@ import org.jetbrains.annotations.Nullable;
+@@ -42,7 +42,17 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */
@@ -1009,7 +1009,7 @@ index 7af8d6e51c824cf0592b722b834f1d4986e3cc08..c28d62fc3dc359f9ebcf926094198ee3
      private boolean cancelled = false;
      private final Location location;
 diff --git a/src/main/java/org/bukkit/inventory/Inventory.java b/src/main/java/org/bukkit/inventory/Inventory.java
-index 1b577c03c3152d22b70f8bdb321b28ad8fbbc3af..b3449a874666bcd67950ec12da41738f7c24ddee 100644
+index c574bb94b21eb27974b40c839fce52c6ac4b54b4..0172bed7917ea1199c34438385be4bceac9cfaa4 100644
 --- a/src/main/java/org/bukkit/inventory/Inventory.java
 +++ b/src/main/java/org/bukkit/inventory/Inventory.java
 @@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;

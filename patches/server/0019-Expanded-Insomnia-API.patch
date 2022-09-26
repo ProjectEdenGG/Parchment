@@ -34,10 +34,10 @@ index c41925004c232eb8a5e1e000a9060254f074c3db..2966c5324c19066a5aa8a14183acca21
              }
          }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 21a5f34e12af4435982c73fb48c7c9f679c364a6..f96c810f0aafb70a2896c576b1ca0daab2cd114e 100644
+index 4d2bd557175ed6f91bc93c0b2cf989a4e58bde44..371693b2f7778555b8c4b1cf8deb6ca08cfb4ed5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -70,6 +70,7 @@ import net.minecraft.server.level.ServerPlayer;
+@@ -73,6 +73,7 @@ import net.minecraft.server.level.ServerPlayer;
  import net.minecraft.server.network.ServerGamePacketListenerImpl;
  import net.minecraft.server.players.UserWhiteListEntry;
  import net.minecraft.world.entity.Entity;
@@ -45,7 +45,7 @@ index 21a5f34e12af4435982c73fb48c7c9f679c364a6..f96c810f0aafb70a2896c576b1ca0daa
  import net.minecraft.world.entity.ai.attributes.AttributeInstance;
  import net.minecraft.world.entity.ai.attributes.AttributeMap;
  import net.minecraft.world.entity.ai.attributes.Attributes;
-@@ -171,6 +172,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -176,6 +177,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -53,7 +53,7 @@ index 21a5f34e12af4435982c73fb48c7c9f679c364a6..f96c810f0aafb70a2896c576b1ca0daa
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -1871,6 +1873,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1911,6 +1913,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return this;
      }
  

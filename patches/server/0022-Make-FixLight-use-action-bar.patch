@@ -5,7 +5,7 @@ Subject: [PATCH] Make FixLight use action bar
 
 
 diff --git a/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java b/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java
-index 68645bbbab9b4225048b647252d8f462028a9c84..db05088a7f0c4a0d9db29a25d250bb28914ec8de 100644
+index 450bd95218852174cfbc88d4517e17daee5ffd5f..794842cb3dfa0732ccecf625b97dbc6c311a8a18 100644
 --- a/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java
 +++ b/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java
 @@ -24,6 +24,7 @@ import static net.kyori.adventure.text.format.NamedTextColor.BLUE;
@@ -16,9 +16,9 @@ index 68645bbbab9b4225048b647252d8f462028a9c84..db05088a7f0c4a0d9db29a25d250bb28
  
  @DefaultQualifier(NonNull.class)
  public final class FixLightCommand implements PaperSubcommand {
-@@ -103,9 +104,12 @@ public final class FixLightCommand implements PaperSubcommand {
+@@ -93,17 +94,20 @@ public final class FixLightCommand implements PaperSubcommand {
          lightengine.relight(chunks,
-             (ChunkPos chunkPos) -> {
+             (final ChunkPos chunkPos) -> {
                  ++relitChunks[0];
 -                sender.getBukkitEntity().sendMessage(text().color(DARK_AQUA).append(
 -                    text("Relit chunk ", BLUE), text(chunkPos.toString()),
@@ -31,12 +31,7 @@ index 68645bbbab9b4225048b647252d8f462028a9c84..db05088a7f0c4a0d9db29a25d250bb28
 +                    text("(" + (int) (Math.round(100.0 * (double) (relitChunks[0]) / (double) pending[0])) + "%)", YELLOW)
                  ));
              },
-             (int totalRelit) -> {
-diff --git a/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java b/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java
-index db05088a7f0c4a0d9db29a25d250bb28914ec8de..4999476682ffbcd4d71ae32b172be8351ef905c9 100644
---- a/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java
-+++ b/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java
-@@ -116,8 +116,8 @@ public final class FixLightCommand implements PaperSubcommand {
+             (final int totalRelit) -> {
                  final long end = System.nanoTime();
                  final long diff = Math.round(1.0e-6 * (end - start));
                  sender.getBukkitEntity().sendMessage(text().color(DARK_AQUA).append(

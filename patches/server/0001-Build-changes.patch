@@ -104,10 +104,10 @@ index bf42969859545a8a520923ef1836ffa4a5cc24a0..2532e265c5dade55f71c34fcab6d1e74
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index d2161a3c3b9a2b2d463ac778656c95167c10a49d..f73116c89a5bd3ab0110c162784bc4e44b6b3827 100644
+index ce81ba5345c8d2fde8a2534b9673275c7e86af8b..c4dc28dcc26e98d8252ee975ca0e192668617382 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1673,7 +1673,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1654,7 +1654,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -117,7 +117,7 @@ index d2161a3c3b9a2b2d463ac778656c95167c10a49d..f73116c89a5bd3ab0110c162784bc4e4
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b777c1294370bdc68bc6265b039e2a405d89f2f5..4efa1bfe6638b29825ab040e1705f623624ccfd6 100644
+index 111f8276f26350a5c62a7b8577b4598978b5355d..fb05258065969fef081f18d8eb4e3eadca785931 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -248,7 +248,7 @@ import javax.annotation.Nullable; // Paper
@@ -130,10 +130,10 @@ index b777c1294370bdc68bc6265b039e2a405d89f2f5..4efa1bfe6638b29825ab040e1705f623
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 56a784e943cb5d8b15b41e3e66545ebf166c221c..e03ad8765c96e2ddb2622ca8483933648555e673 100644
+index f30621be24c6c3a4f173436fce1ad1c13507c84f..f448ca4a3d789e301063888655ccb4275e3c32ed 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -276,7 +276,7 @@ public class Main {
+@@ -278,7 +278,7 @@ public class Main {
                      if (buildDate.before(deadline.getTime())) {
                          // Paper start - This is some stupid bullshit
                          System.err.println("*** Warning, you've not updated in a while! ***");
@@ -156,10 +156,10 @@ index 774556a62eb240da42e84db4502e2ed43495be17..6f1b3fa6ebeabc7596034663ed06686f
  
          if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index d568fc92d03c313a782796cc720a1ebb1a5ad8be..024d8884ac8a7d2322a7db2901b7ecff31a0154a 100644
+index e9fa7faaa4451e36b3908cbcbbe0baf213abde96..3bddb7d19e46ef774e15b0f865779f5a1198f3b7 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
-@@ -162,7 +162,7 @@ public class WatchdogThread extends Thread
+@@ -162,7 +162,7 @@ public final class WatchdogThread extends io.papermc.paper.util.TickThread // Pa
                  log.log( Level.SEVERE, "\t If this is the case, consider increasing timeout-time in spigot.yml but note that this will replace the crash with LARGE lag spikes" );
                  log.log( Level.SEVERE, "If you are unsure or still think this is a Paper bug, please report this to https://github.com/PaperMC/Paper/issues" );
                  log.log( Level.SEVERE, "Be sure to include ALL relevant console errors and Minecraft crash reports" );

@@ -6,10 +6,10 @@ Subject: [PATCH] Fix missing CraftMetaSkull serializedProfile
 Plugins (ab)using NMS may change the "profile" field using reflections instead of the "setProfile" method, especially if they are targeted towards old Minecraft versions. This fixes the potential discrepancies and NPEs.
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-index 292ae4a68093b7d939a755e1062cee57da186ab1..4afa90cb68aa31820abce6ab051de405daef6562 100644
+index 92b56f16b4d8107ccf206be6b81a98dc58986c10..0882d7271c51d79c4d089ec643d633bb0a81ef07 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-@@ -80,6 +80,11 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -96,6 +96,11 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
  
      private void setProfile(GameProfile profile) {
          this.profile = profile;
@@ -21,7 +21,7 @@ index 292ae4a68093b7d939a755e1062cee57da186ab1..4afa90cb68aa31820abce6ab051de405
          this.serializedProfile = (profile == null) ? null : NbtUtils.writeGameProfile(new CompoundTag(), profile);
      }
  
-@@ -88,6 +93,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -104,6 +109,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
          super.applyToItem(tag);
  
          if (this.profile != null) {
