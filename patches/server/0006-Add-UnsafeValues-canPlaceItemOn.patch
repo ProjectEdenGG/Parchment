@@ -5,10 +5,10 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 1628913b1e9b91e68dcd942a38da4aed95b12d4a..becf74479b423e6c750264469a1858b2530f516c 100644
+index 103ab25119bfcdd21eac7e1deeac025108e3c138..4743d462ce712e312decdb40fdfdfe6b71468b94 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -619,6 +619,55 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -624,6 +624,55 @@ public final class CraftMagicNumbers implements UnsafeValues {
      }
      // Paper end
  
@@ -57,7 +57,7 @@ index 1628913b1e9b91e68dcd942a38da4aed95b12d4a..becf74479b423e6c750264469a1858b2
 +            return future;
 +        }
 +        final net.minecraft.world.item.context.BlockPlaceContext ctx = context;
-+        return future.completeAsync(() -> blockItem.canPlace(ctx, blockState), net.minecraft.server.MCUtil.MAIN_EXECUTOR);
++        return future.completeAsync(() -> blockItem.canPlace(ctx, blockState), io.papermc.paper.util.MCUtil.MAIN_EXECUTOR);
 +    }
 +    // Parchment end
 +

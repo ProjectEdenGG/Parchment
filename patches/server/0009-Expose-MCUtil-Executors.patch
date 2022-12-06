@@ -5,7 +5,7 @@ Subject: [PATCH] Expose MCUtil Executors
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index fb05258065969fef081f18d8eb4e3eadca785931..bb443fb4d1bcfc909236fd5b45163c10c803a7a8 100644
+index 53e4a8db9ff5619982dfb059de9e431dbe2edc57..e8da5c60be1aabfb4047177db0a15952af59325e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -2911,4 +2911,16 @@ public final class CraftServer implements Server {
@@ -16,12 +16,12 @@ index fb05258065969fef081f18d8eb4e3eadca785931..bb443fb4d1bcfc909236fd5b45163c10
 +    // Parchment start
 +    @Override
 +    public java.util.concurrent.Executor getAsyncExecutor() {
-+        return net.minecraft.server.MCUtil.asyncExecutor;
++        return io.papermc.paper.util.MCUtil.asyncExecutor;
 +    }
 +
 +    @Override
 +    public java.util.concurrent.Executor getMainExecutor() {
-+        return net.minecraft.server.MCUtil.MAIN_EXECUTOR;
++        return io.papermc.paper.util.MCUtil.MAIN_EXECUTOR;
 +    }
 +    // Parchment end
  }

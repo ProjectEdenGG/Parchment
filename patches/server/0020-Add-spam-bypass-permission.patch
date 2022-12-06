@@ -5,7 +5,7 @@ Subject: [PATCH] Add spam bypass permission
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 9eb921fec32afa360f3a402e978411fcf3ec618c..44557ac1d655cd7118419072eb34acfdf714a133 100644
+index d31a345edfffe39f127073fc3aec8b3489bae79c..65e3378860a20ebbbd7765ce7b83c97d01437d4b 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -875,16 +875,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -29,7 +29,7 @@ index 9eb921fec32afa360f3a402e978411fcf3ec618c..44557ac1d655cd7118419072eb34acfd
          // Paper end
          // CraftBukkit end
          // Paper start - Don't suggest if tab-complete is disabled
-@@ -2615,6 +2618,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -2617,6 +2620,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      // Spigot start - spam exclusions
      private void detectRateSpam(String s) {
@@ -37,7 +37,7 @@ index 9eb921fec32afa360f3a402e978411fcf3ec618c..44557ac1d655cd7118419072eb34acfd
          // CraftBukkit start - replaced with thread safe throttle
          boolean counted = true;
          for ( String exclude : org.spigotmc.SpigotConfig.spamExclusions )
-@@ -3393,10 +3397,12 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3396,10 +3400,12 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
      public void handlePlaceRecipe(ServerboundPlaceRecipePacket packet) {
          // Paper start
          if (!org.bukkit.Bukkit.isPrimaryThread()) {

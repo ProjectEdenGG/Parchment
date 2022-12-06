@@ -533,7 +533,7 @@ index 9930ebe7a23d306c602840fd43652fbdaba481b3..531b8090a224c448c7316d77663d2cc2
      /**
       * Gets the metadata for this block
 diff --git a/src/main/java/org/bukkit/block/BlockState.java b/src/main/java/org/bukkit/block/BlockState.java
-index 10cbe71917bc32cca61748bcb0aa3395c554dbf8..280df0fc6f7344863f0fd2ba7592494bcd8bf2da 100644
+index 37ca7b6b0fcee8bec12026ec3715dcc47400cc11..eaf14ce470f041360082cbb0bc16247706b2cd77 100644
 --- a/src/main/java/org/bukkit/block/BlockState.java
 +++ b/src/main/java/org/bukkit/block/BlockState.java
 @@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
@@ -572,7 +572,7 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 6dd81f07ef4d6993187987d3352a01771ffb715e..8e79cdd0435dc7ec42566af24670f29ff78adb4e 100644
+index 33a6b7a27dc91552799c07a7aad9b3df31ad13f7..04626febc2f141c2774de98694761f010a0b0c6a 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
@@ -606,7 +606,7 @@ index 3b204144e2d245098b3dc23b8779f9ed817bb6d1..2d5a09bb8f31d6234ca8a3f343d45eee
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 1d98abff1ad0116f7a2599f078aa730cb84843c1..cea29fd3c3ea6b3f2e6d2f89022cc4f4fdab93b2 100644
+index 1e27b9de47f111b9c000243214e22890e323f7fc..56e979e2083199cc68b0381ed51733397cb230be 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -42,7 +42,17 @@ import org.jetbrains.annotations.Nullable;
@@ -788,10 +788,10 @@ index 10d0e18dfd423b108fe381e8142867eb10399359..7f9f266057de42261fa06e4874d7bec5
      private boolean cancel;
      private final Location location;
 diff --git a/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java b/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java
-index ea8f9ed43d8e4158e6c9c345252a94a5000c5561..98d308eda8287cb1f1a0aab5208c7c6f13047c05 100644
+index 327876e0ad7dcfeb71d9d22afe1c04bcd71c3bf9..466a54c4e30a7886e7383f43f9b6c389a5bdba7c 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java
-@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
   * Note that this event is currently only fired for four specific placements:
   * armor stands, boats, minecarts, and end crystals.
   */
@@ -840,10 +840,10 @@ index 6fc66197eb2c5d59c70d8d028b7963748371edbe..dc45ec5b6ae8e2958d83a113d23ab0b1
      private boolean canceled;
      private final Location location;
 diff --git a/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java b/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java
-index 5eb3fb72a13881b8bf0e40037b0002cb0a6eb883..4d5d0b730ad957e44f549518366841492b537ab2 100644
+index 883d54dc0cc32973df5d66f2991d1af8150add43..2f56d30b58387128931c563c2d67c759faf1b488 100644
 --- a/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java
-@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
+@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  /**
   * Called immediately prior to a creature being leashed by a player.
   */
@@ -853,10 +853,10 @@ index 5eb3fb72a13881b8bf0e40037b0002cb0a6eb883..4d5d0b730ad957e44f54951836684149
      private final Entity leashHolder;
      private final Entity entity;
 diff --git a/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java b/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
-index 1bcff119ecd95012c568c777e5ca2e891e56831e..517f115123fa2009ba0837b0754411e93808562f 100644
+index cc5781f276ec0a503b1bfef19d630c85db897c2a..89b38f2ce9a355f39abc657eff49c3a58f1b6471 100644
 --- a/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
 +++ b/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
-@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Triggered when a hanging entity is created in the world
   */
@@ -944,18 +944,19 @@ index 6800132c6288b4588fd02b08d26f016c38f27129..8e333a361cdee30a83e9472285dfb0b3
      private Result result;
      private net.kyori.adventure.text.Component message; // Paper
 diff --git a/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java b/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
-index 68eab1563caba1ee4f52b308f390e4e172667fc5..7f2be08b1e7b6df4bab8a8996bc276f369a8ff78 100644
+index d63bd62606763d0902ea800f0c35a1cfd07fc8ec..97bb62b616f8f08ec697c14681ffe6d89934b526 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
 +++ b/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
-@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
+@@ -10,8 +10,7 @@ import org.jetbrains.annotations.NotNull;
  /**
   * Called prior to an entity being unleashed due to a player's action.
   */
 -public class PlayerUnleashEntityEvent extends EntityUnleashEvent implements Cancellable {
+-
 +public class PlayerUnleashEntityEvent extends EntityUnleashEvent implements Cancellable, gg.projecteden.parchment.HasPlayer { // Parchment
-     private final Player player;
      private boolean cancelled = false;
  
+     private final Player player;
 diff --git a/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java b/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java
 index 128e43cf12205f82f2b119a773208502cdccfdd4..ca1fed3081e2b0a3271a2dfa0f49cce78bdb8e23 100644
 --- a/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java

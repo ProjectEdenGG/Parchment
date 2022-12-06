@@ -8,7 +8,7 @@ to easily get the items being dropped by any
 block instead of only blocks broken by players.
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index 224ce424b9a22548212ac157ec273c6dd80d6cfb..f33a8f7e46f9d88137de509e22d73edea3804cbe 100644
+index 2e65b44f10aeb44fd524a58e7eb815a566c1ad61..cdeecf0032db60385db19d6a6607da792f532a79 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
 @@ -308,7 +308,7 @@ public class Block extends BlockBehaviour implements ItemLike {
@@ -48,10 +48,10 @@ index 224ce424b9a22548212ac157ec273c6dd80d6cfb..f33a8f7e46f9d88137de509e22d73ede
              });
              state.spawnAfterBreak((ServerLevel) world, pos, stack, true);
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index fca3f20f5cb5d709eb333423641bdc538e86ba42..5e17944a0b612bdb1df6b4a7e540a7afb64d83e6 100644
+index e9847ba8dde5b9efb5214973f1399460ddcf930f..13e30a3ad79df17c180ba95ab9f41eb39f93e726 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1966,5 +1966,19 @@ public class CraftEventFactory {
+@@ -1967,5 +1967,19 @@ public class CraftEventFactory {
              }
          });
      }

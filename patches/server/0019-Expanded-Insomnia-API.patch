@@ -5,23 +5,24 @@ Subject: [PATCH] Expanded Insomnia API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntitySelector.java b/src/main/java/net/minecraft/world/entity/EntitySelector.java
-index e39965c2e50bc8ee424ea07819346e0611398e28..752031332fa3d3d932b535cfb503197ce8d321be 100644
+index 72abebff2018cde2922e97ad6478f93da9aed3ec..c541e80f7ab6772bdd4074f5df7075502b144a31 100644
 --- a/src/main/java/net/minecraft/world/entity/EntitySelector.java
 +++ b/src/main/java/net/minecraft/world/entity/EntitySelector.java
-@@ -27,7 +27,10 @@ public final class EntitySelector {
-         return !entity.isSpectator();
-     };
-     public static final Predicate<Entity> CAN_BE_COLLIDED_WITH = EntitySelector.NO_SPECTATORS.and(Entity::canBeCollidedWith);
--    public static Predicate<Player> isInsomniac = (player) -> net.minecraft.util.Mth.clamp(((net.minecraft.server.level.ServerPlayer) player).getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE) >= 72000; // Paper
-+    public static Predicate<Player> isInsomniac = (player) -> {
-+        return net.minecraft.util.Mth.clamp(((net.minecraft.server.level.ServerPlayer) player).getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE) >= 72000 && // Paper
-+            !((org.bukkit.entity.Player) player.getBukkitEntity()).doesBypassInsomnia(); // Parchment
-+    };
+@@ -36,6 +36,12 @@ public final class EntitySelector {
+             return false;
+         }
  
-     private EntitySelector() {}
-     // Paper start
++        // Parchment start
++        if (((org.bukkit.entity.Player) player.getBukkitEntity()).doesBypassInsomnia()) {
++            return false;
++        }
++        // Parchment end
++
+         return net.minecraft.util.Mth.clamp(serverPlayer.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE) >= playerInsomniaTicks;
+     };
+     // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index c41925004c232eb8a5e1e000a9060254f074c3db..2966c5324c19066a5aa8a14183acca21209f96bd 100644
+index cf41ff3be41b576123457bcb1e613378b6cce4de..853deb219785787f78c6eecad6237893eba9f03f 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -294,7 +294,7 @@ public abstract class Player extends LivingEntity {
@@ -34,7 +35,7 @@ index c41925004c232eb8a5e1e000a9060254f074c3db..2966c5324c19066a5aa8a14183acca21
              }
          }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 4d2bd557175ed6f91bc93c0b2cf989a4e58bde44..371693b2f7778555b8c4b1cf8deb6ca08cfb4ed5 100644
+index 0950b5f97b3382d1e41da9837e1e0b7cce6ba1b4..b209c1b2e9a877af830c022756fd60c8c65ea8dd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -73,6 +73,7 @@ import net.minecraft.server.level.ServerPlayer;
@@ -53,7 +54,7 @@ index 4d2bd557175ed6f91bc93c0b2cf989a4e58bde44..371693b2f7778555b8c4b1cf8deb6ca0
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -1911,6 +1913,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1915,6 +1917,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return this;
      }
  
