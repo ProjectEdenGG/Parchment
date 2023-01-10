@@ -4,57 +4,27 @@ Date: Sun, 24 Jul 2022 19:37:33 -0400
 Subject: [PATCH] Expanded Insomnia API
 
 
-diff --git a/src/main/java/net/minecraft/world/entity/EntitySelector.java b/src/main/java/net/minecraft/world/entity/EntitySelector.java
-index 72abebff2018cde2922e97ad6478f93da9aed3ec..c541e80f7ab6772bdd4074f5df7075502b144a31 100644
---- a/src/main/java/net/minecraft/world/entity/EntitySelector.java
-+++ b/src/main/java/net/minecraft/world/entity/EntitySelector.java
-@@ -36,6 +36,12 @@ public final class EntitySelector {
-             return false;
-         }
- 
-+        // Parchment start
-+        if (((org.bukkit.entity.Player) player.getBukkitEntity()).doesBypassInsomnia()) {
-+            return false;
-+        }
-+        // Parchment end
-+
-         return net.minecraft.util.Mth.clamp(serverPlayer.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE) >= playerInsomniaTicks;
-     };
-     // Paper end
-diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index cf41ff3be41b576123457bcb1e613378b6cce4de..853deb219785787f78c6eecad6237893eba9f03f 100644
---- a/src/main/java/net/minecraft/world/entity/player/Player.java
-+++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -294,7 +294,7 @@ public abstract class Player extends LivingEntity {
-                 this.awardStat(Stats.CROUCH_TIME);
-             }
- 
--            if (!this.isSleeping() && this.level.paperConfig().entities.behavior.tickTimeSinceSleep) { // Parchment
-+            if (!this.isSleeping() && this.level.paperConfig().entities.behavior.tickTimeSinceSleep && !((org.bukkit.entity.Player) this.getBukkitEntity()).doesBypassInsomnia()) { // Parchment
-                 this.awardStat(Stats.TIME_SINCE_REST);
-             }
-         }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 0950b5f97b3382d1e41da9837e1e0b7cce6ba1b4..b209c1b2e9a877af830c022756fd60c8c65ea8dd 100644
+index 6ce67ec49d0784e44e92d8735270996be11436af..51bb661fe3f45dbcf0c94779413fb7aabc04f9b2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -73,6 +73,7 @@ import net.minecraft.server.level.ServerPlayer;
- import net.minecraft.server.network.ServerGamePacketListenerImpl;
+@@ -75,6 +75,7 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
  import net.minecraft.server.players.UserWhiteListEntry;
+ import net.minecraft.sounds.SoundEvent;
  import net.minecraft.world.entity.Entity;
 +import net.minecraft.world.entity.EntitySelector;
  import net.minecraft.world.entity.ai.attributes.AttributeInstance;
  import net.minecraft.world.entity.ai.attributes.AttributeMap;
  import net.minecraft.world.entity.ai.attributes.Attributes;
-@@ -176,6 +177,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -178,6 +179,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
-+    private boolean bypassesInsomnia = false;
++    private boolean bypassesInsomnia = false; // Parchment - Insomnia api
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -1915,6 +1917,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1874,6 +1876,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return this;
      }
  

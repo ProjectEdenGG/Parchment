@@ -427,19 +427,19 @@ index 12163a7b0591a7d022dc7eb9ee6608a1b6c39d9b..d81c7307127b135417e06a3b244416be
      private static final HandlerList handlers = new HandlerList();
      private final Player player;
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index ef0cb00ca4cb7d2f5e4ec1c950cce036566d1ae4..df53183beb4c438ea3c821e1ffd8e2719c08f269 100644
+index 6bbf8468bc47e82b0aeb164e49cdb73d93bae87b..1d7077f3a1be8068747aaf0665a1dee797bb4088 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
   * magnitude than 360 are valid, but may be normalized to any other equivalent
   * representation by the implementation.
   */
--public class Location implements Cloneable, ConfigurationSerializable {
-+public class Location implements Cloneable, ConfigurationSerializable, gg.projecteden.parchment.HasLocation { // Parchment
+-public class Location implements Cloneable, ConfigurationSerializable, io.papermc.paper.math.FinePosition { // Paper
++public class Location implements Cloneable, ConfigurationSerializable , io.papermc.paper.math.FinePosition, gg.projecteden.parchment.HasLocation { // Parchment
      private Reference<World> world;
      private double x;
      private double y;
-@@ -72,6 +72,13 @@ public class Location implements Cloneable, ConfigurationSerializable {
+@@ -72,6 +72,13 @@ public class Location implements Cloneable, ConfigurationSerializable, io.paperm
          this.yaw = yaw;
      }
  
@@ -454,7 +454,7 @@ index ef0cb00ca4cb7d2f5e4ec1c950cce036566d1ae4..df53183beb4c438ea3c821e1ffd8e271
       * Sets the world that this location resides in
       *
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index a7d1f1e701f23e851f735584a30bedadb0d8b9bd..7b37b6f596b4ac6b8049c7bd195139ac03ba63bc 100644
+index 69b50eee42e8c52063033705bd23a5ef5231ed83..f61ddf47ce33a4a1708e7000bb43b303e3b1a503 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
 @@ -10,7 +10,7 @@ import org.bukkit.profile.PlayerProfile;
@@ -520,7 +520,7 @@ index d124768378d6f0c5573f28ee815ea3886fe74868..11a00998b1cb5ee582e225553f15b1b7
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 9930ebe7a23d306c602840fd43652fbdaba481b3..531b8090a224c448c7316d77663d2cc2787ee621 100644
+index aba40431c5a1ae43106a678445483e0653e130d1..62e40e08980faf5b5b4f1f66e943934256698e6f 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
@@ -572,7 +572,7 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 33a6b7a27dc91552799c07a7aad9b3df31ad13f7..04626febc2f141c2774de98694761f010a0b0c6a 100644
+index cdbc7329cf5f67d66e31eb31e83b9e7997040f72..851b1b42ababc802b1d3d716b7480acab5211250 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
@@ -606,7 +606,7 @@ index 3b204144e2d245098b3dc23b8779f9ed817bb6d1..2d5a09bb8f31d6234ca8a3f343d45eee
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 1e27b9de47f111b9c000243214e22890e323f7fc..56e979e2083199cc68b0381ed51733397cb230be 100644
+index de960716478477ce199526b8f860cfafa1541ee9..5687a53c4dff34109aeb17db3112e9ba6fc8b059 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -42,7 +42,17 @@ import org.jetbrains.annotations.Nullable;

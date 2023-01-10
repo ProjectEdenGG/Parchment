@@ -5,28 +5,29 @@ Subject: [PATCH] Expose EntityType Ordinals
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 72516335570d7137a62ec8667a6e8f06f024692f..30c79796359c8f2fd4f04afdb863047ba95112a9 100644
+index 4589f7db68f7a72065c85c0a50216c6d02658f1e..86e31d14858bd32993059b39af64f74d9d65c84f 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -154,6 +154,8 @@ import org.slf4j.Logger;
+@@ -161,6 +161,8 @@ import org.slf4j.Logger;
  
- public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
+ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeTest<Entity, T> {
  
 +    private static int ordinal = 0; // Parchment
 +    private static final java.util.Map<EntityType, Integer> ordinals = new java.util.HashMap<>(); // Parchment
      private static final Logger LOGGER = LogUtils.getLogger();
      public static final String ENTITY_TAG = "EntityTag";
      private final Holder.Reference<EntityType<?>> builtInRegistryHolder;
-@@ -294,9 +296,31 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
-     private final EntityDimensions dimensions;
+@@ -303,9 +305,32 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+     private final FeatureFlagSet requiredFeatures;
  
      private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder type) { // CraftBukkit - decompile error
--        return (EntityType) Registry.register(Registry.ENTITY_TYPE, id, (EntityType<T>) type.build(id)); // CraftBukkit - decompile error
+-        return (EntityType) Registry.register(BuiltInRegistries.ENTITY_TYPE, id, (EntityType<T>) type.build(id)); // CraftBukkit - decompile error
++        // return (EntityType) Registry.register(BuiltInRegistries.ENTITY_TYPE, id, (EntityType<T>) type.build(id)); // CraftBukkit - decompile error
 +        // Parchment start
 +        EntityType build = type.build(id);
 +        ordinals.put(build, ordinal);
 +        ordinal += 1;
-+        return (EntityType) Registry.register(Registry.ENTITY_TYPE, id, (EntityType<T>) build);
++        return (EntityType) Registry.register(BuiltInRegistries.ENTITY_TYPE, id, (EntityType<T>) build);
      }
  
 +    public int ordinal() {
@@ -38,23 +39,23 @@ index 72516335570d7137a62ec8667a6e8f06f024692f..30c79796359c8f2fd4f04afdb863047b
 +        if (this == o) return true;
 +        if (o == null || getClass() != o.getClass()) return false;
 +        EntityType<?> that = (EntityType<?>) o;
-+        return id.equals(that.id);
++        return this.builtInRegistryHolder.key().toString().equals(that.builtInRegistryHolder.key().toString());
 +    }
 +
 +    @Override
 +    public int hashCode() {
-+        return java.util.Objects.hash(id);
++        return java.util.Objects.hash(this.builtInRegistryHolder.key().toString());
 +    }
 +    // Parchment end
 +
      public static ResourceLocation getKey(EntityType<?> type) {
-         return Registry.ENTITY_TYPE.getKey(type);
+         return BuiltInRegistries.ENTITY_TYPE.getKey(type);
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 4743d462ce712e312decdb40fdfdfe6b71468b94..776911b43156bf297b96fb3cc334383197559ae2 100644
+index 9e7df62dde2f0b526efc4f14e690e592ba80dea4..7d467404416007cd0682eefec7eff8886299fb98 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -671,6 +671,18 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -669,6 +669,18 @@ public final class CraftMagicNumbers implements UnsafeValues {
          final net.minecraft.world.item.context.BlockPlaceContext ctx = context;
          return future.completeAsync(() -> blockItem.canPlace(ctx, blockState), io.papermc.paper.util.MCUtil.MAIN_EXECUTOR);
      }

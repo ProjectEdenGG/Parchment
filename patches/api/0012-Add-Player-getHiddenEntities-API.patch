@@ -5,10 +5,10 @@ Subject: [PATCH] Add Player#getHiddenEntities API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index cea29fd3c3ea6b3f2e6d2f89022cc4f4fdab93b2..7f4827819fc241866edb571f05e9b14d0955c0c4 100644
+index 5687a53c4dff34109aeb17db3112e9ba6fc8b059..6f90b12e442ddbec64ab75cbad9e4a5744943147 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1476,6 +1476,17 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1493,6 +1493,17 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      @org.jetbrains.annotations.ApiStatus.Experimental // Paper
      public boolean canSee(@NotNull Entity entity);
  

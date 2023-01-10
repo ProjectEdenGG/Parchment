@@ -6,10 +6,10 @@ Subject: [PATCH] Fix missing CraftMetaSkull serializedProfile
 Plugins (ab)using NMS may change the "profile" field using reflections instead of the "setProfile" method, especially if they are targeted towards old Minecraft versions. This fixes the potential discrepancies and NPEs.
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-index 92b56f16b4d8107ccf206be6b81a98dc58986c10..0882d7271c51d79c4d089ec643d633bb0a81ef07 100644
+index deed77a3d44bc55681483d7f47f148b5220135f2..5b4100f0fcd29660b4738d908d2bda677f206cc4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-@@ -96,6 +96,11 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -131,6 +131,11 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
  
      private void setProfile(GameProfile profile) {
          this.profile = profile;
@@ -21,7 +21,7 @@ index 92b56f16b4d8107ccf206be6b81a98dc58986c10..0882d7271c51d79c4d089ec643d633bb
          this.serializedProfile = (profile == null) ? null : NbtUtils.writeGameProfile(new CompoundTag(), profile);
      }
  
-@@ -104,6 +109,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -139,6 +144,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
          super.applyToItem(tag);
  
          if (this.profile != null) {
@@ -29,12 +29,12 @@ index 92b56f16b4d8107ccf206be6b81a98dc58986c10..0882d7271c51d79c4d089ec643d633bb
              // SPIGOT-6558: Set initial textures
              tag.put(SKULL_OWNER.NBT, serializedProfile);
              // Fill in textures
-@@ -243,6 +249,8 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -301,6 +307,8 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
          if (meta instanceof CraftMetaSkull) {
              CraftMetaSkull that = (CraftMetaSkull) meta;
  
 +            refreshSerializedProfile(); // Parchment -- fix NPEs from plugins abusing NMS
 +            that.refreshSerializedProfile(); // Parchment -- fix NPEs from plugins abusing NMS
              // SPIGOT-5403: equals does not check properties
-             return (this.profile != null ? that.profile != null && this.serializedProfile.equals(that.serializedProfile) : that.profile == null);
+             return (this.profile != null ? that.profile != null && this.serializedProfile.equals(that.serializedProfile) : that.profile == null) && Objects.equals(this.noteBlockSound, that.noteBlockSound);
          }
