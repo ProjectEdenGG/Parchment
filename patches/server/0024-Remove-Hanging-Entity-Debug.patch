@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Wed, 1 Mar 2023 22:02:23 -0500
+Subject: [PATCH] Remove Hanging Entity Debug
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
+index 1ffc318c12cde935aea58d6d1efff53818893bf9..7ace41bc1a215849cae36a2642aade6f676882f0 100644
+--- a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
+@@ -272,7 +272,7 @@ public abstract class HangingEntity extends Entity {
+         BlockPos blockposition = new BlockPos(nbt.getInt("TileX"), nbt.getInt("TileY"), nbt.getInt("TileZ"));
+ 
+         if (!blockposition.closerThan(this.blockPosition(), 16.0D)) {
+-            HangingEntity.LOGGER.error("Hanging entity at invalid position: {}", blockposition);
++            //HangingEntity.LOGGER.error("Hanging entity at invalid position: {}", blockposition);
+         } else {
+             this.pos = blockposition;
+         }
