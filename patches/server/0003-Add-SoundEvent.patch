@@ -39,7 +39,7 @@ index 0000000000000000000000000000000000000000..44245b61f64e4e2eb21ac4f5e540aa9a
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index 01e424792f68bac73ec41726031ebbb53df13da7..7fa767185dcc73daa4500b6c66761ea4a19c34b5 100644
+index 01e424792f68bac73ec41726031ebbb53df13da7..3a1968baf415d0fe6586c45749810878d3359c9e 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 @@ -325,6 +325,32 @@ public final class PaperAdventure {
@@ -76,13 +76,13 @@ index 01e424792f68bac73ec41726031ebbb53df13da7..7fa767185dcc73daa4500b6c66761ea4
  
      public static @Nullable BinaryTagHolder asBinaryTagHolder(final @Nullable CompoundTag tag) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 54c2b7fba83d6f06dba95b1bb5b487a02048d6e6..09d1206170bd0257bdf24741cfed6c1774886bac 100644
+index 54c2b7fba83d6f06dba95b1bb5b487a02048d6e6..8b4ec0947de1bbfa5c8eb2634c1138cf91019456 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1719,6 +1719,42 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1719,6 +1719,43 @@ public class ServerLevel extends Level implements WorldGenLevel {
          this.neighborUpdater.neighborChanged(state, pos, sourceBlock, sourcePos, notify);
      }
-
+ 
 +    public void playSeededSound(@org.jetbrains.annotations.Nullable Player except, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, long seed) {
 +        // Parchment start - sound event
 +        CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
@@ -101,6 +101,7 @@ index 54c2b7fba83d6f06dba95b1bb5b487a02048d6e6..09d1206170bd0257bdf24741cfed6c17
 +        // Parchment end
 +    }
 +
++    @Override
 +    public void playSeededSound(@org.jetbrains.annotations.Nullable Player except, Entity entity, SoundEvent sound, SoundSource category, float volume, float pitch, long seed) {
 +        // Parchment start - sound event
 +        CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
@@ -148,7 +149,7 @@ index 7d6d3c8556033d289fdadc489e73fba478fce41a..9bf14867aada68e68e5931170a3bd723
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a01654bb553c00459e64f16e5ccc91b70cc84444..a931269a0d510ce74cfd3a9714227e4d689f46e1 100644
+index a01654bb553c00459e64f16e5ccc91b70cc84444..f67d6207083811f651dc0939da4e3b7a8d683e13 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -923,7 +923,7 @@ public abstract class PlayerList {
@@ -188,7 +189,7 @@ index 61597ebe2f9faff43994c475074b87d11905e582..07f8e2bfabd9292b9f594bf408d40fc9
      }
      // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
-index 08b18428e867baf14f551beb72e3875b0c420639..af39b26d46dc993766379cc8f0f2b044655ec90a 100644
+index 08b18428e867baf14f551beb72e3875b0c420639..898177dbdbd14d40ab87122f874b0a660ca6b54a 100644
 --- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
 +++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
 @@ -538,7 +538,7 @@ public class Raid {
@@ -201,7 +202,7 @@ index 08b18428e867baf14f551beb72e3875b0c420639..af39b26d46dc993766379cc8f0f2b044
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 6a52ae70b5f7fd9953b6b2605cae722f606e7fec..d63e123b5f7c36d5010f242a273f26963ad3b4b4 100644
+index 6a52ae70b5f7fd9953b6b2605cae722f606e7fec..57fef48dbe91b881c8f75782d9dbeda9069cf8de 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -1939,4 +1939,53 @@ public class CraftEventFactory {
