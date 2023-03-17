@@ -1,0 +1,149 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Thu, 16 Mar 2023 23:11:05 -0400
+Subject: [PATCH] Add PreEntityShootBowEvent
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
+index f2094c52196b45adfd51d8aebcc4c46b779b0925..0498d3d0cee58e10351bd8c4ce7b9a3dbc862d09 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
++++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
+@@ -199,13 +199,19 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+     @Override
+     public void performRangedAttack(LivingEntity target, float pullProgress) {
+         ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW)));
++
++        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(this.getBukkitEntity(), this.getMainHandItem().asBukkitCopy(), itemstack.asBukkitCopy());
++        if (preEvent.callEvent()) {
++            return;
++        }
++
+         AbstractArrow entityarrow = this.getArrow(itemstack, pullProgress);
+         double d0 = target.getX() - this.getX();
+         double d1 = target.getY(0.3333333333333333D) - entityarrow.getY();
+         double d2 = target.getZ() - this.getZ();
+         double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+ 
+-        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level.getDifficulty().getId() * 4));
++        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level.getDifficulty().getId() * 4), preEvent.isRelative());
+         // CraftBukkit start
+         org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getMainHandItem(), entityarrow.getPickupItem(), entityarrow, net.minecraft.world.InteractionHand.MAIN_HAND, 0.8F, true); // Paper
+         if (event.isCancelled()) {
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Illusioner.java b/src/main/java/net/minecraft/world/entity/monster/Illusioner.java
+index 10573602c9bc73713cbd6989762d3dbb6f6fcf8c..b65c31bc257e362247855faabf49aec6347cec86 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Illusioner.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Illusioner.java
+@@ -189,13 +189,19 @@ public class Illusioner extends SpellcasterIllager implements RangedAttackMob {
+     @Override
+     public void performRangedAttack(LivingEntity target, float pullProgress) {
+         ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW)));
++
++        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(this.getBukkitEntity(), this.getMainHandItem().asBukkitCopy(), itemstack.asBukkitCopy());
++        if (preEvent.callEvent()) {
++            return;
++        }
++
+         AbstractArrow entityarrow = ProjectileUtil.getMobArrow(this, itemstack, pullProgress);
+         double d0 = target.getX() - this.getX();
+         double d1 = target.getY(0.3333333333333333D) - entityarrow.getY();
+         double d2 = target.getZ() - this.getZ();
+         double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+ 
+-        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level.getDifficulty().getId() * 4));
++        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level.getDifficulty().getId() * 4), preEvent.isRelative());
+         // Paper start
+         org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getMainHandItem(), entityarrow.getPickupItem(), entityarrow, target.getUsedItemHand(), 0.8F, true);
+         if (event.isCancelled()) {
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
+index 5d6d26cfe8f0ab68a3145214b3fc126ca7a71a66..e43357fd32866c340bf8a8cfe415529941512f22 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
+@@ -129,8 +129,8 @@ public abstract class AbstractArrow extends Projectile {
+     }
+ 
+     @Override
+-    public void shoot(double x, double y, double z, float speed, float divergence) {
+-        super.shoot(x, y, z, speed, divergence);
++    public void shoot(double x, double y, double z, float speed, float divergence, boolean relative) {
++        super.shoot(x, y, z, speed, divergence, relative);
+         this.life = 0;
+     }
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+index 8b2a3a8482018b7db7de81bc295862f783e17ce5..bab146d88cf52e44087868a06ccdfcee67adf2b9 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+@@ -145,9 +145,15 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+     }
+ 
+     public void shoot(double x, double y, double z, float speed, float divergence) {
++        shoot(x, y, z, speed, divergence, true);
++    }
++
++    public void shoot(double x, double y, double z, float speed, float divergence, boolean relative) {
+         Vec3 vec3d = (new Vec3(x, y, z)).normalize().add(this.random.triangle(0.0D, 0.0172275D * (double) divergence), this.random.triangle(0.0D, 0.0172275D * (double) divergence), this.random.triangle(0.0D, 0.0172275D * (double) divergence)).scale((double) speed);
+ 
+-        this.setDeltaMovement(vec3d);
++        if (relative) {
++            this.setDeltaMovement(vec3d);
++        }
+         double d3 = vec3d.horizontalDistance();
+ 
+         this.setYRot((float) (Mth.atan2(vec3d.x, vec3d.z) * 57.2957763671875D));
+@@ -157,6 +163,10 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+     }
+ 
+     public void shootFromRotation(Entity shooter, float pitch, float yaw, float roll, float speed, float divergence) {
++        this.shootFromRotation(shooter, pitch, yaw, roll, speed, divergence, true);
++    }
++
++    public void shootFromRotation(Entity shooter, float pitch, float yaw, float roll, float speed, float divergence, boolean relative) {
+         float f5 = -Mth.sin(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
+         float f6 = -Mth.sin((pitch + roll) * 0.017453292F);
+         float f7 = Mth.cos(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
+@@ -164,7 +174,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+         this.shoot((double) f5, (double) f6, (double) f7, speed, divergence);
+         Vec3 vec3d = shooter.getDeltaMovement();
+ 
+-        if (!shooter.level.paperConfig().misc.disableRelativeProjectileVelocity) this.setDeltaMovement(this.getDeltaMovement().add(vec3d.x, shooter.isOnGround() ? 0.0D : vec3d.y, vec3d.z)); // Paper - allow disabling relative velocity
++        if (!shooter.level.paperConfig().misc.disableRelativeProjectileVelocity && relative) this.setDeltaMovement(this.getDeltaMovement().add(vec3d.x, shooter.isOnGround() ? 0.0D : vec3d.y, vec3d.z)); // Paper - allow disabling relative velocity
+     }
+ 
+     // CraftBukkit start - call projectile hit event
+diff --git a/src/main/java/net/minecraft/world/item/BowItem.java b/src/main/java/net/minecraft/world/item/BowItem.java
+index 08d597db1a5345a343777a01427655e6bf2c926b..c047a2cf20a3f02b2d4a2fb71306234ccfa84429 100644
+--- a/src/main/java/net/minecraft/world/item/BowItem.java
++++ b/src/main/java/net/minecraft/world/item/BowItem.java
+@@ -42,9 +42,15 @@ public class BowItem extends ProjectileWeaponItem implements Vanishable {
+ 
+                     if (!world.isClientSide) {
+                         ArrowItem itemarrow = (ArrowItem) (itemstack1.getItem() instanceof ArrowItem ? itemstack1.getItem() : Items.ARROW);
++
++                        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(entityhuman.getBukkitEntity(), stack.asBukkitCopy(), itemstack1.asBukkitCopy());
++                        if (preEvent.callEvent()) {
++                            return;
++                        }
++
+                         AbstractArrow entityarrow = itemarrow.createArrow(world, itemstack1, entityhuman);
+ 
+-                        entityarrow.shootFromRotation(entityhuman, entityhuman.getXRot(), entityhuman.getYRot(), 0.0F, f * 3.0F, 1.0F);
++                        entityarrow.shootFromRotation(entityhuman, entityhuman.getXRot(), entityhuman.getYRot(), 0.0F, f * 3.0F, 1.0F, preEvent.isRelative());
+                         if (f == 1.0F) {
+                             entityarrow.setCritArrow(true);
+                         }
+diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
+index bc4f04c2512191da3c9e1c49f0716bb9128fc754..27276ee045cb0475dcbd47130d943fcaf597d119 100644
+--- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
++++ b/src/main/java/net/minecraft/world/item/CrossbowItem.java
+@@ -228,6 +228,11 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {
+ 
+     private static void shootProjectile(Level world, LivingEntity shooter, InteractionHand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
+         if (!world.isClientSide) {
++            gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(shooter.getBukkitEntity(), crossbow.asBukkitCopy(), projectile.asBukkitCopy());
++            if (preEvent.callEvent()) {
++                return;
++            }
++
+             boolean flag1 = projectile.is(Items.FIREWORK_ROCKET);
+             Object object;
+ 
