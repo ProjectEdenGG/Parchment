@@ -4,117 +4,8 @@ Date: Fri, 18 Jun 2021 14:04:39 -0400
 Subject: [PATCH] Add origin location to EntityDamageByBlockEvent
 
 
-diff --git a/src/main/java/net/minecraft/world/damagesource/BadRespawnPointDamage.java b/src/main/java/net/minecraft/world/damagesource/BadRespawnPointDamage.java
-index c6efd24673ba6d05266d2b45eae562749a565417..688744157a2f5302c96ef6bbdb0587161fa05f26 100644
---- a/src/main/java/net/minecraft/world/damagesource/BadRespawnPointDamage.java
-+++ b/src/main/java/net/minecraft/world/damagesource/BadRespawnPointDamage.java
-@@ -14,6 +14,13 @@ public class BadRespawnPointDamage extends PointDamageSource {
-         this.setExplosion();
-     }
- 
-+    // Parchment start
-+    protected BadRespawnPointDamage(org.bukkit.Location location) {
-+        this(new Vec3(location.x(), location.y(), location.z()));
-+        location(location);
-+    }
-+    // Parchment end
-+
-     @Override
-     public Component getLocalizedDeathMessage(LivingEntity entity) {
-         Component component = ComponentUtils.wrapInSquareBrackets(Component.translatable("death.attack.badRespawnPoint.link")).withStyle((style) -> {
-diff --git a/src/main/java/net/minecraft/world/damagesource/DamageSource.java b/src/main/java/net/minecraft/world/damagesource/DamageSource.java
-index 2848cb7c76e94d8349f042dc92daf01322a6ce5a..39aa0d0120c1e65377b17a9dca29c817c6b66e7a 100644
---- a/src/main/java/net/minecraft/world/damagesource/DamageSource.java
-+++ b/src/main/java/net/minecraft/world/damagesource/DamageSource.java
-@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
- import net.minecraft.world.entity.projectile.WitherSkull;
- import net.minecraft.world.level.Explosion;
- import net.minecraft.world.phys.Vec3;
-+import org.bukkit.Location;
- 
- public class DamageSource {
- 
-@@ -74,6 +75,20 @@ public class DamageSource {
-         return this;
-     }
-     // Paper end
-+
-+    // Parchment start
-+    private @Nullable org.bukkit.Location location;
-+
-+    public @Nullable org.bukkit.Location getLocation() {
-+        return location;
-+    }
-+
-+    public DamageSource location(@Nullable org.bukkit.Location location) {
-+        this.location = location;
-+        return this;
-+    }
-+    // Parchment end
-+
-     public @Nullable org.bukkit.block.BlockState explodedBlockState; // Paper - add exploded state
- 
-     public static DamageSource fallingBlock(Entity attacker) {
-@@ -137,7 +152,7 @@ public class DamageSource {
-     }
- 
-     public static DamageSource explosion(@Nullable Explosion explosion) {
--        return explosion != null ? DamageSource.explosion(explosion.getDirectSourceEntity(), explosion.getIndirectSourceEntity()) : DamageSource.explosion((Entity) null, (Entity) null);
-+        return explosion != null ? DamageSource.explosion(explosion.getDirectSourceEntity(), explosion.getIndirectSourceEntity()).location(explosion.getBukkitLocation()) : DamageSource.explosion((Entity) null, (Entity) null);
-     }
- 
-     public static DamageSource explosion(@Nullable Entity explosion, @Nullable Entity attacker) {
-@@ -154,7 +169,8 @@ public class DamageSource {
-         return badRespawnPointExplosion(pos, null);
-     }
-     public static DamageSource badRespawnPointExplosion(Vec3 pos, @Nullable org.bukkit.block.BlockState explodedBlockState) {
--        DamageSource source = new BadRespawnPointDamage(pos);
-+        Location loc = new Location(explodedBlockState.getWorld(), pos.x, pos.y, pos.z);
-+        DamageSource source = new BadRespawnPointDamage(loc);
-         source.explodedBlockState = explodedBlockState;
-         return source;
-         // Paper end
-diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index c7caaebfb4b9f28cbe700d88fdcf232a500e8ca7..7105fb85c0e689c9ac5201e09c0a0c614aba737c 100644
---- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-+++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-@@ -98,7 +98,7 @@ public class EnderDragon extends Mob implements Enemy {
-     private final Node[] nodes = new Node[24];
-     private final int[] nodeAdjacency = new int[24];
-     private final BinaryHeap openSet = new BinaryHeap();
--    private Explosion explosionSource = new Explosion(null, this, null, null, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true, Explosion.BlockInteraction.DESTROY); // CraftBukkit - reusable source for CraftTNTPrimed.getSource()
-+    private Explosion explosionSource;// = new Explosion(null, this, null, null, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true, Explosion.BlockInteraction.DESTROY); // CraftBukkit - reusable source for CraftTNTPrimed.getSource() // Parchment - moved into contructor to fix null world
-     // Paper start - add var for save custom podium
-     @Nullable
-     private BlockPos podium;
-@@ -106,6 +106,7 @@ public class EnderDragon extends Mob implements Enemy {
- 
-     public EnderDragon(EntityType<? extends EnderDragon> entitytypes, Level world) {
-         super(EntityType.ENDER_DRAGON, world);
-+        explosionSource = new Explosion(world, this, null, null, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true, Explosion.BlockInteraction.DESTROY); // Parchment - fix null world
-         this.subEntities = new EnderDragonPart[]{this.head, this.neck, this.body, this.tail1, this.tail2, this.tail3, this.wing1, this.wing2};
-         this.setHealth(this.getMaxHealth());
-         this.noPhysics = true;
-diff --git a/src/main/java/net/minecraft/world/level/Explosion.java b/src/main/java/net/minecraft/world/level/Explosion.java
-index a213f4098859858a73ddd601bbe8c7511972e0d5..1890942b4dd70dd64bb061a166eaecbfad24a7ad 100644
---- a/src/main/java/net/minecraft/world/level/Explosion.java
-+++ b/src/main/java/net/minecraft/world/level/Explosion.java
-@@ -495,6 +495,13 @@ public class Explosion {
-         return this.toBlow;
-     }
- 
-+    // Parchment start
-+    public @Nullable Location getBukkitLocation() {
-+        if (this.level == null) return null;
-+        return new Location(level.getWorld(), x, y, z);
-+    }
-+    // Parchment end
-+
-     public static enum BlockInteraction {
- 
-         KEEP, DESTROY, DESTROY_WITH_DECAY;
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index d63e123b5f7c36d5010f242a273f26963ad3b4b4..29e18c86bbfc8517bae76af62fd1bd4120ec31cc 100644
+index 451088940d1db0f32c29d0fd192c97b50cf3c4c8..1567206096d5010d5d4d9d58dcaaa7b6f6715943 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -972,7 +972,7 @@ public class CraftEventFactory {
@@ -122,14 +13,14 @@ index d63e123b5f7c36d5010f242a273f26963ad3b4b4..29e18c86bbfc8517bae76af62fd1bd41
              EntityDamageEvent event;
              if (damager == null) {
 -                event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.BLOCK_EXPLOSION, modifiers, modifierFunctions);
-+                event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.BLOCK_EXPLOSION, source.getLocation(), modifiers, modifierFunctions);
++                event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.BLOCK_EXPLOSION, source.getEntity().getBukkitEntity().getLocation(), modifiers, modifierFunctions);
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
 @@ -1012,7 +1012,7 @@ public class CraftEventFactory {
  
              return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritical()); // Paper - add critical damage API
-         } else if (source == DamageSource.OUT_OF_WORLD) {
+         } else if (sourceType == DamageTypes.OUT_OF_WORLD) {
 -            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, modifiers, modifierFunctions);
 +            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, entity.getBukkitEntity().getLocation(), modifiers, modifierFunctions);
              event.setCancelled(cancelled);
@@ -138,7 +29,7 @@ index d63e123b5f7c36d5010f242a273f26963ad3b4b4..29e18c86bbfc8517bae76af62fd1bd41
 @@ -1022,7 +1022,7 @@ public class CraftEventFactory {
              }
              return event;
-         } else if (source == DamageSource.LAVA) {
+         } else if (sourceType == DamageTypes.LAVA) {
 -            EntityDamageEvent event = (new EntityDamageByBlockEvent(CraftEventFactory.blockDamage, entity.getBukkitEntity(), DamageCause.LAVA, modifiers, modifierFunctions));
 +            EntityDamageEvent event = (new EntityDamageByBlockEvent(CraftEventFactory.blockDamage, entity.getBukkitEntity(), DamageCause.LAVA, entity.getBukkitEntity().getLocation(), modifiers, modifierFunctions));
              event.setCancelled(cancelled);

@@ -5,10 +5,10 @@ Subject: [PATCH] Expanded Insomnia API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 6ce67ec49d0784e44e92d8735270996be11436af..51bb661fe3f45dbcf0c94779413fb7aabc04f9b2 100644
+index 7e6b452df1915b1a6ebcc3bfd8f8ace5258fada4..409e17894e61b2a3498f82db3d3e8be9bfaee007 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -75,6 +75,7 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
+@@ -76,6 +76,7 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
  import net.minecraft.server.players.UserWhiteListEntry;
  import net.minecraft.sounds.SoundEvent;
  import net.minecraft.world.entity.Entity;
@@ -16,7 +16,7 @@ index 6ce67ec49d0784e44e92d8735270996be11436af..51bb661fe3f45dbcf0c94779413fb7aa
  import net.minecraft.world.entity.ai.attributes.AttributeInstance;
  import net.minecraft.world.entity.ai.attributes.AttributeMap;
  import net.minecraft.world.entity.ai.attributes.Attributes;
-@@ -178,6 +179,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -179,6 +180,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -24,7 +24,7 @@ index 6ce67ec49d0784e44e92d8735270996be11436af..51bb661fe3f45dbcf0c94779413fb7aa
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -1874,6 +1876,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2007,6 +2009,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return this;
      }
  

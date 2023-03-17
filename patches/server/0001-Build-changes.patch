@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index d5d49bb2b47c889e12d17dc87b8c439a60b3fe67..6c358d32b06c2064be5301a243fd1929a3f02b21 100644
+index 9cf389defdaeb887e9cad4f0fed3f3b95667b238..3bd719aace9df13f5d82a6206fb46913efbc4f9f 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -7,8 +7,8 @@ plugins {
@@ -19,7 +19,7 @@ index d5d49bb2b47c889e12d17dc87b8c439a60b3fe67..6c358d32b06c2064be5301a243fd1929
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -61,7 +61,7 @@ tasks.jar {
+@@ -62,7 +62,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -28,7 +28,7 @@ index d5d49bb2b47c889e12d17dc87b8c439a60b3fe67..6c358d32b06c2064be5301a243fd1929
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -78,7 +78,27 @@ tasks.jar {
+@@ -79,7 +79,27 @@ tasks.jar {
  
  publishing {
      publications.create<MavenPublication>("maven") {
@@ -57,7 +57,7 @@ index d5d49bb2b47c889e12d17dc87b8c439a60b3fe67..6c358d32b06c2064be5301a243fd1929
      }
  }
  
-@@ -133,7 +153,7 @@ fun TaskContainer.registerRunTask(
+@@ -134,7 +154,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -104,10 +104,10 @@ index bf42969859545a8a520923ef1836ffa4a5cc24a0..2532e265c5dade55f71c34fcab6d1e74
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 710ca7d3a5659953f64bc6dccdd93b43300961cc..60b57dcd40a0fc8d6e8a44ce3fb198a7a8e82aef 100644
+index 081871412e92ce909ad9c51a8d18ede53596c049..60c4cccf67bd043b275310842d640803f8853278 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1654,7 +1654,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1680,7 +1680,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -117,10 +117,10 @@ index 710ca7d3a5659953f64bc6dccdd93b43300961cc..60b57dcd40a0fc8d6e8a44ce3fb198a7
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index bfc4ee36befb925ab4eb6b96f5c1aa6c76bf711f..71d050445caa5dc22bf9b6070db92272c7b104f6 100644
+index f9a9d2bb7b6d1bf4a0931438de4d8c7ee0757479..2a8ad9afaa53d80d3926d9f1e1181c54aa8a849e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -261,7 +261,7 @@ import javax.annotation.Nullable; // Paper
+@@ -256,7 +256,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -130,10 +130,10 @@ index bfc4ee36befb925ab4eb6b96f5c1aa6c76bf711f..71d050445caa5dc22bf9b6070db92272
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 190e17eb28d166aedee06e9578561ba402d1b6d2..f3228d929f7460c86cd16e67628fc8df982b8875 100644
+index d51650d3e37eb76a0cf991e95d28a552aa567af9..434994787234b2ab4fba00cdbcecea6644894e62 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -278,7 +278,7 @@ public class Main {
+@@ -285,7 +285,7 @@ public class Main {
                      if (buildDate.before(deadline.getTime())) {
                          // Paper start - This is some stupid bullshit
                          System.err.println("*** Warning, you've not updated in a while! ***");

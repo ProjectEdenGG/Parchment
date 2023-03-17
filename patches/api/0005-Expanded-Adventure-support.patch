@@ -120,20 +120,20 @@ index f6eb30f53dad684f156102cf7147b2f00c82c71e..1b4e9840f0e829be533ad0bd1c918489
       * Gets the char value associated with this color
       *
 diff --git a/src/main/java/org/bukkit/Color.java b/src/main/java/org/bukkit/Color.java
-index d2f8f5a8e49f60422b6a41e51248a6710251d61b..40b09a861ba365b126c2b28bb7f18c8fb8b3e5b5 100644
+index e088390ec3fb87eeabc73dfe90e3544980c02e5b..5d4fbb08832fd0490a9375580f909beaf941e8fa 100644
 --- a/src/main/java/org/bukkit/Color.java
 +++ b/src/main/java/org/bukkit/Color.java
-@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
+@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
   * but subject to change.
   */
  @SerializableAs("Color")
 -public final class Color implements ConfigurationSerializable {
 +public final class Color implements ConfigurationSerializable, net.kyori.adventure.text.format.TextColor { // Parchment
      private static final int BIT_MASK = 0xff;
+     private static final int DEFAULT_ALPHA = 255;
  
-     /**
-@@ -244,6 +244,13 @@ public final class Color implements ConfigurationSerializable {
-         return getRed() << 16 | getGreen() << 8 | getBlue() << 0;
+@@ -309,6 +309,13 @@ public final class Color implements ConfigurationSerializable {
+         return getAlpha() << 24 | getRed() << 16 | getGreen() << 8 | getBlue();
      }
  
 +    // Parchment start

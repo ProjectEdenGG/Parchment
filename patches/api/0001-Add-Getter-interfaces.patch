@@ -520,15 +520,15 @@ index d124768378d6f0c5573f28ee815ea3886fe74868..11a00998b1cb5ee582e225553f15b1b7
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index aba40431c5a1ae43106a678445483e0653e130d1..62e40e08980faf5b5b4f1f66e943934256698e6f 100644
+index 390a2a2611df35a9ea6f1eb996b47e2aa4597ff0..e7dcaf75283dd222891e4f20971716934291a672 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
-@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
   * (i.e. lighting and power) may not be able to be safely accessed during world
   * generation when used in cases like BlockPhysicsEvent!!!!
   */
--public interface Block extends Metadatable, net.kyori.adventure.translation.Translatable { // Paper - translatable
-+public interface Block extends Metadatable, net.kyori.adventure.translation.Translatable, gg.projecteden.parchment.HasLocation { // Paper - translatable
+-public interface Block extends Metadatable, Translatable, net.kyori.adventure.translation.Translatable { // Paper - translatable
++public interface Block extends Metadatable, Translatable, net.kyori.adventure.translation.Translatable, gg.projecteden.parchment.HasLocation { // Paper - translatable
  
      /**
       * Gets the metadata for this block
@@ -572,7 +572,7 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index cdbc7329cf5f67d66e31eb31e83b9e7997040f72..851b1b42ababc802b1d3d716b7480acab5211250 100644
+index 365350d38b2eee00d22bad09ab95c6054f11d536..75f82615410d4b158fc9feecedb8fbc32b039276 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
@@ -585,7 +585,7 @@ index cdbc7329cf5f67d66e31eb31e83b9e7997040f72..851b1b42ababc802b1d3d716b7480aca
      /**
       * Gets the entity's current position
 diff --git a/src/main/java/org/bukkit/entity/HumanEntity.java b/src/main/java/org/bukkit/entity/HumanEntity.java
-index 3b204144e2d245098b3dc23b8779f9ed817bb6d1..2d5a09bb8f31d6234ca8a3f343d45eee81cc1dd4 100644
+index f17ef44bc02e97ff084e5abfde8d6c6822f00d62..aae9eaa7a0e42cd9bc0a4ccf56bf056441d47c90 100644
 --- a/src/main/java/org/bukkit/entity/HumanEntity.java
 +++ b/src/main/java/org/bukkit/entity/HumanEntity.java
 @@ -20,7 +20,15 @@ import org.jetbrains.annotations.Nullable;
@@ -606,10 +606,10 @@ index 3b204144e2d245098b3dc23b8779f9ed817bb6d1..2d5a09bb8f31d6234ca8a3f343d45eee
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index de960716478477ce199526b8f860cfafa1541ee9..5687a53c4dff34109aeb17db3112e9ba6fc8b059 100644
+index 660f28e371176c62e38a84b187958aceb235c8e3..64734c0ca89859294bde01da3dcaee6dc1840894 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -42,7 +42,17 @@ import org.jetbrains.annotations.Nullable;
+@@ -39,7 +39,17 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */
@@ -1023,7 +1023,7 @@ index c574bb94b21eb27974b40c839fce52c6ac4b54b4..0172bed7917ea1199c34438385be4bce
      /**
       * Returns the size of the inventory
 diff --git a/src/main/java/org/bukkit/inventory/InventoryView.java b/src/main/java/org/bukkit/inventory/InventoryView.java
-index 2448e70d75ae7a678c6befac4506c103edb78875..65ca144618f74bc8e317a4b9c2732ad5ed13a208 100644
+index daca40b63e95ea33178bcb54ad45911da591ca54..e9b5206851db890d7638ce94d793fb909be20307 100644
 --- a/src/main/java/org/bukkit/inventory/InventoryView.java
 +++ b/src/main/java/org/bukkit/inventory/InventoryView.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;

@@ -5,10 +5,10 @@ Subject: [PATCH] Expose EntityType Ordinals
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 4589f7db68f7a72065c85c0a50216c6d02658f1e..86e31d14858bd32993059b39af64f74d9d65c84f 100644
+index ceacc0d383e2ee674783d3c0a7df0a951595faca..72b5ce4c93c021ca2f3f1d65b45fdd8cd50d71f4 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -161,6 +161,8 @@ import org.slf4j.Logger;
+@@ -162,6 +162,8 @@ import org.slf4j.Logger;
  
  public class EntityType<T extends Entity> implements FeatureElement, EntityTypeTest<Entity, T> {
  
@@ -17,7 +17,7 @@ index 4589f7db68f7a72065c85c0a50216c6d02658f1e..86e31d14858bd32993059b39af64f74d
      private static final Logger LOGGER = LogUtils.getLogger();
      public static final String ENTITY_TAG = "EntityTag";
      private final Holder.Reference<EntityType<?>> builtInRegistryHolder;
-@@ -303,9 +305,32 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+@@ -310,9 +312,32 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
      private final FeatureFlagSet requiredFeatures;
  
      private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder type) { // CraftBukkit - decompile error
@@ -52,10 +52,10 @@ index 4589f7db68f7a72065c85c0a50216c6d02658f1e..86e31d14858bd32993059b39af64f74d
          return BuiltInRegistries.ENTITY_TYPE.getKey(type);
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 9e7df62dde2f0b526efc4f14e690e592ba80dea4..7d467404416007cd0682eefec7eff8886299fb98 100644
+index be2739875ba1ba1a973c4a45c7e6a6996f0daf31..a6eab579c0f4cc6039bdd9914dd770c796b75d3c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -669,6 +669,18 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -665,6 +665,18 @@ public final class CraftMagicNumbers implements UnsafeValues {
          final net.minecraft.world.item.context.BlockPlaceContext ctx = context;
          return future.completeAsync(() -> blockItem.canPlace(ctx, blockState), io.papermc.paper.util.MCUtil.MAIN_EXECUTOR);
      }

@@ -17,10 +17,10 @@ index 4532f3a0d74feae0a1249b53e1bfbc18a8808b32..c66db0468a9ab09cc89805e7bf7be09e
              public PillagerPatrols pillagerPatrols;
  
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 6237d023fe6e449077cb53d93f003ae92dc6b4a0..b6da54cbb620a3ec849db912b8a6b903f0b28946 100644
+index e428299aff0a75b8a9a82cac13429a6dc7ea7002..defe3bdf04b274f16e99c7d25e5f167480465c09 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -288,7 +288,7 @@ public abstract class Player extends LivingEntity {
+@@ -291,7 +291,7 @@ public abstract class Player extends LivingEntity {
                  this.awardStat(Stats.CROUCH_TIME);
              }
  

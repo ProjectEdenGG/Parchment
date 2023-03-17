@@ -5,10 +5,10 @@ Subject: [PATCH] Remove Unneeded Override
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 1bf7e21cd3b981013ff634dfc070d572af491da9..a45de4db8a73cea947c76771f9e540f6e64763bb 100644
+index 206bc729f24f679bed3b945b640778873699676a..e035ee2e499c6322c08ce6aa14fdebe134777fa2 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1737,7 +1737,6 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1736,7 +1736,6 @@ public class ServerLevel extends Level implements WorldGenLevel {
          // Parchment end
      }
  

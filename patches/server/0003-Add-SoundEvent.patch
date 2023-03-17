@@ -76,10 +76,10 @@ index 01e424792f68bac73ec41726031ebbb53df13da7..3a1968baf415d0fe6586c45749810878
  
      public static @Nullable BinaryTagHolder asBinaryTagHolder(final @Nullable CompoundTag tag) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 54c2b7fba83d6f06dba95b1bb5b487a02048d6e6..8b4ec0947de1bbfa5c8eb2634c1138cf91019456 100644
+index 5a5ff40df37db9cbd53c584ed26a3ce4888b29c0..30c05db4ad0fcd5aa83cb3168ed32c7b0d205972 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1719,6 +1719,43 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1718,6 +1718,43 @@ public class ServerLevel extends Level implements WorldGenLevel {
          this.neighborUpdater.neighborChanged(state, pos, sourceBlock, sourcePos, notify);
      }
  
@@ -124,10 +124,10 @@ index 54c2b7fba83d6f06dba95b1bb5b487a02048d6e6..8b4ec0947de1bbfa5c8eb2634c1138cf
      public void broadcastEntityEvent(Entity entity, byte status) {
          this.getChunkSource().broadcastAndSend(entity, new ClientboundEntityEventPacket(entity, status));
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7d6d3c8556033d289fdadc489e73fba478fce41a..9bf14867aada68e68e5931170a3bd7231215178a 100644
+index ca5291a9573a62cb5c19539cf5c7aceff11f9829..a793532ae1786d9c8fc04d21f49c69b336fd8cfb 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2273,7 +2273,19 @@ public class ServerPlayer extends Player {
+@@ -2259,7 +2259,19 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -149,23 +149,23 @@ index 7d6d3c8556033d289fdadc489e73fba478fce41a..9bf14867aada68e68e5931170a3bd723
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a01654bb553c00459e64f16e5ccc91b70cc84444..f67d6207083811f651dc0939da4e3b7a8d683e13 100644
+index c0c14766adaac855112f85a203a6163b8adfdded..d59d36c8a77524d5ac0c25a4ef1cf57f339eeda2 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -923,7 +923,7 @@ public abstract class PlayerList {
-         if (flag2 && !isLocAltered) {
-             BlockState data = worldserver1.getBlockState(blockposition);
-             worldserver1.setBlock(blockposition, data.setValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE, data.getValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE) - 1), 3);
+@@ -932,7 +932,7 @@ public abstract class PlayerList {
+                 BlockState data = worldserver1.getBlockState(blockposition);
+                 worldserver1.setBlock(blockposition, data.setValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE, data.getValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE) - 1), 3);
+             }
 -            entityplayer1.connection.send(new ClientboundSoundPacket(SoundEvents.RESPAWN_ANCHOR_DEPLETE, SoundSource.BLOCKS, (double) location.getX(), (double) location.getY(), (double) location.getZ(), 1.0F, 1.0F, worldserver1.getRandom().nextLong()));
 +            entityplayer1.playNotifySound(SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.BLOCKS, 1.0F, 1.0F); // Parchment - use existing play sound method
          // Paper end
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 61597ebe2f9faff43994c475074b87d11905e582..07f8e2bfabd9292b9f594bf408d40fc939497a1c 100644
+index 2b02800666b358159c8ecb63208a14855f90657b..8a59514b2c343c935403ef8f4805bfa3e7f89bcc 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1890,7 +1890,21 @@ public abstract class Player extends LivingEntity {
+@@ -1885,7 +1885,21 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
          fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {
@@ -189,7 +189,7 @@ index 61597ebe2f9faff43994c475074b87d11905e582..07f8e2bfabd9292b9f594bf408d40fc9
      }
      // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
-index 08b18428e867baf14f551beb72e3875b0c420639..898177dbdbd14d40ab87122f874b0a660ca6b54a 100644
+index 879c3bb661e24b9682b654def57c2800f4f8ca92..78c2067b9683611ea31cfe1c95755aa9e23e5982 100644
 --- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
 +++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
 @@ -538,7 +538,7 @@ public class Raid {
@@ -202,10 +202,10 @@ index 08b18428e867baf14f551beb72e3875b0c420639..898177dbdbd14d40ab87122f874b0a66
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 6a52ae70b5f7fd9953b6b2605cae722f606e7fec..57fef48dbe91b881c8f75782d9dbeda9069cf8de 100644
+index 89c07723a89a394a583f46179671b283dfcc8900..451088940d1db0f32c29d0fd192c97b50cf3c4c8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1939,4 +1939,53 @@ public class CraftEventFactory {
+@@ -1943,4 +1943,53 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end

@@ -5,10 +5,10 @@ Subject: [PATCH] Add spam bypass permission
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 3472f7f9b98d6d9c9f6465872803ef17fa67486d..70b539b115179ac32cb5c1a72a68d6bc90b5c465 100644
+index 2d8488b9aa088b6d5f0c7e557b8ad0b29bc4cd88..64848434496e4897b696f975c330756befa1e9b4 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -863,16 +863,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -865,16 +865,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
      public void handleCustomCommandSuggestions(ServerboundCommandSuggestionPacket packet) {
          // PacketUtils.ensureRunningOnSameThread(packet, this, this.player.getLevel()); // Paper - run this async
          // CraftBukkit start
@@ -29,7 +29,7 @@ index 3472f7f9b98d6d9c9f6465872803ef17fa67486d..70b539b115179ac32cb5c1a72a68d6bc
          // Paper end
          // CraftBukkit end
          // Paper start - Don't suggest if tab-complete is disabled
-@@ -2553,6 +2556,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -2547,6 +2550,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      // Spigot start - spam exclusions
      private void detectRateSpam(String s) {
@@ -37,7 +37,7 @@ index 3472f7f9b98d6d9c9f6465872803ef17fa67486d..70b539b115179ac32cb5c1a72a68d6bc
          // CraftBukkit start - replaced with thread safe throttle
          boolean counted = true;
          for ( String exclude : org.spigotmc.SpigotConfig.spamExclusions )
-@@ -3248,10 +3252,12 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3268,10 +3272,12 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
      public void handlePlaceRecipe(ServerboundPlaceRecipePacket packet) {
          // Paper start
          if (!org.bukkit.Bukkit.isPrimaryThread()) {
