@@ -5,7 +5,7 @@ Subject: [PATCH] Big Barrels
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BarrelBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
-index f52487e1cfcfab1bf22ab2cb52f998283a86e340..9f8394d0348b068623b3acafe18b40a3ed0503d0 100644
+index 416aa989ebb18a8741cc9d605a1180ab830f6643..c48466a4d2115f4fa6121b6bcba87b838743af34 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
 @@ -67,7 +67,7 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {

@@ -5,10 +5,10 @@ Subject: [PATCH] Add origin location to EntityDamageByBlockEvent
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 451088940d1db0f32c29d0fd192c97b50cf3c4c8..1567206096d5010d5d4d9d58dcaaa7b6f6715943 100644
+index fd9d0efafaf17bf0551693de2e166ac59a996abd..63ddbed83af9b8bfd237ca0c6b0727317dafe03f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -972,7 +972,7 @@ public class CraftEventFactory {
+@@ -971,7 +971,7 @@ public class CraftEventFactory {
              CraftEventFactory.entityDamage = null;
              EntityDamageEvent event;
              if (damager == null) {
@@ -17,21 +17,21 @@ index 451088940d1db0f32c29d0fd192c97b50cf3c4c8..1567206096d5010d5d4d9d58dcaaa7b6
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
-@@ -1012,7 +1012,7 @@ public class CraftEventFactory {
+@@ -1011,7 +1011,7 @@ public class CraftEventFactory {
  
              return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritical()); // Paper - add critical damage API
-         } else if (sourceType == DamageTypes.OUT_OF_WORLD) {
+         } else if (source.is(DamageTypes.OUT_OF_WORLD)) {
 -            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, modifiers, modifierFunctions);
 +            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, entity.getBukkitEntity().getLocation(), modifiers, modifierFunctions);
              event.setCancelled(cancelled);
              CraftEventFactory.callEvent(event);
              if (!event.isCancelled()) {
-@@ -1022,7 +1022,7 @@ public class CraftEventFactory {
+@@ -1021,7 +1021,7 @@ public class CraftEventFactory {
              }
              return event;
-         } else if (sourceType == DamageTypes.LAVA) {
+         } else if (source.is(DamageTypes.LAVA)) {
 -            EntityDamageEvent event = (new EntityDamageByBlockEvent(CraftEventFactory.blockDamage, entity.getBukkitEntity(), DamageCause.LAVA, modifiers, modifierFunctions));
-+            EntityDamageEvent event = (new EntityDamageByBlockEvent(CraftEventFactory.blockDamage, entity.getBukkitEntity(), DamageCause.LAVA, entity.getBukkitEntity().getLocation(), modifiers, modifierFunctions));
++            EntityDamageEvent event = (new EntityDamageByBlockEvent(CraftEventFactory.blockDamage, entity.getBukkitEntity(), DamageCause.LAVA, blockDamage.getLocation(), modifiers, modifierFunctions));
              event.setCancelled(cancelled);
  
              Block damager = CraftEventFactory.blockDamage;

@@ -5,7 +5,7 @@ Subject: [PATCH] Make FixLight use action bar
 
 
 diff --git a/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java b/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java
-index 450bd95218852174cfbc88d4517e17daee5ffd5f..794842cb3dfa0732ccecf625b97dbc6c311a8a18 100644
+index 7784d72ddd6db00c674e22759c00c430222c4b85..b336789b74d6d6819b38e78cb2014f61de3f004b 100644
 --- a/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java
 +++ b/src/main/java/io/papermc/paper/command/subcommands/FixLightCommand.java
 @@ -24,6 +24,7 @@ import static net.kyori.adventure.text.format.NamedTextColor.BLUE;
