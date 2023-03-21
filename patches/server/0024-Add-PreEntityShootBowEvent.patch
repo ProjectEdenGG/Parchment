@@ -14,7 +14,7 @@ index f2094c52196b45adfd51d8aebcc4c46b779b0925..0498d3d0cee58e10351bd8c4ce7b9a3d
          ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW)));
 +
 +        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(this.getBukkitEntity(), this.getMainHandItem().asBukkitCopy(), itemstack.asBukkitCopy());
-+        if (preEvent.callEvent()) {
++        if (!preEvent.callEvent()) {
 +            return;
 +        }
 +
@@ -39,7 +39,7 @@ index 10573602c9bc73713cbd6989762d3dbb6f6fcf8c..b65c31bc257e362247855faabf49aec6
          ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW)));
 +
 +        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(this.getBukkitEntity(), this.getMainHandItem().asBukkitCopy(), itemstack.asBukkitCopy());
-+        if (preEvent.callEvent()) {
++        if (!preEvent.callEvent()) {
 +            return;
 +        }
 +
@@ -120,7 +120,7 @@ index 08d597db1a5345a343777a01427655e6bf2c926b..c047a2cf20a3f02b2d4a2fb71306234c
                          ArrowItem itemarrow = (ArrowItem) (itemstack1.getItem() instanceof ArrowItem ? itemstack1.getItem() : Items.ARROW);
 +
 +                        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(entityhuman.getBukkitEntity(), stack.asBukkitCopy(), itemstack1.asBukkitCopy());
-+                        if (preEvent.callEvent()) {
++                        if (!preEvent.callEvent()) {
 +                            return;
 +                        }
 +
@@ -140,7 +140,7 @@ index bc4f04c2512191da3c9e1c49f0716bb9128fc754..27276ee045cb0475dcbd47130d943fca
      private static void shootProjectile(Level world, LivingEntity shooter, InteractionHand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
          if (!world.isClientSide) {
 +            gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(shooter.getBukkitEntity(), crossbow.asBukkitCopy(), projectile.asBukkitCopy());
-+            if (preEvent.callEvent()) {
++            if (!preEvent.callEvent()) {
 +                return;
 +            }
 +
