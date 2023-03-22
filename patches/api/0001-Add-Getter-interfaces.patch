@@ -427,19 +427,19 @@ index 12163a7b0591a7d022dc7eb9ee6608a1b6c39d9b..d81c7307127b135417e06a3b244416be
      private static final HandlerList handlers = new HandlerList();
      private final Player player;
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index ef0cb00ca4cb7d2f5e4ec1c950cce036566d1ae4..df53183beb4c438ea3c821e1ffd8e2719c08f269 100644
+index 6bbf8468bc47e82b0aeb164e49cdb73d93bae87b..1d7077f3a1be8068747aaf0665a1dee797bb4088 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
   * magnitude than 360 are valid, but may be normalized to any other equivalent
   * representation by the implementation.
   */
--public class Location implements Cloneable, ConfigurationSerializable {
-+public class Location implements Cloneable, ConfigurationSerializable, gg.projecteden.parchment.HasLocation { // Parchment
+-public class Location implements Cloneable, ConfigurationSerializable, io.papermc.paper.math.FinePosition { // Paper
++public class Location implements Cloneable, ConfigurationSerializable , io.papermc.paper.math.FinePosition, gg.projecteden.parchment.HasLocation { // Parchment
      private Reference<World> world;
      private double x;
      private double y;
-@@ -72,6 +72,13 @@ public class Location implements Cloneable, ConfigurationSerializable {
+@@ -72,6 +72,13 @@ public class Location implements Cloneable, ConfigurationSerializable, io.paperm
          this.yaw = yaw;
      }
  
@@ -454,7 +454,7 @@ index ef0cb00ca4cb7d2f5e4ec1c950cce036566d1ae4..df53183beb4c438ea3c821e1ffd8e271
       * Sets the world that this location resides in
       *
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index a7d1f1e701f23e851f735584a30bedadb0d8b9bd..7b37b6f596b4ac6b8049c7bd195139ac03ba63bc 100644
+index 69b50eee42e8c52063033705bd23a5ef5231ed83..f61ddf47ce33a4a1708e7000bb43b303e3b1a503 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
 @@ -10,7 +10,7 @@ import org.bukkit.profile.PlayerProfile;
@@ -520,15 +520,15 @@ index d124768378d6f0c5573f28ee815ea3886fe74868..11a00998b1cb5ee582e225553f15b1b7
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 9930ebe7a23d306c602840fd43652fbdaba481b3..531b8090a224c448c7316d77663d2cc2787ee621 100644
+index 390a2a2611df35a9ea6f1eb996b47e2aa4597ff0..e7dcaf75283dd222891e4f20971716934291a672 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
-@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
   * (i.e. lighting and power) may not be able to be safely accessed during world
   * generation when used in cases like BlockPhysicsEvent!!!!
   */
--public interface Block extends Metadatable, net.kyori.adventure.translation.Translatable { // Paper - translatable
-+public interface Block extends Metadatable, net.kyori.adventure.translation.Translatable, gg.projecteden.parchment.HasLocation { // Paper - translatable
+-public interface Block extends Metadatable, Translatable, net.kyori.adventure.translation.Translatable { // Paper - translatable
++public interface Block extends Metadatable, Translatable, net.kyori.adventure.translation.Translatable, gg.projecteden.parchment.HasLocation { // Paper - translatable
  
      /**
       * Gets the metadata for this block
@@ -572,7 +572,7 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 33a6b7a27dc91552799c07a7aad9b3df31ad13f7..04626febc2f141c2774de98694761f010a0b0c6a 100644
+index 365350d38b2eee00d22bad09ab95c6054f11d536..75f82615410d4b158fc9feecedb8fbc32b039276 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
@@ -585,7 +585,7 @@ index 33a6b7a27dc91552799c07a7aad9b3df31ad13f7..04626febc2f141c2774de98694761f01
      /**
       * Gets the entity's current position
 diff --git a/src/main/java/org/bukkit/entity/HumanEntity.java b/src/main/java/org/bukkit/entity/HumanEntity.java
-index 3b204144e2d245098b3dc23b8779f9ed817bb6d1..2d5a09bb8f31d6234ca8a3f343d45eee81cc1dd4 100644
+index f17ef44bc02e97ff084e5abfde8d6c6822f00d62..aae9eaa7a0e42cd9bc0a4ccf56bf056441d47c90 100644
 --- a/src/main/java/org/bukkit/entity/HumanEntity.java
 +++ b/src/main/java/org/bukkit/entity/HumanEntity.java
 @@ -20,7 +20,15 @@ import org.jetbrains.annotations.Nullable;
@@ -606,10 +606,10 @@ index 3b204144e2d245098b3dc23b8779f9ed817bb6d1..2d5a09bb8f31d6234ca8a3f343d45eee
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 1e27b9de47f111b9c000243214e22890e323f7fc..56e979e2083199cc68b0381ed51733397cb230be 100644
+index 660f28e371176c62e38a84b187958aceb235c8e3..64734c0ca89859294bde01da3dcaee6dc1840894 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -42,7 +42,17 @@ import org.jetbrains.annotations.Nullable;
+@@ -39,7 +39,17 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */
@@ -1023,7 +1023,7 @@ index c574bb94b21eb27974b40c839fce52c6ac4b54b4..0172bed7917ea1199c34438385be4bce
      /**
       * Returns the size of the inventory
 diff --git a/src/main/java/org/bukkit/inventory/InventoryView.java b/src/main/java/org/bukkit/inventory/InventoryView.java
-index 2448e70d75ae7a678c6befac4506c103edb78875..65ca144618f74bc8e317a4b9c2732ad5ed13a208 100644
+index daca40b63e95ea33178bcb54ad45911da591ca54..e9b5206851db890d7638ce94d793fb909be20307 100644
 --- a/src/main/java/org/bukkit/inventory/InventoryView.java
 +++ b/src/main/java/org/bukkit/inventory/InventoryView.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;

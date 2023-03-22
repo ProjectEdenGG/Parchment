@@ -1,0 +1,73 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Thu, 16 Mar 2023 23:10:47 -0400
+Subject: [PATCH] Add PreEntityShootBowEvent
+
+
+diff --git a/src/main/java/gg/projecteden/parchment/event/entity/PreEntityShootBowEvent.java b/src/main/java/gg/projecteden/parchment/event/entity/PreEntityShootBowEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..7368e7b039882dd629d187502c5c90d74471590e
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/event/entity/PreEntityShootBowEvent.java
+@@ -0,0 +1,61 @@
++package gg.projecteden.parchment.event.entity;
++
++import org.bukkit.entity.Entity;
++import org.bukkit.event.Cancellable;
++import org.bukkit.event.Event;
++import org.bukkit.event.HandlerList;
++import org.bukkit.event.entity.EntityEvent;
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++
++public class PreEntityShootBowEvent extends EntityEvent implements Cancellable {
++    private static final HandlerList handlers = new HandlerList();
++
++    private final ItemStack bow;
++    private final ItemStack arrow;
++    boolean relative = false;
++    boolean cancelled = false;
++
++    public PreEntityShootBowEvent(Entity entity, ItemStack bow, ItemStack arrow) {
++        super(entity);
++        this.bow = bow;
++        this.arrow = arrow;
++    }
++
++    public ItemStack getBow() {
++        return this.bow;
++    }
++
++    public ItemStack getArrow() {
++        return this.arrow;
++    }
++
++    public boolean isRelative() {
++        return this.relative;
++    }
++
++    public void setRelative(boolean relative) {
++        this.relative = relative;
++    }
++
++    @Override
++    public boolean isCancelled() {
++        return this.cancelled;
++    }
++
++    @Override
++    public void setCancelled(boolean cancel) {
++        this.cancelled = cancel;
++    }
++
++    @Override
++    public @NotNull HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++
++}

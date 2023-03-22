@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index b0e4f11e8af4b909a56bb5576d05ef0537fb25f7..aeea1d8c2cb49b2a79577ad7eef88bcb207b6d07 100644
+index 9cf389defdaeb887e9cad4f0fed3f3b95667b238..3bd719aace9df13f5d82a6206fb46913efbc4f9f 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -7,8 +7,8 @@ plugins {
@@ -67,7 +67,7 @@ index b0e4f11e8af4b909a56bb5576d05ef0537fb25f7..aeea1d8c2cb49b2a79577ad7eef88bcb
      standardInput = System.`in`
      workingDir = rootProject.layout.projectDirectory
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index 7b1843e16745ca8db2244e17490d291401f22679..c340575e9c2a114f2165b74feb4481975821811c 100644
+index 4b002e8b75d117b726b0de274a76d3596fce015b..bf6d9879810359216a60d1efe1d1bd9e23e55b1e 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
 @@ -73,7 +73,7 @@ public class Metrics {
@@ -104,10 +104,10 @@ index bf42969859545a8a520923ef1836ffa4a5cc24a0..2532e265c5dade55f71c34fcab6d1e74
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6dc6c3bccb4ba34268a87b0754c87eb1e0df4135..9a19e3e77eb44d443ba6576fe19cb7511d521923 100644
+index 4450d825a5474da211f0e83f845d8c7129fa08aa..2945a13807d48481bf97467d170eaec8cfd6e2d6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1654,7 +1654,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1681,7 +1681,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -117,10 +117,10 @@ index 6dc6c3bccb4ba34268a87b0754c87eb1e0df4135..9a19e3e77eb44d443ba6576fe19cb751
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 07eac5439164a7345476c55277538a152359630a..53e4a8db9ff5619982dfb059de9e431dbe2edc57 100644
+index f9a9d2bb7b6d1bf4a0931438de4d8c7ee0757479..2a8ad9afaa53d80d3926d9f1e1181c54aa8a849e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -248,7 +248,7 @@ import javax.annotation.Nullable; // Paper
+@@ -256,7 +256,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -130,10 +130,10 @@ index 07eac5439164a7345476c55277538a152359630a..53e4a8db9ff5619982dfb059de9e431d
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index f30621be24c6c3a4f173436fce1ad1c13507c84f..f448ca4a3d789e301063888655ccb4275e3c32ed 100644
+index d51650d3e37eb76a0cf991e95d28a552aa567af9..434994787234b2ab4fba00cdbcecea6644894e62 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -278,7 +278,7 @@ public class Main {
+@@ -285,7 +285,7 @@ public class Main {
                      if (buildDate.before(deadline.getTime())) {
                          // Paper start - This is some stupid bullshit
                          System.err.println("*** Warning, you've not updated in a while! ***");

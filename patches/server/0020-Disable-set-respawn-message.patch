@@ -5,10 +5,10 @@ Subject: [PATCH] Disable set respawn message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 69b3524ebb197430e90a3519b8165e472e1cf823..1f6e7d43885c65d2b083190a2c088d71f2b78617 100644
+index a793532ae1786d9c8fc04d21f49c69b336fd8cfb..ffe4234cf6dac5b3055a31f2a133e943451b307a 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2200,10 +2200,10 @@ public class ServerPlayer extends Player {
+@@ -2209,10 +2209,10 @@ public class ServerPlayer extends Player {
              angle = (float) event.getLocation().getYaw();
              forced = event.isForced();
              // Paper end

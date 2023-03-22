@@ -5,10 +5,10 @@ Subject: [PATCH] Temporary Access Transformers
 
 
 diff --git a/src/main/java/net/minecraft/world/item/BlockItem.java b/src/main/java/net/minecraft/world/item/BlockItem.java
-index 8f3b9b8784f0d7b137a1ad87655ee8bad801b59d..5153ae98bd80697a0e8bc71e5484c1f4f2817fe2 100644
+index b0204af850ee182773ad458208cccd946ad148d5..92980f04bc1bac9924907007eb63fd04eba3875c 100644
 --- a/src/main/java/net/minecraft/world/item/BlockItem.java
 +++ b/src/main/java/net/minecraft/world/item/BlockItem.java
-@@ -205,7 +205,7 @@ public class BlockItem extends Item {
+@@ -207,7 +207,7 @@ public class BlockItem extends Item {
          }).orElse(state);
      }
  

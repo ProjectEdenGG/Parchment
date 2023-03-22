@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-Mc <cjblanton2@gmail.com>
+Date: Mon, 9 Jan 2023 19:21:16 -0500
+Subject: [PATCH] Remove Unneeded Override
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index 206bc729f24f679bed3b945b640778873699676a..e035ee2e499c6322c08ce6aa14fdebe134777fa2 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -1736,7 +1736,6 @@ public class ServerLevel extends Level implements WorldGenLevel {
+         // Parchment end
+     }
+ 
+-    @Override
+     public void playSeededSound(@org.jetbrains.annotations.Nullable Player except, Entity entity, SoundEvent sound, SoundSource category, float volume, float pitch, long seed) {
+         // Parchment start - sound event
+         CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(

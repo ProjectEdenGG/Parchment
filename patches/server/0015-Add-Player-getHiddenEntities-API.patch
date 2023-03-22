@@ -5,24 +5,24 @@ Subject: [PATCH] Add Player#getHiddenEntities API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index a5220a4e514865c70700527bcd2f941d852564c0..0950b5f97b3382d1e41da9837e1e0b7cce6ba1b4 100644
+index eca5e6b93dd84307bf9dbadf32414d6f506e69dc..7e6b452df1915b1a6ebcc3bfd8f8ace5258fada4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1838,6 +1838,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-             registerEntity(player);
-         }
+@@ -1898,6 +1898,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         server.getPluginManager().callEvent(new PlayerShowEntityEvent(this, entity)); // Paper
      }
+     // Paper start
 +
 +    // Parchment start
 +    @Override
 +    public Set<UUID> getHiddenEntities(Plugin plugin) {
-+        return hiddenEntities.entrySet().stream()
++        return invertedVisibilityEntities.entrySet().stream()
 +            .filter(entry -> entry.getValue().contains(CraftPlayer.getPluginWeakReference(plugin)))
 +            .map(Map.Entry::getKey)
 +            .collect(java.util.stream.Collectors.toSet());
 +    }
-+    // Parchment end
++   // Parchment end
 +
+     @Override
      public void setPlayerProfile(com.destroystokyo.paper.profile.PlayerProfile profile) {
-         ServerPlayer self = getHandle();
-         self.gameProfile = com.destroystokyo.paper.profile.CraftPlayerProfile.asAuthlibCopy(profile);
+         ServerPlayer self = this.getHandle();

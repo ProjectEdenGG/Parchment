@@ -8,19 +8,19 @@ to easily get the items being dropped by any
 block instead of only blocks broken by players.
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index 2e65b44f10aeb44fd524a58e7eb815a566c1ad61..cdeecf0032db60385db19d6a6607da792f532a79 100644
+index 4f91e4832a94c3facbc711fcae4cb5ad540a5ca0..c357e09705c5405dc8fac666fc39c993febdee50 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -308,7 +308,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -306,7 +306,7 @@ public class Block extends BlockBehaviour implements ItemLike {
          ServerLevel worldserver = lootContext.getLevel();
-         BlockPos blockposition = new BlockPos((Vec3) lootContext.getParameter(LootContextParams.ORIGIN));
+         BlockPos blockposition = BlockPos.containing((Position) lootContext.getParameter(LootContextParams.ORIGIN));
  
 -        state.getDrops(lootContext).forEach((itemstack) -> {
 +        org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(worldserver, blockposition, state.getDrops(lootContext)).forEach((itemstack) -> { // Parchment
              Block.popResource(worldserver, blockposition, itemstack);
          });
          state.spawnAfterBreak(worldserver, blockposition, ItemStack.EMPTY, true);
-@@ -316,7 +316,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -314,7 +314,7 @@ public class Block extends BlockBehaviour implements ItemLike {
  
      public static void dropResources(BlockState state, Level world, BlockPos pos) {
          if (world instanceof ServerLevel) {
@@ -29,7 +29,7 @@ index 2e65b44f10aeb44fd524a58e7eb815a566c1ad61..cdeecf0032db60385db19d6a6607da79
                  Block.popResource(world, pos, itemstack);
              });
              state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY, true);
-@@ -326,7 +326,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -324,7 +324,7 @@ public class Block extends BlockBehaviour implements ItemLike {
  
      public static void dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity) {
          if (world instanceof ServerLevel) {
@@ -38,20 +38,21 @@ index 2e65b44f10aeb44fd524a58e7eb815a566c1ad61..cdeecf0032db60385db19d6a6607da79
                  Block.popResource((ServerLevel) world, pos, itemstack);
              });
              state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY, true);
-@@ -353,7 +353,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -351,7 +351,8 @@ public class Block extends BlockBehaviour implements ItemLike {
  
-     public static void dropResources(BlockState state, Level world, BlockPos pos, @Nullable BlockEntity blockEntity, Entity entity, ItemStack stack) {
+     public static void dropResources(BlockState state, Level world, BlockPos pos, @Nullable BlockEntity blockEntity, Entity entity, ItemStack tool) {
          if (world instanceof ServerLevel) {
--            Block.getDrops(state, (ServerLevel) world, pos, blockEntity, entity, stack).forEach((itemstack1) -> {
-+            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, blockEntity, entity, stack)).forEach((itemstack1) -> { // Parchment
+-            Block.getDrops(state, (ServerLevel) world, pos, blockEntity, entity, tool).forEach((itemstack1) -> {
++
++            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, blockEntity, entity, tool)).forEach((itemstack1) -> { // Parchment
                  Block.popResource(world, pos, itemstack1);
              });
-             state.spawnAfterBreak((ServerLevel) world, pos, stack, true);
+             state.spawnAfterBreak((ServerLevel) world, pos, tool, true);
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index e9847ba8dde5b9efb5214973f1399460ddcf930f..13e30a3ad79df17c180ba95ab9f41eb39f93e726 100644
+index 63ddbed83af9b8bfd237ca0c6b0727317dafe03f..df7cbca1fe99bdb47a112e7a0cb7b81496586518 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1967,5 +1967,19 @@ public class CraftEventFactory {
+@@ -1990,5 +1990,19 @@ public class CraftEventFactory {
              }
          });
      }

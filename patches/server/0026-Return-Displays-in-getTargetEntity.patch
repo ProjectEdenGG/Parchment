@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Sun, 19 Mar 2023 20:02:00 -0400
+Subject: [PATCH] Return Displays in getTargetEntity
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index dcfb71b5a53df789e366fea2080921d677549a2e..755ae62d64c15358b2f88ab6471c9046ced74a66 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -3988,7 +3988,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+         Vec3 direction = this.getLookAngle();
+         Vec3 end = start.add(direction.x * maxDistance, direction.y * maxDistance, direction.z * maxDistance);
+ 
+-        List<Entity> entityList = level.getEntities(this, getBoundingBox().expandTowards(direction.x * maxDistance, direction.y * maxDistance, direction.z * maxDistance).inflate(1.0D, 1.0D, 1.0D), EntitySelector.NO_SPECTATORS.and(Entity::isPickable));
++        List<Entity> entityList = level.getEntities(this, getBoundingBox().expandTowards(direction.x * maxDistance, direction.y * maxDistance, direction.z * maxDistance).inflate(1.0D, 1.0D, 1.0D), EntitySelector.NO_SPECTATORS.and(entity -> entity.isPickable() || entity instanceof Display));
+ 
+         double distance = 0.0D;
+         EntityHitResult result = null;
