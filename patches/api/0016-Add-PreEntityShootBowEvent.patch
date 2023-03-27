@@ -25,7 +25,7 @@ index 0000000000000000000000000000000000000000..7368e7b039882dd629d187502c5c90d7
 +
 +    private final ItemStack bow;
 +    private final ItemStack arrow;
-+    boolean relative = false;
++    boolean relative = true;
 +    boolean cancelled = false;
 +
 +    public PreEntityShootBowEvent(Entity entity, ItemStack bow, ItemStack arrow) {
