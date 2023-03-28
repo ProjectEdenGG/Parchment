@@ -572,7 +572,7 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 365350d38b2eee00d22bad09ab95c6054f11d536..75f82615410d4b158fc9feecedb8fbc32b039276 100644
+index 8c58018b155c52a7b2a139f784abceb6aa00a268..dfa0366e3f46ef974f9d3397f057a6abc5c0e08c 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
@@ -606,7 +606,7 @@ index f17ef44bc02e97ff084e5abfde8d6c6822f00d62..aae9eaa7a0e42cd9bc0a4ccf56bf0564
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 660f28e371176c62e38a84b187958aceb235c8e3..64734c0ca89859294bde01da3dcaee6dc1840894 100644
+index 5f11b2e9c1bca121ae72dd0ec94ae4a86f80a324..f2f32e578fb7748d41d26ae980d4132fdd28f2cd 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -39,7 +39,17 @@ import org.jetbrains.annotations.Nullable;
@@ -720,7 +720,7 @@ index be0a2d1f234d8265d98e54e518a994957b1f3ab7..54cd6735fbcad009330927d760f8bd93
      protected boolean cancel;
      protected boolean canBuild;
 diff --git a/src/main/java/org/bukkit/event/block/SignChangeEvent.java b/src/main/java/org/bukkit/event/block/SignChangeEvent.java
-index 1268066e30ddb0cd3792ea4b3de894eb04196669..1e20629da438651d3987258b93cf9caf9eff9452 100644
+index c40536f781393cb39e6a1a4ba6e780713d5dc126..e4455679b37ac38bd505982ef12d323c9ff466c3 100644
 --- a/src/main/java/org/bukkit/event/block/SignChangeEvent.java
 +++ b/src/main/java/org/bukkit/event/block/SignChangeEvent.java
 @@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
@@ -775,12 +775,12 @@ index 59aab10c2d27247eb77bd71d75b5f9126aa0fb12..b42465617e83d3413ab647cd9c78212b
      /**
       * Gets the amount of ticks that the animal will fall in love for.
 diff --git a/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java b/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
-index 10d0e18dfd423b108fe381e8142867eb10399359..7f9f266057de42261fa06e4874d7bec5388c90c7 100644
+index 099efafa14c10910e4ed04abb1823f0c1a96b6a6..382602ca4a9a33cf238f982f77865053d38bd285 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
-@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
- /**
-  * Called when an entity explodes
+@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
+  * event isn't called if the {@link org.bukkit.GameRule#MOB_GRIEFING}
+  * is disabled as no block interaction will occur.
   */
 -public class EntityExplodeEvent extends EntityEvent implements Cancellable {
 +public class EntityExplodeEvent extends EntityEvent implements Cancellable, gg.projecteden.parchment.HasLocation { // Parchment

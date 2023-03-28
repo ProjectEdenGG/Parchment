@@ -5,7 +5,7 @@ Subject: [PATCH] Add Timings Events
 
 
 diff --git a/src/main/java/co/aikar/timings/Timings.java b/src/main/java/co/aikar/timings/Timings.java
-index dd72a34eaa4bedd9ea0b92eaa79091b00eb4dd09..90f8f7a0996cf1a6f6b3e9eef0243b2d629a1214 100644
+index 852f5673fb3f9c7d7ad44b01d04b3dcdf7352e50..52dc9dd0e45c6b20b2414bd74726ade049959e72 100644
 --- a/src/main/java/co/aikar/timings/Timings.java
 +++ b/src/main/java/co/aikar/timings/Timings.java
 @@ -23,6 +23,8 @@
@@ -17,7 +17,7 @@ index dd72a34eaa4bedd9ea0b92eaa79091b00eb4dd09..90f8f7a0996cf1a6f6b3e9eef0243b2d
  import com.google.common.base.Preconditions;
  import com.google.common.collect.EvictingQueue;
  import com.google.common.collect.Lists;
-@@ -135,7 +137,24 @@ public final class Timings {
+@@ -139,7 +141,24 @@ public final class Timings {
       * @param enabled Should timings be reported
       */
      public static void setTimingsEnabled(boolean enabled) {
@@ -43,10 +43,10 @@ index dd72a34eaa4bedd9ea0b92eaa79091b00eb4dd09..90f8f7a0996cf1a6f6b3e9eef0243b2d
      }
  
 diff --git a/src/main/java/co/aikar/timings/TimingsCommand.java b/src/main/java/co/aikar/timings/TimingsCommand.java
-index 3132dc98d26c54c5e46162e53aaed195d7335c8d..f44ec5789bc98d5558eee6cff39770b4192c3e3c 100644
+index 61cfad5cd53980836e1fd6ecf08a760166fff2b9..b668b91f2159cd693e95a1652ca0c65012aa7a88 100644
 --- a/src/main/java/co/aikar/timings/TimingsCommand.java
 +++ b/src/main/java/co/aikar/timings/TimingsCommand.java
-@@ -59,12 +59,14 @@ public class TimingsCommand extends BukkitCommand {
+@@ -60,12 +60,14 @@ public class TimingsCommand extends BukkitCommand {
          }
          final String arg = args[0];
          if ("on".equalsIgnoreCase(arg)) {
@@ -65,7 +65,7 @@ index 3132dc98d26c54c5e46162e53aaed195d7335c8d..f44ec5789bc98d5558eee6cff39770b4
              return true;
          }
  
-@@ -75,20 +77,22 @@ public class TimingsCommand extends BukkitCommand {
+@@ -76,20 +78,22 @@ public class TimingsCommand extends BukkitCommand {
  
          long now = System.currentTimeMillis();
          if ("verbon".equalsIgnoreCase(arg)) {
@@ -96,10 +96,10 @@ index 3132dc98d26c54c5e46162e53aaed195d7335c8d..f44ec5789bc98d5558eee6cff39770b4
          } else  if (
              "paste".equalsIgnoreCase(arg) ||
 diff --git a/src/main/java/co/aikar/timings/TimingsReportListener.java b/src/main/java/co/aikar/timings/TimingsReportListener.java
-index 34f4c02c3bdbe571a7efb1f8c61d8924b0c81268..093c1bc755061dc6f54e5dce1ef68fd027fc43a6 100644
+index 3af5b8ea795311582044c712de50d29412024b77..b509aa8d2b05e913277713308e2eea46e631a5df 100644
 --- a/src/main/java/co/aikar/timings/TimingsReportListener.java
 +++ b/src/main/java/co/aikar/timings/TimingsReportListener.java
-@@ -58,7 +58,9 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
+@@ -59,7 +59,9 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
  
      @Override
      public void sendMessage(final @NotNull net.kyori.adventure.identity.Identity source, final @NotNull net.kyori.adventure.text.Component message, final @NotNull net.kyori.adventure.audience.MessageType type) {
@@ -110,7 +110,7 @@ index 34f4c02c3bdbe571a7efb1f8c61d8924b0c81268..093c1bc755061dc6f54e5dce1ef68fd0
      }
  
      @NotNull
-@@ -69,7 +71,9 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
+@@ -70,7 +72,9 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
  
      @Override
      public void sendMessage(@NotNull String message) {

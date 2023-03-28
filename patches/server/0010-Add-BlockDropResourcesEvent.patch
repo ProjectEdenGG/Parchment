@@ -49,10 +49,10 @@ index 4f91e4832a94c3facbc711fcae4cb5ad540a5ca0..c357e09705c5405dc8fac666fc39c993
              });
              state.spawnAfterBreak((ServerLevel) world, pos, tool, true);
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 63ddbed83af9b8bfd237ca0c6b0727317dafe03f..df7cbca1fe99bdb47a112e7a0cb7b81496586518 100644
+index 7f6266a0b4703a580571928fa4aa1a5b0caf0a39..7681fc8163f6ac17a7d26fd6f5c5113eb634640e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1990,5 +1990,19 @@ public class CraftEventFactory {
+@@ -1993,5 +1993,19 @@ public class CraftEventFactory {
              }
          });
      }

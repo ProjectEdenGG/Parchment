@@ -5,10 +5,10 @@ Subject: [PATCH] Add Timings Events
 
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 06bff37e4c1fddd3be6343049a66787c63fb420c..b6567f558cd25698208a06513c241646e0b28341 100644
+index c07eb451a576811a39021f6f97103c77488fd001..58fd2d024a9de3a9a31cde948bb9fc8b68f461bc 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -349,6 +349,8 @@ public class TimingsExport extends Thread {
+@@ -350,6 +350,8 @@ public class TimingsExport extends Thread {
              timingsURL = con.getHeaderField("Location");
              listeners.sendMessage(text("View Timings Report: ", NamedTextColor.GREEN).append(text(timingsURL).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, timingsURL))));
  

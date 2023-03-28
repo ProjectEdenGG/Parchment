@@ -104,10 +104,10 @@ index bf42969859545a8a520923ef1836ffa4a5cc24a0..2532e265c5dade55f71c34fcab6d1e74
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4450d825a5474da211f0e83f845d8c7129fa08aa..2945a13807d48481bf97467d170eaec8cfd6e2d6 100644
+index 9f15d9dbdfa74a0640b1a2b4ff695609d4758a4c..ec1a0f01c116c0a34807e1903b8142509d456b0e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1681,7 +1681,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1682,7 +1682,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -130,7 +130,7 @@ index f9a9d2bb7b6d1bf4a0931438de4d8c7ee0757479..2a8ad9afaa53d80d3926d9f1e1181c54
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index d51650d3e37eb76a0cf991e95d28a552aa567af9..434994787234b2ab4fba00cdbcecea6644894e62 100644
+index 4966a1e3dd35357a8ea6a7d2944c84c9c3e9058e..d9e66c74b41da9125ca153963397dfa4fa5df40f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -285,7 +285,7 @@ public class Main {

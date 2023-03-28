@@ -39,7 +39,7 @@ index 0000000000000000000000000000000000000000..44245b61f64e4e2eb21ac4f5e540aa9a
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index 01e424792f68bac73ec41726031ebbb53df13da7..3a1968baf415d0fe6586c45749810878d3359c9e 100644
+index ecddb6fe55e8ee1ca3b163503dd62200ce2d7d04..7d613f50cd0c6469a74529a834f30490defdaa00 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 @@ -325,6 +325,32 @@ public final class PaperAdventure {
@@ -124,10 +124,10 @@ index 5a5ff40df37db9cbd53c584ed26a3ce4888b29c0..30c05db4ad0fcd5aa83cb3168ed32c7b
      public void broadcastEntityEvent(Entity entity, byte status) {
          this.getChunkSource().broadcastAndSend(entity, new ClientboundEntityEventPacket(entity, status));
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index ca5291a9573a62cb5c19539cf5c7aceff11f9829..a793532ae1786d9c8fc04d21f49c69b336fd8cfb 100644
+index 1d4d02f26391ac55c7631817f09d05e2769b0d29..cbcc4141c904360127780d6441a960842e661ef0 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2259,7 +2259,19 @@ public class ServerPlayer extends Player {
+@@ -2270,7 +2270,19 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -162,10 +162,10 @@ index c0c14766adaac855112f85a203a6163b8adfdded..d59d36c8a77524d5ac0c25a4ef1cf57f
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 2b02800666b358159c8ecb63208a14855f90657b..8a59514b2c343c935403ef8f4805bfa3e7f89bcc 100644
+index 0629c471d38a77c44fc1c86ccdfcb0690f61ca17..791e9f43afae265f7f32588db2d6f2092c5f32c7 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1885,7 +1885,21 @@ public abstract class Player extends LivingEntity {
+@@ -1891,7 +1891,21 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
          fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {
@@ -202,10 +202,10 @@ index 879c3bb661e24b9682b654def57c2800f4f8ca92..78c2067b9683611ea31cfe1c95755aa9
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 7131cdb839df47bf3d2c2bf8476fd7a2ecebb3ba..fd9d0efafaf17bf0551693de2e166ac59a996abd 100644
+index cdb8ec04f4a19ec3dbedbd5b17a7d1f3afaa238e..42b9f8d0b038a26fb3689bc0e974ceeed4de4254 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1942,4 +1942,53 @@ public class CraftEventFactory {
+@@ -1945,4 +1945,53 @@ public class CraftEventFactory {
          return event.callEvent();
      }
      // Paper end
