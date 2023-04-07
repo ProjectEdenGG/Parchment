@@ -128,7 +128,7 @@ index 9be64a95c2345433b6142d611077dedadcef9f5d..e3cea810881868fb5869de72f331733e
      @NotNull private final String buffer;
      private final boolean isCommand;
 diff --git a/src/main/java/com/destroystokyo/paper/exception/ServerPluginMessageException.java b/src/main/java/com/destroystokyo/paper/exception/ServerPluginMessageException.java
-index 89e132525cfae0ce979e37b3e2793df781e47227..f14635ae3112862c1337398bf5f5f56a7f87d90f 100644
+index 2faef4cb358ec65e32a6aba6426f0dd7ddf90d2a..640a01478be687b089aeddad422e4bba2bea19b6 100644
 --- a/src/main/java/com/destroystokyo/paper/exception/ServerPluginMessageException.java
 +++ b/src/main/java/com/destroystokyo/paper/exception/ServerPluginMessageException.java
 @@ -8,7 +8,7 @@ import static com.google.common.base.Preconditions.*;
@@ -606,7 +606,7 @@ index f17ef44bc02e97ff084e5abfde8d6c6822f00d62..aae9eaa7a0e42cd9bc0a4ccf56bf0564
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 5f11b2e9c1bca121ae72dd0ec94ae4a86f80a324..f2f32e578fb7748d41d26ae980d4132fdd28f2cd 100644
+index 8fe11fce80c3b29164b79ece8dc9ed8da6fc1790..b494ea7863a06fd9c52fba124a66d83da6432ed9 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -39,7 +39,17 @@ import org.jetbrains.annotations.Nullable;
@@ -707,7 +707,7 @@ index 6dcd9f828c6c40e48593b0bad5a44a656eb01645..0651bdd983e90e0e1e8a3565dcb5d97c
      private final IgniteCause cause;
      private final Entity ignitingEntity;
 diff --git a/src/main/java/org/bukkit/event/block/BlockPlaceEvent.java b/src/main/java/org/bukkit/event/block/BlockPlaceEvent.java
-index be0a2d1f234d8265d98e54e518a994957b1f3ab7..54cd6735fbcad009330927d760f8bd93ea9c51ec 100644
+index 4e3c406ba883aae553e8d69b6b719b872cd6096c..d0a92dc9eba0f61b596e9a388f3aa4076ef2bc65 100644
 --- a/src/main/java/org/bukkit/event/block/BlockPlaceEvent.java
 +++ b/src/main/java/org/bukkit/event/block/BlockPlaceEvent.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
@@ -788,7 +788,7 @@ index 099efafa14c10910e4ed04abb1823f0c1a96b6a6..382602ca4a9a33cf238f982f77865053
      private boolean cancel;
      private final Location location;
 diff --git a/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java b/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java
-index 327876e0ad7dcfeb71d9d22afe1c04bcd71c3bf9..466a54c4e30a7886e7383f43f9b6c389a5bdba7c 100644
+index 71d664dd89995f088c47d17b38547d530319470c..d931ece8f35c8f01748c59d01617fd59b287030e 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityPlaceEvent.java
 @@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
@@ -892,12 +892,12 @@ index 21ad8888c0e403bfc63518502577d651c02dda05..1c59335a8f0a40162190f6fb73ffbfef
      // Paper start
      private final Reason reason;
 diff --git a/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java b/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
-index 9013d043503d175004ad276799e5935b7fa59dc4..4095ca19e6ceff2432e0cbd372e9475f748278a7 100644
+index ceae092eb782698803c6c3df41267dde20ba62b2..23e35e7e65bdf2e758dc8dc980b9427b7e4163a9 100644
 --- a/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
 +++ b/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
 @@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  /**
-  * Represents a player related inventory event
+  * Called when a player opens an inventory
   */
 -public class InventoryOpenEvent extends InventoryEvent implements Cancellable {
 +public class InventoryOpenEvent extends InventoryEvent implements Cancellable, gg.projecteden.parchment.HasHumanEntity { // Parchment
@@ -905,7 +905,7 @@ index 9013d043503d175004ad276799e5935b7fa59dc4..4095ca19e6ceff2432e0cbd372e9475f
      private boolean cancelled;
  
 diff --git a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
-index 635b8787fc235b61c0d5677def034656e4ec4cef..6f15f4adfa552e2f5960464663ee126282086bb1 100644
+index fc2d9e85b65347b90bde3b0b13ccae759e33d466..6b2e64fa9c0f3c0af88797d63557c333edf69a5d 100644
 --- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
@@ -1010,7 +1010,7 @@ index 7af8d6e51c824cf0592b722b834f1d4986e3cc08..c28d62fc3dc359f9ebcf926094198ee3
      private boolean cancelled = false;
      private final Location location;
 diff --git a/src/main/java/org/bukkit/inventory/Inventory.java b/src/main/java/org/bukkit/inventory/Inventory.java
-index c574bb94b21eb27974b40c839fce52c6ac4b54b4..0172bed7917ea1199c34438385be4bceac9cfaa4 100644
+index 0d519813c12d98b28d62e6d01d7ec6e8c2dba3c3..469b9cc0c4b77844ba0317af51bd9ad873915967 100644
 --- a/src/main/java/org/bukkit/inventory/Inventory.java
 +++ b/src/main/java/org/bukkit/inventory/Inventory.java
 @@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
