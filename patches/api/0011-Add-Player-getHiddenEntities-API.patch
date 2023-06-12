@@ -5,12 +5,12 @@ Subject: [PATCH] Add Player#getHiddenEntities API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 64734c0ca89859294bde01da3dcaee6dc1840894..205cd1d53bef3a8d18315561543f815ede791570 100644
+index d4235e9633eeacc35f45530a63b43a4c0e07c5ea..aba730b762d6a0df8a5f115186f2faaf7a2cb75d 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1597,6 +1597,17 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-     @org.jetbrains.annotations.ApiStatus.Experimental // Paper
-     public boolean canSee(@NotNull Entity entity);
+@@ -1649,6 +1649,18 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      */
+     public boolean canSee(@NotNull Player player);
  
 +    // Parchment start
 +    /**
@@ -23,6 +23,7 @@ index 64734c0ca89859294bde01da3dcaee6dc1840894..205cd1d53bef3a8d18315561543f815e
 +    public java.util.@NotNull Set<java.util.UUID> getHiddenEntities(@NotNull Plugin plugin);
 +    // Parchment end
 +
++
      /**
-      * Checks to see if this player is currently flying or not.
+      * Visually hides an entity from this player.
       *

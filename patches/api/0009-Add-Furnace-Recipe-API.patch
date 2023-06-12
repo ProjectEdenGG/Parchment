@@ -64,10 +64,10 @@ index 0000000000000000000000000000000000000000..28c01caa9d6379046f6af6612719b404
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 6716a1185e733f3ddf56b295f3153938f57d4229..ccf72e766e34129fc5dd874c83d966b3fff4d2bd 100644
+index 72f1576b8ce5b55b50f053f346ce42c52db4b568..edc65af5cc0593a04c2f7fede69de0781a31ee97 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -4007,6 +4007,36 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -3974,6 +3974,36 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
      @Nullable
      public DragonBattle getEnderDragonBattle();
  
@@ -102,5 +102,5 @@ index 6716a1185e733f3ddf56b295f3153938f57d4229..ccf72e766e34129fc5dd874c83d966b3
 +    // Parchment end
 +
      /**
-      * Represents various map environment types that a world may be
-      */
+      * Get all {@link FeatureFlag} enabled in this world.
+      *

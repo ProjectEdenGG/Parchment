@@ -39,10 +39,10 @@ index 0000000000000000000000000000000000000000..44245b61f64e4e2eb21ac4f5e540aa9a
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index ecddb6fe55e8ee1ca3b163503dd62200ce2d7d04..7d613f50cd0c6469a74529a834f30490defdaa00 100644
+index 3dc613116c086444ece88bcb0a569eeea953074f..c454ed979e4a2ef36bf0a8c7bd1bb64a62f59a5f 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -325,6 +325,32 @@ public final class PaperAdventure {
+@@ -335,6 +335,33 @@ public final class PaperAdventure {
          return asVanilla(source);
      }
  
@@ -72,17 +72,19 @@ index ecddb6fe55e8ee1ca3b163503dd62200ce2d7d04..7d613f50cd0c6469a74529a834f30490
 +    }
 +    // Parchment end
 +
-     // NBT
- 
-     public static @Nullable BinaryTagHolder asBinaryTagHolder(final @Nullable CompoundTag tag) {
++
+     public static Packet<?> asSoundPacket(final Sound sound, final double x, final double y, final double z, final long seed, @Nullable BiConsumer<Packet<?>, Float> packetConsumer) {
+         final ResourceLocation name = asVanilla(sound.name());
+         final Optional<SoundEvent> soundEvent = BuiltInRegistries.SOUND_EVENT.getOptional(name);
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 5a5ff40df37db9cbd53c584ed26a3ce4888b29c0..30c05db4ad0fcd5aa83cb3168ed32c7b0d205972 100644
+index 18aac3da3c88f33b1a71a5920a8daa27e9723913..f8da87074468b34b18c774fba6868373ecb8a8a7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1718,6 +1718,43 @@ public class ServerLevel extends Level implements WorldGenLevel {
-         this.neighborUpdater.neighborChanged(state, pos, sourceBlock, sourcePos, notify);
+@@ -2818,4 +2818,41 @@ public class ServerLevel extends Level implements WorldGenLevel {
+         return this.server.getPlayerList().getPlayer(uuid);
      }
- 
+     // Paper end
++
 +    public void playSeededSound(@org.jetbrains.annotations.Nullable Player except, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, long seed) {
 +        // Parchment start - sound event
 +        CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
@@ -101,7 +103,6 @@ index 5a5ff40df37db9cbd53c584ed26a3ce4888b29c0..30c05db4ad0fcd5aa83cb3168ed32c7b
 +        // Parchment end
 +    }
 +
-+    @Override
 +    public void playSeededSound(@org.jetbrains.annotations.Nullable Player except, Entity entity, SoundEvent sound, SoundSource category, float volume, float pitch, long seed) {
 +        // Parchment start - sound event
 +        CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
@@ -120,14 +121,12 @@ index 5a5ff40df37db9cbd53c584ed26a3ce4888b29c0..30c05db4ad0fcd5aa83cb3168ed32c7b
 +        // Parchment end
 +    }
 +
-     @Override
-     public void broadcastEntityEvent(Entity entity, byte status) {
-         this.getChunkSource().broadcastAndSend(entity, new ClientboundEntityEventPacket(entity, status));
+ }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 1d4d02f26391ac55c7631817f09d05e2769b0d29..cbcc4141c904360127780d6441a960842e661ef0 100644
+index 5fad40fa88f697108e42461c41012d5964ed7d75..26857b67e403d650387cf789f3778bbced7ea0a4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2270,7 +2270,19 @@ public class ServerPlayer extends Player {
+@@ -2328,7 +2328,19 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -141,7 +140,7 @@ index 1d4d02f26391ac55c7631817f09d05e2769b0d29..cbcc4141c904360127780d6441a96084
 +                volume,
 +                pitch
 +            ),
-+            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(level, getX(), getY(), getZ()),
++            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(this.level(), getX(), getY(), getZ()),
 +            this.random.nextLong(), sound -> 0d, soundEvent -> java.util.Collections.singletonList(getBukkitEntity())
 +        ));
 +        // Parchment end
@@ -149,10 +148,10 @@ index 1d4d02f26391ac55c7631817f09d05e2769b0d29..cbcc4141c904360127780d6441a96084
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index c0c14766adaac855112f85a203a6163b8adfdded..d59d36c8a77524d5ac0c25a4ef1cf57f339eeda2 100644
+index 683b5d78f9e3dc34e40c54683f64be32317797ac..96b79fbd763fe981862d5e1d73a3dd71f5da445f 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -932,7 +932,7 @@ public abstract class PlayerList {
+@@ -946,7 +946,7 @@ public abstract class PlayerList {
                  BlockState data = worldserver1.getBlockState(blockposition);
                  worldserver1.setBlock(blockposition, data.setValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE, data.getValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE) - 1), 3);
              }
@@ -162,12 +161,12 @@ index c0c14766adaac855112f85a203a6163b8adfdded..d59d36c8a77524d5ac0c25a4ef1cf57f
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 0629c471d38a77c44fc1c86ccdfcb0690f61ca17..791e9f43afae265f7f32588db2d6f2092c5f32c7 100644
+index 58152160d609d0e9d105153aeb166a56a7955603..66866e1dabe79a78df255fc17842bdb36988d86f 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1891,7 +1891,21 @@ public abstract class Player extends LivingEntity {
+@@ -1918,7 +1918,21 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
-         fromEntity.level.playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
+         fromEntity.level().playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {
 -            ((ServerPlayer) fromEntity).connection.send(new net.minecraft.network.protocol.game.ClientboundSoundPacket(net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.wrapAsHolder(soundEffect), soundCategory, x, y, z, volume, pitch, fromEntity.random.nextLong()));
 +            // Parchment start - sound event
@@ -179,7 +178,7 @@ index 0629c471d38a77c44fc1c86ccdfcb0690f61ca17..791e9f43afae265f7f32588db2d6f209
 +                    volume,
 +                    pitch
 +                ),
-+                gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(fromEntity.level, x, y, z),
++                gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(fromEntity.level(), x, y, z),
 +                fromEntity.random.nextLong(),
 +                sound -> 0d,
 +                soundEvent -> java.util.Collections.singletonList(((ServerPlayer) fromEntity).getBukkitEntity())
@@ -189,7 +188,7 @@ index 0629c471d38a77c44fc1c86ccdfcb0690f61ca17..791e9f43afae265f7f32588db2d6f209
      }
      // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
-index 879c3bb661e24b9682b654def57c2800f4f8ca92..78c2067b9683611ea31cfe1c95755aa9e23e5982 100644
+index f7399737548483905f3b5c08a03876b0da54b714..e668de87a5b58febf451fe4be79e47143f4eab01 100644
 --- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
 +++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
 @@ -538,7 +538,7 @@ public class Raid {
@@ -202,13 +201,13 @@ index 879c3bb661e24b9682b654def57c2800f4f8ca92..78c2067b9683611ea31cfe1c95755aa9
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index cdb8ec04f4a19ec3dbedbd5b17a7d1f3afaa238e..42b9f8d0b038a26fb3689bc0e974ceeed4de4254 100644
+index a9a58f0bb19e034cffdafcc38fdc9003744a5d6c..f238fda2543d3dae4d66c83a2230f858aff822df 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1945,4 +1945,53 @@ public class CraftEventFactory {
-         return event.callEvent();
+@@ -2011,4 +2011,53 @@ public class CraftEventFactory {
+         return event;
      }
-     // Paper end
+     // Paper end - add EntityFertilizeEggEvent
 +
 +    // Parchment start
 +    private static net.minecraft.network.protocol.@org.jetbrains.annotations.NotNull Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> handleSoundEvent(gg.projecteden.parchment.event.sound.SoundEvent event, CraftPlayer recipient) {
