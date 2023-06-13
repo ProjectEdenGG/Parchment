@@ -462,7 +462,7 @@ index 72175dcae49f75b494ab70958053ed994a8828f4..4b7ff7a624e94f9bd3a251976b33e289
   * player needing to be online.
   */
 -public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable {
-+public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, gg.projecteden.parchment.HasOfflinePlayer, gg.projecteden.parchment.OptionalPlayer { // Parchment
++public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, gg.projecteden.parchment.HasOfflinePlayer, gg.projecteden.parchment.OptionalPlayer, gg.projecteden.api.interfaces.HasUniqueId { // Parchment
 +
  
      /**
