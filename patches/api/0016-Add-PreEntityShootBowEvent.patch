@@ -6,7 +6,7 @@ Subject: [PATCH] Add PreEntityShootBowEvent
 
 diff --git a/src/main/java/gg/projecteden/parchment/event/entity/PreEntityShootBowEvent.java b/src/main/java/gg/projecteden/parchment/event/entity/PreEntityShootBowEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..7368e7b039882dd629d187502c5c90d74471590e
+index 0000000000000000000000000000000000000000..cd156e2d71728f8d30a12df87398875b1ec8915e
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/entity/PreEntityShootBowEvent.java
 @@ -0,0 +1,61 @@
@@ -23,22 +23,22 @@ index 0000000000000000000000000000000000000000..7368e7b039882dd629d187502c5c90d7
 +public class PreEntityShootBowEvent extends EntityEvent implements Cancellable {
 +    private static final HandlerList handlers = new HandlerList();
 +
-+    private final ItemStack bow;
-+    private final ItemStack arrow;
++    private final @NotNull ItemStack bow;
++    private final @NotNull ItemStack arrow;
 +    boolean relative = true;
 +    boolean cancelled = false;
 +
-+    public PreEntityShootBowEvent(Entity entity, ItemStack bow, ItemStack arrow) {
++    public PreEntityShootBowEvent(@NotNull Entity entity, @NotNull ItemStack bow, @NotNull ItemStack arrow) {
 +        super(entity);
 +        this.bow = bow;
 +        this.arrow = arrow;
 +    }
 +
-+    public ItemStack getBow() {
++    public @NotNull ItemStack getBow() {
 +        return this.bow;
 +    }
 +
-+    public ItemStack getArrow() {
++    public @NotNull ItemStack getArrow() {
 +        return this.arrow;
 +    }
 +

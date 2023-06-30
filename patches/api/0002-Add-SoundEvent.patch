@@ -6,7 +6,7 @@ Subject: [PATCH] Add SoundEvent
 
 diff --git a/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..0bb783a6a86681fa54a738a3851e9079d4befa87
+index 0000000000000000000000000000000000000000..14fa1d766f49eed2907214fc536222bae9167a85
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 @@ -0,0 +1,359 @@
@@ -305,7 +305,7 @@ index 0000000000000000000000000000000000000000..0bb783a6a86681fa54a738a3851e9079
 +
 +    private record WrappedRecipientsFunction(@NotNull Function<SoundEvent, List<Player>> wrapped) implements Function<SoundEvent, List<Player>> {
 +        @Override
-+        public List<Player> apply(SoundEvent event) {
++        public @NotNull List<Player> apply(@NotNull SoundEvent event) {
 +            List<Player> recipients = wrapped.apply(event);
 +            HumanEntity except = event.getException();
 +            if (except != null) {
