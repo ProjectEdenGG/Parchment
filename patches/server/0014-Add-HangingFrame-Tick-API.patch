@@ -5,25 +5,25 @@ Subject: [PATCH] Add HangingFrame Tick API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
-index f7d031e9a5aa533d78a49ed6147dd47dd0f27f01..a22139bd4202237eb6977b95786b9a3647821874 100644
+index 66cf0a6cd1525ecf2615809210a26d55f445d07d..360ca6458083fa4018f11fcdade3ce930835db72 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
-@@ -42,6 +42,7 @@ public abstract class HangingEntity extends Entity {
-     private int checkInterval; { this.checkInterval = this.getId() % this.level.spigotConfig.hangingTickFrequency; } // Paper
+@@ -41,6 +41,7 @@ public abstract class HangingEntity extends Entity {
+     private int checkInterval; { this.checkInterval = this.getId() % this.level().spigotConfig.hangingTickFrequency; } // Paper
      public BlockPos pos;
      protected Direction direction;
 +    public boolean tick = true; // Parchment
  
      protected HangingEntity(EntityType<? extends HangingEntity> type, Level world) {
          super(type, world);
-@@ -117,7 +118,7 @@ public abstract class HangingEntity extends Entity {
+@@ -116,7 +117,7 @@ public abstract class HangingEntity extends Entity {
  
      @Override
      public void tick() {
--        if (!this.level.isClientSide) {
-+        if (tick && !this.level.isClientSide) { // Parchment
-             this.checkOutOfWorld();
-             if (this.checkInterval++ == this.level.spigotConfig.hangingTickFrequency) { // Spigot
+-        if (!this.level().isClientSide) {
++        if (tick && !this.level().isClientSide) { // Parchment
+             this.checkBelowWorld();
+             if (this.checkInterval++ == this.level().spigotConfig.hangingTickFrequency) { // Spigot
                  this.checkInterval = 0;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
 index 62e11bf104b8d39ac73883e2a5d207e5f7393253..639bd33ae91ed818bda29fed776adb8c169458d7 100644

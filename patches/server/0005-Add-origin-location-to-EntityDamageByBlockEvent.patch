@@ -5,10 +5,10 @@ Subject: [PATCH] Add origin location to EntityDamageByBlockEvent
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 42b9f8d0b038a26fb3689bc0e974ceeed4de4254..7f6266a0b4703a580571928fa4aa1a5b0caf0a39 100644
+index d6f2d56e15298ca9161f6b6e1384da0b07518616..eaa47fc7d5e6b8a3213f219a4146765750b2a234 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -971,7 +971,7 @@ public class CraftEventFactory {
+@@ -987,7 +987,7 @@ public class CraftEventFactory {
              CraftEventFactory.entityDamage = null;
              EntityDamageEvent event;
              if (damager == null) {
@@ -17,16 +17,16 @@ index 42b9f8d0b038a26fb3689bc0e974ceeed4de4254..7f6266a0b4703a580571928fa4aa1a5b
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
-@@ -1014,7 +1014,7 @@ public class CraftEventFactory {
+@@ -1035,7 +1035,7 @@ public class CraftEventFactory {
  
              return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritical()); // Paper - add critical damage API
-         } else if (source.is(DamageTypes.OUT_OF_WORLD)) {
+         } else if (source.is(DamageTypes.FELL_OUT_OF_WORLD)) {
 -            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, modifiers, modifierFunctions);
 +            EntityDamageEvent event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.VOID, entity.getBukkitEntity().getLocation(), modifiers, modifierFunctions);
              event.setCancelled(cancelled);
              CraftEventFactory.callEvent(event);
              if (!event.isCancelled()) {
-@@ -1024,7 +1024,7 @@ public class CraftEventFactory {
+@@ -1045,7 +1045,7 @@ public class CraftEventFactory {
              }
              return event;
          } else if (source.is(DamageTypes.LAVA)) {
