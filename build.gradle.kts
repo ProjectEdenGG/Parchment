@@ -1,4 +1,5 @@
 import io.papermc.paperweight.util.constants.*
+val edenVersion: String by project
 
 plugins {
     java
@@ -50,7 +51,7 @@ subprojects {
     }
 
     dependencies {
-        implementation("gg.projecteden:eden-interfaces:2.2.8-SNAPSHOT")
+        implementation("gg.projecteden:eden-interfaces:$edenVersion")
     }
 }
 
