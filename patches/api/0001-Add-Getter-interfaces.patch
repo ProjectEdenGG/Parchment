@@ -427,7 +427,7 @@ index 12163a7b0591a7d022dc7eb9ee6608a1b6c39d9b..d81c7307127b135417e06a3b244416be
      private static final HandlerList handlers = new HandlerList();
      private final Player player;
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index 1a60a18e15780128a1914826daa952ffacb92e9e..1c7e4ff20536e9a57a8f596032282967d5e6445a 100644
+index 1bfe465b9aaeea7d3c871140145b7de1b8f1d93d..babaefd2441b3b3e3b11ac1db6e5dc95eca40f64 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
@@ -439,7 +439,7 @@ index 1a60a18e15780128a1914826daa952ffacb92e9e..1c7e4ff20536e9a57a8f596032282967
      private Reference<World> world;
      private double x;
      private double y;
-@@ -1199,4 +1199,11 @@ public class Location implements Cloneable, ConfigurationSerializable, io.paperm
+@@ -1200,4 +1200,11 @@ public class Location implements Cloneable, ConfigurationSerializable, io.paperm
          return new Location(world, this.x(), this.y(), this.z(), this.getYaw(), this.getPitch());
      }
      // Paper end
@@ -452,10 +452,10 @@ index 1a60a18e15780128a1914826daa952ffacb92e9e..1c7e4ff20536e9a57a8f596032282967
 +    // Parchment end
  }
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index 72175dcae49f75b494ab70958053ed994a8828f4..eb86c81c95fe7f76487c5dc37c1b9e1cda233fdc 100644
+index 08ae501e97ae2a3f22b1994c9616fc7134cfc0c3..ad2c66f425546c6527417b2c5bc4a8d13e86c566 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
-@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
   * player that is stored on the disk and can, thus, be retrieved without the
   * player needing to be online.
   */
@@ -464,7 +464,7 @@ index 72175dcae49f75b494ab70958053ed994a8828f4..eb86c81c95fe7f76487c5dc37c1b9e1c
  
      /**
       * Checks if this player is currently online
-@@ -144,6 +144,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
+@@ -160,6 +160,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
      @Nullable
      public Player getPlayer();
  
@@ -604,10 +604,10 @@ index 8b0d04d5b39ee817555a36adddc39b18fc6f0d02..1c87047de615a85ee20297295478770e
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 0b4f9dee48f8d49977dc9a5f104ee062ca2cbfae..2c84eb129191f057ab96000dd2e2446ad44972c7 100644
+index 06b2b925de745850816d9ce0cf6316412c8d2b49..e688bc7290ad9da43b8ac05ce006851536867e4d 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -43,7 +43,17 @@ import org.jetbrains.annotations.Nullable;
+@@ -49,7 +49,17 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */

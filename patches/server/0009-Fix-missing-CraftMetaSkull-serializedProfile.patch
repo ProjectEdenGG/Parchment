@@ -6,10 +6,10 @@ Subject: [PATCH] Fix missing CraftMetaSkull serializedProfile
 Plugins (ab)using NMS may change the "profile" field using reflections instead of the "setProfile" method, especially if they are targeted towards old Minecraft versions. This fixes the potential discrepancies and NPEs.
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-index deed77a3d44bc55681483d7f47f148b5220135f2..5b4100f0fcd29660b4738d908d2bda677f206cc4 100644
+index 47c8148e6413c51ffdd30082bfb37a7fb8a73a71..fe48cb0fbf3b510b365bed06d84c0c62edd1ad19 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-@@ -131,6 +131,11 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -133,6 +133,11 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
  
      private void setProfile(GameProfile profile) {
          this.profile = profile;
@@ -21,7 +21,7 @@ index deed77a3d44bc55681483d7f47f148b5220135f2..5b4100f0fcd29660b4738d908d2bda67
          this.serializedProfile = (profile == null) ? null : NbtUtils.writeGameProfile(new CompoundTag(), profile);
      }
  
-@@ -139,6 +144,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -141,6 +146,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
          super.applyToItem(tag);
  
          if (this.profile != null) {
@@ -29,7 +29,7 @@ index deed77a3d44bc55681483d7f47f148b5220135f2..5b4100f0fcd29660b4738d908d2bda67
              // SPIGOT-6558: Set initial textures
              tag.put(SKULL_OWNER.NBT, serializedProfile);
              // Fill in textures
-@@ -301,6 +307,8 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
+@@ -303,6 +309,8 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
          if (meta instanceof CraftMetaSkull) {
              CraftMetaSkull that = (CraftMetaSkull) meta;
  

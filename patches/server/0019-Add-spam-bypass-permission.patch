@@ -5,7 +5,7 @@ Subject: [PATCH] Add spam bypass permission
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 2a609e43370e68943c580083f7f7d8c9b0972955..16301274210ffb9d6158303b90efe7d29d7e238b 100644
+index 316740b2ba4c85828f544249c8cdd6fa1b525d3f..d4709622887c2a0c2aa750cf604ce7f122ed62f3 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -882,6 +882,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -32,7 +32,7 @@ index 2a609e43370e68943c580083f7f7d8c9b0972955..16301274210ffb9d6158303b90efe7d2
          // CraftBukkit start - replaced with thread safe throttle
          boolean counted = true;
          for ( String exclude : org.spigotmc.SpigotConfig.spamExclusions )
-@@ -3288,10 +3291,12 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3295,10 +3298,12 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
          PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel());
          // Paper start
          if (!org.bukkit.Bukkit.isPrimaryThread()) {

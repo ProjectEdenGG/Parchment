@@ -5,10 +5,10 @@ Subject: [PATCH] Make SynchedEntityData#packAll Public
 
 
 diff --git a/src/main/java/net/minecraft/network/syncher/SynchedEntityData.java b/src/main/java/net/minecraft/network/syncher/SynchedEntityData.java
-index 15add3f4dfd718ec09bb1db4f22223466936879c..ab6d67d7acf657982bbd34af8a60e1bb36168979 100644
+index 5dfb35117c285e0b202dc9c088ad5848beb8d054..662e20a607c348403250f50a8ff0a0171e128701 100644
 --- a/src/main/java/net/minecraft/network/syncher/SynchedEntityData.java
 +++ b/src/main/java/net/minecraft/network/syncher/SynchedEntityData.java
-@@ -267,7 +267,7 @@ public class SynchedEntityData {
+@@ -289,7 +289,7 @@ public class SynchedEntityData {
      // We need to pack all as we cannot rely on "non default values" or "dirty" ones.
      // Because these values can possibly be desynced on the client.
      @Nullable

@@ -216,10 +216,10 @@ index f7399737548483905f3b5c08a03876b0da54b714..e668de87a5b58febf451fe4be79e4714
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index c1583340ecaedab0af44501213b2d24f8ad71e0c..d6f2d56e15298ca9161f6b6e1384da0b07518616 100644
+index 9b9a9606e5be94b394606f2306e7b7a5ed781e1d..153c5e5c766022bd43b8a9204ecbc31f6915f09e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -2010,4 +2010,42 @@ public class CraftEventFactory {
+@@ -2070,4 +2070,42 @@ public class CraftEventFactory {
          return event;
      }
      // Paper end - add EntityFertilizeEggEvent
