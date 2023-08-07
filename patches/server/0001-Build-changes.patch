@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index fb98936bb8a5488db75d676c5bcb4060597fbbf8..8da130b40b6994c9256f6abd6bce0d9bde469d4f 100644
+index fb98936bb8a5488db75d676c5bcb4060597fbbf8..55e8753d31f371c016cae67e8d5eee002293ac12 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -1,4 +1,5 @@
@@ -14,7 +14,7 @@ index fb98936bb8a5488db75d676c5bcb4060597fbbf8..8da130b40b6994c9256f6abd6bce0d9b
  
  plugins {
      java
-@@ -13,8 +14,10 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
+@@ -13,8 +14,12 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
  val alsoShade: Configuration by configurations.creating
  
  dependencies {
@@ -22,12 +22,14 @@ index fb98936bb8a5488db75d676c5bcb4060597fbbf8..8da130b40b6994c9256f6abd6bce0d9b
 -    implementation(project(":paper-mojangapi"))
 +    // Parchment start
 +    implementation(project(":parchment-api"))
-+    implementation("io.papermc.paper:paper-mojangapi:${project.version}")
++    implementation("io.papermc.paper:paper-mojangapi:${project.version}") {
++        exclude("io.papermc.paper", "paper-api")
++    }
 +    // Parchment end
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -72,7 +75,7 @@ tasks.jar {
+@@ -72,7 +77,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -36,7 +38,7 @@ index fb98936bb8a5488db75d676c5bcb4060597fbbf8..8da130b40b6994c9256f6abd6bce0d9b
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -94,7 +97,27 @@ tasks.compileJava {
+@@ -94,7 +99,27 @@ tasks.compileJava {
  
  publishing {
      publications.create<MavenPublication>("maven") {
@@ -65,7 +67,7 @@ index fb98936bb8a5488db75d676c5bcb4060597fbbf8..8da130b40b6994c9256f6abd6bce0d9b
      }
  }
  
-@@ -149,7 +172,7 @@ fun TaskContainer.registerRunTask(
+@@ -149,7 +174,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
