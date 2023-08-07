@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index fb98936bb8a5488db75d676c5bcb4060597fbbf8..bd8ba07bdf9a07245ec3ed8ebaf97b7bc13bac30 100644
+index fb98936bb8a5488db75d676c5bcb4060597fbbf8..8da130b40b6994c9256f6abd6bce0d9bde469d4f 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -1,4 +1,5 @@
@@ -14,7 +14,7 @@ index fb98936bb8a5488db75d676c5bcb4060597fbbf8..bd8ba07bdf9a07245ec3ed8ebaf97b7b
  
  plugins {
      java
-@@ -13,8 +14,11 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
+@@ -13,8 +14,10 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
  val alsoShade: Configuration by configurations.creating
  
  dependencies {
@@ -23,12 +23,11 @@ index fb98936bb8a5488db75d676c5bcb4060597fbbf8..bd8ba07bdf9a07245ec3ed8ebaf97b7b
 +    // Parchment start
 +    implementation(project(":parchment-api"))
 +    implementation("io.papermc.paper:paper-mojangapi:${project.version}")
-+    vanillaServer("gg.projecteden:eden-interfaces:$edenVersion")
 +    // Parchment end
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -72,7 +76,7 @@ tasks.jar {
+@@ -72,7 +75,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -37,7 +36,7 @@ index fb98936bb8a5488db75d676c5bcb4060597fbbf8..bd8ba07bdf9a07245ec3ed8ebaf97b7b
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -94,7 +98,27 @@ tasks.compileJava {
+@@ -94,7 +97,27 @@ tasks.compileJava {
  
  publishing {
      publications.create<MavenPublication>("maven") {
@@ -66,7 +65,7 @@ index fb98936bb8a5488db75d676c5bcb4060597fbbf8..bd8ba07bdf9a07245ec3ed8ebaf97b7b
      }
  }
  
-@@ -149,7 +173,7 @@ fun TaskContainer.registerRunTask(
+@@ -149,7 +172,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
