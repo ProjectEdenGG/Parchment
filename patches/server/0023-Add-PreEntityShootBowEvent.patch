@@ -132,10 +132,10 @@ index 08d597db1a5345a343777a01427655e6bf2c926b..b923ea037a69628309167d16cc2a0ae7
                              entityarrow.setCritArrow(true);
                          }
 diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-index a433910fb4d0bd8d7b6b0d66c8fc88d62a0e4879..88d1f21fe361d3c37e6324281183c487d5299d51 100644
+index eede02c3f125d230af537bb67bebed9b88f7d1b4..343c634b97f3ff5e8eda008121a661423a1810aa 100644
 --- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
 +++ b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-@@ -229,6 +229,11 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {
+@@ -225,6 +225,11 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {
  
      private static void shootProjectile(Level world, LivingEntity shooter, InteractionHand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
          if (!world.isClientSide) {

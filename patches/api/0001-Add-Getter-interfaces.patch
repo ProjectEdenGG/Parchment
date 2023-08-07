@@ -452,10 +452,10 @@ index 1bfe465b9aaeea7d3c871140145b7de1b8f1d93d..babaefd2441b3b3e3b11ac1db6e5dc95
 +    // Parchment end
  }
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index 08ae501e97ae2a3f22b1994c9616fc7134cfc0c3..ad2c66f425546c6527417b2c5bc4a8d13e86c566 100644
+index 9b84cb5abdf3db55cbc7ba19c8cd6955bf4fc5ec..c1410e5d4ec281f6712ab695e57b84757ca0ec82 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
-@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
   * player that is stored on the disk and can, thus, be retrieved without the
   * player needing to be online.
   */
@@ -464,7 +464,7 @@ index 08ae501e97ae2a3f22b1994c9616fc7134cfc0c3..ad2c66f425546c6527417b2c5bc4a8d1
  
      /**
       * Checks if this player is currently online
-@@ -160,6 +160,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
+@@ -190,6 +190,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
      @Nullable
      public Player getPlayer();
  
@@ -604,10 +604,10 @@ index 8b0d04d5b39ee817555a36adddc39b18fc6f0d02..1c87047de615a85ee20297295478770e
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 06b2b925de745850816d9ce0cf6316412c8d2b49..e688bc7290ad9da43b8ac05ce006851536867e4d 100644
+index 14c92390aeaeee518f43778ccd5fc820fdc62689..aa99410a0bee71e68da90b596134632f3a6364fe 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -49,7 +49,17 @@ import org.jetbrains.annotations.Nullable;
+@@ -51,7 +51,17 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */
@@ -877,12 +877,12 @@ index 020739697a0b535cad0b15b574f77cdabbdfa3eb..ee4fd41e66852d5d2c62222c7b884473
      private final Material itemType;
      private final int itemAmount;
 diff --git a/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java b/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java
-index 21ad8888c0e403bfc63518502577d651c02dda05..1c59335a8f0a40162190f6fb73ffbfef0cd795d8 100644
+index 4db0a07db156c61867644f50c185e63b695e2462..eb6632e2e9d247bd54e02e3a134dfdbed9aeef39 100644
 --- a/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java
 +++ b/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java
-@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
- /**
-  * Represents a player related inventory event
+@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
+  * on the next tick. Also be aware that this is not an exhaustive list, and
+  * other methods could potentially create issues as well.
   */
 -public class InventoryCloseEvent extends InventoryEvent {
 +public class InventoryCloseEvent extends InventoryEvent implements gg.projecteden.parchment.HasHumanEntity { // Parchment

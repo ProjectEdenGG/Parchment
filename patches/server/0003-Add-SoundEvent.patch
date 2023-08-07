@@ -137,7 +137,7 @@ index 18aac3da3c88f33b1a71a5920a8daa27e9723913..1727c741664b981311b69fadc849ac6d
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 9d46536f80b5b3e6641fd377c02166a431edfd77..2abe06cb5de5ac63c31c1a120a3239aca07557f8 100644
+index dc5fda83a66afbfeb7897fc20b4742899d8aca08..6a5c781cf14521659426cf30bd1c46cd65814df4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2328,7 +2328,20 @@ public class ServerPlayer extends Player {
@@ -163,7 +163,7 @@ index 9d46536f80b5b3e6641fd377c02166a431edfd77..2abe06cb5de5ac63c31c1a120a3239ac
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index fff7ad7a45f310783ac96b44575ad3db13d537fa..5bb09632231293bd3551cac7988651657e2b3783 100644
+index 640e9bd618dc8286933318744c2064ede1fd9b5f..38eae743afa3c517c59bb1df83b1871d06165dbc 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -947,7 +947,7 @@ public abstract class PlayerList {
@@ -216,10 +216,10 @@ index f7399737548483905f3b5c08a03876b0da54b714..e668de87a5b58febf451fe4be79e4714
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 9b9a9606e5be94b394606f2306e7b7a5ed781e1d..153c5e5c766022bd43b8a9204ecbc31f6915f09e 100644
+index 26e1a9002d675245d4cf91e6682605314b078fb2..9d5b1851f719cb51a64f7aa904268867f1855d72 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -2070,4 +2070,42 @@ public class CraftEventFactory {
+@@ -2106,4 +2106,42 @@ public class CraftEventFactory {
          return event;
      }
      // Paper end - add EntityFertilizeEggEvent

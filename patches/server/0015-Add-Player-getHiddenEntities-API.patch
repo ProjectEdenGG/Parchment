@@ -5,10 +5,10 @@ Subject: [PATCH] Add Player#getHiddenEntities API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index dbdeb913e228651cadf5dbd7ec98afc738c80522..64862c4bd3ec5a1ca45da6cd491c7935b850947c 100644
+index 5bbded65095dccfadaf7576fc41b5f62974878b4..ece3637304863c8441c153e06ea9934cc91ff961 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1940,6 +1940,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1972,6 +1972,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          server.getPluginManager().callEvent(new PlayerShowEntityEvent(this, entity)); // Paper
      }
      // Paper start
