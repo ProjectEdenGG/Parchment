@@ -1,5 +1,4 @@
 import io.papermc.paperweight.util.constants.*
-val edenVersion: String by project
 
 plugins {
     java
@@ -48,10 +47,6 @@ subprojects {
         mavenCentral()
         maven("https://papermc.io/repo/repository/maven-public/")
         maven("https://sonatype.projecteden.gg/repository/maven-public/")
-    }
-
-    dependencies {
-        implementation("gg.projecteden:eden-interfaces:$edenVersion")
     }
 }
 

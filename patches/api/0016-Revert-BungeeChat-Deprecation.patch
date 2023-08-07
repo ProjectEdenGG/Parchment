@@ -5,10 +5,10 @@ Subject: [PATCH] Revert BungeeChat Deprecation
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 149f9088fe806467656e8b1c4157df60fda69ba7..ec34a20389fcf09904830f9778b2f429030dc197 100644
+index d9f93515f92e35ad27f20ead90952b5ecee86661..4f9582d14c27ab4f8c9e87a26d305988e9edbb61 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -29,7 +29,7 @@ dependencies {
+@@ -30,7 +30,7 @@ dependencies {
      // api dependencies are listed transitively to API consumers
      api("com.google.guava:guava:31.1-jre")
      api("com.google.code.gson:gson:2.10")
@@ -17,7 +17,7 @@ index 149f9088fe806467656e8b1c4157df60fda69ba7..ec34a20389fcf09904830f9778b2f429
      api("org.yaml:snakeyaml:2.0")
      api("org.joml:joml:1.10.5")
      // Paper start
-@@ -110,7 +110,7 @@ tasks.withType<Javadoc> {
+@@ -112,7 +112,7 @@ tasks.withType<Javadoc> {
          "https://javadoc.io/doc/org.yaml/snakeyaml/2.0/",
          "https://javadoc.io/doc/org.jetbrains/annotations/$annotationsVersion/", // Paper - we don't want Java 5 annotations
          // Paper start
