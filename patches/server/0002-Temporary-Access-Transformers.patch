@@ -4,8 +4,25 @@ Date: Sat, 19 Jun 2021 18:03:59 -0400
 Subject: [PATCH] Temporary Access Transformers
 
 
+diff --git a/src/main/java/net/minecraft/core/Holder.java b/src/main/java/net/minecraft/core/Holder.java
+index 996e1a8485ae3c6a698d846f8cbe9add51a4be03..312ccb54046fbf7b5f7a0103721cf7878700e895 100644
+--- a/src/main/java/net/minecraft/core/Holder.java
++++ b/src/main/java/net/minecraft/core/Holder.java
+@@ -126,6 +126,12 @@ public interface Holder<T> {
+             return new Holder.Reference<>(Holder.Reference.Type.INTRUSIVE, owner, (ResourceKey<T>)null, value);
+         }
+ 
++        // Parchment start
++        public static <T> Holder.Reference<T> create(HolderOwner<T> owner, @Nullable ResourceKey<T> registryKey, @Nullable T value) {
++            return new Holder.Reference<>(Holder.Reference.Type.STAND_ALONE, owner, registryKey, value);
++        }
++        // Parchment end
++
+         public ResourceKey<T> key() {
+             if (this.key == null) {
+                 throw new IllegalStateException("Trying to access unbound value '" + this.value + "' from registry " + this.owner);
 diff --git a/src/main/java/net/minecraft/world/item/BlockItem.java b/src/main/java/net/minecraft/world/item/BlockItem.java
-index b0204af850ee182773ad458208cccd946ad148d5..92980f04bc1bac9924907007eb63fd04eba3875c 100644
+index ebee8de2ed831755b6fd154f6cc77ac993839bb9..0bf4ef77bd61f6d28faf497f5bd0ceecd8663daf 100644
 --- a/src/main/java/net/minecraft/world/item/BlockItem.java
 +++ b/src/main/java/net/minecraft/world/item/BlockItem.java
 @@ -207,7 +207,7 @@ public class BlockItem extends Item {

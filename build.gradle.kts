@@ -3,8 +3,8 @@ import io.papermc.paperweight.util.constants.*
 plugins {
     java
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "8.1.0" apply false
-    id("io.papermc.paperweight.patcher") version "1.5.3"
+    id("com.github.johnrengelman.shadow") version "8.1.1" apply false
+    id("io.papermc.paperweight.patcher") version "1.5.5"
 }
 
 repositories {
@@ -17,7 +17,7 @@ repositories {
 dependencies {
     remapper("net.fabricmc:tiny-remapper:0.8.6:fat")
     decompiler("net.minecraftforge:forgeflower:2.0.627.2")
-    paperclip("io.papermc:paperclip:3.0.2")
+    paperclip("io.papermc:paperclip:3.0.3")
 }
 
 allprojects {
@@ -47,10 +47,6 @@ subprojects {
         mavenCentral()
         maven("https://papermc.io/repo/repository/maven-public/")
         maven("https://sonatype.projecteden.gg/repository/maven-public/")
-    }
-
-    dependencies {
-        implementation("gg.projecteden:eden-interfaces:2.1.0-SNAPSHOT")
     }
 }
 

@@ -5,22 +5,21 @@ Subject: [PATCH] Add PlayerUseRespawnAnchorEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-index bcea8af63b9911c36873290e5c34567b1eeaacf4..a630bba5d7b8e5e18346cd2b8cc5d6dbc66c8a53 100644
+index 2ed78cf83c0ae66a6ddba1ff307da89a24b0d0a8..e9f80170f85906c70898c7a04b9a16497a7d2994 100644
 --- a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-@@ -52,23 +52,46 @@ public class RespawnAnchorBlock extends Block {
-     @Override
+@@ -58,23 +58,45 @@ public class RespawnAnchorBlock extends Block {
      public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-         ItemStack itemStack = player.getItemInHand(hand);
-+
+         ItemStack itemstack = player.getItemInHand(hand);
+ 
 +        // Parchment start -- PlayerUseRespawnAnchorEvent
 +        org.bukkit.entity.Player bukkitPlayer = player.getBukkitEntity() instanceof org.bukkit.entity.Player ? (org.bukkit.entity.Player) player.getBukkitEntity() : null;
 +        org.bukkit.block.Block block = org.bukkit.craftbukkit.block.CraftBlock.at(world, pos);
 +        gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult result;
 +        // Parchment end
-         if (hand == InteractionHand.MAIN_HAND && !isRespawnFuel(itemStack) && isRespawnFuel(player.getItemInHand(InteractionHand.OFF_HAND))) {
+         if (hand == InteractionHand.MAIN_HAND && !RespawnAnchorBlock.isRespawnFuel(itemstack) && RespawnAnchorBlock.isRespawnFuel(player.getItemInHand(InteractionHand.OFF_HAND))) {
              return InteractionResult.PASS;
-         } else if (isRespawnFuel(itemStack) && canBeCharged(state)) {
+         } else if (RespawnAnchorBlock.isRespawnFuel(itemstack) && RespawnAnchorBlock.canBeCharged(state)) {
 +            // Parchment start -- PlayerUseRespawnAnchorEvent
 +            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE;
 +        } else if (state.getValue(CHARGE) == 0) {
@@ -41,25 +40,25 @@ index bcea8af63b9911c36873290e5c34567b1eeaacf4..a630bba5d7b8e5e18346cd2b8cc5d6db
 +            return InteractionResult.PASS;
 +        } else if (result == gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE) {
 +            // Parchment end
-             charge(player, world, pos, state);
+             RespawnAnchorBlock.charge(player, world, pos, state);
              if (!player.getAbilities().instabuild) {
-                 itemStack.shrink(1);
+                 itemstack.shrink(1);
              }
  
              return InteractionResult.sidedSuccess(world.isClientSide);
--        } else if (state.getValue(CHARGE) == 0) {
+-        } else if ((Integer) state.getValue(RespawnAnchorBlock.CHARGE) == 0) {
 -            return InteractionResult.PASS;
--        } else if (!canSetSpawn(world)) {
+-        } else if (!RespawnAnchorBlock.canSetSpawn(world)) {
 -            if (!world.isClientSide) {
 -                this.explode(state, world, pos);
 -            }
 -
 -            return InteractionResult.sidedSuccess(world.isClientSide);
-+        // Parchment start -- PlayerUseRespawnAnchorEvent
++            // Parchment start -- PlayerUseRespawnAnchorEvent
 +        } else if (result == gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE) {
 +            this.explode(state, world, pos);
 +            return InteractionResult.CONSUME;
 +            // Parchment end
          } else {
              if (!world.isClientSide) {
-                 ServerPlayer serverPlayer = (ServerPlayer)player;
+                 ServerPlayer entityplayer = (ServerPlayer) player;

@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Lexi Larkin <lexi@qixils.dev>
+Date: Sun, 6 Aug 2023 22:01:19 -0400
+Subject: [PATCH] Build changes
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 149f9088fe806467656e8b1c4157df60fda69ba7..d9f93515f92e35ad27f20ead90952b5ecee86661 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -19,6 +19,7 @@ val apiAndDocs: Configuration by configurations.creating {
+         attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+     }
+ }
++val edenVersion: String by project // Parchment
+ configurations.api {
+     extendsFrom(apiAndDocs)
+ }
+@@ -46,6 +47,7 @@ dependencies {
+     apiAndDocs("net.kyori:adventure-text-logger-slf4j")
+     api("org.apache.logging.log4j:log4j-api:$log4jVersion")
+     api("org.slf4j:slf4j-api:$slf4jVersion")
++    api("gg.projecteden:eden-interfaces:$edenVersion") // Parchment
+ 
+     implementation("org.ow2.asm:asm:9.4")
+     implementation("org.ow2.asm:asm-commons:9.4")

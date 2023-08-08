@@ -9,7 +9,7 @@ Will eventually (hopefully) be replaced by a more extensive Paper PR with suppor
 
 diff --git a/src/main/java/gg/projecteden/parchment/inventory/RecipeType.java b/src/main/java/gg/projecteden/parchment/inventory/RecipeType.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..28c01caa9d6379046f6af6612719b40459a89d17
+index 0000000000000000000000000000000000000000..ea17d99c7a1d70d88e2c439399cdb376b9dedf47
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/inventory/RecipeType.java
 @@ -0,0 +1,50 @@
@@ -24,15 +24,15 @@ index 0000000000000000000000000000000000000000..28c01caa9d6379046f6af6612719b404
 +     */
 +    CRAFTING(false),
 +    /**
-+     * Recipes for smelting an item inside of a furnace.
++     * Recipes for smelting an item inside a furnace.
 +     */
 +    SMELTING(true),
 +    /**
-+     * Recipes for smelting an item inside of a blasting furnace.
++     * Recipes for smelting an item inside a blasting furnace.
 +     */
 +    BLASTING(true),
 +    /**
-+     * Recipes for smelting an item inside of a smoker.
++     * Recipes for smelting an item inside a smoker.
 +     */
 +    SMOKING(true),
 +    /**
@@ -64,12 +64,12 @@ index 0000000000000000000000000000000000000000..28c01caa9d6379046f6af6612719b404
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index aa04d7df70d99402c91e920fd693d7d4fb655786..6bb7341460eab62e83918d3b47fe89302027e9fe 100644
+index 6917931966377c51db88a3364997a110dd987970..9be68828aaecba89444e745e2d4126557c02868d 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -4010,6 +4010,36 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
-     @Nullable
-     public DragonBattle getEnderDragonBattle();
+@@ -49,6 +49,36 @@ import org.jetbrains.annotations.Nullable;
+  */
+ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient, Metadatable, PersistentDataHolder, Keyed, net.kyori.adventure.audience.ForwardingAudience { // Paper
  
 +    // Parchment start
 +    /**
@@ -101,6 +101,6 @@ index aa04d7df70d99402c91e920fd693d7d4fb655786..6bb7341460eab62e83918d3b47fe8930
 +    ItemStack smeltItem(@NotNull ItemStack toSmelt, gg.projecteden.parchment.inventory.@NotNull RecipeType recipeType);
 +    // Parchment end
 +
+     // Paper start
      /**
-      * Represents various map environment types that a world may be
-      */
+      * @return The amount of Entities in this world

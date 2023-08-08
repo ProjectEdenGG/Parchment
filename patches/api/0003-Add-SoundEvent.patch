@@ -6,12 +6,13 @@ Subject: [PATCH] Add SoundEvent
 
 diff --git a/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e612cecc89b060a9c0fc882754e45c0409febb9d
+index 0000000000000000000000000000000000000000..14fa1d766f49eed2907214fc536222bae9167a85
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/sound/SoundEvent.java
-@@ -0,0 +1,382 @@
+@@ -0,0 +1,359 @@
 +package gg.projecteden.parchment.event.sound;
 +
++import gg.projecteden.parchment.HasLocation;
 +import gg.projecteden.parchment.OptionalHumanEntity;
 +import net.kyori.adventure.sound.Sound;
 +import org.bukkit.Location;
@@ -34,7 +35,7 @@ index 0000000000000000000000000000000000000000..e612cecc89b060a9c0fc882754e45c04
 + * Called when a sound is sent to a player.
 + * Cancelling this event will prevent the packet from sending.
 + */
-+public final class SoundEvent extends Event implements Cancellable, OptionalHumanEntity {
++public final class SoundEvent extends Event implements Cancellable {
 +    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(SoundEvent.class);
 +
 +    private static final org.bukkit.event.HandlerList handlers = new org.bukkit.event.HandlerList();
@@ -59,30 +60,16 @@ index 0000000000000000000000000000000000000000..e612cecc89b060a9c0fc882754e45c04
 +    private @NotNull Sound sound;
 +    private @NotNull Emitter emitter;
 +    private boolean cancelled;
-+    private long seed;
 +    private @Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Sound> soundOverrideFunction;
 +    private @Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Emitter> emitterOverrideFunction;
 +
-+    public SoundEvent(@Nullable HumanEntity except, @NotNull Sound sound, @NotNull Emitter emitter, long seed, @Nullable Function<Sound, Double> distanceFunction, @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
++    public SoundEvent(@Nullable HumanEntity except, @NotNull Sound sound, @NotNull Emitter emitter, @Nullable Function<Sound, Double> distanceFunction, @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
 +        super(true);
 +        this.except = except;
 +        this.sound = Objects.requireNonNull(sound, "sound cannot be null");
 +        this.emitter = Objects.requireNonNull(emitter, "emitter cannot be null");
-+        this.seed = seed;
 +        this.distanceFunction = Objects.requireNonNullElse(distanceFunction, DEFAULT_DISTANCE_FUNCTION);
 +        this.recipientsFunction = wrapRecipientsFunction(Objects.requireNonNullElse(recipientsFunction, DEFAULT_RECIPIENTS_FUNCTION));
-+    }
-+
-+    /**
-+     * Gets the player that <b>won't</b> be receiving this sound.
-+     *
-+     * @return player excluded from receiving this sound
-+     * @deprecated use {@link #getException()} for more clarity
-+     */
-+    @Override
-+    @Deprecated
-+    public @Nullable HumanEntity getPlayer() {
-+        return getException();
 +    }
 +
 +    /**
@@ -137,24 +124,6 @@ index 0000000000000000000000000000000000000000..e612cecc89b060a9c0fc882754e45c04
 +     */
 +    public void setEmitter(@NotNull Emitter emitter) {
 +        this.emitter = Objects.requireNonNull(emitter, "emitter cannot be null");
-+    }
-+
-+    /**
-+     * Gets the seed used to generate the sound.
-+     *
-+     * @return seed used to generate the sound
-+     */
-+    public long getSeed() {
-+        return seed;
-+    }
-+
-+    /**
-+     * Sets the seed used to generate the sound.
-+     *
-+     * @param seed seed used to generate the sound
-+     */
-+    public void setSeed(long seed) {
-+        this.seed = seed;
 +    }
 +
 +    /**
@@ -336,7 +305,7 @@ index 0000000000000000000000000000000000000000..e612cecc89b060a9c0fc882754e45c04
 +
 +    private record WrappedRecipientsFunction(@NotNull Function<SoundEvent, List<Player>> wrapped) implements Function<SoundEvent, List<Player>> {
 +        @Override
-+        public List<Player> apply(SoundEvent event) {
++        public @NotNull List<Player> apply(@NotNull SoundEvent event) {
 +            List<Player> recipients = wrapped.apply(event);
 +            HumanEntity except = event.getException();
 +            if (except != null) {
@@ -362,14 +331,18 @@ index 0000000000000000000000000000000000000000..e612cecc89b060a9c0fc882754e45c04
 +    /**
 +     * The class which determines where a sound will emit from.
 +     */
-+    public sealed interface Emitter permits EntityEmitter, LocationEmitter {
++    public sealed interface Emitter extends HasLocation permits EntityEmitter, LocationEmitter {
 +        /**
 +         * Gets the location at which the sound will be played.
 +         *
 +         * @return sound's location
++         * @deprecated use {@link #getLocation()} instead
 +         */
 +        @NotNull
-+        Location location();
++        @Deprecated
++        default Location location() {
++            return getLocation();
++        }
 +    }
 +
 +    /**
@@ -379,7 +352,7 @@ index 0000000000000000000000000000000000000000..e612cecc89b060a9c0fc882754e45c04
 +     */
 +    public record EntityEmitter(@NotNull Entity entity) implements Emitter {
 +        @Override
-+        public @NotNull Location location() {
++        public @NotNull Location getLocation() {
 +            return entity.getLocation();
 +        }
 +    }
@@ -390,5 +363,9 @@ index 0000000000000000000000000000000000000000..e612cecc89b060a9c0fc882754e45c04
 +     * @param location the location from which the sound will be played
 +     */
 +    public record LocationEmitter(@NotNull Location location) implements Emitter {
++        @Override
++        public @NotNull Location getLocation() {
++            return location;
++        }
 +    }
 +}

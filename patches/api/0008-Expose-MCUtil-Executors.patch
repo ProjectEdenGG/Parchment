@@ -5,14 +5,13 @@ Subject: [PATCH] Expose MCUtil Executors
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 2204336d8800311b65e894739ab1b27273e7c6f2..2c35578c85be5f47c2b2a11f1df16db51e31cc41 100644
+index 68206cf0178c26c0f528a1e14a5fb4e9ad410369..24fa398cc02f803fbb3222082130bf0b7bdd391f 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2139,4 +2139,20 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
-      */
-     @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
-     // Paper end
-+
+@@ -2053,6 +2053,22 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     @NotNull
+     UnsafeValues getUnsafe();
+ 
 +    // Parchment start
 +    /**
 +     * Gets the executor which runs tasks on an asynchronous thread pool.
@@ -28,4 +27,7 @@ index 2204336d8800311b65e894739ab1b27273e7c6f2..2c35578c85be5f47c2b2a11f1df16db5
 +    @NotNull
 +    java.util.concurrent.Executor getMainExecutor();
 +    // Parchment end
- }
++
+     // Spigot start
+     public class Spigot {
+ 
