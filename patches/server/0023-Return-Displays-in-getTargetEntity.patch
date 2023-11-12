@@ -5,10 +5,10 @@ Subject: [PATCH] Return Displays in getTargetEntity
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index e11d7283662834047b2ff81a2fd25a4263792deb..e170773b922c4b3970d0914f5e8cf26d419c0ffd 100644
+index a76eb3d051db0229ed088b71c92ff3f131449007..4fa9da4b9bdda2e826a73145cf8fd49e461518fd 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -4036,7 +4036,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -4097,7 +4097,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
          Vec3 direction = this.getLookAngle();
          Vec3 end = start.add(direction.x * maxDistance, direction.y * maxDistance, direction.z * maxDistance);
  

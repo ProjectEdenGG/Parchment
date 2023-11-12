@@ -5,10 +5,10 @@ Subject: [PATCH] Add origin location to EntityDamageByBlockEvent
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 9d5b1851f719cb51a64f7aa904268867f1855d72..e2012fd752c3a5dcf604d7892bf3e01c354ce275 100644
+index 7f0c6e9d8ffb1126ac8dbf8c8c8c8888b5f2506c..fdbff121810d46cd6896558863cc6317586abca5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1021,7 +1021,7 @@ public class CraftEventFactory {
+@@ -1051,7 +1051,7 @@ public class CraftEventFactory {
              CraftEventFactory.entityDamage = null;
              EntityDamageEvent event;
              if (damager == null) {
@@ -17,7 +17,7 @@ index 9d5b1851f719cb51a64f7aa904268867f1855d72..e2012fd752c3a5dcf604d7892bf3e01c
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
-@@ -1069,7 +1069,7 @@ public class CraftEventFactory {
+@@ -1099,7 +1099,7 @@ public class CraftEventFactory {
  
              return CraftEventFactory.callEntityDamageEvent(damager, entity, cause, modifiers, modifierFunctions, cancelled, source.isCritical()); // Paper - add critical damage API
          } else if (source.is(DamageTypes.FELL_OUT_OF_WORLD)) {
@@ -26,7 +26,7 @@ index 9d5b1851f719cb51a64f7aa904268867f1855d72..e2012fd752c3a5dcf604d7892bf3e01c
              event.setCancelled(cancelled);
              CraftEventFactory.callEvent(event);
              if (!event.isCancelled()) {
-@@ -1079,7 +1079,7 @@ public class CraftEventFactory {
+@@ -1109,7 +1109,7 @@ public class CraftEventFactory {
              }
              return event;
          } else if (source.is(DamageTypes.LAVA)) {

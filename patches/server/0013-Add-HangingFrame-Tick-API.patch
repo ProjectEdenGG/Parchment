@@ -26,12 +26,12 @@ index 66cf0a6cd1525ecf2615809210a26d55f445d07d..360ca6458083fa4018f11fcdade3ce93
              if (this.checkInterval++ == this.level().spigotConfig.hangingTickFrequency) { // Spigot
                  this.checkInterval = 0;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
-index 62e11bf104b8d39ac73883e2a5d207e5f7393253..639bd33ae91ed818bda29fed776adb8c169458d7 100644
+index cbdcf767c01e2c173913f56747d2dacbda2f0094..a74f783df0225223a2b2ae3dc632541ccf078893 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
-@@ -72,4 +72,16 @@ public class CraftHanging extends CraftEntity implements Hanging {
-     public EntityType getType() {
-         return EntityType.UNKNOWN;
+@@ -66,4 +66,16 @@ public class CraftHanging extends CraftEntity implements Hanging {
+     public String toString() {
+         return "CraftHanging";
      }
 +
 +    // Parchment start

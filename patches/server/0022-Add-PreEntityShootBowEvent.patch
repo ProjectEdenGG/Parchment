@@ -5,7 +5,7 @@ Subject: [PATCH] Add PreEntityShootBowEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index 9ca1e9d95e62929c0015d5ca2c2f9c70e421842e..36c55a63cc44724e377d8505321bca75bb4b2cea 100644
+index b319021b22c5dceba6199ed27814b2dcf47b8d50..d12a49f9eb0110d4d889f15863ecb88c07a848b9 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -199,13 +199,17 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -51,7 +51,7 @@ index 63fce7e3d9f59f36e29bc827a46396d73143bb8b..9762a79c928d7235a7868b37858474e1
          org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getMainHandItem(), entityarrow.getPickupItem(), entityarrow, target.getUsedItemHand(), 0.8F, true);
          if (event.isCancelled()) {
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
-index 7226be19248a1ffb8ff2c89b55882529d33a6c0c..d960c55a28222066b6898d85d9588c8a1f0f9cc1 100644
+index 6c176933967f6ee98da3026f16a10efe4c3842fe..fa0608f40bb83694d2a6d413c4b66e760c9db985 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
 @@ -129,8 +129,10 @@ public abstract class AbstractArrow extends Projectile {
@@ -68,10 +68,10 @@ index 7226be19248a1ffb8ff2c89b55882529d33a6c0c..d960c55a28222066b6898d85d9588c8a
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 1b7cf6d06bdf36f146656727511a461f2520762e..8389b75b7534eedebe97dd975729039678b64c1e 100644
+index a90317100d32974e481e14476843f66997a2cf3a..f65c29dd02b31431e085074dd6460eca17214471 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-@@ -157,9 +157,17 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+@@ -164,9 +164,17 @@ public abstract class Projectile extends Entity implements TraceableEntity {
      }
  
      public void shoot(double x, double y, double z, float speed, float divergence) {
@@ -89,7 +89,7 @@ index 1b7cf6d06bdf36f146656727511a461f2520762e..8389b75b7534eedebe97dd9757290396
          double d3 = vec3d.horizontalDistance();
  
          this.setYRot((float) (Mth.atan2(vec3d.x, vec3d.z) * 57.2957763671875D));
-@@ -169,6 +177,12 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+@@ -176,6 +184,12 @@ public abstract class Projectile extends Entity implements TraceableEntity {
      }
  
      public void shootFromRotation(Entity shooter, float pitch, float yaw, float roll, float speed, float divergence) {
@@ -102,7 +102,7 @@ index 1b7cf6d06bdf36f146656727511a461f2520762e..8389b75b7534eedebe97dd9757290396
          float f5 = -Mth.sin(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
          float f6 = -Mth.sin((pitch + roll) * 0.017453292F);
          float f7 = Mth.cos(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
-@@ -176,7 +190,9 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+@@ -183,7 +197,9 @@ public abstract class Projectile extends Entity implements TraceableEntity {
          this.shoot((double) f5, (double) f6, (double) f7, speed, divergence);
          Vec3 vec3d = shooter.getDeltaMovement();
  

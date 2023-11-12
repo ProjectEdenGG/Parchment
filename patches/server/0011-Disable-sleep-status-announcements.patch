@@ -5,10 +5,10 @@ Subject: [PATCH] Disable sleep status announcements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 1727c741664b981311b69fadc849ac6de5423a6a..417f8621b80702f1b64aa618b279a606a3a3b7f9 100644
+index c900dcd24fbbabf2bfc0e42015478b8af61c6b9d..2dbfff6a36591c9c8e9dbdb217da7e470a8e5bc5 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1116,7 +1116,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1150,7 +1150,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
      }
  
      private void announceSleepStatus() {

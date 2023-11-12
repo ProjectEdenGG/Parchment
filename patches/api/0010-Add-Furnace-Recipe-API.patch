@@ -64,10 +64,10 @@ index 0000000000000000000000000000000000000000..ea17d99c7a1d70d88e2c439399cdb376
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 6917931966377c51db88a3364997a110dd987970..9be68828aaecba89444e745e2d4126557c02868d 100644
+index 5eb3521f5f91b0684b4beebf4f7ba2c795b41c42..c8a3e139fd462a184fac9ff472048451372229de 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -49,6 +49,36 @@ import org.jetbrains.annotations.Nullable;
+@@ -50,6 +50,36 @@ import org.jetbrains.annotations.Nullable;
   */
  public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient, Metadatable, PersistentDataHolder, Keyed, net.kyori.adventure.audience.ForwardingAudience { // Paper
  

@@ -427,7 +427,7 @@ index 12163a7b0591a7d022dc7eb9ee6608a1b6c39d9b..d81c7307127b135417e06a3b244416be
      private static final HandlerList handlers = new HandlerList();
      private final Player player;
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index 1bfe465b9aaeea7d3c871140145b7de1b8f1d93d..babaefd2441b3b3e3b11ac1db6e5dc95eca40f64 100644
+index 13f221dd4e332db01195eb0c92ef9f26a17eb6d6..e6ff56f03a7523508db16f1d6298074f681326d8 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
@@ -439,7 +439,7 @@ index 1bfe465b9aaeea7d3c871140145b7de1b8f1d93d..babaefd2441b3b3e3b11ac1db6e5dc95
      private Reference<World> world;
      private double x;
      private double y;
-@@ -1200,4 +1200,11 @@ public class Location implements Cloneable, ConfigurationSerializable, io.paperm
+@@ -1205,4 +1205,11 @@ public class Location implements Cloneable, ConfigurationSerializable, io.paperm
          return new Location(world, this.x(), this.y(), this.z(), this.getYaw(), this.getPitch());
      }
      // Paper end
@@ -452,7 +452,7 @@ index 1bfe465b9aaeea7d3c871140145b7de1b8f1d93d..babaefd2441b3b3e3b11ac1db6e5dc95
 +    // Parchment end
  }
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index 9b84cb5abdf3db55cbc7ba19c8cd6955bf4fc5ec..c1410e5d4ec281f6712ab695e57b84757ca0ec82 100644
+index bce07d84cafca677bb6fad78c21b82097f06430c..3263419051207521c8c5b818714cde9a04b895e7 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
 @@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
@@ -464,7 +464,7 @@ index 9b84cb5abdf3db55cbc7ba19c8cd6955bf4fc5ec..c1410e5d4ec281f6712ab695e57b8475
  
      /**
       * Checks if this player is currently online
-@@ -190,6 +190,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
+@@ -206,6 +206,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
      @Nullable
      public Player getPlayer();
  
@@ -518,7 +518,7 @@ index d124768378d6f0c5573f28ee815ea3886fe74868..11a00998b1cb5ee582e225553f15b1b7
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 1c3f54382d66549dc881d4577c7104be6673a274..da7ac29bf25c38d8bdcccdf15122983b6f9b07eb 100644
+index 49974558799830d827f9ccd65a8bafee3fb0376b..0015bb89899e52d3c8f1ca68807ad7092e690305 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
@@ -531,10 +531,10 @@ index 1c3f54382d66549dc881d4577c7104be6673a274..da7ac29bf25c38d8bdcccdf15122983b
      /**
       * Gets the metadata for this block
 diff --git a/src/main/java/org/bukkit/block/BlockState.java b/src/main/java/org/bukkit/block/BlockState.java
-index 37ca7b6b0fcee8bec12026ec3715dcc47400cc11..eaf14ce470f041360082cbb0bc16247706b2cd77 100644
+index ef35316fa66ac8d9c7836b9c8af56dcefbf6ff2e..01e2c95bf52cfcffc51d354770fbda5f76540a28 100644
 --- a/src/main/java/org/bukkit/block/BlockState.java
 +++ b/src/main/java/org/bukkit/block/BlockState.java
-@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
   * change the state of the block and you will not know, or they may change the
   * block to another type entirely, causing your BlockState to become invalid.
   */
@@ -570,7 +570,7 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 6b842453589cf148ab32c1507cf374056826316e..0bd098a93d6fd3b41d736861c9c0f65f23f4fc62 100644
+index d340ddcf6924cc834455de3acbbac91ab9c66e39..d088493b4c58be67ca110b172506ab73de77599f 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
@@ -604,7 +604,7 @@ index 8b0d04d5b39ee817555a36adddc39b18fc6f0d02..1c87047de615a85ee20297295478770e
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 14c92390aeaeee518f43778ccd5fc820fdc62689..aa99410a0bee71e68da90b596134632f3a6364fe 100644
+index 9240ea09206461d61cc08d4252e8507555bf41cf..401a992f340ba441bf81ebf54108b0e5b0421def 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -51,7 +51,17 @@ import org.jetbrains.annotations.Nullable;
@@ -640,7 +640,7 @@ index 691733a642b3295bbe6d484be728c77cd32803bd..a2eae7a9bad13d1ba2bd954888a03738
      private boolean dropItems;
      private boolean cancel;
 diff --git a/src/main/java/org/bukkit/event/block/BlockCanBuildEvent.java b/src/main/java/org/bukkit/event/block/BlockCanBuildEvent.java
-index a1350c0f74d445dca09eea6e10abac050bb06990..11bb6f8f7363f31061d5fd0f2e4515099ac40649 100644
+index 08d09c2a92d8aa6adf6610cc05905d58a76fce1f..5105d8be50d3ebc75eb776f27679ece82317fe06 100644
 --- a/src/main/java/org/bukkit/event/block/BlockCanBuildEvent.java
 +++ b/src/main/java/org/bukkit/event/block/BlockCanBuildEvent.java
 @@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
@@ -653,7 +653,7 @@ index a1350c0f74d445dca09eea6e10abac050bb06990..11bb6f8f7363f31061d5fd0f2e451509
      protected boolean buildable;
  
 diff --git a/src/main/java/org/bukkit/event/block/BlockDamageEvent.java b/src/main/java/org/bukkit/event/block/BlockDamageEvent.java
-index cd04a0bd9d232857408b38605787016a217cb8d2..7035fe7c0f5adb981ac41804605c4fbcf57968bf 100644
+index 392cde07d578d684423e1bf369af28696eb7e484..e1dacc04c73e0cabcd04d50540f3a5716550e22f 100644
 --- a/src/main/java/org/bukkit/event/block/BlockDamageEvent.java
 +++ b/src/main/java/org/bukkit/event/block/BlockDamageEvent.java
 @@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
@@ -864,12 +864,12 @@ index cc5781f276ec0a503b1bfef19d630c85db897c2a..89b38f2ce9a355f39abc657eff49c3a5
      private boolean cancelled;
      private final Player player;
 diff --git a/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java b/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java
-index 020739697a0b535cad0b15b574f77cdabbdfa3eb..ee4fd41e66852d5d2c62222c7b884473d3f3001d 100644
+index a965b6a78073c5da86ad671752eff4a270029420..84cc90c085ae5ab788bcbc83bf1a0081be3b8186 100644
 --- a/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java
 +++ b/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java
-@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
- /**
-  * This event is called when a player takes items out of the furnace
+@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
+  * {@link org.bukkit.block.Furnace}, {@link org.bukkit.block.Smoker}, or
+  * {@link org.bukkit.block.BlastFurnace}.
   */
 -public class FurnaceExtractEvent extends BlockExpEvent {
 +public class FurnaceExtractEvent extends BlockExpEvent implements gg.projecteden.parchment.HasPlayer { // Parchment
@@ -890,7 +890,7 @@ index 4db0a07db156c61867644f50c185e63b695e2462..eb6632e2e9d247bd54e02e3a134dfdbe
      // Paper start
      private final Reason reason;
 diff --git a/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java b/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
-index ceae092eb782698803c6c3df41267dde20ba62b2..23e35e7e65bdf2e758dc8dc980b9427b7e4163a9 100644
+index 8e2afeab4c62724148e8bb0c83fb7eec569c7a0c..2843fd117151dc75c87db06915a6732277867a0c 100644
 --- a/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
 +++ b/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
 @@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
@@ -901,7 +901,7 @@ index ceae092eb782698803c6c3df41267dde20ba62b2..23e35e7e65bdf2e758dc8dc980b9427b
 +public class InventoryOpenEvent extends InventoryEvent implements Cancellable, gg.projecteden.parchment.HasHumanEntity { // Parchment
      private static final HandlerList handlers = new HandlerList();
      private boolean cancelled;
- 
+     private net.kyori.adventure.text.Component titleOverride; // Paper
 diff --git a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 index fc2d9e85b65347b90bde3b0b13ccae759e33d466..6b2e64fa9c0f3c0af88797d63557c333edf69a5d 100644
 --- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
@@ -1021,7 +1021,7 @@ index 0d519813c12d98b28d62e6d01d7ec6e8c2dba3c3..469b9cc0c4b77844ba0317af51bd9ad8
      /**
       * Returns the size of the inventory
 diff --git a/src/main/java/org/bukkit/inventory/InventoryView.java b/src/main/java/org/bukkit/inventory/InventoryView.java
-index 77a0cd901038405ed0e267f0432f13deccae3ab5..abe9b0d97d24e9e2ef1a61e34249895eb35b800f 100644
+index ac6c5c7a58c2c88b6cb0f6632fb53e8d67f8a059..464c69fd652db3384b1a4a5f4151933c3cd7df7b 100644
 --- a/src/main/java/org/bukkit/inventory/InventoryView.java
 +++ b/src/main/java/org/bukkit/inventory/InventoryView.java
 @@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;

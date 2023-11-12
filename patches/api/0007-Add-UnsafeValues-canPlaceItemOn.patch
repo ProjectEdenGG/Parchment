@@ -5,12 +5,12 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index c661eab343ae76488de701630424e2d589f44fc0..b0ba8331fa43f4584eac1b1d9f4c3cad9d47b872 100644
+index a4b38f284d4fea7df7f9df9bf44e4f68fefaf20f..df153e397f69a6a2f2487998efd444f26d1ff701 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -250,4 +250,17 @@ public interface UnsafeValues {
-      */
-     void setBiomeKey(RegionAccessor accessor, int x, int y, int z, NamespacedKey biomeKey);
+@@ -260,4 +260,17 @@ public interface UnsafeValues {
+ 
+     String getStatisticCriteriaKey(@NotNull org.bukkit.Statistic statistic);
      // Paper end
 +
 +    // Parchment start

@@ -84,10 +84,10 @@ index db54a9c32578defa02fa58dc694c96684a4885ac..6c2477f066f887557e89456994a49dda
          final ResourceLocation name = asVanilla(sound.name());
          final Optional<SoundEvent> soundEvent = BuiltInRegistries.SOUND_EVENT.getOptional(name);
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 18aac3da3c88f33b1a71a5920a8daa27e9723913..1727c741664b981311b69fadc849ac6de5423a6a 100644
+index 584a768f2ce1c98a1de7749060c47f21721f9055..c900dcd24fbbabf2bfc0e42015478b8af61c6b9d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1753,12 +1753,46 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1787,12 +1787,46 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
      @Override
      public void playSeededSound(@Nullable Player except, double x, double y, double z, Holder<SoundEvent> sound, SoundSource category, float volume, float pitch, long seed) {
@@ -137,10 +137,10 @@ index 18aac3da3c88f33b1a71a5920a8daa27e9723913..1727c741664b981311b69fadc849ac6d
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index dc5fda83a66afbfeb7897fc20b4742899d8aca08..6a5c781cf14521659426cf30bd1c46cd65814df4 100644
+index f71a4a8307fb092d33545e12d253e0b80c884168..50dc222a2ebd08fe6ef2d45a6b16801a096f8681 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2328,7 +2328,20 @@ public class ServerPlayer extends Player {
+@@ -2336,7 +2336,20 @@ public class ServerPlayer extends Player {
  
      @Override
      public void playNotifySound(SoundEvent event, SoundSource category, float volume, float pitch) {
@@ -163,10 +163,10 @@ index dc5fda83a66afbfeb7897fc20b4742899d8aca08..6a5c781cf14521659426cf30bd1c46cd
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 640e9bd618dc8286933318744c2064ede1fd9b5f..38eae743afa3c517c59bb1df83b1871d06165dbc 100644
+index 33abcf12b4426572b74ca4c813e4392c823494bc..f1627a528d703b87225573c400bdee8288254e36 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -947,7 +947,7 @@ public abstract class PlayerList {
+@@ -970,7 +970,7 @@ public abstract class PlayerList {
                  BlockState data = worldserver1.getBlockState(blockposition);
                  worldserver1.setBlock(blockposition, data.setValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE, data.getValue(net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE) - 1), 3);
              }
@@ -176,10 +176,10 @@ index 640e9bd618dc8286933318744c2064ede1fd9b5f..38eae743afa3c517c59bb1df83b1871d
          }
          // Added from changeDimension
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 58152160d609d0e9d105153aeb166a56a7955603..7a4a07cd0618e7d51be0824e9102e979dfbdc7e6 100644
+index 481c3e321cfc0f20bb1c4c6942b8bdbd23c06339..2a9b0ba338f3bc8f3750deb6b93bd2099c867f28 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -1918,7 +1918,21 @@ public abstract class Player extends LivingEntity {
+@@ -1924,7 +1924,21 @@ public abstract class Player extends LivingEntity {
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
          fromEntity.level().playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
          if (fromEntity instanceof ServerPlayer) {
@@ -203,10 +203,10 @@ index 58152160d609d0e9d105153aeb166a56a7955603..7a4a07cd0618e7d51be0824e9102e979
      }
      // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
-index f7399737548483905f3b5c08a03876b0da54b714..e668de87a5b58febf451fe4be79e47143f4eab01 100644
+index eaa2943b667967f93f28d9d794d702fdaeb670ec..df03f4867742cd194db260dfb81398b14286397e 100644
 --- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
 +++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
-@@ -538,7 +538,7 @@ public class Raid {
+@@ -542,7 +542,7 @@ public class Raid {
              double d2 = vec3d.z + 13.0D / d0 * (vec3d1.z - vec3d.z);
  
              if (d0 <= 64.0D || collection.contains(entityplayer)) {
@@ -216,10 +216,10 @@ index f7399737548483905f3b5c08a03876b0da54b714..e668de87a5b58febf451fe4be79e4714
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 26e1a9002d675245d4cf91e6682605314b078fb2..9d5b1851f719cb51a64f7aa904268867f1855d72 100644
+index 5dc160b743534665c6b3efb10b10f7c36e2da5ab..7f0c6e9d8ffb1126ac8dbf8c8c8c8888b5f2506c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -2106,4 +2106,42 @@ public class CraftEventFactory {
+@@ -2166,4 +2166,42 @@ public class CraftEventFactory {
          return event;
      }
      // Paper end - add EntityFertilizeEggEvent

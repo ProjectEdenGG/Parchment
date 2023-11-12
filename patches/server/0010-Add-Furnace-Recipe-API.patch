@@ -215,10 +215,10 @@ index 0000000000000000000000000000000000000000..e7114e456f818d7bdd4081620f4b9b93
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 1a481fb4f4228f0fea8a7dc6132248c98b727c90..03553404519e7ac1e404a2cff36062ef6bcda36f 100644
+index c3060d1d4d0caf369c6ab516cb424f45eb851019..96468013783c2a2f3178bdbbe0884f855dbd72ec 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2437,4 +2437,11 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2466,4 +2466,11 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          return this.adventure$pointers;
      }
      // Paper end
@@ -226,7 +226,7 @@ index 1a481fb4f4228f0fea8a7dc6132248c98b727c90..03553404519e7ac1e404a2cff36062ef
 +    // Parchment start
 +    @Override
 +    public ItemStack smeltItem(ItemStack toSmelt, gg.projecteden.parchment.inventory.RecipeType recipeType) {
-+        return world.getRecipeManager().getRecipeFor(gg.projecteden.parchment.inventory.CraftRecipeType.asCookingRecipe(recipeType), new gg.projecteden.parchment.inventory.SingletonContainer(toSmelt), world).map(recipe -> recipe.getResultItem(world.registryAccess()).getBukkitStack()).orElse(null);
++        return world.getRecipeManager().getRecipeFor(gg.projecteden.parchment.inventory.CraftRecipeType.asCookingRecipe(recipeType), new gg.projecteden.parchment.inventory.SingletonContainer(toSmelt), world).map(recipe -> recipe.value().getResultItem(world.registryAccess()).getBukkitStack()).orElse(null);
 +    }
 +    // Parchment end
  }

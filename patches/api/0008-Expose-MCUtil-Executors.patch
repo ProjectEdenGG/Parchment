@@ -5,10 +5,10 @@ Subject: [PATCH] Expose MCUtil Executors
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 68206cf0178c26c0f528a1e14a5fb4e9ad410369..24fa398cc02f803fbb3222082130bf0b7bdd391f 100644
+index d0c634629aa0b6bac0da93655dd86ad3aea0ce30..b3162d58938ea5cb38f735a5977ce5e60d81c2b0 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2053,6 +2053,22 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2162,6 +2162,22 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      UnsafeValues getUnsafe();
  
