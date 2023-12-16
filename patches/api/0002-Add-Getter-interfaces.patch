@@ -60,7 +60,7 @@ index abeb24fccda2acfdb0dfdadacb8fe688bd97cf78..890069604ca78a9a3f3b4c5f40969a45
      private boolean cancelled = false;
      @NotNull private final Location location;
 diff --git a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
-index 59ae7bc3a0a2079fe4b3a92d777aca682a58e4e3..b0cc7665e6591c71b7cd4388d028a5f8abd65e64 100644
+index 59ae7bc3a0a2079fe4b3a92d777aca682a58e4e3..738007be082287a1f1662f2f3b7772e818042647 100644
 --- a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
 +++ b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
 @@ -20,7 +20,7 @@ import java.util.UUID;
@@ -68,12 +68,12 @@ index 59ae7bc3a0a2079fe4b3a92d777aca682a58e4e3..b0cc7665e6591c71b7cd4388d028a5f8
   * <p>WARNING: TAMPERING WITH THIS EVENT CAN BE DANGEROUS</p>
   */
 -public class PlayerHandshakeEvent extends Event implements Cancellable {
-+public class PlayerHandshakeEvent extends Event implements Cancellable, gg.projecteden.api.interfaces.OptionalUniqueId { // Parchment
++public class PlayerHandshakeEvent extends Event implements Cancellable, gg.projecteden.api.interfaces.OptionalUniqueId { // Parchment {
  
      private static final HandlerList HANDLERS = new HandlerList();
      @NotNull private final String originalHandshake;
 diff --git a/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java b/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java
-index 4dcf6242c9acc62d030a94f67b78729ed29f8c85..33550df23fea251368b16dbebad27bdcb1de2e78 100644
+index 4dcf6242c9acc62d030a94f67b78729ed29f8c85..700fa58c70612ef18b26e8160e8ad1275ad56b5a 100644
 --- a/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java
 +++ b/src/main/java/com/destroystokyo/paper/event/profile/PreLookupProfileEvent.java
 @@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
@@ -85,20 +85,16 @@ index 4dcf6242c9acc62d030a94f67b78729ed29f8c85..33550df23fea251368b16dbebad27bdc
  
      private static final HandlerList handlers = new HandlerList();
      @NotNull private final String name;
-@@ -49,11 +49,27 @@ public class PreLookupProfileEvent extends Event {
-      * {@link LookupProfileEvent}
-      *
+@@ -51,10 +51,25 @@ public class PreLookupProfileEvent extends Event {
       * @return The UUID of the profile if it has already been provided by a plugin
-+     * @deprecated alias of {@link #getUniqueId()} <!-- Parchment: fix inconsistent naming -->
       */
      @Nullable
--    public UUID getUUID() {
 +    // Parchment start
 +    @Deprecated
-+    public final UUID getUUID() {
-+        return getUniqueId();
-+    }
-+
+     public UUID getUUID() {
+         return uuid;
+     }
+ 
 +    /**
 +     * If this value is left null by the completion of the event call, then the server will
 +     * trigger a call to the Mojang API to look up the UUID (Network Request), and subsequently, fire a
@@ -108,12 +104,13 @@ index 4dcf6242c9acc62d030a94f67b78729ed29f8c85..33550df23fea251368b16dbebad27bdc
 +     */
 +    @Override
 +    public @Nullable UUID getUniqueId() {
-         return uuid;
-     }
++        return uuid;
++    }
 +    // Parchment end
- 
++
      /**
       * Sets the UUID for this player name. This will skip the initial API call to find the players UUID.
+      *
 diff --git a/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java b/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java
 index 9be64a95c2345433b6142d611077dedadcef9f5d..e3cea810881868fb5869de72f331733e6893fcee 100644
 --- a/src/main/java/com/destroystokyo/paper/event/server/AsyncTabCompleteEvent.java
@@ -263,10 +260,10 @@ index 0000000000000000000000000000000000000000..45410a77714ad28201520c188e280e4f
 +}
 diff --git a/src/main/java/gg/projecteden/parchment/OptionalLocation.java b/src/main/java/gg/projecteden/parchment/OptionalLocation.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..23897904c6e2d6195f3613c36d77454587afd8bc
+index 0000000000000000000000000000000000000000..305713e6095de2849a42ba1f4049b8715f1f907c
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/OptionalLocation.java
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,17 @@
 +package gg.projecteden.parchment;
 +
 +import org.bukkit.Location;
@@ -279,8 +276,7 @@ index 0000000000000000000000000000000000000000..23897904c6e2d6195f3613c36d774545
 +@FunctionalInterface
 +public interface OptionalLocation {
 +    /**
-+     * Gets a {@link Location} attached to this object if present
-+     *
++     * Gets a {@link Location} attached to this object if present     *
 +     * @return attached location
 +     */
 +    @Nullable Location getLocation();
@@ -427,7 +423,7 @@ index 12163a7b0591a7d022dc7eb9ee6608a1b6c39d9b..d81c7307127b135417e06a3b244416be
      private static final HandlerList handlers = new HandlerList();
      private final Player player;
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index 13f221dd4e332db01195eb0c92ef9f26a17eb6d6..e6ff56f03a7523508db16f1d6298074f681326d8 100644
+index 9bbd928f7d513ca317cd27beffa61e5111f5ffb0..7cc62b34800d7fe3d26e78945b1e4f24d09f7c85 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
@@ -439,45 +435,40 @@ index 13f221dd4e332db01195eb0c92ef9f26a17eb6d6..e6ff56f03a7523508db16f1d6298074f
      private Reference<World> world;
      private double x;
      private double y;
-@@ -1205,4 +1205,11 @@ public class Location implements Cloneable, ConfigurationSerializable, io.paperm
-         return new Location(world, this.x(), this.y(), this.z(), this.getYaw(), this.getPitch());
-     }
-     // Paper end
-+
+@@ -38,6 +38,13 @@ public class Location implements Cloneable, ConfigurationSerializable, io.paperm
+     private float pitch;
+     private float yaw;
+ 
 +    // Parchment start
 +    @Override
 +    public @NotNull Location getLocation() {
 +        return this;
 +    }
 +    // Parchment end
- }
++
+     /**
+      * Constructs a new Location with the given coordinates
+      *
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index bce07d84cafca677bb6fad78c21b82097f06430c..3263419051207521c8c5b818714cde9a04b895e7 100644
+index bce07d84cafca677bb6fad78c21b82097f06430c..c148832d2df44faa41d239d0be5b9df284a9b7c0 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
-@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -19,7 +19,14 @@ import org.jetbrains.annotations.Nullable;
   * player that is stored on the disk and can, thus, be retrieved without the
   * player needing to be online.
   */
 -public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable {
 +public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, gg.projecteden.parchment.HasOfflinePlayer, gg.projecteden.parchment.OptionalPlayer { // Parchment
- 
-     /**
-      * Checks if this player is currently online
-@@ -206,6 +206,13 @@ public interface OfflinePlayer extends ServerOperator, AnimalTamer, Configuratio
-     @Nullable
-     public Player getPlayer();
- 
++
 +    // Parchment start
 +    @Override
 +    default @org.jetbrains.annotations.NotNull OfflinePlayer getOfflinePlayer() {
 +        return this;
 +    }
 +    // Parchment end
-+
+ 
      /**
-      * Gets the first date and time that this player was witnessed on this
-      * server.
+      * Checks if this player is currently online
 diff --git a/src/main/java/org/bukkit/Raid.java b/src/main/java/org/bukkit/Raid.java
 index 983a8c20a06d2b509602b27f49c090598b8ecc42..46dd8496f5a2c792ee7811e33c424e88edf8b5b3 100644
 --- a/src/main/java/org/bukkit/Raid.java
@@ -570,12 +561,12 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index d340ddcf6924cc834455de3acbbac91ab9c66e39..d088493b4c58be67ca110b172506ab73de77599f 100644
+index 1d0fd7ff8449f815a7d980af0b378181ea8bf8d8..65d2b0e87feec296b9f20a6de2d2266493cd1e7b 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
-@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
- /**
-  * Represents a base entity in the world
+@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
+  * Not all methods are guaranteed to work/may have side effects when
+  * {@link #isInWorld()} is false.
   */
 -public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, net.kyori.adventure.sound.Sound.Emitter { // Paper
 +public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, net.kyori.adventure.sound.Sound.Emitter, gg.projecteden.api.interfaces.HasUniqueId, gg.projecteden.parchment.HasLocation { // Paper // Parchment
@@ -604,10 +595,10 @@ index 8b0d04d5b39ee817555a36adddc39b18fc6f0d02..1c87047de615a85ee20297295478770e
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 9240ea09206461d61cc08d4252e8507555bf41cf..401a992f340ba441bf81ebf54108b0e5b0421def 100644
+index a8d3451ccfcd21a9e80adc2feab8fc9c2926c753..c445cff54095a5389c8d186a9a191beef082c118 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -51,7 +51,17 @@ import org.jetbrains.annotations.Nullable;
+@@ -52,7 +52,17 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */
@@ -731,7 +722,7 @@ index d944d67f544494355f03c5bc9afd8ea7726e6412..800db8e63bdb8c05ffdc88c3a3b0f1f2
      private boolean cancel = false;
      private final Player player;
 diff --git a/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java b/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java
-index 59aab10c2d27247eb77bd71d75b5f9126aa0fb12..b42465617e83d3413ab647cd9c78212b61ca5833 100644
+index 59aab10c2d27247eb77bd71d75b5f9126aa0fb12..57f89f569725289d56f1c75db258ac19b6f94f30 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java
 @@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
@@ -743,11 +734,8 @@ index 59aab10c2d27247eb77bd71d75b5f9126aa0fb12..b42465617e83d3413ab647cd9c78212b
  
      private static final HandlerList handlers = new HandlerList();
      private boolean cancel;
-@@ -42,11 +42,27 @@ public class EntityEnterLoveModeEvent extends EntityEvent implements Cancellable
-      *
-      * @return The Human entity that caused the animal to enter love mode, or
+@@ -44,9 +44,24 @@ public class EntityEnterLoveModeEvent extends EntityEvent implements Cancellable
       * null if there wasn't one.
-+     * @deprecated alias of {@link #getPlayer()} <!-- Parchment: fix inconsistent naming -->
       */
      @Nullable
 -    public HumanEntity getHumanEntity() {
@@ -942,19 +930,18 @@ index 6800132c6288b4588fd02b08d26f016c38f27129..8e333a361cdee30a83e9472285dfb0b3
      private Result result;
      private net.kyori.adventure.text.Component message; // Paper
 diff --git a/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java b/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
-index d63bd62606763d0902ea800f0c35a1cfd07fc8ec..97bb62b616f8f08ec697c14681ffe6d89934b526 100644
+index d63bd62606763d0902ea800f0c35a1cfd07fc8ec..ecca20d51f8ac6f27887c55ae2aaa428ecb1ea53 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
 +++ b/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
-@@ -10,8 +10,7 @@ import org.jetbrains.annotations.NotNull;
+@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  /**
   * Called prior to an entity being unleashed due to a player's action.
   */
 -public class PlayerUnleashEntityEvent extends EntityUnleashEvent implements Cancellable {
--
 +public class PlayerUnleashEntityEvent extends EntityUnleashEvent implements Cancellable, gg.projecteden.parchment.HasPlayer { // Parchment
+ 
      private boolean cancelled = false;
  
-     private final Player player;
 diff --git a/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java b/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java
 index 128e43cf12205f82f2b119a773208502cdccfdd4..ca1fed3081e2b0a3271a2dfa0f49cce78bdb8e23 100644
 --- a/src/main/java/org/bukkit/event/raid/RaidTriggerEvent.java

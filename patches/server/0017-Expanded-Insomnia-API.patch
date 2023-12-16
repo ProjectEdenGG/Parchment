@@ -5,33 +5,27 @@ Subject: [PATCH] Expanded Insomnia API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 1aa00378a3c6d62a110767e943e998e0ce47ab68..85687cf09b185c57b52578cc0d8967803d2c1b6c 100644
+index c3d6e20a29ab392ce9c1be027fbf6c6e06720efe..0070b39c9b4e6414c83d1863095af7ed93b55fc7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -83,6 +83,7 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
- import net.minecraft.server.players.UserWhiteListEntry;
- import net.minecraft.sounds.SoundEvent;
- import net.minecraft.world.entity.Entity;
-+import net.minecraft.world.entity.EntitySelector;
- import net.minecraft.world.entity.ai.attributes.AttributeInstance;
- import net.minecraft.world.entity.ai.attributes.AttributeMap;
- import net.minecraft.world.entity.ai.attributes.Attributes;
-@@ -198,6 +199,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -197,6 +197,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
-     private long lastSaveTime;
-     // Paper end
-+    private boolean bypassesInsomnia = false; // Parchment - Insomnia api
+     private long lastSaveTime; // Paper - getLastPlayed replacement API
  
++    private boolean bypassesInsomnia = false; // Parchment - Insomnia api
++
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -2144,6 +2146,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-         return this;
-     }
  
+@@ -3304,4 +3306,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         return this.spigot;
+     }
+     // Spigot end
++
 +    // Parchment start
 +    @Override
 +    public boolean isInsomniac() {
-+        return EntitySelector.IS_INSOMNIAC.test(this.getHandle());
++        return net.minecraft.world.entity.EntitySelector.IS_INSOMNIAC.test(this.getHandle());
 +    }
 +
 +    @Override
@@ -55,6 +49,5 @@ index 1aa00378a3c6d62a110767e943e998e0ce47ab68..85687cf09b185c57b52578cc0d896780
 +    }
 +    // Parchment end
 +
-     @Override
-     public ServerPlayer getHandle() {
-         return (ServerPlayer) this.entity;
++
+ }

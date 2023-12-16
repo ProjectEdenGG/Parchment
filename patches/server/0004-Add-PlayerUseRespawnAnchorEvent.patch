@@ -5,10 +5,10 @@ Subject: [PATCH] Add PlayerUseRespawnAnchorEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-index 2ed78cf83c0ae66a6ddba1ff307da89a24b0d0a8..e9f80170f85906c70898c7a04b9a16497a7d2994 100644
+index 797ece59c10bdb60a86f71ca3b7bb95dbe0f1078..e560312bacc25ef3c2f26122fa68228bdf9e42a5 100644
 --- a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-@@ -58,23 +58,45 @@ public class RespawnAnchorBlock extends Block {
+@@ -65,23 +65,45 @@ public class RespawnAnchorBlock extends Block {
      public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
          ItemStack itemstack = player.getItemInHand(hand);
  

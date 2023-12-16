@@ -5,10 +5,10 @@ Subject: [PATCH] Add config for ticking TIME_SINCE_REST
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index ed79d30f33b2674863b2d73b1abdb48433c33412..ba37d877ca690b67223c0f1989b441301ce1047c 100644
+index 071d3877e386a0c7c4d2f2e8ddd06e0765c49d0d..aa47cd0274db73cefb5feb062be53f1cd66d48cf 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -286,6 +286,7 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -287,6 +287,7 @@ public class WorldConfiguration extends ConfigurationPart {
              }
  
              public boolean disablePlayerCrits = false;
@@ -17,10 +17,10 @@ index ed79d30f33b2674863b2d73b1abdb48433c33412..ba37d877ca690b67223c0f1989b44130
              public PillagerPatrols pillagerPatrols;
  
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 70bb9c9052ed52308ea42542f50939c23d0311e1..5f310ffc47a30897494beb1c351509a182781e1d 100644
+index 31f533ae280f147cbc183430a6209beedf4e96b3..1016f8a15756756fa7e85878aa22dbab5ae74a55 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -293,7 +293,7 @@ public abstract class Player extends LivingEntity {
+@@ -288,7 +288,7 @@ public abstract class Player extends LivingEntity {
                  this.awardStat(Stats.CROUCH_TIME);
              }
  

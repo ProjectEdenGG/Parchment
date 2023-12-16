@@ -5,10 +5,10 @@ Subject: [PATCH] Add spam bypass permission
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 65bb221993147a558995b36fb835f7b82e0eb4bd..dc3f2da0977705c487132bef552cd74244e3fa8f 100644
+index 30ccbab1586a656e0ae41d7406525fb02d9e025b..4a5c5a0f4e4bf1f256bcf518955403995e2368a7 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -770,6 +770,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -773,6 +773,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
      public void handleCustomCommandSuggestions(ServerboundCommandSuggestionPacket packet) {
          // PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel()); // Paper - run this async
          // CraftBukkit start
@@ -16,7 +16,7 @@ index 65bb221993147a558995b36fb835f7b82e0eb4bd..dc3f2da0977705c487132bef552cd742
          if (this.chatSpamTickCount.addAndGet(io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.tabSpamIncrement) > io.papermc.paper.configuration.GlobalConfiguration.get().spamLimiter.tabSpamLimit && !this.server.getPlayerList().isOp(this.player.getGameProfile())) { // Paper start - split and make configurable
              server.scheduleOnMain(() -> this.disconnect(Component.translatable("disconnect.spam", new Object[0]), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM)); // Paper - kick event cause
              return;
-@@ -780,6 +781,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -783,6 +784,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
              server.scheduleOnMain(() -> this.disconnect(Component.translatable("disconnect.spam", new Object[0]))); // Paper
              return;
          }
@@ -24,7 +24,7 @@ index 65bb221993147a558995b36fb835f7b82e0eb4bd..dc3f2da0977705c487132bef552cd742
          // Paper end
          // CraftBukkit end
          // Paper start - Don't suggest if tab-complete is disabled
-@@ -2448,6 +2450,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2450,6 +2452,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
      // Spigot start - spam exclusions
      private void detectRateSpam(String s) {
@@ -32,7 +32,7 @@ index 65bb221993147a558995b36fb835f7b82e0eb4bd..dc3f2da0977705c487132bef552cd742
          // CraftBukkit start - replaced with thread safe throttle
          boolean counted = true;
          for ( String exclude : org.spigotmc.SpigotConfig.spamExclusions )
-@@ -3197,10 +3200,12 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -3199,10 +3202,12 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
      public void handlePlaceRecipe(ServerboundPlaceRecipePacket packet) {
          // Paper start
          if (!org.bukkit.Bukkit.isPrimaryThread()) {
