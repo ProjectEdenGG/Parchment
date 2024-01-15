@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Thu, 21 Dec 2023 20:26:53 -0500
+Subject: [PATCH] Add CustomBlockUpdateEvent
+
+
+diff --git a/src/main/java/gg/projecteden/parchment/event/block/CustomBlockUpdateEvent.java b/src/main/java/gg/projecteden/parchment/event/block/CustomBlockUpdateEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..620e091669dca44001f834ee66cf3b9681e998ce
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/event/block/CustomBlockUpdateEvent.java
+@@ -0,0 +1,58 @@
++package gg.projecteden.parchment.event.block;
++
++import org.bukkit.block.data.BlockData;
++import org.bukkit.event.Cancellable;
++import org.bukkit.event.Event;
++import org.bukkit.event.HandlerList;
++import org.jetbrains.annotations.NotNull;
++
++public class CustomBlockUpdateEvent extends Event implements Cancellable {
++
++    private static final HandlerList handlers = new HandlerList();
++    private boolean cancelled;
++
++    private BlockData block;
++    private UpdateType updateType;
++
++    public CustomBlockUpdateEvent(BlockData block, UpdateType updateType) {
++        this.block = block;
++        this.updateType = updateType;
++    }
++
++    @Override
++    public boolean isCancelled() {
++        return this.cancelled;
++    }
++
++    @Override
++    public void setCancelled(boolean cancel) {
++        this.cancelled = cancel;
++    }
++
++    public BlockData getBlock() {
++        return block;
++    }
++
++    public UpdateType getUpdateType() {
++        return updateType;
++    }
++
++    @NotNull
++    @Override
++    public HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++
++    public enum UpdateType {
++        POWERED,
++        SHAPE,
++        INSTRUMENT,
++        PITCH
++    }
++
++}
