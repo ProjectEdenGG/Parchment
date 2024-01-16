@@ -1,0 +1,273 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Mon, 15 Jan 2024 16:38:52 -0500
+Subject: [PATCH] Entity Data Storage
+
+
+diff --git a/src/main/java/gg/projecteden/parchment/entity/EntityData.java b/src/main/java/gg/projecteden/parchment/entity/EntityData.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c4b2cd54c6c0d595e67b0fa0f05a32afa40328b3
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/entity/EntityData.java
+@@ -0,0 +1,140 @@
++package gg.projecteden.parchment.entity;
++
++import org.bukkit.entity.Entity;
++
++import java.util.*;
++import java.util.function.Supplier;
++
++public final class EntityData {
++    private static final Map<UUID, List<DataSlot>> PARKED = new HashMap<>();
++    private static int DATA_IDX;
++
++    private final List<EntityDataFragment<?>> data = new ArrayList<>();
++    private final Class<?> ownerType;
++    private Entity owner;
++
++    EntityData(Class<?> ownerType) {
++        this.ownerType = ownerType;
++    }
++
++    public static <T extends EntityDataFragment<E>, E extends Entity> EntityDataKey<T, E> createKey(
++        Supplier<T> generator,
++        Class<E> ownerType
++    ) {
++        return new EntityDataKey<>(ownerType, generator, EntityData.DATA_IDX++);
++    }
++
++    public static EntityData create(Entity entity) {
++        EntityData data = new EntityData(entity.getClass());
++
++        List<DataSlot> slots = EntityData.PARKED.get(entity.getUniqueId());
++        if (slots != null) {
++            for (DataSlot slot : slots) {
++                data.set(slot.idx, slot.data);
++            }
++        }
++
++        data.setOwner(entity);
++
++        return data;
++    }
++
++    public <T extends EntityDataFragment<E>, E extends Entity> T get(EntityDataKey<T, E> key) {
++        while (this.data.size() <= key.getIdx()) {
++            this.data.add(null);
++        }
++
++        T out = cast(this.data.get(key.getIdx()));
++        if (out == null) {
++            this.checkEntityType(key.ownerType);
++
++            out = key.getGenerator().get();
++            out.setOwner(cast(this.owner));
++
++            this.data.set(key.getIdx(), out);
++        }
++
++        return out;
++    }
++
++    public <T extends EntityDataFragment<E>, E extends Entity> boolean clear(EntityDataKey<T, E> key) {
++        if (this.data.size() <= key.getIdx()) {
++            return false;
++        }
++
++        this.checkEntityType(key.ownerType);
++        return this.data.set(key.getIdx(), null) != null;
++    }
++
++    public void orphan() {
++        for (EntityDataFragment<?> frag : this.data) {
++            if (frag != null) {
++                frag.onOrphan();
++            }
++        }
++
++        List<DataSlot> persist = new ArrayList<>();
++
++        for (int i = this.data.size() - 1; i >= 0; i--) {
++            EntityDataFragment<?> frag = this.data.get(i);
++            if (frag != null && frag.isPersistent()) {
++                persist.add(new DataSlot(frag, i));
++            }
++        }
++
++        if (!persist.isEmpty()) {
++            EntityData.PARKED.put(this.owner.getUniqueId(), persist);
++        }
++    }
++
++    void set(int slot, EntityDataFragment<?> data) {
++        while (this.data.size() <= slot) {
++            this.data.add(null);
++        }
++
++        this.data.set(slot, data);
++    }
++
++    void setOwner(Entity entity) {
++        Class<?> ownerType = entity.getClass();
++        if (!ownerType.equals(this.ownerType)) {
++            throw new IllegalArgumentException(String.format(
++                "Wrong entity type. (entity=%s@%s, expect=%s@%s)",
++                ownerType, ownerType.getClassLoader(),
++                this.ownerType, this.ownerType.getClassLoader()
++            ));
++        }
++
++        this.owner = entity;
++
++        for (EntityDataFragment<?> frag : this.data) {
++            if (frag != null) {
++                frag.setOwner(cast(entity));
++            }
++        }
++    }
++
++    private void checkEntityType(Class<?> ownerType) {
++        if (!ownerType.isAssignableFrom(this.ownerType)) {
++            throw new IllegalArgumentException(String.format(
++                "Incompatible entity types. (key=%s@%s, expect=%s@%s)",
++                ownerType, ownerType.getClassLoader(),
++                this.ownerType, this.ownerType.getClassLoader()
++            ));
++        }
++    }
++
++    private <S, T> T cast(S src) {
++        return (T) src;
++    }
++
++    private static final class DataSlot {
++        private final EntityDataFragment<?> data;
++        private final int idx;
++
++        private DataSlot(EntityDataFragment<?> data, int idx) {
++            this.data = data;
++            this.idx = idx;
++        }
++    }
++}
+diff --git a/src/main/java/gg/projecteden/parchment/entity/EntityDataFragment.java b/src/main/java/gg/projecteden/parchment/entity/EntityDataFragment.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c3d43c27a61155036e3f74e781da14ab0bc58d5f
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/entity/EntityDataFragment.java
+@@ -0,0 +1,34 @@
++package gg.projecteden.parchment.entity;
++
++import org.bukkit.entity.Entity;
++
++public abstract class EntityDataFragment<E extends Entity> {
++    private E owner;
++    private boolean persistent = true;
++
++    protected EntityDataFragment() {
++    }
++
++    protected void onOwnerChange() {
++    }
++
++    protected void onOrphan() {
++    }
++
++    protected final E getOwner() {
++        return this.owner;
++    }
++
++    protected final void setPersistent(boolean persistent) {
++        this.persistent = persistent;
++    }
++
++    final boolean isPersistent() {
++        return this.persistent;
++    }
++
++    final void setOwner(E entity) {
++        this.owner = entity;
++        this.onOwnerChange();
++    }
++}
+diff --git a/src/main/java/gg/projecteden/parchment/entity/EntityDataKey.java b/src/main/java/gg/projecteden/parchment/entity/EntityDataKey.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c52c8371b2edf4f62533ffcbc7f8d7b1dbc90777
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/entity/EntityDataKey.java
+@@ -0,0 +1,27 @@
++package gg.projecteden.parchment.entity;
++
++import org.bukkit.entity.Entity;
++
++import java.util.function.Supplier;
++
++public final class EntityDataKey<T extends EntityDataFragment<E>, E extends Entity> {
++    private final Supplier<T> generator;
++    private final int idx;
++
++    final Class<E> ownerType;
++
++    EntityDataKey(Class<E> ownerType, Supplier<T> generator, int idx) {
++        this.generator = generator;
++        this.idx = idx;
++
++        this.ownerType = ownerType;
++    }
++
++    Supplier<T> getGenerator() {
++        return this.generator;
++    }
++
++    int getIdx() {
++        return this.idx;
++    }
++}
+diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
+index 65d2b0e87feec296b9f20a6de2d2266493cd1e7b..283fa192456de9e643ed6b87ace05135e9cb7713 100644
+--- a/src/main/java/org/bukkit/entity/Entity.java
++++ b/src/main/java/org/bukkit/entity/Entity.java
+@@ -1107,4 +1107,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+      */
+     @NotNull String getScoreboardEntryName();
+     // Paper end - entity scoreboard name
++
++    gg.projecteden.parchment.entity.EntityData getStoredEntityData();
++
+ }
+diff --git a/src/main/java/gg/projecteden/parchment/entity/EntityDataServiceKey.java b/src/main/java/gg/projecteden/parchment/entity/EntityDataServiceKey.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c9f9c0d235f33925ee247ba4af56bf9f31bf7056
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/entity/EntityDataServiceKey.java
+@@ -0,0 +1,30 @@
++package gg.projecteden.parchment.entity;
++
++public final class EntityDataServiceKey<S> {
++    private final Class<S> serviceType;
++    private S service;
++
++    public EntityDataServiceKey(Class<S> serviceType) {
++        this.serviceType = serviceType;
++    }
++
++    public S get() {
++        if (this.service == null) {
++            throw new IllegalStateException("Service is not initialized.");
++        }
++
++        return this.service;
++    }
++
++    public void set(S service) {
++        if (this.service != null) {
++            throw new IllegalStateException("Service is already initialized.");
++        }
++
++        if (!this.serviceType.isInstance(service)) {
++            throw new IllegalArgumentException("Value does not implement service contract.");
++        }
++
++        this.service = service;
++    }
++}
