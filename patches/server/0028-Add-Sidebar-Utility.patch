@@ -30,7 +30,7 @@ new file mode 100644
 index 0000000000000000000000000000000000000000..5a1e28da1f3dcae1abeb016708dc6fdf883cd213
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferImpl.java
-@@ -0,0 +1,178 @@
+@@ -0,0 +1,181 @@
 +package gg.projecteden.parchment.sidebar;
 +
 +import gg.projecteden.parchment.util.StringUtils;
@@ -40,7 +40,6 @@ index 0000000000000000000000000000000000000000..5a1e28da1f3dcae1abeb016708dc6fdf
 +import net.minecraft.network.chat.numbers.FixedFormat;
 +import net.minecraft.network.chat.numbers.NumberFormat;
 +import net.minecraft.network.protocol.game.*;
-+import net.minecraft.server.ServerScoreboard;
 +import net.minecraft.server.dedicated.DedicatedServer;
 +import net.minecraft.world.scores.DisplaySlot;
 +import net.minecraft.world.scores.Objective;
@@ -111,7 +110,10 @@ index 0000000000000000000000000000000000000000..5a1e28da1f3dcae1abeb016708dc6fdf
 +            String live = liveIdx >= 0 ? this.liveLines[liveIdx] : null;
 +            String staged = stagedIdx >= 0 ? this.stagedLines[stagedIdx] : null;
 +
-+            if (!Objects.equals(live, staged)) {
++            String liveDisplay = liveIdx >= 0 ? this.liveDisplays[liveIdx] : null;
++            String stagedDisplay = stagedIdx >= 0 ? this.stagedDisplays[stagedIdx] : null;
++
++            if (!Objects.equals(live, staged) || !Objects.equals(liveDisplay, stagedDisplay)) {
 +                if (live != null) {
 +                    this.sendDelete(live, liveEnd - liveIdx);
 +                }
@@ -126,6 +128,7 @@ index 0000000000000000000000000000000000000000..5a1e28da1f3dcae1abeb016708dc6fdf
 +        }
 +
 +        System.arraycopy(this.stagedLines, 0, this.liveLines, 0, this.size);
++        System.arraycopy(this.stagedDisplays, 0, this.liveDisplays, 0, this.size);
 +    }
 +
 +    @Override

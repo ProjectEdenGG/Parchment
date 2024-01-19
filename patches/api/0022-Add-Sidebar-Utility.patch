@@ -9,7 +9,7 @@ new file mode 100644
 index 0000000000000000000000000000000000000000..f3f7a138d8d0a0e5f863f50fa39ffd861a8a1db9
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/sidebar/Sidebar.java
-@@ -0,0 +1,124 @@
+@@ -0,0 +1,123 @@
 +package gg.projecteden.parchment.sidebar;
 +
 +import gg.projecteden.parchment.entity.EntityData;
@@ -77,7 +77,6 @@ index 0000000000000000000000000000000000000000..f3f7a138d8d0a0e5f863f50fa39ffd86
 +            this.buffer[this.back].clearLine(idx);
 +        } else {
 +            this.buffer[this.back].setLine(idx, value, display);
-+            this.buffer[this.back ^ 1].stagedDisplays[idx] = display;
 +        }
 +    }
 +
@@ -139,7 +138,7 @@ new file mode 100644
 index 0000000000000000000000000000000000000000..c4a58a2b4e8bf5d3130b7da71616f06b6ed98e8f
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBuffer.java
-@@ -0,0 +1,95 @@
+@@ -0,0 +1,100 @@
 +package gg.projecteden.parchment.sidebar;
 +
 +import org.bukkit.entity.Player;
@@ -155,6 +154,7 @@ index 0000000000000000000000000000000000000000..c4a58a2b4e8bf5d3130b7da71616f06b
 +    protected final int size;
 +    protected final String[] liveLines;
 +    protected final String[] stagedLines;
++    protected final String[] liveDisplays;
 +    protected final String[] stagedDisplays;
 +
 +    protected String liveTitle = "";
@@ -165,6 +165,7 @@ index 0000000000000000000000000000000000000000..c4a58a2b4e8bf5d3130b7da71616f06b
 +        this.size = size;
 +        this.liveLines = new String[size];
 +        this.stagedLines = new String[size];
++        this.liveDisplays = new String[size];
 +        this.stagedDisplays = new String[size];
 +    }
 +
@@ -221,16 +222,19 @@ index 0000000000000000000000000000000000000000..c4a58a2b4e8bf5d3130b7da71616f06b
 +    void sync(SidebarBuffer live) {
 +        this.stagedTitle = live.liveTitle;
 +        System.arraycopy(live.liveLines, 0, this.stagedLines, 0, this.size);
++        System.arraycopy(live.liveDisplays, 0, this.stagedDisplays, 0, this.size);
 +    }
 +
 +    void clear() {
 +        this.stagedTitle = "";
 +        Arrays.fill(this.stagedLines, null);
++        Arrays.fill(this.stagedDisplays, null);
 +    }
 +
 +    boolean hasDiverged(SidebarBuffer live) {
 +        boolean out = !Objects.equals(this.stagedTitle, live.liveTitle);
 +        out = out || !Arrays.equals(this.stagedLines, live.liveLines);
++        out = out || !Arrays.equals(this.stagedDisplays, live.liveDisplays);
 +
 +        return out;
 +    }
