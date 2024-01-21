@@ -5,7 +5,7 @@ Subject: [PATCH] Temporary Access Transformers
 
 
 diff --git a/src/main/java/net/minecraft/core/Holder.java b/src/main/java/net/minecraft/core/Holder.java
-index 996e1a8485ae3c6a698d846f8cbe9add51a4be03..312ccb54046fbf7b5f7a0103721cf7878700e895 100644
+index 245f09b771fb1e8fab3bc4c03b1afe34ef505f1b..8dbef407de5c48543ca7f97d8c22301aa54da7d8 100644
 --- a/src/main/java/net/minecraft/core/Holder.java
 +++ b/src/main/java/net/minecraft/core/Holder.java
 @@ -126,6 +126,12 @@ public interface Holder<T> {
@@ -22,10 +22,10 @@ index 996e1a8485ae3c6a698d846f8cbe9add51a4be03..312ccb54046fbf7b5f7a0103721cf787
              if (this.key == null) {
                  throw new IllegalStateException("Trying to access unbound value '" + this.value + "' from registry " + this.owner);
 diff --git a/src/main/java/net/minecraft/world/item/BlockItem.java b/src/main/java/net/minecraft/world/item/BlockItem.java
-index ebee8de2ed831755b6fd154f6cc77ac993839bb9..0bf4ef77bd61f6d28faf497f5bd0ceecd8663daf 100644
+index efdf56044396b4ce486948d2c993971f99174a5e..4238b65cc86b0c49a34b50c4dac00cd89e3900e1 100644
 --- a/src/main/java/net/minecraft/world/item/BlockItem.java
 +++ b/src/main/java/net/minecraft/world/item/BlockItem.java
-@@ -207,7 +207,7 @@ public class BlockItem extends Item {
+@@ -206,7 +206,7 @@ public class BlockItem extends Item {
          }).orElse(state);
      }
  

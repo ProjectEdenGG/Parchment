@@ -5,10 +5,10 @@ Subject: [PATCH] Add NPC to EntityType
 
 
 diff --git a/src/main/java/org/bukkit/entity/EntityType.java b/src/main/java/org/bukkit/entity/EntityType.java
-index 6cf14afd2c1b8018c67c6cac302ae28bb12ab5a5..9ab641d268cd10a2c9bd888732d4754d520c56c7 100644
+index 4aaf268f58038cd5d4101ec3fbfdc20b544d6678..29aa9227a57b4ea458379402ccfce3334d9325d8 100644
 --- a/src/main/java/org/bukkit/entity/EntityType.java
 +++ b/src/main/java/org/bukkit/entity/EntityType.java
-@@ -295,6 +295,7 @@ public enum EntityType implements Keyed, Translatable, net.kyori.adventure.trans
+@@ -303,6 +303,7 @@ public enum EntityType implements Keyed, Translatable, net.kyori.adventure.trans
       */
      LIGHTNING("lightning_bolt", LightningStrike.class, -1, false),
      PLAYER("player", Player.class, -1, false),

@@ -1,0 +1,124 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Thu, 21 Dec 2023 20:58:03 -0500
+Subject: [PATCH] Add CustomBlockUpdateEvent
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/NoteBlock.java b/src/main/java/net/minecraft/world/level/block/NoteBlock.java
+index ff16075fbfe664c73a46bc4b002450867974114e..32b56119850282ba8da5741e22dc21ffd6f6fb08 100644
+--- a/src/main/java/net/minecraft/world/level/block/NoteBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/NoteBlock.java
+@@ -2,6 +2,8 @@ package net.minecraft.world.level.block;
+ 
+ import com.mojang.serialization.MapCodec;
+ import javax.annotation.Nullable;
++
++import gg.projecteden.parchment.event.block.CustomBlockUpdateEvent;
+ import net.minecraft.core.BlockPos;
+ import net.minecraft.core.Direction;
+ import net.minecraft.core.Holder;
+@@ -65,12 +67,14 @@ public class NoteBlock extends Block {
+ 
+     @Override
+     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(this.defaultBlockState()), CustomBlockUpdateEvent.UpdateType.INSTRUMENT).callEvent()) return this.defaultBlockState();
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) return this.defaultBlockState(); // Paper - place without considering instrument
+         return this.setInstrument(ctx.getLevel(), ctx.getClickedPos(), this.defaultBlockState());
+     }
+ 
+     @Override
+     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), CustomBlockUpdateEvent.UpdateType.INSTRUMENT).callEvent()) return state;
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) return state; // Paper - prevent noteblock instrument from updating
+         boolean flag = direction.getAxis() == Direction.Axis.Y;
+ 
+@@ -79,6 +83,7 @@ public class NoteBlock extends Block {
+ 
+     @Override
+     public void neighborChanged(BlockState state, Level world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(this.defaultBlockState()), CustomBlockUpdateEvent.UpdateType.POWERED).callEvent()) return;
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) return; // Paper - prevent noteblock powered-state from updating
+         boolean flag1 = world.hasNeighborSignal(pos);
+ 
+@@ -117,7 +122,9 @@ public class NoteBlock extends Block {
+         } else if (world.isClientSide) {
+             return InteractionResult.SUCCESS;
+         } else {
+-            if (!io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) state = (BlockState) state.cycle(NoteBlock.NOTE); // Paper - prevent noteblock note from updating
++
++            if (!io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates ||
++                !new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(this.defaultBlockState()), CustomBlockUpdateEvent.UpdateType.PITCH).callEvent()) state = (BlockState) state.cycle(NoteBlock.NOTE); // Paper - prevent noteblock note from updating
+             world.setBlock(pos, state, 3);
+             this.playNote(player, state, world, pos);
+             player.awardStat(Stats.TUNE_NOTEBLOCK);
+diff --git a/src/main/java/net/minecraft/world/level/block/TripWireBlock.java b/src/main/java/net/minecraft/world/level/block/TripWireBlock.java
+index 2f947997ca746d18544940ef67ff550a95946edd..b1ecefd22a64bf7a134490cf7ac88d4d04e1f4e7 100644
+--- a/src/main/java/net/minecraft/world/level/block/TripWireBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/TripWireBlock.java
+@@ -66,21 +66,25 @@ public class TripWireBlock extends Block {
+ 
+     @Override
+     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+-        if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return this.defaultBlockState(); // Paper - place tripwire without updating
+         Level world = ctx.getLevel();
+         BlockPos blockposition = ctx.getClickedPos();
+ 
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(this.defaultBlockState()), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.SHAPE).callEvent()) return this.defaultBlockState();
++        if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return this.defaultBlockState(); // Paper - place tripwire without updating
++
+         return (BlockState) ((BlockState) ((BlockState) ((BlockState) this.defaultBlockState().setValue(TripWireBlock.NORTH, this.shouldConnectTo(world.getBlockState(blockposition.north()), Direction.NORTH))).setValue(TripWireBlock.EAST, this.shouldConnectTo(world.getBlockState(blockposition.east()), Direction.EAST))).setValue(TripWireBlock.SOUTH, this.shouldConnectTo(world.getBlockState(blockposition.south()), Direction.SOUTH))).setValue(TripWireBlock.WEST, this.shouldConnectTo(world.getBlockState(blockposition.west()), Direction.WEST));
+     }
+ 
+     @Override
+     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.SHAPE).callEvent()) return state;
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return state; // Paper - prevent tripwire from updating
+         return direction.getAxis().isHorizontal() ? (BlockState) state.setValue((Property) TripWireBlock.PROPERTY_BY_DIRECTION.get(direction), this.shouldConnectTo(neighborState, direction)) : super.updateShape(state, direction, neighborState, world, pos, neighborPos);
+     }
+ 
+     @Override
+     public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.SHAPE).callEvent()) return;
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return; // Paper - prevent adjacent tripwires from updating
+         if (!oldState.is(state.getBlock())) {
+             this.updateSource(world, pos, state);
+@@ -89,6 +93,7 @@ public class TripWireBlock extends Block {
+ 
+     @Override
+     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.SHAPE).callEvent()) return;
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return; // Paper - prevent adjacent tripwires from updating
+         if (!moved && !state.is(newState.getBlock())) {
+             this.updateSource(world, pos, (BlockState) state.setValue(TripWireBlock.POWERED, true), true); // Paper - fix state inconsistency
+@@ -97,6 +102,7 @@ public class TripWireBlock extends Block {
+ 
+     @Override
+     public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.SHAPE).callEvent()) return state;
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return state; // Paper - prevent disarming tripwires
+         if (!world.isClientSide && !player.getMainHandItem().isEmpty() && player.getMainHandItem().is(Items.SHEARS)) {
+             world.setBlock(pos, (BlockState) state.setValue(TripWireBlock.DISARMED, true), 4);
+@@ -107,6 +113,7 @@ public class TripWireBlock extends Block {
+     }
+ 
+     private void updateSource(Level world, BlockPos pos, BlockState state) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.SHAPE).callEvent()) return;
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return; // Paper - prevent adjacent tripwires from updating
+         // Paper start - fix state inconsistency
+         this.updateSource(world, pos, state, false);
+@@ -146,6 +153,7 @@ public class TripWireBlock extends Block {
+ 
+     @Override
+     public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.POWERED).callEvent()) return;
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return; // Paper - prevent tripwires from detecting collision
+         if (!new io.papermc.paper.event.entity.EntityInsideBlockEvent(entity.getBukkitEntity(), org.bukkit.craftbukkit.block.CraftBlock.at(world, pos)).callEvent()) { return; } // Paper
+         if (!world.isClientSide) {
+@@ -157,6 +165,7 @@ public class TripWireBlock extends Block {
+ 
+     @Override
+     public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
++        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.POWERED).callEvent()) return;
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return; // Paper - prevent tripwire pressed check
+         if ((Boolean) world.getBlockState(pos).getValue(TripWireBlock.POWERED)) {
+             this.checkPressed(world, pos);

@@ -1,0 +1,92 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Mon, 15 Jan 2024 16:39:10 -0500
+Subject: [PATCH] Entity Data Storage
+
+
+diff --git a/src/main/java/gg/projecteden/parchment/entity/EntityDataServices.java b/src/main/java/gg/projecteden/parchment/entity/EntityDataServices.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..30f8fd154136d05267e8737ff04a0be45b23a35d
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/entity/EntityDataServices.java
+@@ -0,0 +1,16 @@
++package gg.projecteden.parchment.entity;
++
++public class EntityDataServices {
++
++    private static boolean initialized;
++
++    public static void init() {
++        if (initialized) {
++            throw new RuntimeException("EntityData Services already initialized");
++        }
++        initialized = true;
++
++        // Initialize Services Here
++    }
++
++}
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 58536aabf607015939a1326f80207c0a06eed8ff..b27e958e8da8abbf0e36b432bf3a29da270ecb8e 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -268,6 +268,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+             return false;
+         }
+ 
++        gg.projecteden.parchment.entity.EntityDataServices.init();
++
+         // CraftBukkit start
+         // this.setPlayerList(new DedicatedPlayerList(this, this.registries(), this.playerDataStorage)); // Spigot - moved up
+         this.server.loadPlugins();
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index 9abe817ae202edaa2d88cd59ae5c7db0b1c634be..861dff20a09d94cb90e1ff95ea51f50efa7b501d 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -158,6 +158,31 @@ import org.bukkit.plugin.PluginManager;
+ 
+ public abstract class Entity implements Nameable, EntityAccess, CommandSource, ScoreHolder {
+ 
++    @javax.annotation.Nullable
++    private gg.projecteden.parchment.entity.EntityData storedEntityData;
++
++    /**
++     * Retrieves the stored EntityData for this entity
++     * @return The currently stored EntityData
++     */
++    public gg.projecteden.parchment.entity.EntityData getStoredEntityData() {
++        if (this.storedEntityData == null) {
++            this.storedEntityData = gg.projecteden.parchment.entity.EntityData.create(this.getBukkitEntity());
++        }
++        return this.storedEntityData;
++    }
++
++    /**
++     * Clears the currently stored EntityData for this entity
++     * @return the previously stored EntityData
++     */
++    public @javax.annotation.Nullable gg.projecteden.parchment.entity.EntityData clearStoredEntityData() {
++        gg.projecteden.parchment.entity.EntityData data = this.storedEntityData;
++        this.storedEntityData = null;
++
++        return data;
++    }
++
+     // CraftBukkit start
+     private static final int CURRENT_LEVEL = 2;
+     public boolean preserveMotion = true; // Paper - keep initial motion on first setPositionRotation
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+index aa4dbf91cf6da329fdcacbde98bb870eb48e8f5c..392d5b896254e5dd57de33e16fa196950e6f7c61 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+@@ -222,6 +222,10 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     };
+     // Paper end - Folia schedulers
+ 
++    public gg.projecteden.parchment.entity.EntityData getStoredEntityData() {
++        return this.entity.getStoredEntityData();
++    }
++
+     public CraftEntity(final CraftServer server, final Entity entity) {
+         this.server = server;
+         this.entity = entity;

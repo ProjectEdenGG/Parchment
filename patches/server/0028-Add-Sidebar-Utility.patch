@@ -1,0 +1,275 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Mon, 15 Jan 2024 20:53:54 -0500
+Subject: [PATCH] Add Sidebar Utility
+
+
+diff --git a/src/main/java/gg/projecteden/parchment/entity/EntityDataServices.java b/src/main/java/gg/projecteden/parchment/entity/EntityDataServices.java
+index 30f8fd154136d05267e8737ff04a0be45b23a35d..7091340870607605521239893b8ab763f49d7999 100644
+--- a/src/main/java/gg/projecteden/parchment/entity/EntityDataServices.java
++++ b/src/main/java/gg/projecteden/parchment/entity/EntityDataServices.java
+@@ -1,5 +1,8 @@
+ package gg.projecteden.parchment.entity;
+ 
++import gg.projecteden.parchment.sidebar.SidebarBufferUtil;
++import gg.projecteden.parchment.sidebar.SidebarBufferUtilSpec;
++
+ public class EntityDataServices {
+ 
+     private static boolean initialized;
+@@ -11,6 +14,7 @@ public class EntityDataServices {
+         initialized = true;
+ 
+         // Initialize Services Here
++        SidebarBufferUtilSpec.IMPL_KEY.set(new SidebarBufferUtil());
+     }
+ 
+ }
+diff --git a/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferImpl.java b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferImpl.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..5a1e28da1f3dcae1abeb016708dc6fdf883cd213
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferImpl.java
+@@ -0,0 +1,181 @@
++package gg.projecteden.parchment.sidebar;
++
++import gg.projecteden.parchment.util.StringUtils;
++import net.minecraft.network.Connection;
++import net.minecraft.network.chat.Component;
++import net.minecraft.network.chat.numbers.BlankFormat;
++import net.minecraft.network.chat.numbers.FixedFormat;
++import net.minecraft.network.chat.numbers.NumberFormat;
++import net.minecraft.network.protocol.game.*;
++import net.minecraft.server.dedicated.DedicatedServer;
++import net.minecraft.world.scores.DisplaySlot;
++import net.minecraft.world.scores.Objective;
++import net.minecraft.world.scores.PlayerTeam;
++import net.minecraft.world.scores.Team;
++import net.minecraft.world.scores.criteria.ObjectiveCriteria;
++import org.bukkit.craftbukkit.entity.CraftPlayer;
++import org.bukkit.entity.Player;
++
++import java.util.Objects;
++
++public class SidebarBufferImpl extends SidebarBuffer {
++
++    private static final int NAME_LIMIT = 38;
++    private static final int AFFIX_LIMIT = 16;
++    private static final int SIZE = 15;
++
++    static final int SIDEBAR_SLOT = 1;
++    private final Objective objective = new Objective(DedicatedServer.getServer().getScoreboard(), this.name,
++                                                      ObjectiveCriteria.DUMMY, Component.literal(this.stagedTitle), ObjectiveCriteria.RenderType.INTEGER,
++                                                        false, null);
++
++    private Connection connection;
++
++    SidebarBufferImpl(String name) {
++        super(name, SidebarBufferImpl.SIZE);
++    }
++
++    protected void setActive() {
++        objective.setDisplayName(Component.literal(StringUtils.colorize(this.stagedTitle)));
++        ClientboundSetObjectivePacket packet = new ClientboundSetObjectivePacket(this.objective, ClientboundSetObjectivePacket.METHOD_CHANGE);
++        ClientboundSetDisplayObjectivePacket packet2 = new ClientboundSetDisplayObjectivePacket(DisplaySlot.SIDEBAR, this.objective);
++
++        this.connection.send(packet);
++        this.connection.send(packet2);
++    }
++
++    protected void pushChanges() {
++        if (!Objects.equals(this.liveTitle, this.stagedTitle)) {
++            this.liveTitle = this.stagedTitle;
++
++            ClientboundSetObjectivePacket packet = new ClientboundSetObjectivePacket(this.objective, ClientboundSetObjectivePacket.METHOD_CHANGE);
++
++            this.connection.send(packet);
++        }
++
++        int liveEnd = this.size;
++        for (int i = 0; i < this.size; i++) {
++            if (this.liveLines[i] == null) {
++                liveEnd = i;
++                break;
++            }
++        }
++
++        int stagedEnd = this.size;
++        for (int i = 0; i < this.size; i++) {
++            if (this.stagedLines[i] == null) {
++                stagedEnd = i;
++                break;
++            }
++        }
++
++        int maxEnd = Math.max(liveEnd, stagedEnd);
++        int liveIdx = liveEnd - maxEnd;
++        int stagedIdx = stagedEnd - maxEnd;
++
++        for (int i = 0; i < this.size; i++) {
++            String live = liveIdx >= 0 ? this.liveLines[liveIdx] : null;
++            String staged = stagedIdx >= 0 ? this.stagedLines[stagedIdx] : null;
++
++            String liveDisplay = liveIdx >= 0 ? this.liveDisplays[liveIdx] : null;
++            String stagedDisplay = stagedIdx >= 0 ? this.stagedDisplays[stagedIdx] : null;
++
++            if (!Objects.equals(live, staged) || !Objects.equals(liveDisplay, stagedDisplay)) {
++                if (live != null) {
++                    this.sendDelete(live, liveEnd - liveIdx);
++                }
++
++                if (staged != null) {
++                    this.sendCreate(staged, stagedEnd - stagedIdx, this.stagedDisplays[stagedIdx]);
++                }
++            }
++
++            liveIdx++;
++            stagedIdx++;
++        }
++
++        System.arraycopy(this.stagedLines, 0, this.liveLines, 0, this.size);
++        System.arraycopy(this.stagedDisplays, 0, this.liveDisplays, 0, this.size);
++    }
++
++    @Override
++    protected void setOwner(Player player) {
++        this.connection = ((CraftPlayer) player).getHandle().connection.connection;
++
++        ClientboundSetObjectivePacket packet = new ClientboundSetObjectivePacket(this.objective, ClientboundSetObjectivePacket.METHOD_ADD);
++        this.connection.send(packet);
++
++        for (int i = 0; i < this.size; i++) {
++            String live = this.liveLines[i];
++
++            if (live != null) {
++                this.sendCreate(live, i, stagedDisplays[i]);
++            }
++        }
++    }
++
++    @Override
++    protected boolean checkTitle(String line) {
++        return line.length() <= 32;
++    }
++
++    @Override
++    protected boolean checkLine(String line) {
++        return line.length() <= SidebarBufferImpl.NAME_LIMIT + SidebarBufferImpl.AFFIX_LIMIT * 2;
++    }
++
++    private void sendCreate(String value, int line, String display) {
++        String id = "\u00a7" + (char) ('\u0080' + line);
++        value = StringUtils.colorize(value);
++
++        if (value.length() > SidebarBufferImpl.NAME_LIMIT) {
++            String prefix = value.substring(0, SidebarBufferImpl.AFFIX_LIMIT);
++            String suffix = "";
++
++            value = value.substring(SidebarBufferImpl.AFFIX_LIMIT);
++
++            if (value.length() > SidebarBufferImpl.NAME_LIMIT) {
++                suffix = value.substring(SidebarBufferImpl.NAME_LIMIT);
++                value = value.substring(0, SidebarBufferImpl.NAME_LIMIT);
++            }
++
++            PlayerTeam team = new PlayerTeam(DedicatedServer.getServer().getScoreboard(), this.getTeamName(line));
++            team.setPlayerPrefix(Component.literal(prefix));
++            team.setPlayerSuffix(Component.literal(suffix));
++            team.setNameTagVisibility(Team.Visibility.NEVER);
++            team.setCollisionRule(Team.CollisionRule.NEVER);
++            team.getPlayers().add(id + value);
++            ClientboundSetPlayerTeamPacket packet = ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(team, true);
++
++            this.connection.send(packet);
++        }
++
++        NumberFormat numberFormat = (display == null || display.isEmpty() || display.isBlank()) ? BlankFormat.INSTANCE : new FixedFormat(Component.literal(StringUtils.colorize(display)));
++        ClientboundSetScorePacket packet = new ClientboundSetScorePacket(id + value, this.name, line, null, numberFormat);
++
++        this.connection.send(packet);
++    }
++
++    private void sendDelete(String value, int line) {
++        String id = "\u00a7" + (char) ('\u0080' + line);
++
++        value = StringUtils.colorize(value);
++
++        if (value.length() > SidebarBufferImpl.NAME_LIMIT) {
++            value = value.substring(
++                SidebarBufferImpl.AFFIX_LIMIT,
++                Math.min(value.length(), SidebarBufferImpl.AFFIX_LIMIT + SidebarBufferImpl.NAME_LIMIT)
++            );
++
++            ClientboundSetPlayerTeamPacket packet = ClientboundSetPlayerTeamPacket.createRemovePacket(DedicatedServer.getServer().getScoreboard().getPlayerTeam(this.getTeamName(line)));
++            this.connection.send(packet);
++        }
++
++        ClientboundResetScorePacket packet = new ClientboundResetScorePacket(id + value, this.name);
++        this.connection.send(packet);
++    }
++
++    private String getTeamName(int line) {
++        return this.name + "/" + Integer.toUnsignedString(line, 32);
++    }
++}
+diff --git a/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferUtil.java b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferUtil.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..599e84adf8e480508b9c2ce87baca07e163d345e
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferUtil.java
+@@ -0,0 +1,19 @@
++package gg.projecteden.parchment.sidebar;
++
++import net.minecraft.network.protocol.game.ClientboundSetDisplayObjectivePacket;
++import net.minecraft.world.scores.DisplaySlot;
++import org.bukkit.craftbukkit.entity.CraftPlayer;
++import org.bukkit.entity.Player;
++
++public class SidebarBufferUtil implements SidebarBufferUtilSpec {
++    @Override
++    public SidebarBuffer create(String name) {
++        return new SidebarBufferImpl(name);
++    }
++
++    @Override
++    public void hideSidebar(Player player) {
++        ClientboundSetDisplayObjectivePacket packet = new ClientboundSetDisplayObjectivePacket(DisplaySlot.SIDEBAR, null);
++        ((CraftPlayer) player).getHandle().connection.send(packet);
++    }
++}
+diff --git a/src/main/java/gg/projecteden/parchment/util/StringUtils.java b/src/main/java/gg/projecteden/parchment/util/StringUtils.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..0f8700f43e5503d5b002368fa36d8e6a7577658f
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/util/StringUtils.java
+@@ -0,0 +1,30 @@
++package gg.projecteden.parchment.util;
++
++import net.md_5.bungee.api.ChatColor;
++
++import java.util.regex.Matcher;
++import java.util.regex.Pattern;
++
++public class StringUtils {
++
++    private static final String colorChar = "§";
++    private static final String altColorChar = "&";
++    private static final String colorCharsRegex = "[" + colorChar + altColorChar + "]";
++    private static final Pattern hexPattern = Pattern.compile(colorCharsRegex + "#[a-fA-F\\d]{6}");
++
++    public static String colorize(String input) {
++        if (input == null)
++            return null;
++
++        while (true) {
++            Matcher matcher = hexPattern.matcher(input);
++            if (!matcher.find()) break;
++
++            String color = matcher.group();
++            input = input.replace(color, ChatColor.of(color.replaceFirst(colorCharsRegex, "")).toString());
++        }
++
++        return ChatColor.translateAlternateColorCodes(altColorChar.charAt(0), input);
++    }
++
++}

@@ -1,0 +1,361 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Mon, 15 Jan 2024 20:53:14 -0500
+Subject: [PATCH] Add Sidebar Utility
+
+
+diff --git a/src/main/java/gg/projecteden/parchment/sidebar/Sidebar.java b/src/main/java/gg/projecteden/parchment/sidebar/Sidebar.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..f3f7a138d8d0a0e5f863f50fa39ffd861a8a1db9
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/sidebar/Sidebar.java
+@@ -0,0 +1,123 @@
++package gg.projecteden.parchment.sidebar;
++
++import gg.projecteden.parchment.entity.EntityData;
++import gg.projecteden.parchment.entity.EntityDataFragment;
++import gg.projecteden.parchment.entity.EntityDataKey;
++import org.bukkit.entity.Player;
++
++import java.util.Objects;
++
++public final class Sidebar extends EntityDataFragment<Player> {
++    private static final EntityDataKey<Sidebar, Player> DATA_KEY = EntityData.createKey(Sidebar::new, Player.class);
++
++    private final SidebarBuffer[] buffer = new SidebarBuffer[2];
++
++    private final StageImpl stage = new StageImpl();
++    private final Runnable layoutListener;
++
++    private SidebarLayout layout;
++
++    private boolean visible;
++    private int back;
++
++    public static Sidebar get(Player player) {
++        Objects.requireNonNull(player);
++
++        return player.getStoredEntityData().get(Sidebar.DATA_KEY);
++    }
++
++    private Sidebar() {
++        this.buffer[0] = SidebarBufferUtilSpec.IMPL_KEY.get().create("_sidebar_l");
++        this.buffer[1] = SidebarBufferUtilSpec.IMPL_KEY.get().create("_sidebar_r");
++
++        this.layoutListener = () -> {
++            this.layout.update(this.stage);
++            this.flush();
++        };
++
++        this.setPersistent(false);
++    }
++
++    public void applyLayout(SidebarLayout layout) {
++        if (this.layout != null) {
++            this.layout.unsubscribe(this.layoutListener);
++            this.buffer[this.back].clear();
++        }
++
++        this.layout = layout;
++
++        if (layout == null) {
++            this.hide();
++        } else {
++            layout.setup(this.stage);
++            this.flush();
++
++            layout.subscribe(this.layoutListener);
++        }
++    }
++
++    private void setTitle(String title) {
++        this.buffer[this.back].setTitle(title);
++    }
++
++    private void setLine(int idx, String value, String display) {
++        if (value == null) {
++            this.buffer[this.back].clearLine(idx);
++        } else {
++            this.buffer[this.back].setLine(idx, value, display);
++        }
++    }
++
++    private void flush() {
++        SidebarBuffer front = this.buffer[this.back];
++        SidebarBuffer back = this.buffer[this.back ^ 1];
++        boolean shouldShow = !this.visible;
++
++        if (front.hasDiverged(back)) {
++            front.pushChanges();
++
++            back.sync(front);
++            this.back ^= 1;
++
++            shouldShow = true;
++        }
++
++        if (shouldShow) {
++            front.setActive();
++            this.visible = true;
++        }
++    }
++
++    private void hide() {
++        SidebarBufferUtilSpec.IMPL_KEY.get().hideSidebar(this.getOwner());
++        this.visible = false;
++    }
++
++    @Override
++    protected void onOwnerChange() {
++        this.buffer[0].setOwner(this.getOwner());
++        this.buffer[1].setOwner(this.getOwner());
++
++        if (this.visible) {
++            this.buffer[this.back ^ 1].setActive();
++        }
++    }
++
++    private final class StageImpl implements SidebarStage {
++        @Override
++        public void setTitle(String title) {
++            Sidebar.this.setTitle(title);
++        }
++
++        @Override
++        public void setLine(int line, String value) {
++            this.setLine(line, value, null);
++        }
++
++        @Override
++        public void setLine(int line, String value, String display) {
++            Sidebar.this.setLine(line, value, display);
++        }
++
++    }
++}
+diff --git a/src/main/java/gg/projecteden/parchment/sidebar/SidebarBuffer.java b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBuffer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c4a58a2b4e8bf5d3130b7da71616f06b6ed98e8f
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBuffer.java
+@@ -0,0 +1,100 @@
++package gg.projecteden.parchment.sidebar;
++
++import org.bukkit.entity.Player;
++
++import java.util.Arrays;
++import java.util.Objects;
++
++public abstract class SidebarBuffer {
++
++    @SuppressWarnings("StringOperationCanBeSimplified")
++    private static final String AUTO_SPACE = new String();
++    protected final String name;
++    protected final int size;
++    protected final String[] liveLines;
++    protected final String[] stagedLines;
++    protected final String[] liveDisplays;
++    protected final String[] stagedDisplays;
++
++    protected String liveTitle = "";
++    protected String stagedTitle = "";
++
++    protected SidebarBuffer(String name, int size) {
++        this.name = name;
++        this.size = size;
++        this.liveLines = new String[size];
++        this.stagedLines = new String[size];
++        this.liveDisplays = new String[size];
++        this.stagedDisplays = new String[size];
++    }
++
++    protected abstract void setActive();
++
++    protected abstract void pushChanges();
++
++    protected abstract void setOwner(Player player);
++
++    protected abstract boolean checkTitle(String title);
++
++    protected abstract boolean checkLine(String line);
++
++    void setTitle(String title) {
++        this.stagedTitle = Objects.requireNonNullElse(title, "");
++    }
++
++    void setLine(int line, String value, String display) {
++        Objects.requireNonNull(value);
++        if (line < 0 || line > this.size - 1) {
++            throw new IndexOutOfBoundsException();
++        }
++
++        this.stagedLines[line] = value;
++        this.stagedDisplays[line] = display;
++
++        for (int i = line - 1; i >= 0; i--) {
++            if (this.stagedLines[i] == null) {
++                this.stagedLines[i] = SidebarBuffer.AUTO_SPACE;
++            } else {
++                break;
++            }
++        }
++    }
++
++    void clearLine(int line) {
++        if (line < 0 || line > this.size - 1) {
++            throw new IndexOutOfBoundsException();
++        }
++
++        this.stagedLines[line] = SidebarBuffer.AUTO_SPACE;
++
++        if (line + 1 == this.size || this.stagedLines[line + 1] == null) {
++            for (int i = line; i >= 0; i--) {
++                if (this.stagedLines[i] == SidebarBuffer.AUTO_SPACE) {
++                   this.stagedLines[i] = null;
++                } else {
++                   break;
++                }
++            }
++        }
++    }
++
++    void sync(SidebarBuffer live) {
++        this.stagedTitle = live.liveTitle;
++        System.arraycopy(live.liveLines, 0, this.stagedLines, 0, this.size);
++        System.arraycopy(live.liveDisplays, 0, this.stagedDisplays, 0, this.size);
++    }
++
++    void clear() {
++        this.stagedTitle = "";
++        Arrays.fill(this.stagedLines, null);
++        Arrays.fill(this.stagedDisplays, null);
++    }
++
++    boolean hasDiverged(SidebarBuffer live) {
++        boolean out = !Objects.equals(this.stagedTitle, live.liveTitle);
++        out = out || !Arrays.equals(this.stagedLines, live.liveLines);
++        out = out || !Arrays.equals(this.stagedDisplays, live.liveDisplays);
++
++        return out;
++    }
++}
+diff --git a/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferUtilSpec.java b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferUtilSpec.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..22239d7ea5d632f306caba0d139fe1576e85a7dc
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferUtilSpec.java
+@@ -0,0 +1,12 @@
++package gg.projecteden.parchment.sidebar;
++
++import gg.projecteden.parchment.entity.EntityDataServiceKey;
++import org.bukkit.entity.Player;
++
++public interface SidebarBufferUtilSpec {
++    EntityDataServiceKey<SidebarBufferUtilSpec> IMPL_KEY = new EntityDataServiceKey<>(SidebarBufferUtilSpec.class);
++
++    SidebarBuffer create(String bufferName);
++
++    void hideSidebar(Player player);
++}
+diff --git a/src/main/java/gg/projecteden/parchment/sidebar/SidebarLayout.java b/src/main/java/gg/projecteden/parchment/sidebar/SidebarLayout.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..238d2c1338aee95b24fd31c9643e0f966fe0b79f
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarLayout.java
+@@ -0,0 +1,58 @@
++package gg.projecteden.parchment.sidebar;
++
++import java.util.HashSet;
++import java.util.Set;
++
++/**
++ * A sidebar layout. Subclasses can describe custom layouts by using the
++ * {@link #setup(SidebarStage)} and {@link #update(SidebarStage)} hooks.
++ */
++public abstract class SidebarLayout {
++    private final Set<Runnable> subscribers = new HashSet<>();
++
++    /**
++     * Pushes an update to all subscribers.
++     */
++    public final void refresh() {
++        synchronized (this.subscribers) {
++            for (Runnable s : this.subscribers) {
++                s.run();
++            }
++        }
++    }
++
++    /**
++     * Runs when the layout is first applied.
++     *
++     * <p> The provided sidebar stage may be used to create the first
++     * frame of sidebar data, which will be pushed to the client upon
++     * exit of this method.
++     *
++     * @param stage The sidebar stage. Using it outside this method will
++     *              result in undefined behavior.
++     */
++    protected void setup(SidebarStage stage) {
++    }
++
++    /**
++     * Runs when a refresh is requested.
++     *
++     * <p> The provided sidebar stage may be used to update the existing
++     * sidebar data, which will be pushed to the client upon exit of
++     * this method. Sidebar data from previous hook calls will stay the
++     * same unless explicitly changed here.
++     *
++     * @param stage The sidebar stage. Using it outside this method will
++     *              result in undefined behavior.
++     */
++    protected void update(SidebarStage stage) {
++    }
++
++    final void subscribe(Runnable listener) {
++        this.subscribers.add(listener);
++    }
++
++    final void unsubscribe(Runnable listener) {
++        this.subscribers.remove(listener);
++    }
++}
+diff --git a/src/main/java/gg/projecteden/parchment/sidebar/SidebarStage.java b/src/main/java/gg/projecteden/parchment/sidebar/SidebarStage.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e604d3b8183abe342ef5c055069f1c4b16df55c
+--- /dev/null
++++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarStage.java
+@@ -0,0 +1,32 @@
++package gg.projecteden.parchment.sidebar;
++
++/**
++ * An abstracted sidebar stage.
++ */
++public interface SidebarStage {
++    /**
++     * Stages a new title.
++     *
++     * @param title The new title.
++     */
++    void setTitle(String title);
++
++    /**
++     * Stages a new line at the provided index.
++     *
++     * @param line  The line index.
++     * @param value The new line.
++     */
++    void setLine(int line, String value);
++
++    /**
++     * Stages a new line at the provided index
++     * Uses the display as the right aligned text
++     *
++     * @param line The line index
++     * @param value The new line
++     * @param display The right aligned text
++     */
++    void setLine(int line, String value, String display);
++
++}
