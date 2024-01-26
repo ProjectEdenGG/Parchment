@@ -1,0 +1,113 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Thu, 25 Jan 2024 19:59:13 -0500
+Subject: [PATCH] Add Block BreakNaturally Overload
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
+index d6e2b9d4bbd3ba9f9461a02b282c26b95861530a..c05a8383c24e5a2b2d0469e66ca2c8853dc2c076 100644
+--- a/src/main/java/net/minecraft/world/level/block/Block.java
++++ b/src/main/java/net/minecraft/world/level/block/Block.java
+@@ -307,24 +307,28 @@ public class Block extends BlockBehaviour implements ItemLike {
+         return state.getDrops(lootparams_a);
+     }
+ 
+-    public static void dropResources(BlockState state, Level world, BlockPos pos) {
++    public static List<ItemEntity> dropResources(BlockState state, Level world, BlockPos pos) {
+         if (world instanceof ServerLevel) {
++            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
+             org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, (BlockEntity) null)).forEach((itemstack) -> { // Parchment
+-                Block.popResource(world, pos, itemstack);
++                itemEntities.add(Block.popResourceWithReturn(world, pos, itemstack));
+             });
+             state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY, true);
++            return itemEntities;
+         }
+-
++        return new java.util.ArrayList<>();
+     }
+ 
+-    public static void dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity) {
++    public static List<ItemEntity> dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity) {
+         if (world instanceof ServerLevel) {
++            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
+             org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, blockEntity)).forEach((itemstack) -> { // Parchment
+-                Block.popResource((ServerLevel) world, pos, itemstack);
++                itemEntities.add(Block.popResourceWithReturn((ServerLevel) world, pos, itemstack));
+             });
+             state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY, true);
++            return itemEntities;
+         }
+-
++        return new java.util.ArrayList<>();
+     }
+     // Paper start - Add BlockBreakBlockEvent
+     public static boolean dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity, BlockPos source) {
+@@ -351,15 +355,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+     // Paper start - Properly handle xp dropping
+         dropResources(state, world, pos, blockEntity, entity, tool, true);
+     }
+-    public static void dropResources(BlockState state, Level world, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack tool, boolean dropExperience) {
++    public static List<ItemEntity> dropResources(BlockState state, Level world, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack tool, boolean dropExperience) {
+     // Paper end - Properly handle xp dropping
+         if (world instanceof ServerLevel) {
++            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
+             org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, blockEntity, entity, tool)).forEach((itemstack1) -> { // Parchment
+-                Block.popResource(world, pos, itemstack1);
++                itemEntities.add(Block.popResourceWithReturn(world, pos, itemstack1));
+             });
+             state.spawnAfterBreak((ServerLevel) world, pos, tool, dropExperience); // Paper - Properly handle xp dropping
++            return itemEntities;
+         }
+-
++        return new java.util.ArrayList<>();
+     }
+ 
+     public static void popResource(Level world, BlockPos pos, ItemStack stack) {
+@@ -373,6 +379,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+         }, stack);
+     }
+ 
++    public static ItemEntity popResourceWithReturn(Level world, BlockPos pos, ItemStack stack) {
++        double d0 = (double) EntityType.ITEM.getHeight() / 2.0D;
++        double d1 = (double) pos.getX() + 0.5D + Mth.nextDouble(world.random, -0.25D, 0.25D);
++        double d2 = (double) pos.getY() + 0.5D + Mth.nextDouble(world.random, -0.25D, 0.25D) - d0;
++        double d3 = (double) pos.getZ() + 0.5D + Mth.nextDouble(world.random, -0.25D, 0.25D);
++
++        ItemEntity itemEntity = new ItemEntity(world, d1, d2, d3, stack);
++        Block.popResource(world, () -> itemEntity, stack);
++        return itemEntity;
++    }
++
+     public static void popResourceFromFace(Level world, BlockPos pos, Direction direction, ItemStack stack) {
+         int i = direction.getStepX();
+         int j = direction.getStepY();
+diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
+index 4b42ef2a876ea210d948238e63fd7a2b7035bb5b..8d2ea69c52480b6b2e28fa00ba566b7a07cfd224 100644
+--- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
++++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
+@@ -494,6 +494,11 @@ public class CraftBlock implements Block {
+ 
+     @Override
+     public boolean breakNaturally(ItemStack item, boolean triggerEffect, boolean dropExperience) {
++        return this.breakNaturally(null, item, triggerEffect, dropExperience);
++    }
++
++    @Override
++    public boolean breakNaturally(Player player, ItemStack item, boolean triggerEffect, boolean dropExperience) {
+         // Paper end
+         // Order matters here, need to drop before setting to air so skulls can get their data
+         net.minecraft.world.level.block.state.BlockState iblockdata = this.getNMS();
+@@ -503,7 +508,11 @@ public class CraftBlock implements Block {
+ 
+         // Modelled off EntityHuman#hasBlock
+         if (block != Blocks.AIR && (item == null || !iblockdata.requiresCorrectToolForDrops() || nmsItem.isCorrectToolForDrops(iblockdata))) {
+-            net.minecraft.world.level.block.Block.dropResources(iblockdata, this.world.getMinecraftWorld(), this.position, this.world.getBlockEntity(this.position), null, nmsItem, false); // Paper - Properly handle xp dropping
++            List<net.minecraft.world.entity.item.ItemEntity> itemEntities = net.minecraft.world.level.block.Block.dropResources(iblockdata, this.world.getMinecraftWorld(), this.position, this.world.getBlockEntity(this.position), null, nmsItem, false);
++
++            if (player != null) {
++                new org.bukkit.event.block.BlockDropItemEvent(this, this.getState(), player, itemEntities.stream().map(i -> (org.bukkit.entity.Item) CraftEntity.getEntity((org.bukkit.craftbukkit.CraftServer) Bukkit.getServer(), i)).toList()).callEvent();
++            }
+             // Paper start - improve Block#breanNaturally
+             if (triggerEffect) {
+                 if (iblockdata.getBlock() instanceof net.minecraft.world.level.block.BaseFireBlock) {
