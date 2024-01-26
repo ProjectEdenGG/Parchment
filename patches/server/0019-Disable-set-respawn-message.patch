@@ -5,18 +5,20 @@ Subject: [PATCH] Disable set respawn message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 823bc659f7421c3752e4cf1333e1568e1308464d..b7cdefdbbdba46fdd9f39275474be356c2af8b40 100644
+index 1d2fa2de139ea713051ca4d2d79bec9f62e69af3..961bc4c00bb3b7aac7fa31a62130270353da04e4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2399,9 +2399,11 @@ public class ServerPlayer extends Player {
+@@ -2400,9 +2400,10 @@ public class ServerPlayer extends Player {
              forced = event.isForced();
-             // Paper end
+             // Paper end - Add PlayerSetSpawnEvent
  
+-            if (event.willNotifyPlayer() && event.getNotification() != null) { // Paper - Add PlayerSetSpawnEvent
+-                this.sendSystemMessage(PaperAdventure.asVanilla(event.getNotification())); // Paper - Add PlayerSetSpawnEvent
+-            }
 +            /* Parchment start
-             if (event.willNotifyPlayer() && event.getNotification() != null) { // Paper
-                 this.sendSystemMessage(PaperAdventure.asVanilla(event.getNotification())); // Paper
-             }
-+            Parchment end */
++            if (event.willNotifyPlayer() && event.getNotification() != null) { // Paper
++                this.sendSystemMessage(PaperAdventure.asVanilla(event.getNotification())); // Paper
++            } Parchment end */
  
              this.respawnPosition = pos;
              this.respawnDimension = dimension;

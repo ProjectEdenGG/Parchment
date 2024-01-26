@@ -5,11 +5,11 @@ Subject: [PATCH] Add HangingFrame Tick API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
-index 66cf0a6cd1525ecf2615809210a26d55f445d07d..360ca6458083fa4018f11fcdade3ce930835db72 100644
+index f88918b7c15b72f4cb1dd313734f550432fd5858..74215934d25d48fc2628401ed57cb78222b8c2ce 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
 @@ -41,6 +41,7 @@ public abstract class HangingEntity extends Entity {
-     private int checkInterval; { this.checkInterval = this.getId() % this.level().spigotConfig.hangingTickFrequency; } // Paper
+     private int checkInterval; { this.checkInterval = this.getId() % this.level().spigotConfig.hangingTickFrequency; } // Paper - Perf: offset item frame ticking
      public BlockPos pos;
      protected Direction direction;
 +    public boolean tick = true; // Parchment

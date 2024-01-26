@@ -5,7 +5,7 @@ Subject: [PATCH] Add CustomBlockUpdateEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/NoteBlock.java b/src/main/java/net/minecraft/world/level/block/NoteBlock.java
-index ff16075fbfe664c73a46bc4b002450867974114e..32b56119850282ba8da5741e22dc21ffd6f6fb08 100644
+index a541dc3a6e373b30fff0abf5305e77854c190f10..80624404c6e88ba2015f6732001dd462173ae214 100644
 --- a/src/main/java/net/minecraft/world/level/block/NoteBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/NoteBlock.java
 @@ -2,6 +2,8 @@ package net.minecraft.world.level.block;
@@ -52,7 +52,7 @@ index ff16075fbfe664c73a46bc4b002450867974114e..32b56119850282ba8da5741e22dc21ff
              this.playNote(player, state, world, pos);
              player.awardStat(Stats.TUNE_NOTEBLOCK);
 diff --git a/src/main/java/net/minecraft/world/level/block/TripWireBlock.java b/src/main/java/net/minecraft/world/level/block/TripWireBlock.java
-index 2f947997ca746d18544940ef67ff550a95946edd..b1ecefd22a64bf7a134490cf7ac88d4d04e1f4e7 100644
+index 3cb1db27dba902678a5848a1fb5e2c6ec6241e60..950671e715b5353ab919814686fa0c55ae00050e 100644
 --- a/src/main/java/net/minecraft/world/level/block/TripWireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/TripWireBlock.java
 @@ -66,21 +66,25 @@ public class TripWireBlock extends Block {
@@ -89,7 +89,7 @@ index 2f947997ca746d18544940ef67ff550a95946edd..b1ecefd22a64bf7a134490cf7ac88d4d
 +        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.SHAPE).callEvent()) return;
          if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return; // Paper - prevent adjacent tripwires from updating
          if (!moved && !state.is(newState.getBlock())) {
-             this.updateSource(world, pos, (BlockState) state.setValue(TripWireBlock.POWERED, true), true); // Paper - fix state inconsistency
+             this.updateSource(world, pos, (BlockState) state.setValue(TripWireBlock.POWERED, true), true); // Paper - fix tripwire state inconsistency
 @@ -97,6 +102,7 @@ public class TripWireBlock extends Block {
  
      @Override
@@ -104,7 +104,7 @@ index 2f947997ca746d18544940ef67ff550a95946edd..b1ecefd22a64bf7a134490cf7ac88d4d
      private void updateSource(Level world, BlockPos pos, BlockState state) {
 +        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.SHAPE).callEvent()) return;
          if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return; // Paper - prevent adjacent tripwires from updating
-         // Paper start - fix state inconsistency
+         // Paper start - fix tripwire state inconsistency
          this.updateSource(world, pos, state, false);
 @@ -146,6 +153,7 @@ public class TripWireBlock extends Block {
  
@@ -112,7 +112,7 @@ index 2f947997ca746d18544940ef67ff550a95946edd..b1ecefd22a64bf7a134490cf7ac88d4d
      public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
 +        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(state), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.POWERED).callEvent()) return;
          if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableTripwireUpdates) return; // Paper - prevent tripwires from detecting collision
-         if (!new io.papermc.paper.event.entity.EntityInsideBlockEvent(entity.getBukkitEntity(), org.bukkit.craftbukkit.block.CraftBlock.at(world, pos)).callEvent()) { return; } // Paper
+         if (!new io.papermc.paper.event.entity.EntityInsideBlockEvent(entity.getBukkitEntity(), org.bukkit.craftbukkit.block.CraftBlock.at(world, pos)).callEvent()) { return; } // Paper - Add EntityInsideBlockEvent
          if (!world.isClientSide) {
 @@ -157,6 +165,7 @@ public class TripWireBlock extends Block {
  

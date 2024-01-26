@@ -27,7 +27,7 @@ index 30f8fd154136d05267e8737ff04a0be45b23a35d..7091340870607605521239893b8ab763
  }
 diff --git a/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferImpl.java b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferImpl.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..5a1e28da1f3dcae1abeb016708dc6fdf883cd213
+index 0000000000000000000000000000000000000000..79900376e8d91792a23dde07fd9f516c3694318f
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferImpl.java
 @@ -0,0 +1,181 @@

@@ -27,7 +27,7 @@ index 0000000000000000000000000000000000000000..30f8fd154136d05267e8737ff04a0be4
 +
 +}
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 58536aabf607015939a1326f80207c0a06eed8ff..b27e958e8da8abbf0e36b432bf3a29da270ecb8e 100644
+index 6de6dad36203479677a29ad61e21bc369d4e5513..4718291014acba4fac77fe18766b46bf9e7b3277 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -268,6 +268,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -40,10 +40,10 @@ index 58536aabf607015939a1326f80207c0a06eed8ff..b27e958e8da8abbf0e36b432bf3a29da
          // this.setPlayerList(new DedicatedPlayerList(this, this.registries(), this.playerDataStorage)); // Spigot - moved up
          this.server.loadPlugins();
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 9abe817ae202edaa2d88cd59ae5c7db0b1c634be..861dff20a09d94cb90e1ff95ea51f50efa7b501d 100644
+index 2c06f3ebf7e1069727387bfc60db30c958c14b5a..95a732d2ff7bf604e1640015552495e14b3ff2a4 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -158,6 +158,31 @@ import org.bukkit.plugin.PluginManager;
+@@ -160,6 +160,31 @@ import org.bukkit.plugin.PluginManager;
  
  public abstract class Entity implements Nameable, EntityAccess, CommandSource, ScoreHolder {
  
@@ -74,12 +74,12 @@ index 9abe817ae202edaa2d88cd59ae5c7db0b1c634be..861dff20a09d94cb90e1ff95ea51f50e
 +
      // CraftBukkit start
      private static final int CURRENT_LEVEL = 2;
-     public boolean preserveMotion = true; // Paper - keep initial motion on first setPositionRotation
+     public boolean preserveMotion = true; // Paper - Fix Entity Teleportation and cancel velocity if teleported; keep initial motion on first setPositionRotation
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index aa4dbf91cf6da329fdcacbde98bb870eb48e8f5c..392d5b896254e5dd57de33e16fa196950e6f7c61 100644
+index 8698104e3eb98e2cc5da5de87a8f538860c1d91d..269ad2696e07a602ca350284c32771a02dcdff08 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -222,6 +222,10 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -77,6 +77,10 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
      };
      // Paper end - Folia schedulers
  

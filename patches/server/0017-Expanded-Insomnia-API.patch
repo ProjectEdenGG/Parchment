@@ -5,10 +5,10 @@ Subject: [PATCH] Expanded Insomnia API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index c3d6e20a29ab392ce9c1be027fbf6c6e06720efe..0070b39c9b4e6414c83d1863095af7ed93b55fc7 100644
+index beb8b767f8dd6f13f20e782b9d8696567e07a110..7d9715557fbe6c8eebbaee24f4d9b986adc4c313 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -197,6 +197,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -194,6 +194,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime; // Paper - getLastPlayed replacement API
  
@@ -17,10 +17,10 @@ index c3d6e20a29ab392ce9c1be027fbf6c6e06720efe..0070b39c9b4e6414c83d1863095af7ed
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
  
-@@ -3304,4 +3306,33 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-         return this.spigot;
+@@ -3372,4 +3374,31 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+     public void setSendViewDistance(final int viewDistance) {
+         this.getHandle().setSendViewDistance(viewDistance);
      }
-     // Spigot end
 +
 +    // Parchment start
 +    @Override
@@ -48,6 +48,4 @@ index c3d6e20a29ab392ce9c1be027fbf6c6e06720efe..0070b39c9b4e6414c83d1863095af7ed
 +        return net.minecraft.util.Mth.clamp(this.getHandle().getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
 +    }
 +    // Parchment end
-+
-+
  }

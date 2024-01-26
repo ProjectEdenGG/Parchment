@@ -5,7 +5,7 @@ Subject: [PATCH] Add PreEntityShootBowEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index b319021b22c5dceba6199ed27814b2dcf47b8d50..d12a49f9eb0110d4d889f15863ecb88c07a848b9 100644
+index 586e3e92ccc275446df6dbbff9bf010a37a9aa8f..e4d681ed34f53ba35fa066338c563a36f3937fa0 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -199,13 +199,17 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -28,7 +28,7 @@ index b319021b22c5dceba6199ed27814b2dcf47b8d50..d12a49f9eb0110d4d889f15863ecb88c
          org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getMainHandItem(), entityarrow.getPickupItem(), entityarrow, net.minecraft.world.InteractionHand.MAIN_HAND, 0.8F, true); // Paper
          if (event.isCancelled()) {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Illusioner.java b/src/main/java/net/minecraft/world/entity/monster/Illusioner.java
-index 63fce7e3d9f59f36e29bc827a46396d73143bb8b..9762a79c928d7235a7868b37858474e1b1e0cf56 100644
+index fb84b35e34063075e69e00e430bc00e7c3b9d62c..c31872f7cb9fa5d635ee833cae8ca7f66b359ecd 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Illusioner.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Illusioner.java
 @@ -189,13 +189,17 @@ public class Illusioner extends SpellcasterIllager implements RangedAttackMob {
@@ -47,11 +47,11 @@ index 63fce7e3d9f59f36e29bc827a46396d73143bb8b..9762a79c928d7235a7868b37858474e1
  
 -        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
 +        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4), preEvent.isRelative()); // Parchment
-         // Paper start
+         // Paper start - EntityShootBowEvent
          org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getMainHandItem(), entityarrow.getPickupItem(), entityarrow, target.getUsedItemHand(), 0.8F, true);
          if (event.isCancelled()) {
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
-index 42ebd91196ae420eee57f4380abc558555457163..593c9e840956efe0fcd723744eef389b01a140c4 100644
+index d14eab0d83d629a4522bf3f7d789d2853eb84f06..8f0e0efcc75dd07e3bd267ba0d4051d9e6891156 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
 @@ -136,8 +136,10 @@ public abstract class AbstractArrow extends Projectile {
@@ -68,7 +68,7 @@ index 42ebd91196ae420eee57f4380abc558555457163..593c9e840956efe0fcd723744eef389b
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 2f058cec80c6ef7a5a5ca065dc6c9fe353c521de..48f246351d75af18b72fe235b013de1c7290c8db 100644
+index 156809090f1f83ad68e7e2477a3cfddac5757a8e..82e696e49bc4c823ba9504cc4f1f2006462e6df7 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 @@ -172,9 +172,17 @@ public abstract class Projectile extends Entity implements TraceableEntity {
@@ -132,7 +132,7 @@ index 08d597db1a5345a343777a01427655e6bf2c926b..b923ea037a69628309167d16cc2a0ae7
                              entityarrow.setCritArrow(true);
                          }
 diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-index eede02c3f125d230af537bb67bebed9b88f7d1b4..343c634b97f3ff5e8eda008121a661423a1810aa 100644
+index 06689ee8799079510a1a4e7b68029b9629e318fb..05018b1fb5a9928ac70485533e6700f386903d2f 100644
 --- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
 +++ b/src/main/java/net/minecraft/world/item/CrossbowItem.java
 @@ -225,6 +225,11 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {

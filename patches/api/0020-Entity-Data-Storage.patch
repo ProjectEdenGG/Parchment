@@ -223,18 +223,6 @@ index 0000000000000000000000000000000000000000..c52c8371b2edf4f62533ffcbc7f8d7b1
 +        return this.idx;
 +    }
 +}
-diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 65d2b0e87feec296b9f20a6de2d2266493cd1e7b..283fa192456de9e643ed6b87ace05135e9cb7713 100644
---- a/src/main/java/org/bukkit/entity/Entity.java
-+++ b/src/main/java/org/bukkit/entity/Entity.java
-@@ -1107,4 +1107,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
-      */
-     @NotNull String getScoreboardEntryName();
-     // Paper end - entity scoreboard name
-+
-+    gg.projecteden.parchment.entity.EntityData getStoredEntityData();
-+
- }
 diff --git a/src/main/java/gg/projecteden/parchment/entity/EntityDataServiceKey.java b/src/main/java/gg/projecteden/parchment/entity/EntityDataServiceKey.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..c9f9c0d235f33925ee247ba4af56bf9f31bf7056
@@ -271,3 +259,15 @@ index 0000000000000000000000000000000000000000..c9f9c0d235f33925ee247ba4af56bf9f
 +        this.service = service;
 +    }
 +}
+diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
+index fb108c194483ef104f323eb2e0aa73451c843292..e0fdf6d2550a6f331c5ccc82443a9065eca48072 100644
+--- a/src/main/java/org/bukkit/entity/Entity.java
++++ b/src/main/java/org/bukkit/entity/Entity.java
+@@ -1107,4 +1107,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+      */
+     @NotNull String getScoreboardEntryName();
+     // Paper end - entity scoreboard name
++
++    gg.projecteden.parchment.entity.EntityData getStoredEntityData();
++
+ }

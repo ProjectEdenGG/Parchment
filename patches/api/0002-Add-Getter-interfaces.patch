@@ -423,7 +423,7 @@ index 12163a7b0591a7d022dc7eb9ee6608a1b6c39d9b..d81c7307127b135417e06a3b244416be
      private static final HandlerList handlers = new HandlerList();
      private final Player player;
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index 9bbd928f7d513ca317cd27beffa61e5111f5ffb0..7cc62b34800d7fe3d26e78945b1e4f24d09f7c85 100644
+index c6049747fc286acb4e8053901fcc517e5170afa2..5ab9b3e73c9cc6ee9cc4471a1f40c9c60a75b99c 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
@@ -509,7 +509,7 @@ index d124768378d6f0c5573f28ee815ea3886fe74868..11a00998b1cb5ee582e225553f15b1b7
      private final UUID uuid;
      private final String name;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 49974558799830d827f9ccd65a8bafee3fb0376b..0015bb89899e52d3c8f1ca68807ad7092e690305 100644
+index 25650e9a31bcaf672acd115547abc1ec41a1de34..104e562b84196527fa3e10b52836f21cb0471b81 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
@@ -561,7 +561,7 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 1d0fd7ff8449f815a7d980af0b378181ea8bf8d8..65d2b0e87feec296b9f20a6de2d2266493cd1e7b 100644
+index 6ace3581f8d0c2a1b7e2188d5b6af5c984b74a0e..fb108c194483ef104f323eb2e0aa73451c843292 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
@@ -595,7 +595,7 @@ index 8b0d04d5b39ee817555a36adddc39b18fc6f0d02..1c87047de615a85ee20297295478770e
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index a8d3451ccfcd21a9e80adc2feab8fc9c2926c753..c445cff54095a5389c8d186a9a191beef082c118 100644
+index 815631a6157b87a9ead270fe0b11ac3892a3fbf4..558903782a1898d875274be7561f332f1ca568b2 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -52,7 +52,17 @@ import org.jetbrains.annotations.Nullable;
@@ -891,12 +891,12 @@ index 8e2afeab4c62724148e8bb0c83fb7eec569c7a0c..2843fd117151dc75c87db06915a67322
      private boolean cancelled;
      private net.kyori.adventure.text.Component titleOverride; // Paper
 diff --git a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
-index fc2d9e85b65347b90bde3b0b13ccae759e33d466..6b2e64fa9c0f3c0af88797d63557c333edf69a5d 100644
+index f8b69b52ec8efa103e4e78e1b5c6a015e73d2a75..7c56a4a7552f71f8e81d23859282b6a8301872cb 100644
 --- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
-@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
-  * <p>
-  * This event is asynchronous, and not run using main thread.
+@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
+  * Consider rendering any translatable yourself with {@link net.kyori.adventure.translation.GlobalTranslator#render}
+  * if the client's language is known.
   */
 -public class AsyncPlayerPreLoginEvent extends Event {
 +public class AsyncPlayerPreLoginEvent extends Event implements gg.projecteden.api.interfaces.HasUniqueId { // Parchment
@@ -917,10 +917,10 @@ index f6d3b817de3001f04ea4554c7c39a1290af3fd6d..44efb5cc62149b34b994eadac488a902
  
      public PlayerEvent(@NotNull final Player who) {
 diff --git a/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java b/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
-index 6800132c6288b4588fd02b08d26f016c38f27129..8e333a361cdee30a83e9472285dfb0b30b2e72ca 100644
+index 175ed12dd1698f4d153c9acdac8340c15a427ea5..5e14dc6968de1b146b31abef19fbba1af8c68b6f 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
 +++ b/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
-@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
+@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
   */
  @Deprecated
  @Warning(reason = "This event causes a login thread to synchronize with the main thread")

@@ -49,6 +49,7 @@ run/
 /parchment-server/
 /Parchment-API/
 /parchment-api/
+/paper-api-generator/
 
 # Compiled class file
 *.class

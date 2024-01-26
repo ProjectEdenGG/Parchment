@@ -6,7 +6,7 @@ Subject: [PATCH] Add Sidebar Utility
 
 diff --git a/src/main/java/gg/projecteden/parchment/sidebar/Sidebar.java b/src/main/java/gg/projecteden/parchment/sidebar/Sidebar.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..f3f7a138d8d0a0e5f863f50fa39ffd861a8a1db9
+index 0000000000000000000000000000000000000000..b0c704387e566d76d097595c35d06d8e5cbe204f
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/sidebar/Sidebar.java
 @@ -0,0 +1,123 @@
@@ -135,7 +135,7 @@ index 0000000000000000000000000000000000000000..f3f7a138d8d0a0e5f863f50fa39ffd86
 +}
 diff --git a/src/main/java/gg/projecteden/parchment/sidebar/SidebarBuffer.java b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBuffer.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..c4a58a2b4e8bf5d3130b7da71616f06b6ed98e8f
+index 0000000000000000000000000000000000000000..ec13738dc625464d7fa41484ee44583ef82248fd
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBuffer.java
 @@ -0,0 +1,100 @@

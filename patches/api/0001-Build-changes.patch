@@ -5,11 +5,11 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 9d817bf3f26ffd484945a00a6538970eca22ee20..fa4928487cca082a770a25f6f6490286ae397037 100644
+index bf01892c248b988531d21d9fb0f74d0adf2205ac..d05151a0d3d6fb557cf5bb72d71bd25e8d0c3c51 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -14,6 +14,9 @@ val bungeeCordChatVersion = "1.20-R0.1"
- val adventureVersion = "4.14.0"
+ val adventureVersion = "4.15.0"
  val slf4jVersion = "2.0.9"
  val log4jVersion = "2.17.1"
 +
