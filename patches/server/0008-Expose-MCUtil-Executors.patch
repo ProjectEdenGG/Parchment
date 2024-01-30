@@ -5,10 +5,10 @@ Subject: [PATCH] Expose MCUtil Executors
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ce3bbb9909dde2594d33fd33d5d93a5afbbe601f..e6186484a966431b562c75f3f0952637f30ed221 100644
+index f2ed626ffb125d5a8663f2021524e5359b203177..e9de3ee7fbc1b9ff59802f6823312e974bfcc33c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -3229,4 +3229,16 @@ public final class CraftServer implements Server {
+@@ -3227,4 +3227,16 @@ public final class CraftServer implements Server {
      }
  
      // Paper end

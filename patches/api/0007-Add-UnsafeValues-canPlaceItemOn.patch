@@ -5,13 +5,21 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index a4b38f284d4fea7df7f9df9bf44e4f68fefaf20f..df153e397f69a6a2f2487998efd444f26d1ff701 100644
+index 923d8655a84e26960d35d8dc6e4ebc0b10c295d5..325f53f2a052d6cc4e53e16f00d10713682540ff 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -260,4 +260,17 @@ public interface UnsafeValues {
- 
+@@ -261,6 +261,7 @@ public interface UnsafeValues {
      String getStatisticCriteriaKey(@NotNull org.bukkit.Statistic statistic);
      // Paper end
+ 
++
+     // Paper start - spawn egg color visibility
+     /**
+      * Obtains the underlying color informating for a spawn egg of a given
+@@ -273,4 +274,18 @@ public interface UnsafeValues {
+      */
+     @Nullable org.bukkit.Color getSpawnEggLayerColor(org.bukkit.entity.EntityType entityType, int layer);
+     // Paper end - spawn egg color visibility
 +
 +    // Parchment start
 +    /**
@@ -25,4 +33,5 @@ index a4b38f284d4fea7df7f9df9bf44e4f68fefaf20f..df153e397f69a6a2f2487998efd444f2
 +     */
 +    java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(@org.jetbrains.annotations.NotNull ItemStack item, @org.jetbrains.annotations.Nullable gg.projecteden.parchment.OptionalHumanEntity player, @org.jetbrains.annotations.NotNull org.bukkit.block.Block block, @org.jetbrains.annotations.NotNull org.bukkit.block.BlockFace face);
 +    // Parchment end
++
  }
