@@ -9,12 +9,13 @@ new file mode 100644
 index 0000000000000000000000000000000000000000..ae798a18bb07d83bfd3acefc222a48e29f9a3ec3
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/block/CustomBlockUpdateEvent.java
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,70 @@
 +package gg.projecteden.parchment.event.block;
 +
 +import org.bukkit.block.data.BlockData;
 +import org.bukkit.event.Cancellable;
 +import org.bukkit.event.Event;
++import org.bukkit.Location;
 +import org.bukkit.event.HandlerList;
 +import org.jetbrains.annotations.NotNull;
 +
@@ -25,6 +26,13 @@ index 0000000000000000000000000000000000000000..ae798a18bb07d83bfd3acefc222a48e2
 +
 +    private BlockData block;
 +    private UpdateType updateType;
++    private Location location;
++
++    public CustomBlockUpdateEvent(BlockData block, UpdateType updateType, Location location) {
++        this.block = block;
++        this.updateType = updateType;
++        this.location = location;
++    }
 +
 +    public CustomBlockUpdateEvent(BlockData block, UpdateType updateType) {
 +        this.block = block;
@@ -47,6 +55,10 @@ index 0000000000000000000000000000000000000000..ae798a18bb07d83bfd3acefc222a48e2
 +
 +    public UpdateType getUpdateType() {
 +        return updateType;
++    }
++
++    public Location getLocation() {
++        return location;
 +    }
 +
 +    @NotNull
