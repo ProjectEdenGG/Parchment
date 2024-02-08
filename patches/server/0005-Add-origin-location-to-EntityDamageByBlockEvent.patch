@@ -31,7 +31,7 @@ index 8e18a66c45af55ef37794cb6c00f565a347c95aa..b5ad5d810dbad4609bde5f0e12249be1
              return event;
          } else if (source.is(DamageTypes.LAVA)) {
 -            EntityDamageEvent event = (new EntityDamageByBlockEvent(CraftEventFactory.blockDamage, entity.getBukkitEntity(), DamageCause.LAVA, modifiers, modifierFunctions));
-+            EntityDamageEvent event = (new EntityDamageByBlockEvent(CraftEventFactory.blockDamage, entity.getBukkitEntity(), DamageCause.LAVA, modifiers, modifierFunctions, null, blockDamage.getLocation()));
++            EntityDamageEvent event = (new EntityDamageByBlockEvent(CraftEventFactory.blockDamage, entity.getBukkitEntity(), DamageCause.LAVA, modifiers, modifierFunctions, null, entity.getBukkitEntity().getLocation()));
              event.setCancelled(cancelled);
  
              Block damager = CraftEventFactory.blockDamage;
