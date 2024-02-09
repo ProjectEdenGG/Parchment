@@ -13,7 +13,7 @@ index 8e18a66c45af55ef37794cb6c00f565a347c95aa..b5ad5d810dbad4609bde5f0e12249be1
              EntityDamageEvent event;
              if (damager == null) {
 -                event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.BLOCK_EXPLOSION, modifiers, modifierFunctions, source.explodedBlockState); // Paper - add exploded state
-+                event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.BLOCK_EXPLOSION, modifiers, modifierFunctions, source.explodedBlockState, source.getEntity().getBukkitEntity().getLocation()); // Paper - handle block state in damage
++                event = new EntityDamageByBlockEvent(null, entity.getBukkitEntity(), DamageCause.BLOCK_EXPLOSION, modifiers, modifierFunctions, source.explodedBlockState, source.getEntity() == null ? null : source.getEntity().getBukkitEntity().getLocation()); // Paper - handle block state in damage
              } else if (entity instanceof EnderDragon && /*PAIL FIXME ((EntityEnderDragon) entity).target == damager*/ false) {
                  event = new EntityDamageEvent(entity.getBukkitEntity(), DamageCause.ENTITY_EXPLOSION, modifiers, modifierFunctions);
              } else {
