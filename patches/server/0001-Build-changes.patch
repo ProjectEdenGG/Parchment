@@ -5,46 +5,55 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 376e8983fdfdbb6c3e5fd8ad0f6a05e655b622bf..556e2244f37243154e0f2bec756e290421ccc14b 100644
+index 4998aff0b7cb084dcda15c6a18bbe45e99b6000a..34f1acc44c17b53d93b750a35817131145db454f 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -1,4 +1,5 @@
+@@ -1,6 +1,8 @@
  import io.papermc.paperweight.util.*
-+val edenVersion: String by project // Parchment
+ import java.time.Instant
  
++val edenVersion: String by project // Parchment
++
  plugins {
      java
-@@ -13,8 +14,12 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
+     `maven-publish`
+@@ -13,7 +15,9 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
  val alsoShade: Configuration by configurations.creating
  
  dependencies {
 -    implementation(project(":paper-api"))
--    implementation(project(":paper-mojangapi"))
 +    // Parchment start
 +    implementation(project(":parchment-api"))
-+    implementation("io.papermc.paper:paper-mojangapi:${project.version}") {
-+        exclude("io.papermc.paper", "paper-api")
-+    }
 +    // Parchment end
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -69,7 +74,7 @@ tasks.jar {
+@@ -80,14 +84,14 @@ tasks.jar {
+         val gitBranch = git("rev-parse", "--abbrev-ref", "HEAD").getText().trim() // Paper
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
-             "Implementation-Title" to "CraftBukkit",
--            "Implementation-Version" to "git-Paper-$implementationVersion",
-+            "Implementation-Version" to "git-Parchment-$implementationVersion", // Parchment
+-            "Implementation-Title" to "Paper",
++            "Implementation-Title" to "Parchment",
+             "Implementation-Version" to implementationVersion,
              "Implementation-Vendor" to date, // Paper
-             "Specification-Title" to "Bukkit",
+-            "Specification-Title" to "Paper",
++            "Specification-Title" to "Parchment",
              "Specification-Version" to project.version,
-@@ -97,7 +102,27 @@ tasks.compileTestJava {
+-            "Specification-Vendor" to "Paper Team",
+-            "Brand-Id" to "papermc:paper",
+-            "Brand-Name" to "Paper",
++            "Specification-Vendor" to "Project Eden",
++            "Brand-Id" to "projectedengg:parchment",
++            "Brand-Name" to "Parchment",
+             "Build-Number" to (build ?: ""),
+             "Build-Time" to Instant.now().toString(),
+             "Git-Branch" to gitBranch, // Paper
+@@ -108,6 +112,27 @@ tasks.compileTestJava {
  
  publishing {
      publications.create<MavenPublication>("maven") {
--        artifact(tasks.shadowJar)
 +        // Parchment start
-+        artifact(tasks.reobfJar)
++        artifact(tasks.jar)
 +        groupId = project.group as String?
 +        artifactId = "parchment"
 +        version = project.version as String?
@@ -67,7 +76,7 @@ index 376e8983fdfdbb6c3e5fd8ad0f6a05e655b622bf..556e2244f37243154e0f2bec756e2904
      }
  }
  
-@@ -153,7 +178,7 @@ fun TaskContainer.registerRunTask(
+@@ -144,7 +169,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -90,53 +99,23 @@ index 4b002e8b75d117b726b0de274a76d3596fce015b..4dca3956a76a9d57b3167f73696cf5d5
  
      /**
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 9d687da5bdf398bb3f6c84cdf1249a7213d09f2e..9b248dde91651b40b6b3e3dda8985c73543b4922 100644
+index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..87db580c74d20714e2ebe01df23811c79d1f8331 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-@@ -31,8 +31,10 @@ public class PaperVersionFetcher implements VersionFetcher {
-     @Nonnull
-     @Override
-     public Component getVersionMessage(@Nonnull String serverVersion) {
--        String[] parts = serverVersion.substring("git-Paper-".length()).split("[-\\s]");
--        final Component updateMessage = getUpdateStatusMessage("PaperMC/Paper", GITHUB_BRANCH_NAME, parts[0]);
-+        // Parchment start
-+        String[] parts = serverVersion.substring("git-Parchment-".length()).split("[-\\s]");
-+        final Component updateMessage = getUpdateStatusMessage("ProjectEdenGG/Parchment", GITHUB_BRANCH_NAME, parts[0]);
-+        // Parchment end
-         final Component history = getHistory();
+@@ -49,7 +49,7 @@ public class PaperVersionFetcher implements VersionFetcher {
+         if (build.buildNumber().isEmpty() && build.gitCommit().isEmpty()) {
+             updateMessage = text("You are running a development version without access to version information", color(0xFF5300));
+         } else {
+-            updateMessage = getUpdateStatusMessage("PaperMC/Paper", build);
++            updateMessage = getUpdateStatusMessage("ProjectEdenGG/Parchment", build);
+         }
+         final @Nullable Component history = this.getHistory();
  
-         return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
-diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 90ae7e8c81f6a9ede8aeaeec3bf784023522cefc..45aa6acb72e5df1265036be02decd1cdb52b9c00 100644
---- a/src/main/java/net/minecraft/server/MinecraftServer.java
-+++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1855,7 +1855,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
- 
-     @DontObfuscate
-     public String getServerModName() {
--        return "Paper"; // Paper
-+        return "Parchment"; // Parchment - Parchment > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
-     }
- 
-     public SystemReport fillSystemReport(SystemReport details) {
-diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 34cd96dba5f11e64d7c90f4246b513b0ea943aa6..f2ed626ffb125d5a8663f2021524e5359b203177 100644
---- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-+++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -264,7 +264,7 @@ import javax.annotation.Nullable; // Paper
- import javax.annotation.Nonnull; // Paper
- 
- public final class CraftServer implements Server {
--    private final String serverName = "Paper"; // Paper
-+    private final String serverName = "Parchment"; // Paper // Parchment
-     private final String serverVersion;
-     private final String bukkitVersion = Versioning.getBukkitVersion();
-     private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index ce341f42b3a5e17fb6d1f7de8057e73137ae2a6e..226cf8f41190abee10050013f27cd59e135944d6 100644
+index e02102280ed1dc300191d19bbca8f00e17701753..9b5d9729288ac11d21365c900a3b2af454c765dc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -301,7 +301,7 @@ public class Main {
+@@ -303,7 +303,7 @@ public class Main {
                      if (buildDate.before(deadline.getTime())) {
                          // Paper start - This is some stupid bullshit
                          System.err.println("*** Warning, you've not updated in a while! ***");
@@ -159,7 +138,7 @@ index 774556a62eb240da42e84db4502e2ed43495be17..6f1b3fa6ebeabc7596034663ed06686f
  
          if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 9e638f72f180ff5ef63ec3dd6cf548c53f7bd4a5..b0df6388d08057774f965b5d830ba17e64ea131f 100644
+index 6db566e3111ec08a99aa429624979cb83a85e272..d3a5867e9202d1f34e66c4e6d3842211c40a6255 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -162,7 +162,7 @@ public final class WatchdogThread extends io.papermc.paper.util.TickThread // Pa
@@ -167,7 +146,7 @@ index 9e638f72f180ff5ef63ec3dd6cf548c53f7bd4a5..b0df6388d08057774f965b5d830ba17e
                  log.log( Level.SEVERE, "If you are unsure or still think this is a Paper bug, please report this to https://github.com/PaperMC/Paper/issues" );
                  log.log( Level.SEVERE, "Be sure to include ALL relevant console errors and Minecraft crash reports" );
 -                log.log( Level.SEVERE, "Paper version: " + Bukkit.getServer().getVersion() );
-+                log.log( Level.SEVERE, "Parchment version: " + Bukkit.getServer().getVersion() ); // Parchment
++                log.log( Level.SEVERE, "Parchment version: " + Bukkit.getServer().getVersion() );
                  //
                  if ( net.minecraft.world.level.Level.lastPhysicsProblem != null )
                  {

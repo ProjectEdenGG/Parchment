@@ -5,37 +5,35 @@ Subject: [PATCH] Add origin location to EntityDamageByBlockEvent
 
 
 diff --git a/src/main/java/org/bukkit/event/entity/EntityDamageByBlockEvent.java b/src/main/java/org/bukkit/event/entity/EntityDamageByBlockEvent.java
-index ab18f35b686ec79551c307dde9e43c7dfad1b182..47c522e31d704d6c36fbfe128c97cba234932bc7 100644
+index 148c4aad384ae8e3b8b22d264a84bddfbcafdf1e..61fcdd178fa5a8f13c889a78f431d2a5529c8c43 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityDamageByBlockEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityDamageByBlockEvent.java
-@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
  public class EntityDamageByBlockEvent extends EntityDamageEvent {
      private final Block damager;
-     private final org.bukkit.block.BlockState damagerBlockState; // Paper
+     private final BlockState damagerState;
 +    private final org.bukkit.Location location; // Parchment
  
+     @Deprecated(forRemoval = true)
      public EntityDamageByBlockEvent(@Nullable final Block damager, @NotNull final Entity damagee, @NotNull final DamageCause cause, final double damage) {
-         // Paper start
-@@ -28,21 +29,41 @@ public class EntityDamageByBlockEvent extends EntityDamageEvent {
-         super(damagee, cause, damage);
+@@ -30,19 +31,40 @@ public class EntityDamageByBlockEvent extends EntityDamageEvent {
+         super(damagee, cause, damageSource, damage);
          this.damager = damager;
-         this.damagerBlockState = damagerBlockState; // Paper
+         this.damagerState = damagerState;
 +        this.location = damager != null ? damager.getLocation() : null; // Parchment
      }
  
+     @Deprecated(forRemoval = true)
      public EntityDamageByBlockEvent(@Nullable final Block damager, @NotNull final Entity damagee, @NotNull final DamageCause cause, @NotNull final Map<DamageModifier, Double> modifiers, @NotNull final Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions) {
-         // Paper start
--        this(damager, damagee, cause, modifiers, modifierFunctions, null);
-+        this(damager, damagee, cause, modifiers, modifierFunctions, null, null);
+-        this(damager, (damager != null) ? damager.getState() : null, damagee, cause, (damager != null) ? DamageSource.builder(DamageType.GENERIC).withDamageLocation(damager.getLocation()).build() : DamageSource.builder(DamageType.GENERIC).build(), modifiers, modifierFunctions);
++        this(damager, (damager != null) ? damager.getState() : null, damagee, cause, (damager != null) ? DamageSource.builder(DamageType.GENERIC).withDamageLocation(damager.getLocation()).build() : DamageSource.builder(DamageType.GENERIC).build(), modifiers, modifierFunctions, null);
      }
  
-     @org.jetbrains.annotations.ApiStatus.Internal
--    public EntityDamageByBlockEvent(@Nullable final Block damager, @NotNull final Entity damagee, @NotNull final DamageCause cause, @NotNull final Map<DamageModifier, Double> modifiers, @NotNull final Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions, final @Nullable org.bukkit.block.BlockState damagerBlockState) {
-+    public EntityDamageByBlockEvent(@Nullable final Block damager, @NotNull final Entity damagee, @NotNull final DamageCause cause, @NotNull final Map<DamageModifier, Double> modifiers, @NotNull final Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions, final @Nullable org.bukkit.block.BlockState damagerBlockState, @Nullable final org.bukkit.Location damageLocation) { // Parchment
-         // Paper end
-         super(damagee, cause, modifiers, modifierFunctions);
+-    public EntityDamageByBlockEvent(@Nullable final Block damager, @Nullable final BlockState damagerState, @NotNull final Entity damagee, @NotNull final DamageCause cause, @NotNull final DamageSource damageSource, @NotNull final Map<DamageModifier, Double> modifiers, @NotNull final Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions) {
++    public EntityDamageByBlockEvent(@Nullable final Block damager, @Nullable final BlockState damagerState, @NotNull final Entity damagee, @NotNull final DamageCause cause, @NotNull final DamageSource damageSource, @NotNull final Map<DamageModifier, Double> modifiers, @NotNull final Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions, @Nullable final org.bukkit.Location damageLocation) { // Parchment
+         super(damagee, cause, damageSource, modifiers, modifierFunctions);
          this.damager = damager;
-         this.damagerBlockState = damagerBlockState; // Paper
+         this.damagerState = damagerState;
 +        // Parchment start
 +        if (damageLocation != null)
 +            this.location = damageLocation;
@@ -56,6 +54,7 @@ index ab18f35b686ec79551c307dde9e43c7dfad1b182..47c522e31d704d6c36fbfe128c97cba2
 +        return location;
 +    }
 +    // Parchment end
++
 +
      /**
       * Returns the block that damaged the player.

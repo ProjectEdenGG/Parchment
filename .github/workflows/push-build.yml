@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [17]
+        java: [21]
       fail-fast: true
 
     steps:
@@ -40,7 +40,7 @@ jobs:
           git config --global user.email "no-reply@github.com"
           git config --global user.name "GitHub Actions"
           ./gradlew applyPatches
-          ./gradlew createReobfPaperclipJar
+          ./gradlew createMojmapBundlerJar
           ./gradlew :parchment-api:publishMavenPublicationToEdenSnapshotsRepository
           ./gradlew publishDevBundlePublicationToEdenSnapshotsRepository -PpublishDevBundle
         

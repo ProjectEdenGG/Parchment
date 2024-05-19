@@ -5,10 +5,10 @@ Subject: [PATCH] Big Barrels
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BarrelBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
-index 416aa989ebb18a8741cc9d605a1180ab830f6643..c48466a4d2115f4fa6121b6bcba87b838743af34 100644
+index 6186e55014bbb9d5bedaa0e9d196879c55339d42..4f02184ec9aa7067f0ee20f041799d25494cb358 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
-@@ -67,7 +67,7 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
+@@ -68,7 +68,7 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
  
      public BarrelBlockEntity(BlockPos pos, BlockState state) {
          super(BlockEntityType.BARREL, pos, state);
@@ -17,7 +17,7 @@ index 416aa989ebb18a8741cc9d605a1180ab830f6643..c48466a4d2115f4fa6121b6bcba87b83
          this.openersCounter = new ContainerOpenersCounter() {
              @Override
              protected void onOpen(Level world, BlockPos pos, BlockState state) {
-@@ -118,7 +118,7 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
+@@ -119,7 +119,7 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
  
      @Override
      public int getContainerSize() {
@@ -26,7 +26,7 @@ index 416aa989ebb18a8741cc9d605a1180ab830f6643..c48466a4d2115f4fa6121b6bcba87b83
      }
  
      @Override
-@@ -138,7 +138,7 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
+@@ -139,7 +139,7 @@ public class BarrelBlockEntity extends RandomizableContainerBlockEntity {
  
      @Override
      protected AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {

@@ -5,10 +5,10 @@ Subject: [PATCH] Add HangingFrame Tick API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
-index f88918b7c15b72f4cb1dd313734f550432fd5858..74215934d25d48fc2628401ed57cb78222b8c2ce 100644
+index bf2d91bbb4bf401696f5f5d14a67e3920a179084..47a38704eba3ce3da1bf0d5dc18856f2c02c3ea8 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
-@@ -41,6 +41,7 @@ public abstract class HangingEntity extends Entity {
+@@ -43,6 +43,7 @@ public abstract class HangingEntity extends Entity {
      private int checkInterval; { this.checkInterval = this.getId() % this.level().spigotConfig.hangingTickFrequency; } // Paper - Perf: offset item frame ticking
      public BlockPos pos;
      protected Direction direction;
@@ -16,7 +16,7 @@ index f88918b7c15b72f4cb1dd313734f550432fd5858..74215934d25d48fc2628401ed57cb782
  
      protected HangingEntity(EntityType<? extends HangingEntity> type, Level world) {
          super(type, world);
-@@ -116,7 +117,7 @@ public abstract class HangingEntity extends Entity {
+@@ -118,7 +119,7 @@ public abstract class HangingEntity extends Entity {
  
      @Override
      public void tick() {

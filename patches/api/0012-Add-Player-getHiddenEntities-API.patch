@@ -5,11 +5,11 @@ Subject: [PATCH] Add Player#getHiddenEntities API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index c2581dee5e2fc07cb551d609cef31c589a845ca1..d16a1b5459f153d401806bdf22596850bac062ce 100644
+index 42e186ffdb421ccea61c4325f4b9800d55f624a8..8b2380241dbf40bd03941250a66e0a7b4a2282ec 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1992,6 +1992,17 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-     @ApiStatus.Experimental
+@@ -2092,6 +2092,17 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      */
      public boolean canSee(@NotNull Entity entity);
  
 +    // Parchment start
@@ -19,9 +19,9 @@ index c2581dee5e2fc07cb551d609cef31c589a845ca1..d16a1b5459f153d401806bdf22596850
 +     * @param plugin Plugin that has hidden entities
 +     * @return a view of hidden entity UUIDs
 +     */
-+    @ApiStatus.Experimental
 +    public java.util.@NotNull Set<java.util.UUID> getHiddenEntities(@NotNull Plugin plugin);
 +    // Parchment end
++
 +
      // Paper start
      /**

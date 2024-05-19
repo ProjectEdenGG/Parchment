@@ -5,11 +5,11 @@ Subject: [PATCH] Temporary Access Transformers
 
 
 diff --git a/src/main/java/net/minecraft/core/Holder.java b/src/main/java/net/minecraft/core/Holder.java
-index 245f09b771fb1e8fab3bc4c03b1afe34ef505f1b..8dbef407de5c48543ca7f97d8c22301aa54da7d8 100644
+index d7bbf60ba94ecd85f991a0c5c70c34fdb00ec9d5..724adc4c35aece988af815e7886fcbd727f0e27e 100644
 --- a/src/main/java/net/minecraft/core/Holder.java
 +++ b/src/main/java/net/minecraft/core/Holder.java
-@@ -126,6 +126,12 @@ public interface Holder<T> {
-             return new Holder.Reference<>(Holder.Reference.Type.INTRUSIVE, owner, (ResourceKey<T>)null, value);
+@@ -137,6 +137,12 @@ public interface Holder<T> {
+             return new Holder.Reference<>(Holder.Reference.Type.INTRUSIVE, owner, null, value);
          }
  
 +        // Parchment start
@@ -22,15 +22,15 @@ index 245f09b771fb1e8fab3bc4c03b1afe34ef505f1b..8dbef407de5c48543ca7f97d8c22301a
              if (this.key == null) {
                  throw new IllegalStateException("Trying to access unbound value '" + this.value + "' from registry " + this.owner);
 diff --git a/src/main/java/net/minecraft/world/item/BlockItem.java b/src/main/java/net/minecraft/world/item/BlockItem.java
-index efdf56044396b4ce486948d2c993971f99174a5e..4238b65cc86b0c49a34b50c4dac00cd89e3900e1 100644
+index 96fb69ec6db2e7c8c728435f0c537b076259b2fb..45a5f63268ebd67d6601e86e33f9fa5fd458ad0c 100644
 --- a/src/main/java/net/minecraft/world/item/BlockItem.java
 +++ b/src/main/java/net/minecraft/world/item/BlockItem.java
-@@ -206,7 +206,7 @@ public class BlockItem extends Item {
-         }).orElse(state);
+@@ -183,7 +183,7 @@ public class BlockItem extends Item {
+         }
      }
  
 -    protected boolean canPlace(BlockPlaceContext context, BlockState state) {
-+    public boolean canPlace(BlockPlaceContext context, BlockState state) { // Parchment
++    public boolean canPlace(BlockPlaceContext context, BlockState state) { // Parchment: protected -> public
          Player entityhuman = context.getPlayer();
          CollisionContext voxelshapecollision = entityhuman == null ? CollisionContext.empty() : CollisionContext.of(entityhuman);
          // CraftBukkit start - store default return

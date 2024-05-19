@@ -5,10 +5,10 @@ Subject: [PATCH] Add Block BreakNaturally Overload
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index d6e2b9d4bbd3ba9f9461a02b282c26b95861530a..c05a8383c24e5a2b2d0469e66ca2c8853dc2c076 100644
+index 46330f02d04f9e8a921ddf14bb34e94392c17431..e7695d630e17260708951090da89db7dbb3db09e 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -307,24 +307,28 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -299,24 +299,28 @@ public class Block extends BlockBehaviour implements ItemLike {
          return state.getDrops(lootparams_a);
      }
  
@@ -41,9 +41,9 @@ index d6e2b9d4bbd3ba9f9461a02b282c26b95861530a..c05a8383c24e5a2b2d0469e66ca2c885
 -
 +        return new java.util.ArrayList<>();
      }
+ 
      // Paper start - Add BlockBreakBlockEvent
-     public static boolean dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity, BlockPos source) {
-@@ -351,15 +355,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -344,15 +348,17 @@ public class Block extends BlockBehaviour implements ItemLike {
      // Paper start - Properly handle xp dropping
          dropResources(state, world, pos, blockEntity, entity, tool, true);
      }
@@ -64,7 +64,7 @@ index d6e2b9d4bbd3ba9f9461a02b282c26b95861530a..c05a8383c24e5a2b2d0469e66ca2c885
      }
  
      public static void popResource(Level world, BlockPos pos, ItemStack stack) {
-@@ -373,6 +379,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -366,6 +372,17 @@ public class Block extends BlockBehaviour implements ItemLike {
          }, stack);
      }
  
@@ -83,11 +83,11 @@ index d6e2b9d4bbd3ba9f9461a02b282c26b95861530a..c05a8383c24e5a2b2d0469e66ca2c885
          int i = direction.getStepX();
          int j = direction.getStepY();
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index 4b42ef2a876ea210d948238e63fd7a2b7035bb5b..8d2ea69c52480b6b2e28fa00ba566b7a07cfd224 100644
+index ac11f18690434922179b61ffcc3036dea025b0cb..f9aae49eed516bce00cb968de36ca8b3de038311 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -494,6 +494,11 @@ public class CraftBlock implements Block {
- 
+@@ -500,6 +500,11 @@ public class CraftBlock implements Block {
+
      @Override
      public boolean breakNaturally(ItemStack item, boolean triggerEffect, boolean dropExperience) {
 +        return this.breakNaturally(null, item, triggerEffect, dropExperience);
@@ -98,8 +98,8 @@ index 4b42ef2a876ea210d948238e63fd7a2b7035bb5b..8d2ea69c52480b6b2e28fa00ba566b7a
          // Paper end
          // Order matters here, need to drop before setting to air so skulls can get their data
          net.minecraft.world.level.block.state.BlockState iblockdata = this.getNMS();
-@@ -503,7 +508,11 @@ public class CraftBlock implements Block {
- 
+@@ -509,7 +514,12 @@ public class CraftBlock implements Block {
+
          // Modelled off EntityHuman#hasBlock
          if (block != Blocks.AIR && (item == null || !iblockdata.requiresCorrectToolForDrops() || nmsItem.isCorrectToolForDrops(iblockdata))) {
 -            net.minecraft.world.level.block.Block.dropResources(iblockdata, this.world.getMinecraftWorld(), this.position, this.world.getBlockEntity(this.position), null, nmsItem, false); // Paper - Properly handle xp dropping
@@ -108,6 +108,7 @@ index 4b42ef2a876ea210d948238e63fd7a2b7035bb5b..8d2ea69c52480b6b2e28fa00ba566b7a
 +            if (player != null) {
 +                new org.bukkit.event.block.BlockDropItemEvent(this, this.getState(), player, itemEntities.stream().map(i -> (org.bukkit.entity.Item) CraftEntity.getEntity((org.bukkit.craftbukkit.CraftServer) Bukkit.getServer(), i)).toList()).callEvent();
 +            }
++
              // Paper start - improve Block#breanNaturally
              if (triggerEffect) {
                  if (iblockdata.getBlock() instanceof net.minecraft.world.level.block.BaseFireBlock) {

@@ -27,10 +27,10 @@ index 0000000000000000000000000000000000000000..30f8fd154136d05267e8737ff04a0be4
 +
 +}
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 6de6dad36203479677a29ad61e21bc369d4e5513..4718291014acba4fac77fe18766b46bf9e7b3277 100644
+index 2eb9c584cc77237f1c82d880a51a3f8b51008d73..dd0fa065e97f0ae0bc6a2f66392d6393e4c04b06 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -268,6 +268,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -281,6 +281,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              return false;
          }
  
@@ -40,12 +40,12 @@ index 6de6dad36203479677a29ad61e21bc369d4e5513..4718291014acba4fac77fe18766b46bf
          // this.setPlayerList(new DedicatedPlayerList(this, this.registries(), this.playerDataStorage)); // Spigot - moved up
          this.server.loadPlugins();
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 2c06f3ebf7e1069727387bfc60db30c958c14b5a..95a732d2ff7bf604e1640015552495e14b3ff2a4 100644
+index 25ea45a528612d1a2a2d77293b3802f473a52f38..169fdd2e21a192bfc834785a2e9eae2adde442c3 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -160,6 +160,31 @@ import org.bukkit.plugin.PluginManager;
+@@ -164,6 +164,31 @@ import org.bukkit.plugin.PluginManager;
  
- public abstract class Entity implements Nameable, EntityAccess, CommandSource, ScoreHolder {
+ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess, CommandSource, ScoreHolder {
  
 +    @javax.annotation.Nullable
 +    private gg.projecteden.parchment.entity.EntityData storedEntityData;
@@ -76,10 +76,10 @@ index 2c06f3ebf7e1069727387bfc60db30c958c14b5a..95a732d2ff7bf604e1640015552495e1
      private static final int CURRENT_LEVEL = 2;
      public boolean preserveMotion = true; // Paper - Fix Entity Teleportation and cancel velocity if teleported; keep initial motion on first setPositionRotation
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 8698104e3eb98e2cc5da5de87a8f538860c1d91d..269ad2696e07a602ca350284c32771a02dcdff08 100644
+index a2d336ceb52b63db5c03432ee7bc94dc6a742b82..a7a95547fc3f1614c7e6efdd0dcd24ba6af27fd8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -77,6 +77,10 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -78,6 +78,10 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
      };
      // Paper end - Folia schedulers
  

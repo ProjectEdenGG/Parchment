@@ -5,20 +5,12 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index ca5312febcdd467889ad725c0263367bc5fe69f6..850d756b7799db561ab4f45938a64842e5a4deef 100644
+index 5a382907285a288f2a223189e690d3dbdf45594c..fab345b24eebeac1935bff9f0ece4334748d1b17 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -645,6 +645,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -693,6 +693,55 @@ public final class CraftMagicNumbers implements UnsafeValues {
      }
-     // Paper end
- 
-+
-     // Paper start - spawn egg color visibility
-     @Override
-     public org.bukkit.Color getSpawnEggLayerColor(final EntityType entityType, final int layer) {
-@@ -654,6 +655,55 @@ public final class CraftMagicNumbers implements UnsafeValues {
-     }
-     // Paper end - spawn egg color visibility
+     // Paper end - lifecycle event API
  
 +    // Parchment start
 +    @Override

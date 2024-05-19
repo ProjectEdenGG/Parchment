@@ -5,21 +5,13 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 923d8655a84e26960d35d8dc6e4ebc0b10c295d5..325f53f2a052d6cc4e53e16f00d10713682540ff 100644
+index 0857a65ecbc36e0e4b8a7d0cda52be35f238f660..1a3151814ef669db1c8530c7afaa810be99ca267 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -261,6 +261,7 @@ public interface UnsafeValues {
-     String getStatisticCriteriaKey(@NotNull org.bukkit.Statistic statistic);
-     // Paper end
+@@ -282,4 +282,19 @@ public interface UnsafeValues {
+     // Paper end - lifecycle event API
  
-+
-     // Paper start - spawn egg color visibility
-     /**
-      * Obtains the underlying color informating for a spawn egg of a given
-@@ -273,4 +274,18 @@ public interface UnsafeValues {
-      */
-     @Nullable org.bukkit.Color getSpawnEggLayerColor(org.bukkit.entity.EntityType entityType, int layer);
-     // Paper end - spawn egg color visibility
+     @NotNull java.util.List<net.kyori.adventure.text.Component> computeTooltipLines(@NotNull ItemStack itemStack, @NotNull io.papermc.paper.inventory.tooltip.TooltipContext tooltipContext, @Nullable org.bukkit.entity.Player player); // Paper - expose itemstack tooltip lines
 +
 +    // Parchment start
 +    /**
@@ -33,5 +25,6 @@ index 923d8655a84e26960d35d8dc6e4ebc0b10c295d5..325f53f2a052d6cc4e53e16f00d10713
 +     */
 +    java.util.concurrent.CompletableFuture<Boolean> canPlaceItemOn(@org.jetbrains.annotations.NotNull ItemStack item, @org.jetbrains.annotations.Nullable gg.projecteden.parchment.OptionalHumanEntity player, @org.jetbrains.annotations.NotNull org.bukkit.block.Block block, @org.jetbrains.annotations.NotNull org.bukkit.block.BlockFace face);
 +    // Parchment end
++
 +
  }
