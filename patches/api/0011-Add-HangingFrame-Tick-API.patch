@@ -20,7 +20,7 @@ index 2f07efac03f4d12fd2ae9a340d34cf92a90b6cfa..a16d681d5338fdb2a974a2c67dcc0155
 +     *
 +     * @return True if the entity is allowed to tick.
 +     */
-+    public boolean canTick();
++    default boolean canTick() { return true; }
 +
 +    /**
 +     * Sets whether the hanging entity is allowed to tick.
@@ -28,6 +28,6 @@ index 2f07efac03f4d12fd2ae9a340d34cf92a90b6cfa..a16d681d5338fdb2a974a2c67dcc0155
 +     *
 +     * @param tick True if the entity is allowed to tick.
 +     */
-+    public void setCanTick(boolean tick);
++    default void setCanTick(boolean tick) { throw new UnsupportedOperationException(); }
 +    // Parchment end
  }

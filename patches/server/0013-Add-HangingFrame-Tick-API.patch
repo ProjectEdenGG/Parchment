@@ -5,31 +5,65 @@ Subject: [PATCH] Add HangingFrame Tick API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
-index bf2d91bbb4bf401696f5f5d14a67e3920a179084..47a38704eba3ce3da1bf0d5dc18856f2c02c3ea8 100644
+index 25f5c7346f06bcb58cdaaee2a61b0154761925df..dfc29d0f7a5c7f10588438f4b1d3b00b003a7974 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/HangingEntity.java
-@@ -43,6 +43,7 @@ public abstract class HangingEntity extends Entity {
-     private int checkInterval; { this.checkInterval = this.getId() % this.level().spigotConfig.hangingTickFrequency; } // Paper - Perf: offset item frame ticking
-     public BlockPos pos;
-     protected Direction direction;
+@@ -20,7 +20,11 @@ import org.apache.commons.lang3.Validate;
+ 
+ public abstract class HangingEntity extends BlockAttachedEntity {
+     protected static final Predicate<Entity> HANGING_ENTITY = entity -> entity instanceof HangingEntity;
++
++    private int checkInterval; { this.checkInterval = this.getId() % this.level().spigotConfig.hangingTickFrequency; } // Paper - Perf: offset item frame ticking
++    public BlockPos pos;
+     protected Direction direction = Direction.SOUTH;
 +    public boolean tick = true; // Parchment
  
      protected HangingEntity(EntityType<? extends HangingEntity> type, Level world) {
          super(type, world);
-@@ -118,7 +119,7 @@ public abstract class HangingEntity extends Entity {
+@@ -53,6 +57,38 @@ public abstract class HangingEntity extends BlockAttachedEntity {
+     protected abstract AABB calculateBoundingBox(BlockPos pos, Direction side);
  
      @Override
-     public void tick() {
--        if (!this.level().isClientSide) {
++    public void tick() {
 +        if (tick && !this.level().isClientSide) { // Parchment
-             this.checkBelowWorld();
-             if (this.checkInterval++ == this.level().spigotConfig.hangingTickFrequency) { // Spigot
-                 this.checkInterval = 0;
++            this.checkBelowWorld();
++            if (this.checkInterval++ == this.level().spigotConfig.hangingTickFrequency) { // Spigot
++                this.checkInterval = 0;
++                if (!this.isRemoved() && !this.survives()) {
++                    // CraftBukkit start - fire break events
++                    BlockState material = this.level().getBlockState(this.blockPosition());
++                    org.bukkit.event.hanging.HangingBreakEvent.RemoveCause cause;
++
++                    if (!material.isAir()) {
++                        // TODO: This feels insufficient to catch 100% of suffocation cases
++                        cause = org.bukkit.event.hanging.HangingBreakEvent.RemoveCause.OBSTRUCTION;
++                    } else {
++                        cause = org.bukkit.event.hanging.HangingBreakEvent.RemoveCause.PHYSICS;
++                    }
++
++                    org.bukkit.event.hanging.HangingBreakEvent event = new org.bukkit.event.hanging.HangingBreakEvent((org.bukkit.entity.Hanging) this.getBukkitEntity(), cause);
++                    this.level().getCraftServer().getPluginManager().callEvent(event);
++
++                    if (this.isRemoved() || event.isCancelled()) {
++                        return;
++                    }
++                    // CraftBukkit end
++                    this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DROP); // CraftBukkit - add Bukkit remove cause
++                    this.dropItem((Entity) null);
++                }
++            }
++        }
++
++    }
++
+     public boolean survives() {
+         if (!this.level().noCollision(this)) {
+             return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
-index cbdcf767c01e2c173913f56747d2dacbda2f0094..a74f783df0225223a2b2ae3dc632541ccf078893 100644
+index f1e3f2b89bcd969f3c80548e165881a9b290eb53..f2d46e908ca0030da514a686763e65a57f02cf35 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
-@@ -66,4 +66,16 @@ public class CraftHanging extends CraftEntity implements Hanging {
+@@ -66,4 +66,16 @@ public class CraftHanging extends CraftBlockAttachedEntity implements Hanging {
      public String toString() {
          return "CraftHanging";
      }

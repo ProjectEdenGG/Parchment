@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 4998aff0b7cb084dcda15c6a18bbe45e99b6000a..34f1acc44c17b53d93b750a35817131145db454f 100644
+index 299b7b029384c58fed80d53cc0b77c420d62eed7..2e1ac152fc3706fb2b585b5ca9da31a53bfa4251 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -1,6 +1,8 @@
@@ -112,10 +112,10 @@ index 532306cacd52579cdf37e4aca25887b1ed3ba6a1..87db580c74d20714e2ebe01df23811c7
          final @Nullable Component history = this.getHistory();
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index e02102280ed1dc300191d19bbca8f00e17701753..9b5d9729288ac11d21365c900a3b2af454c765dc 100644
+index 6e1f92b45504cef0c4dcbbebf3df339ef4cad0a1..19ccccb3b7e6ab81504923717ecf5a8e88ca5757 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -303,7 +303,7 @@ public class Main {
+@@ -273,7 +273,7 @@ public class Main {
                      if (buildDate.before(deadline.getTime())) {
                          // Paper start - This is some stupid bullshit
                          System.err.println("*** Warning, you've not updated in a while! ***");
@@ -138,10 +138,10 @@ index 774556a62eb240da42e84db4502e2ed43495be17..6f1b3fa6ebeabc7596034663ed06686f
  
          if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 6db566e3111ec08a99aa429624979cb83a85e272..d3a5867e9202d1f34e66c4e6d3842211c40a6255 100644
+index e5e41dc2d4f7a8c3fea704212507ca0b951664db..3561e409bc05a97e05216ef10efb800ece42ff67 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
-@@ -162,7 +162,7 @@ public final class WatchdogThread extends io.papermc.paper.util.TickThread // Pa
+@@ -90,7 +90,7 @@ public class WatchdogThread extends Thread
                  log.log( Level.SEVERE, "\t If this is the case, consider increasing timeout-time in spigot.yml but note that this will replace the crash with LARGE lag spikes" );
                  log.log( Level.SEVERE, "If you are unsure or still think this is a Paper bug, please report this to https://github.com/PaperMC/Paper/issues" );
                  log.log( Level.SEVERE, "Be sure to include ALL relevant console errors and Minecraft crash reports" );

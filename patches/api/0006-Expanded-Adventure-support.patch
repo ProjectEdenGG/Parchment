@@ -81,10 +81,10 @@ index 918a045165cdcde264bc24082b7afebb407271de..3f912d3fbf5fdef3b95f81585d2fcf76
       * Gets the char value associated with this color
       *
 diff --git a/src/main/java/org/bukkit/Color.java b/src/main/java/org/bukkit/Color.java
-index e088390ec3fb87eeabc73dfe90e3544980c02e5b..5d4fbb08832fd0490a9375580f909beaf941e8fa 100644
+index f8edb964c4af597b03a2de06c464cc06a96b791c..3957d290c606a50b59c7c421ea7c163f4625449c 100644
 --- a/src/main/java/org/bukkit/Color.java
 +++ b/src/main/java/org/bukkit/Color.java
-@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
   * but subject to change.
   */
  @SerializableAs("Color")
@@ -93,7 +93,7 @@ index e088390ec3fb87eeabc73dfe90e3544980c02e5b..5d4fbb08832fd0490a9375580f909bea
      private static final int BIT_MASK = 0xff;
      private static final int DEFAULT_ALPHA = 255;
  
-@@ -309,6 +309,13 @@ public final class Color implements ConfigurationSerializable {
+@@ -310,6 +310,13 @@ public final class Color implements ConfigurationSerializable {
          return getAlpha() << 24 | getRed() << 16 | getGreen() << 8 | getBlue();
      }
  
@@ -108,7 +108,7 @@ index e088390ec3fb87eeabc73dfe90e3544980c02e5b..5d4fbb08832fd0490a9375580f909bea
       * Gets the color as an BGR integer.
       *
 diff --git a/src/main/java/org/bukkit/DyeColor.java b/src/main/java/org/bukkit/DyeColor.java
-index bd213cabddd8752e609544f24cfba95405726155..7e89cadecde96f9c2394446669dc4d98df391940 100644
+index 47df858e095c4423c20e49e029d72f0f50d2c924..c7504e017bc57df6903a2d76ce98e9fd4c35a7cc 100644
 --- a/src/main/java/org/bukkit/DyeColor.java
 +++ b/src/main/java/org/bukkit/DyeColor.java
 @@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;

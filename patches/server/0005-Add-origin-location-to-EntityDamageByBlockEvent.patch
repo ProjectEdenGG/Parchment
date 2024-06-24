@@ -5,10 +5,10 @@ Subject: [PATCH] Add origin location to EntityDamageByBlockEvent
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 75a3d42d0ac458e1f7161e88cf27ec6087828926..ca52d30944a067bb156cae6290663ab20cb160e9 100644
+index 43ae279d4d7be8b2addd62178189d14f183cdcfb..ab3387231bd81d692bb508e7f0144f884e7b4c9f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1188,7 +1188,7 @@ public class CraftEventFactory {
+@@ -1191,7 +1191,7 @@ public class CraftEventFactory {
      }
  
      private static EntityDamageEvent callEntityDamageEvent(Block damager, BlockState damagerState, Entity damagee, DamageCause cause, org.bukkit.damage.DamageSource bukkitDamageSource, Map<DamageModifier, Double> modifiers, Map<DamageModifier, Function<? super Double, Double>> modifierFunctions, boolean cancelled) {

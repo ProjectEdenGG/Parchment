@@ -5,10 +5,10 @@ Subject: [PATCH] Add Block BreakNaturally Overload
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index 46330f02d04f9e8a921ddf14bb34e94392c17431..e7695d630e17260708951090da89db7dbb3db09e 100644
+index f388ff2ba19f25e24de4b7dac5fbdb6e82d7c3c3..23a7206f8195a178cd9ef11a0b9ffa9b64148dfd 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -299,24 +299,28 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -298,24 +298,28 @@ public class Block extends BlockBehaviour implements ItemLike {
          return state.getDrops(lootparams_a);
      }
  
@@ -43,7 +43,7 @@ index 46330f02d04f9e8a921ddf14bb34e94392c17431..e7695d630e17260708951090da89db7d
      }
  
      // Paper start - Add BlockBreakBlockEvent
-@@ -344,15 +348,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -343,15 +347,17 @@ public class Block extends BlockBehaviour implements ItemLike {
      // Paper start - Properly handle xp dropping
          dropResources(state, world, pos, blockEntity, entity, tool, true);
      }
@@ -64,7 +64,7 @@ index 46330f02d04f9e8a921ddf14bb34e94392c17431..e7695d630e17260708951090da89db7d
      }
  
      public static void popResource(Level world, BlockPos pos, ItemStack stack) {
-@@ -366,6 +372,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -365,6 +371,17 @@ public class Block extends BlockBehaviour implements ItemLike {
          }, stack);
      }
  
@@ -87,7 +87,7 @@ index ac11f18690434922179b61ffcc3036dea025b0cb..f9aae49eed516bce00cb968de36ca8b3
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 @@ -500,6 +500,11 @@ public class CraftBlock implements Block {
-
+ 
      @Override
      public boolean breakNaturally(ItemStack item, boolean triggerEffect, boolean dropExperience) {
 +        return this.breakNaturally(null, item, triggerEffect, dropExperience);
@@ -99,7 +99,7 @@ index ac11f18690434922179b61ffcc3036dea025b0cb..f9aae49eed516bce00cb968de36ca8b3
          // Order matters here, need to drop before setting to air so skulls can get their data
          net.minecraft.world.level.block.state.BlockState iblockdata = this.getNMS();
 @@ -509,7 +514,12 @@ public class CraftBlock implements Block {
-
+ 
          // Modelled off EntityHuman#hasBlock
          if (block != Blocks.AIR && (item == null || !iblockdata.requiresCorrectToolForDrops() || nmsItem.isCorrectToolForDrops(iblockdata))) {
 -            net.minecraft.world.level.block.Block.dropResources(iblockdata, this.world.getMinecraftWorld(), this.position, this.world.getBlockEntity(this.position), null, nmsItem, false); // Paper - Properly handle xp dropping

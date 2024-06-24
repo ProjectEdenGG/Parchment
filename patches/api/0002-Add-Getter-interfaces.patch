@@ -424,7 +424,7 @@ index 2cac7e27991c04a9ced261f2dd8ad8657ccddf6b..2dc9666fac98e3ff8b569f9510fa0db3
      private static final HandlerList HANDLER_LIST = new HandlerList();
  
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index c6049747fc286acb4e8053901fcc517e5170afa2..5ab9b3e73c9cc6ee9cc4471a1f40c9c60a75b99c 100644
+index 65618b6b3c950fb27707f243a766511d6cd3aab4..cccf6f315e2aae9d67afe726c7bad4f619e47860 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
@@ -451,7 +451,7 @@ index c6049747fc286acb4e8053901fcc517e5170afa2..5ab9b3e73c9cc6ee9cc4471a1f40c9c6
       * Constructs a new Location with the given coordinates
       *
 diff --git a/src/main/java/org/bukkit/OfflinePlayer.java b/src/main/java/org/bukkit/OfflinePlayer.java
-index 30298a629b39bd43ce14b414fc697b2dfcbea89c..5f50d10c79990a96ae3f954fbff41b5b39a4d7b8 100644
+index 3993fecec5b4c2bbd77e175a168afcad571ce4d1..f2a98e4e25262c452d20e27a9617bf7cfbee9e77 100644
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
 @@ -19,7 +19,14 @@ import org.jetbrains.annotations.Nullable;
@@ -497,20 +497,20 @@ index bbc01e7c192ae6689c301670047ff114306c57cb..2a83ba61686caffb247f17a67af47429
              private final Location block;
  
 diff --git a/src/main/java/org/bukkit/attribute/AttributeModifier.java b/src/main/java/org/bukkit/attribute/AttributeModifier.java
-index 8ba00f743b61cd33dd41ae7f1c272ee2b0c8546d..6e2d3f7e8e2f96016d28bb941f16706d228b542d 100644
+index a0750d457a9cd7cf3ab9c45bb28ce5a2aef35298..386608311d3be08002cbac6346d115f728dcc823 100644
 --- a/src/main/java/org/bukkit/attribute/AttributeModifier.java
 +++ b/src/main/java/org/bukkit/attribute/AttributeModifier.java
-@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Concrete implementation of an attribute modifier.
   */
--public class AttributeModifier implements ConfigurationSerializable {
-+public class AttributeModifier implements ConfigurationSerializable, gg.projecteden.api.interfaces.HasUniqueId { // Parchment
+-public class AttributeModifier implements ConfigurationSerializable, Keyed {
++public class AttributeModifier implements ConfigurationSerializable, Keyed, gg.projecteden.api.interfaces.HasUniqueId { // Parchment
  
-     private final UUID uuid;
-     private final String name;
+     private final NamespacedKey key;
+     private final double amount;
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 8a842840e1a2652a6356d4a56e4749a5ba36e902..c5b6ec1c6dfa8789afcde1bf22b2507d20c0545f 100644
+index a13c8ddd4a1222e7a16debb61769af3758502d7c..6672aaad187bb4ac23d9a3397fc0ef2ae3708bb2 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
@@ -562,7 +562,7 @@ index 2e17b2d4f759531fbe9ee8e9b00c839186af09ca..8f4a293c131cb8b63c31b410ffa211bd
      /**
       * This is the name of the specified AnimalTamer.
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 62e3793903905b94eb1a120345015149abb33713..8f35e0c9e778d98ca191d45eec76a7a74d51959a 100644
+index 725ef320f929d5e3d141c1ed3246d73a7d741f31..93506536af557bc9972c295ee3957fe0e3c22053 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
@@ -596,10 +596,10 @@ index ee866f3497ed56708d4062685f5585ca06a03955..4c8f373cb946f4db769be566c163f27a
      // Paper start
      @Override
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 6c327a07bf8a6aa11a2d7dad12b2830acc539484..42e186ffdb421ccea61c4325f4b9800d55f624a8 100644
+index 7c56182acaf827f4b1a986a61cea8e9960604c98..9a6f2ed1eb9559789317e21226f67cb6f02c0761 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -56,7 +56,17 @@ import org.jetbrains.annotations.Nullable;
+@@ -57,7 +57,17 @@ import org.jetbrains.annotations.Nullable;
  /**
   * Represents a player, connected or not
   */
@@ -853,10 +853,10 @@ index cc5781f276ec0a503b1bfef19d630c85db897c2a..89b38f2ce9a355f39abc657eff49c3a5
      private boolean cancelled;
      private final Player player;
 diff --git a/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java b/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java
-index a965b6a78073c5da86ad671752eff4a270029420..84cc90c085ae5ab788bcbc83bf1a0081be3b8186 100644
+index 5ffd28fd24b4477a07fc9f6a3f669a6f4da9fa26..7611905895d414eeb45a92ed0e3b6124f3dd85cd 100644
 --- a/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java
 +++ b/src/main/java/org/bukkit/event/inventory/FurnaceExtractEvent.java
-@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
+@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
   * {@link org.bukkit.block.Furnace}, {@link org.bukkit.block.Smoker}, or
   * {@link org.bukkit.block.BlastFurnace}.
   */
@@ -957,12 +957,12 @@ index 128e43cf12205f82f2b119a773208502cdccfdd4..ca1fed3081e2b0a3271a2dfa0f49cce7
      private static final HandlerList handlers = new HandlerList();
      //
 diff --git a/src/main/java/org/bukkit/event/server/TabCompleteEvent.java b/src/main/java/org/bukkit/event/server/TabCompleteEvent.java
-index b43c3cb5c88eada186d6f81712c244aaa18fb53e..a37055d864038a0090fa0c71f7d8e22aea69b3fe 100644
+index ea26cb90d988d693f26e37229fbdee975c0b11f4..f19aa180b7d4f19f57b9968a4c35a76ad29029c3 100644
 --- a/src/main/java/org/bukkit/event/server/TabCompleteEvent.java
 +++ b/src/main/java/org/bukkit/event/server/TabCompleteEvent.java
-@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
-  * advised to ensure the client does not have permission for the relevant
-  * commands, or use {@link PlayerCommandSendEvent}.
+@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
+  * @apiNote Only called for bukkit API commands {@link org.bukkit.command.Command} and
+  * {@link org.bukkit.command.CommandExecutor} and not for brigadier commands ({@link io.papermc.paper.command.brigadier.Commands}).
   */
 -public class TabCompleteEvent extends Event implements Cancellable {
 +public class TabCompleteEvent extends Event implements Cancellable, gg.projecteden.parchment.OptionalLocation { // Parchment
@@ -1009,20 +1009,20 @@ index 0d519813c12d98b28d62e6d01d7ec6e8c2dba3c3..469b9cc0c4b77844ba0317af51bd9ad8
      /**
       * Returns the size of the inventory
 diff --git a/src/main/java/org/bukkit/inventory/InventoryView.java b/src/main/java/org/bukkit/inventory/InventoryView.java
-index ac6c5c7a58c2c88b6cb0f6632fb53e8d67f8a059..464c69fd652db3384b1a4a5f4151933c3cd7df7b 100644
+index 1e50dba6bb8753e6c1adff59ee0ff93adf3bfd4f..dd7b53d81202dbe994a4cc30a709d99fe8b5acb8 100644
 --- a/src/main/java/org/bukkit/inventory/InventoryView.java
 +++ b/src/main/java/org/bukkit/inventory/InventoryView.java
-@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
+@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
   * contracts of certain methods, there's no guarantee that the game will work
   * as it should.
   */
--public abstract class InventoryView {
-+public abstract class InventoryView implements gg.projecteden.parchment.HasHumanEntity { // Parchment
+-public interface InventoryView {
++public interface InventoryView extends gg.projecteden.parchment.HasHumanEntity { // Parchment
      public static final int OUTSIDE = -999;
      /**
       * Represents various extra properties of certain inventory windows.
 diff --git a/src/main/java/org/bukkit/loot/LootContext.java b/src/main/java/org/bukkit/loot/LootContext.java
-index b35dba42069f771db8727bf98f9d17aff9d6094e..0b4a90259952185c0897d4c6b68124dd3d42db26 100644
+index 9c1ccaed727ec5e5dad93146bbfda798e3f536e7..b4dc13b03d8a33ac13e8af6677e1a8418edc8e20 100644
 --- a/src/main/java/org/bukkit/loot/LootContext.java
 +++ b/src/main/java/org/bukkit/loot/LootContext.java
 @@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
