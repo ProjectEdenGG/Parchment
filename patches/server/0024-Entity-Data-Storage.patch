@@ -27,10 +27,10 @@ index 0000000000000000000000000000000000000000..30f8fd154136d05267e8737ff04a0be4
 +
 +}
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 7d82cc6b847124cf4225428ba310309544928148..7b229e405877e31fbe5e292b236febbc5de8dd5c 100644
+index dd56c8e041116ef3602a9f89c998c8208ab89b51..9197be4019ddbe16e09c781a74809d15f569e0f3 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -285,6 +285,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -287,6 +287,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              return false;
          }
  
@@ -40,12 +40,12 @@ index 7d82cc6b847124cf4225428ba310309544928148..7b229e405877e31fbe5e292b236febbc
          // this.setPlayerList(new DedicatedPlayerList(this, this.registries(), this.playerDataStorage)); // Spigot - moved up
          this.server.loadPlugins();
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 1a40128b06e70e39a82f170fc16dcae1e22c745c..962b84516be0ccd28ff7cab11bcdae6269abe3cb 100644
+index 1f7594e22f0f08ae110ef9b42f15119358aa5723..577a6cc50cf41dc3e590edb955a372c4c2a83fe2 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -169,6 +169,31 @@ import org.bukkit.plugin.PluginManager;
  
- public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess, CommandSource, ScoreHolder, ca.spottedleaf.moonrise.patches.chunk_system.entity.ChunkSystemEntity { // Paper - rewrite chunk system
+ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess, CommandSource, ScoreHolder, ca.spottedleaf.moonrise.patches.chunk_system.entity.ChunkSystemEntity, ca.spottedleaf.moonrise.patches.entity_tracker.EntityTrackerEntity { // Paper - rewrite chunk system // Paper - optimise entity tracker
  
 +    @javax.annotation.Nullable
 +    private gg.projecteden.parchment.entity.EntityData storedEntityData;

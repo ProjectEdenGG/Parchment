@@ -5,7 +5,7 @@ Subject: [PATCH] Expanded Insomnia API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index b06595a7e247806fbc145ee941e0886fc3f0266d..a6ea5a1b665af5c3dcf9337d5e3f235ea72c5d7f 100644
+index 49d5cdd931de7c28faadd211a52109f28a9df6e5..1dc933a1b8a5d731de0d1a1e9754eafb8460224d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -213,6 +213,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -17,7 +17,7 @@ index b06595a7e247806fbc145ee941e0886fc3f0266d..a6ea5a1b665af5c3dcf9337d5e3f235e
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
  
-@@ -3564,4 +3566,31 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3565,4 +3567,31 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          ((ca.spottedleaf.moonrise.patches.chunk_system.player.ChunkSystemServerPlayer)this.getHandle())
              .moonrise$getViewDistanceHolder().setSendViewDistance(viewDistance);
      }

@@ -5,10 +5,10 @@ Subject: [PATCH] Add Block BreakNaturally Overload
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index f388ff2ba19f25e24de4b7dac5fbdb6e82d7c3c3..23a7206f8195a178cd9ef11a0b9ffa9b64148dfd 100644
+index d9aff85fce2a65794dd57cf790f878b4fc4ec54e..4ed92f149be39929a874678bdfa049694270d3b5 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -298,24 +298,28 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -299,24 +299,28 @@ public class Block extends BlockBehaviour implements ItemLike {
          return state.getDrops(lootparams_a);
      }
  
@@ -43,7 +43,7 @@ index f388ff2ba19f25e24de4b7dac5fbdb6e82d7c3c3..23a7206f8195a178cd9ef11a0b9ffa9b
      }
  
      // Paper start - Add BlockBreakBlockEvent
-@@ -343,15 +347,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -344,15 +348,17 @@ public class Block extends BlockBehaviour implements ItemLike {
      // Paper start - Properly handle xp dropping
          dropResources(state, world, pos, blockEntity, entity, tool, true);
      }
@@ -64,7 +64,7 @@ index f388ff2ba19f25e24de4b7dac5fbdb6e82d7c3c3..23a7206f8195a178cd9ef11a0b9ffa9b
      }
  
      public static void popResource(Level world, BlockPos pos, ItemStack stack) {
-@@ -365,6 +371,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -366,6 +372,17 @@ public class Block extends BlockBehaviour implements ItemLike {
          }, stack);
      }
  

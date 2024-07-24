@@ -5,10 +5,10 @@ Subject: [PATCH] Disable set respawn message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 071e38a48114b6cb0155c1dbd60628cdc81189e8..0297c95ca67f5f113b696b4cbd149119b92eca2f 100644
+index 5174b23c6e04da7a3d833ea3fd191b5956a49809..323330172fde196c6e992484d22479d9f8b041db 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2523,9 +2523,10 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
+@@ -2524,9 +2524,10 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
              forced = event.isForced();
              // Paper end - Add PlayerSetSpawnEvent
  
