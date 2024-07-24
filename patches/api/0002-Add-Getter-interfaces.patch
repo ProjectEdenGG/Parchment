@@ -497,7 +497,7 @@ index bbc01e7c192ae6689c301670047ff114306c57cb..2a83ba61686caffb247f17a67af47429
              private final Location block;
  
 diff --git a/src/main/java/org/bukkit/attribute/AttributeModifier.java b/src/main/java/org/bukkit/attribute/AttributeModifier.java
-index a0750d457a9cd7cf3ab9c45bb28ce5a2aef35298..386608311d3be08002cbac6346d115f728dcc823 100644
+index bfa378fe3d074bafbc0af2c4d858e2a34d3126bd..f6b6a75dc9ae2b8c391025221f151e2169d62913 100644
 --- a/src/main/java/org/bukkit/attribute/AttributeModifier.java
 +++ b/src/main/java/org/bukkit/attribute/AttributeModifier.java
 @@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
@@ -523,7 +523,7 @@ index a13c8ddd4a1222e7a16debb61769af3758502d7c..6672aaad187bb4ac23d9a3397fc0ef2a
      /**
       * Gets the metadata for this block
 diff --git a/src/main/java/org/bukkit/block/BlockState.java b/src/main/java/org/bukkit/block/BlockState.java
-index 80e5d39afe8a6cf882b29c0da78450b958812137..e747f89e5129e360f9827886fcbfb238cf7e19c1 100644
+index 8c7c8c0e54682dc4276109d19d92394cdd4bc189..cbaf558b98f64922c5e15b1cb1f31068e8fdd501 100644
 --- a/src/main/java/org/bukkit/block/BlockState.java
 +++ b/src/main/java/org/bukkit/block/BlockState.java
 @@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
@@ -575,7 +575,7 @@ index 725ef320f929d5e3d141c1ed3246d73a7d741f31..93506536af557bc9972c295ee3957fe0
      /**
       * Gets the entity's current position
 diff --git a/src/main/java/org/bukkit/entity/HumanEntity.java b/src/main/java/org/bukkit/entity/HumanEntity.java
-index ee866f3497ed56708d4062685f5585ca06a03955..4c8f373cb946f4db769be566c163f27a9f4af61e 100644
+index 294de2c073167e7186fbf1d6885fe5951351cc9c..0b23a17a02c7df498f67dad2b49568c5e8c9127b 100644
 --- a/src/main/java/org/bukkit/entity/HumanEntity.java
 +++ b/src/main/java/org/bukkit/entity/HumanEntity.java
 @@ -20,7 +20,15 @@ import org.jetbrains.annotations.Nullable;
@@ -762,10 +762,10 @@ index 59aab10c2d27247eb77bd71d75b5f9126aa0fb12..57f89f569725289d56f1c75db258ac19
      /**
       * Gets the amount of ticks that the animal will fall in love for.
 diff --git a/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java b/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
-index 8506fa03293c575c35b55b052224807470fdbd98..2b5e481929c956bdfff5522b2c7ec3e71aa750f5 100644
+index e468e55d426b8f81f87c0a08451d02b3866c226f..74f0f439aa145d9c8d1c049aee387521f34a39e9 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
-@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
+@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
   * event isn't called if the {@link org.bukkit.GameRule#MOB_GRIEFING}
   * is disabled as no block interaction will occur.
   */
@@ -788,15 +788,15 @@ index 71d664dd89995f088c47d17b38547d530319470c..d931ece8f35c8f01748c59d01617fd59
      private static final HandlerList handlers = new HandlerList();
      private boolean cancelled;
 diff --git a/src/main/java/org/bukkit/event/entity/EntityPortalEnterEvent.java b/src/main/java/org/bukkit/event/entity/EntityPortalEnterEvent.java
-index e4e3d2e22c28ef251d76c48ade267b4eb3749e7d..5128c4b618b4e369a8f9700169b187926ddde09e 100644
+index 8b2caf665b9e829ceefc89bf41b192f53f3d5773..dbf52ab6f97245d1d4b2325a3e05b5047a3e7e6f 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityPortalEnterEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityPortalEnterEvent.java
-@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
- /**
-  * Called when an entity comes into contact with a portal
+@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
+  * Cancelling this event prevents any further processing of the portal for that tick.
+  * @see io.papermc.paper.event.entity.EntityInsideBlockEvent
   */
--public class EntityPortalEnterEvent extends EntityEvent {
-+public class EntityPortalEnterEvent extends EntityEvent implements gg.projecteden.parchment.HasLocation { // Parchment
+-public class EntityPortalEnterEvent extends EntityEvent implements org.bukkit.event.Cancellable { // Paper
++public class EntityPortalEnterEvent extends EntityEvent implements org.bukkit.event.Cancellable, gg.projecteden.parchment.HasLocation { // Parchment
      private static final HandlerList handlers = new HandlerList();
      private final Location location;
  
@@ -1009,12 +1009,12 @@ index 0d519813c12d98b28d62e6d01d7ec6e8c2dba3c3..469b9cc0c4b77844ba0317af51bd9ad8
      /**
       * Returns the size of the inventory
 diff --git a/src/main/java/org/bukkit/inventory/InventoryView.java b/src/main/java/org/bukkit/inventory/InventoryView.java
-index 1e50dba6bb8753e6c1adff59ee0ff93adf3bfd4f..dd7b53d81202dbe994a4cc30a709d99fe8b5acb8 100644
+index 72f93377b60a3b6a08b8c8264ee7313e89c15da0..019ba8c91c06da12efadc445ada6f634a78e488b 100644
 --- a/src/main/java/org/bukkit/inventory/InventoryView.java
 +++ b/src/main/java/org/bukkit/inventory/InventoryView.java
-@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
-  * contracts of certain methods, there's no guarantee that the game will work
-  * as it should.
+@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
+  * Represents a view linking two inventories and a single player (whose
+  * inventory may or may not be one of the two).
   */
 -public interface InventoryView {
 +public interface InventoryView extends gg.projecteden.parchment.HasHumanEntity { // Parchment

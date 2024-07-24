@@ -5,7 +5,7 @@ Subject: [PATCH] Add Timings Events
 
 
 diff --git a/src/main/java/co/aikar/timings/Timings.java b/src/main/java/co/aikar/timings/Timings.java
-index 9812d668ad945aba486fbf6d5bf83c4292cb5d03..16198861748b29c537527151216e79c7c32e7204 100644
+index e81d0bc309de877ed2b5da6122f55c162e9b5f10..d4d65c301df8f6b9945d636b5f0e623a8289a8bc 100644
 --- a/src/main/java/co/aikar/timings/Timings.java
 +++ b/src/main/java/co/aikar/timings/Timings.java
 @@ -145,8 +145,27 @@ public final class Timings {
@@ -37,10 +37,10 @@ index 9812d668ad945aba486fbf6d5bf83c4292cb5d03..16198861748b29c537527151216e79c7
      }
  
 diff --git a/src/main/java/co/aikar/timings/TimingsCommand.java b/src/main/java/co/aikar/timings/TimingsCommand.java
-index e801e79fa57c44b2e5d359647c920f88064826f1..012d2281c386d2e5f5a655079c0cbfa4545d6476 100644
+index 95d87c9dbf2b237787294dfbe7fed87a36e6dedf..d8e0b7fba75c68495f30419258ddf88f1237df07 100644
 --- a/src/main/java/co/aikar/timings/TimingsCommand.java
 +++ b/src/main/java/co/aikar/timings/TimingsCommand.java
-@@ -63,10 +63,12 @@ public class TimingsCommand extends BukkitCommand {
+@@ -65,10 +65,12 @@ public class TimingsCommand extends BukkitCommand {
          }
          final String arg = args[0];
          if ("on".equalsIgnoreCase(arg)) {
@@ -54,7 +54,7 @@ index e801e79fa57c44b2e5d359647c920f88064826f1..012d2281c386d2e5f5a655079c0cbfa4
              Timings.setTimingsEnabled(false);
              sender.sendMessage(text("Disabled Timings"));
              return true;
-@@ -79,15 +81,18 @@ public class TimingsCommand extends BukkitCommand {
+@@ -81,15 +83,18 @@ public class TimingsCommand extends BukkitCommand {
  
          long now = System.currentTimeMillis();
          if ("verbon".equalsIgnoreCase(arg)) {
@@ -74,10 +74,10 @@ index e801e79fa57c44b2e5d359647c920f88064826f1..012d2281c386d2e5f5a655079c0cbfa4
                  sender.sendMessage(text("Timings reset. Please wait 5-10 minutes before using /timings report.", NamedTextColor.RED));
              } else {
 diff --git a/src/main/java/co/aikar/timings/TimingsReportListener.java b/src/main/java/co/aikar/timings/TimingsReportListener.java
-index 3af5b8ea795311582044c712de50d29412024b77..806a1e528aae9a26413b483855130bef78ca72fb 100644
+index df066d6f8d55afbc0c1897c486d638657a5f8df9..e80b33ecf12815356356bea0e0ecd4da75a5a416 100644
 --- a/src/main/java/co/aikar/timings/TimingsReportListener.java
 +++ b/src/main/java/co/aikar/timings/TimingsReportListener.java
-@@ -59,6 +59,7 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
+@@ -62,6 +62,7 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
  
      @Override
      public void sendMessage(final @NotNull net.kyori.adventure.identity.Identity source, final @NotNull net.kyori.adventure.text.Component message, final @NotNull net.kyori.adventure.audience.MessageType type) {
@@ -85,7 +85,7 @@ index 3af5b8ea795311582044c712de50d29412024b77..806a1e528aae9a26413b483855130bef
          net.kyori.adventure.audience.ForwardingAudience.super.sendMessage(source, message, type);
      }
  
-@@ -70,6 +71,7 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
+@@ -73,6 +74,7 @@ public class TimingsReportListener implements net.kyori.adventure.audience.Forwa
  
      @Override
      public void sendMessage(@NotNull String message) {

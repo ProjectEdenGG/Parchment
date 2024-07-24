@@ -5,10 +5,10 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 11bccf6c27b8b2a2ed558a1375a3b3adc7952076..f8071399ad218e30d06de5835df1cef1d77dc2d8 100644
+index 330e3013eda204aa9b33d5e1c3104e0b595abdbc..8093b81f00b84e292a1e6f76af9509ea178a7ab3 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -279,4 +279,18 @@ public interface UnsafeValues {
+@@ -287,4 +287,18 @@ public interface UnsafeValues {
      <A extends Keyed, M> io.papermc.paper.registry.tag.@Nullable Tag<A> getTag(io.papermc.paper.registry.tag.@NotNull TagKey<A> tagKey); // Paper - hack to get tags for non-server backed registries
  
      ItemStack createEmptyStack(); // Paper - proxy ItemStack
