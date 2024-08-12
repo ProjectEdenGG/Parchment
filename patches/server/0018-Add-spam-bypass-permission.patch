@@ -5,7 +5,7 @@ Subject: [PATCH] Add spam bypass permission
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 7796e191747be545e744564a2b0b65790f69114d..e3d2b5fb731de55e2921c4bee05e87a3070aa2aa 100644
+index 60ff21c8df4168f14da04a12073bde47cd4693c4..51c9f6239d0bbf2090b29cc3052a0925b1763649 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -756,9 +756,11 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -23,7 +23,7 @@ index 7796e191747be545e744564a2b0b65790f69114d..e3d2b5fb731de55e2921c4bee05e87a3
          }
          // CraftBukkit end
          // Paper start - Don't suggest if tab-complete is disabled
-@@ -2457,6 +2459,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2452,6 +2454,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
      // Spigot start - spam exclusions
      private void detectRateSpam(String s) {
@@ -31,7 +31,7 @@ index 7796e191747be545e744564a2b0b65790f69114d..e3d2b5fb731de55e2921c4bee05e87a3
          // CraftBukkit start - replaced with thread safe throttle
          boolean counted = true;
          for ( String exclude : org.spigotmc.SpigotConfig.spamExclusions )
-@@ -3211,10 +3214,12 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -3206,10 +3209,12 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
      public void handlePlaceRecipe(ServerboundPlaceRecipePacket packet) {
          // Paper start - auto recipe limit
          if (!org.bukkit.Bukkit.isPrimaryThread()) {

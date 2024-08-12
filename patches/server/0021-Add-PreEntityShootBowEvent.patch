@@ -54,7 +54,7 @@ index c858556ea457931aa14e338e20672cb50cb19f0e..b93db38d69ea6f12f4c1d2f73800753a
          org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getMainHandItem(), entityarrow.getPickupItem(), entityarrow, target.getUsedItemHand(), 0.8F, true);
          if (event.isCancelled()) {
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
-index ddf47dab1ab92c45e3eea09239d418a9798ed59e..05343ee370c3bb166b80a65308fbe8fa218d1773 100644
+index 9ca29b3d4bf8bca5f51f3644e12fcbec2cb5d35e..3c314a9db7467c1066f9e5c8857438bb01317274 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
 @@ -167,8 +167,10 @@ public abstract class AbstractArrow extends Projectile {
@@ -71,7 +71,7 @@ index ddf47dab1ab92c45e3eea09239d418a9798ed59e..05343ee370c3bb166b80a65308fbe8fa
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 5f7d152f41eb85f17bcded4bc8099b998e5a338b..ab746e98d3364df0919d27be5e1828f2ba49de51 100644
+index de64de5d1328d3e0826c9990eb7c7eca5088cb9c..1a4678def2e1f0a48a94c73b2ea5ab3215e6ba3b 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 @@ -181,9 +181,17 @@ public abstract class Projectile extends Entity implements TraceableEntity {
@@ -107,19 +107,17 @@ index 5f7d152f41eb85f17bcded4bc8099b998e5a338b..ab746e98d3364df0919d27be5e1828f2
          float f5 = -Mth.sin(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
          float f6 = -Mth.sin((pitch + roll) * 0.017453292F);
          float f7 = Mth.cos(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
-@@ -201,7 +215,9 @@ public abstract class Projectile extends Entity implements TraceableEntity {
-         this.shoot((double) f5, (double) f6, (double) f7, speed, divergence);
-         Vec3 vec3d = shooter.getKnownMovement();
- 
--        if (!shooter.level().paperConfig().misc.disableRelativeProjectileVelocity) this.setDeltaMovement(this.getDeltaMovement().add(vec3d.x, shooter.onGround() ? 0.0D : vec3d.y, vec3d.z)); // Paper - allow disabling relative velocity
-+        if (relative) { // Parchment
-+            if (!shooter.level().paperConfig().misc.disableRelativeProjectileVelocity) this.setDeltaMovement(this.getDeltaMovement().add(vec3d.x, shooter.onGround() ? 0.0D : vec3d.y, vec3d.z)); // Paper - allow disabling relative velocity
-+        }
-     }
- 
-     // CraftBukkit start - call projectile hit event
+@@ -204,7 +218,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+         if (vec3d.lengthSqr() > 4D * 4D) {
+             vec3d = vec3d.normalize().scale(2D);
+         }
+-        if (!shooter.level().paperConfig().misc.disableRelativeProjectileVelocity) {
++        if (!shooter.level().paperConfig().misc.disableRelativeProjectileVelocity && relative) { // Parchment
+         this.setDeltaMovement(this.getDeltaMovement().add(vec3d.x, shooter.onGround() ? 0.0D : vec3d.y, vec3d.z));
+         }
+         // Paper end - allow disabling relative velocity
 diff --git a/src/main/java/net/minecraft/world/item/BowItem.java b/src/main/java/net/minecraft/world/item/BowItem.java
-index 6eb5c0f23d9dc61e69ad5ad493c89602a9dcd4b5..19dd0efd5aefacaca3fea0fc93710628bafd9f9a 100644
+index 6eb5c0f23d9dc61e69ad5ad493c89602a9dcd4b5..63ba7c2ecdd80e10d611aeb08fa786a478107cb9 100644
 --- a/src/main/java/net/minecraft/world/item/BowItem.java
 +++ b/src/main/java/net/minecraft/world/item/BowItem.java
 @@ -31,8 +31,13 @@ public class BowItem extends ProjectileWeaponItem {

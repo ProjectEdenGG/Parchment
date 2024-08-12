@@ -39,10 +39,10 @@ index a7108b2be0746aa1f0e574d8c6f5ffad6d369835..d9aff85fce2a65794dd57cf790f878b4
              });
              state.spawnAfterBreak((ServerLevel) world, pos, tool, dropExperience); // Paper - Properly handle xp dropping
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 9b599304667deecb53ca4140d90965784fa30e7c..30dce14ff7a1bc3264fdc41d50c5e44f68210a6d 100644
+index 8f438df5d9112460e5b1664a56688bb1c6ddc6fa..d19b9c7773d7d416085dc5a4dbe8113ad5fe9c41 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -2275,5 +2275,19 @@ public class CraftEventFactory {
+@@ -2288,5 +2288,19 @@ public class CraftEventFactory {
              }
          });
      }

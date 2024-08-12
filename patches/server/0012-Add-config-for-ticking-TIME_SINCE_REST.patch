@@ -5,17 +5,17 @@ Subject: [PATCH] Add config for ticking TIME_SINCE_REST
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 7509b17414f836e8b53fc62b02b386ba4e8c5ca9..6e50da6a2fa63b44166b4e52fc4f6530c83f346f 100644
+index 4bcf27f98765abf693e535cfc1756c27a10cb316..6a698656c90c368d5c64f4a0b2a16500c7dadc02 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -289,6 +289,7 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -290,6 +290,7 @@ public class WorldConfiguration extends ConfigurationPart {
              }
  
              public boolean disablePlayerCrits = false;
 +            public boolean tickTimeSinceSleep = true; // Parchment
              public boolean nerfPigmenFromNetherPortals = false;
-             public PillagerPatrols pillagerPatrols;
- 
+             @Comment("Prevents merging items that are not on the same y level, preventing potential visual artifacts.")
+             public boolean onlyMergeItemsHorizontally = false;
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
 index 0acb4ef6d4ea60d7e4bc17534e84a7a9b477f04e..dae72e66a976701c0cb1fc26e6c37657b79da423 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java

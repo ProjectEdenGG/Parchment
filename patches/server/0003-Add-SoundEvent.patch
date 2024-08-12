@@ -84,10 +84,10 @@ index 22fe529890f34f66534c01248f654dc911b44c3b..dfa777529d3eb3cc0a6713c58b91b74c
          final ResourceLocation name = asVanilla(sound.name());
          final Optional<SoundEvent> soundEvent = BuiltInRegistries.SOUND_EVENT.getOptional(name);
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 2766ec28f028c0bd672009928bf64c1a6e5d07d6..b012ef12b6ec89ed8281d8b475c87f53fee196c2 100644
+index 2fe9d9b38c01d04416843fdd48d3e33899b7de63..4d496c5fbf7f7431ac908f40b98578b6123e0d35 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1688,12 +1688,46 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -1645,12 +1645,46 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
  
      @Override
      public void playSeededSound(@Nullable Player source, double x, double y, double z, Holder<SoundEvent> sound, SoundSource category, float volume, float pitch, long seed) {
@@ -137,7 +137,7 @@ index 2766ec28f028c0bd672009928bf64c1a6e5d07d6..b012ef12b6ec89ed8281d8b475c87f53
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5980b70e2d7273239245237189b2debcbccfbac3..5174b23c6e04da7a3d833ea3fd191b5956a49809 100644
+index 763cffdc2e1e2e7cc9af88cc46bbaa240a20fd0d..73f788c8140fb2992beba1f825ac227c962abe64 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2560,7 +2560,20 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -221,10 +221,10 @@ index dcbef04bbaab988096bf416163264833e84d1967..4117f12172d1d67283fab21851bf2d1c
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 0ab53d46f0b8f3f3791dd01766738522c86932e8..3cb229ba85057aa6cf9a723695935472f0a1c876 100644
+index 8dd85b9ca3b3e3429de4d0ec0654982589c6e93e..33daeb74cdf11c5b920e02b191eb62d5d0937f8e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -2238,4 +2238,42 @@ public class CraftEventFactory {
+@@ -2251,4 +2251,42 @@ public class CraftEventFactory {
          return event;
      }
      // Paper end - add EntityFertilizeEggEvent
