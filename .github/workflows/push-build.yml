@@ -40,11 +40,11 @@ jobs:
           git config --global user.email "no-reply@github.com"
           git config --global user.name "GitHub Actions"
           ./gradlew applyPatches
-          ./gradlew createMojmapBundlerJar
+          ./gradlew createMojmapPaperclipJar
           ./gradlew :parchment-api:publishMavenPublicationToEdenSnapshotsRepository
           ./gradlew publishDevBundlePublicationToEdenSnapshotsRepository -PpublishDevBundle
         
       - uses: actions/upload-artifact@v3
         with:
           name: Parchment-JDK${{ matrix.java }}
-          path: build/libs/parchment-paperclip-*-reobf.jar
+          path: build/libs/parchment-paperclip-*-mojmap.jar
