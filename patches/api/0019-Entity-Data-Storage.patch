@@ -260,13 +260,13 @@ index 0000000000000000000000000000000000000000..c9f9c0d235f33925ee247ba4af56bf9f
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 93506536af557bc9972c295ee3957fe0e3c22053..072567951ceecddb4f2bf269e6695b322d3a0f0e 100644
+index 87cea10a668d3040906a4dd1fd135c2162d9617f..b8bdac918e8a49bef2bf09312eb6d71d373eb517 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
-@@ -1159,4 +1159,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+@@ -1172,4 +1172,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
       */
-     @NotNull String getScoreboardEntryName();
-     // Paper end - entity scoreboard name
+     void broadcastHurtAnimation(@NotNull java.util.Collection<Player> players);
+     // Paper end - broadcast hurt animation
 +
 +    gg.projecteden.parchment.entity.EntityData getStoredEntityData();
 +

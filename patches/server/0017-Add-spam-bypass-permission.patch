@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Mon, 25 Jul 2022 09:11:13 -0400
+Subject: [PATCH] Add spam bypass permission
+
+
+diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+index b5d5dbc50a7b8c40739a15f164ffd08fdc534f9c..ef65deee8c878a3a6b7349b2421473ac550e4e1c 100644
+--- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -802,9 +802,11 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+     public void handleCustomCommandSuggestions(ServerboundCommandSuggestionPacket packet) {
+         // PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel()); // Paper - AsyncTabCompleteEvent; run this async
+         // CraftBukkit start
+-        if (!this.tabSpamThrottler.isIncrementAndUnderThreshold() && !this.server.getPlayerList().isOp(this.player.getGameProfile()) && !this.server.isSingleplayerOwner(this.player.getGameProfile())) { // Paper - configurable tab spam limits
+-            this.disconnectAsync(Component.translatable("disconnect.spam"), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM); // Paper - Kick event cause // Paper - add proper async disconnect
+-            return;
++        if (!this.getCraftPlayer().hasPermission("spam.bypass")) { // Parchment - spam bypass
++            if (!this.tabSpamThrottler.isIncrementAndUnderThreshold() && !this.server.getPlayerList().isOp(this.player.getGameProfile()) && !this.server.isSingleplayerOwner(this.player.getGameProfile())) { // Paper - configurable tab spam limits
++                this.disconnectAsync(Component.translatable("disconnect.spam"), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM); // Paper - Kick event cause // Paper - add proper async disconnect
++                return;
++            }
+         }
+         // CraftBukkit end
+         // Paper start - Don't suggest if tab-complete is disabled
+@@ -2559,6 +2561,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+ 
+     // Spigot start - spam exclusions
+     private void detectRateSpam(String s) {
++        if (this.getCraftPlayer().hasPermission("spam.bypass")) return; // Parchment - spam bypass
+         // CraftBukkit start - replaced with thread safe throttle
+         for ( String exclude : org.spigotmc.SpigotConfig.spamExclusions )
+         {
+@@ -3339,9 +3342,11 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+     public void handlePlaceRecipe(ServerboundPlaceRecipePacket packet) {
+         // Paper start - auto recipe limit
+         if (!org.bukkit.Bukkit.isPrimaryThread()) {
+-            if (!this.recipeSpamPackets.isIncrementAndUnderThreshold()) {
+-                this.disconnectAsync(net.minecraft.network.chat.Component.translatable("disconnect.spam"), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM); // Paper - kick event cause // Paper - add proper async disconnect
+-                return;
++            if (!this.getCraftPlayer().hasPermission("spam.bypass")) { // Parchment - spam bypass
++                if (!this.recipeSpamPackets.isIncrementAndUnderThreshold()) {
++                    this.disconnectAsync(net.minecraft.network.chat.Component.translatable("disconnect.spam"), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM); // Paper - kick event cause // Paper - add proper async disconnect
++                    return;
++                }
+             }
+         }
+         // Paper end - auto recipe limit

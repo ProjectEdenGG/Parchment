@@ -5,13 +5,13 @@ Subject: [PATCH] Add PlayerUseRespawnAnchorEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-index 94d067e9eeee73183de25165d8c97043fe256103..3d6e33abbebe526796359fab76768601c227fbe8 100644
+index 9117c035d5a6ff114b028fad3380ceb1fc2b9691..c490b30531bf722b31db88aa4937d3fd777c2844 100644
 --- a/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/RespawnAnchorBlock.java
-@@ -65,7 +65,33 @@ public class RespawnAnchorBlock extends Block {
+@@ -64,7 +64,33 @@ public class RespawnAnchorBlock extends Block {
  
      @Override
-     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 +        // Parchment start -- PlayerUseRespawnAnchorEvent
 +        org.bukkit.entity.Player bukkitPlayer = player.getBukkitEntity() instanceof org.bukkit.entity.Player ? (org.bukkit.entity.Player) player.getBukkitEntity() : null;
 +        org.bukkit.block.Block block = org.bukkit.craftbukkit.block.CraftBlock.at(world, pos);
@@ -28,7 +28,7 @@ index 94d067e9eeee73183de25165d8c97043fe256103..3d6e33abbebe526796359fab76768601
 +        } else if (!world.isClientSide) {
 +            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.SET_SPAWN;
 +        } else {
-+            return ItemInteractionResult.SUCCESS;
++            return InteractionResult.SUCCESS;
 +        }
 +        if (bukkitPlayer != null) {
 +            gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent event = new gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent(bukkitPlayer, block, result);
@@ -36,9 +36,9 @@ index 94d067e9eeee73183de25165d8c97043fe256103..3d6e33abbebe526796359fab76768601
 +            result = event.getResult();
 +        }
 +        if (result == gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING) {
-+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
++            return InteractionResult.PASS;
 +        } else if (result == gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE) {
 +            // Parchment end
              RespawnAnchorBlock.charge(player, world, pos, state);
              stack.consume(1, player);
-             return ItemInteractionResult.sidedSuccess(world.isClientSide);
+             return InteractionResult.SUCCESS;

@@ -5,10 +5,10 @@ Subject: [PATCH] Return Displays in getTargetEntity
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index fe435d4a387bb28be6831cec0c8bb0a7c8b603a4..b5c5294a59aad34e21da88bb9d7a6fc70d1a959b 100644
+index f36a075dbee2b96d01899e02460b1d8443e91749..6782f6184dedd38dfefefd48a6399cd141b00711 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -4183,7 +4183,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -4340,7 +4340,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
          Vec3 direction = this.getLookAngle();
          Vec3 end = start.add(direction.x * maxDistance, direction.y * maxDistance, direction.z * maxDistance);
  
@@ -16,4 +16,4 @@ index fe435d4a387bb28be6831cec0c8bb0a7c8b603a4..b5c5294a59aad34e21da88bb9d7a6fc7
 +        List<Entity> entityList = this.level().getEntities(this, getBoundingBox().expandTowards(direction.x * maxDistance, direction.y * maxDistance, direction.z * maxDistance).inflate(1.0D, 1.0D, 1.0D), EntitySelector.NO_SPECTATORS.and(entity -> entity.isPickable() || entity instanceof Display)); // Parchment - add displays
  
          double distance = 0.0D;
-         EntityHitResult result = null;
+         net.minecraft.world.phys.EntityHitResult result = null;

@@ -5,10 +5,10 @@ Subject: [PATCH] Expanded Insomnia API methods
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 14aee20cdbe0cb9a118582b605257115098760ac..ddfe7859ad921343214d3d82ef01bcc57a35790d 100644
+index d8014eea4f4415602db7e1199a2d9ce059adefaa..b68feadfb631672b4b99b464fb1b6aae6e82507f 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -67,6 +67,45 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -68,6 +68,45 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       */
      @Override
      @NotNull Player getPlayer();

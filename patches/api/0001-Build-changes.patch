@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index fd39ed209b20c927054b8482c400beeeeab460a3..f7786d4034afae1926bb249e282f3f204e09ba1a 100644
+index e29e5024fa693baae469d47fe77b57118f14627c..7dab3328c111b9d4e06a37f25f03708870f4bab9 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -14,6 +14,9 @@ val bungeeCordChatVersion = "1.20-R0.2"
@@ -18,8 +18,8 @@ index fd39ed209b20c927054b8482c400beeeeab460a3..f7786d4034afae1926bb249e282f3f20
  val apiAndDocs: Configuration by configurations.creating {
      attributes {
          attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.DOCUMENTATION))
-@@ -27,6 +30,7 @@ configurations.api {
- }
+@@ -39,6 +42,7 @@ abstract class MockitoAgentProvider : CommandLineArgumentProvider {
+ // Paper end - configure mockito agent that is needed in newer java versions
  
  dependencies {
 +    api("gg.projecteden:eden-interfaces:$edenVersion") // Parchment

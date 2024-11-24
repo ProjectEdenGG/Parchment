@@ -64,7 +64,7 @@ index 0000000000000000000000000000000000000000..ea17d99c7a1d70d88e2c439399cdb376
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 97f97ea5c6aa513c439f86a9c82821e0f7d9cd1e..64c1287b7a668680e19f8c4c1a678abb0eb5d88e 100644
+index 7a439c99fc4c5ee17d674460c8e58a9fe0c64e02..3cddbea3553ea12b610ffb1c9ab13d6ab4c291ee 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
 @@ -52,6 +52,36 @@ import org.jetbrains.annotations.Nullable;
@@ -101,6 +101,6 @@ index 97f97ea5c6aa513c439f86a9c82821e0f7d9cd1e..64c1287b7a668680e19f8c4c1a678abb
 +    ItemStack smeltItem(@NotNull ItemStack toSmelt, gg.projecteden.parchment.inventory.@NotNull RecipeType recipeType);
 +    // Parchment end
 +
-     // Paper start
+     // Paper start - void damage configuration
      /**
-      * @return The amount of Entities in this world
+      * Checks if void damage is enabled on this world.

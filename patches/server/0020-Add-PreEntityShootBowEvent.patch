@@ -5,14 +5,10 @@ Subject: [PATCH] Add PreEntityShootBowEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index 3b5cf6ffb74d11bea5eb21bd66d679734ff5000c..321499a52848101b6c36bef18a35f5367c62913c 100644
+index 32670a3cb4b54b66d655197e3fde834d2b2b6d34..ec0f692bfc19669797b9b355fe4028578be7a133 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-@@ -201,15 +201,21 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
- 
-     @Override
-     public void performRangedAttack(LivingEntity target, float pullProgress) {
-+
+@@ -206,6 +206,11 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
          ItemStack itemstack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW));
          ItemStack itemstack1 = this.getProjectile(itemstack);
          AbstractArrow entityarrow = this.getArrow(itemstack1, pullProgress, itemstack);
@@ -24,18 +20,20 @@ index 3b5cf6ffb74d11bea5eb21bd66d679734ff5000c..321499a52848101b6c36bef18a35f536
          double d0 = target.getX() - this.getX();
          double d1 = target.getY(0.3333333333333333D) - entityarrow.getY();
          double d2 = target.getZ() - this.getZ();
-         double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+@@ -221,7 +226,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+             }
  
--        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
-+        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4), preEvent.isRelative()); // Parchment
-         // CraftBukkit start
-         org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getMainHandItem(), entityarrow.getPickupItem(), entityarrow, net.minecraft.world.InteractionHand.MAIN_HAND, 0.8F, true); // Paper
-         if (event.isCancelled()) {
+             if (event.getProjectile() == entityarrow.getBukkitEntity()) {
+-                Projectile.spawnProjectileUsingShoot(entityarrow, worldserver, itemstack1, d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - worldserver.getDifficulty().getId() * 4));
++                Projectile.spawnProjectileUsingShoot(entityarrow, worldserver, itemstack1, d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - worldserver.getDifficulty().getId() * 4), preEvent.isRelative());
+             }
+             // CraftBukkit end
+         }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Illusioner.java b/src/main/java/net/minecraft/world/entity/monster/Illusioner.java
-index c858556ea457931aa14e338e20672cb50cb19f0e..b93db38d69ea6f12f4c1d2f73800753a04309772 100644
+index db3aac9ba711dcd18ffc35c4a745ecaec89d0166..052125cdb7ae6aef5b247ca5509e61dd21b567a2 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Illusioner.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Illusioner.java
-@@ -179,12 +179,16 @@ public class Illusioner extends SpellcasterIllager implements RangedAttackMob {
+@@ -177,6 +177,10 @@ public class Illusioner extends SpellcasterIllager implements RangedAttackMob {
          ItemStack itemstack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW));
          ItemStack itemstack1 = this.getProjectile(itemstack);
          AbstractArrow entityarrow = ProjectileUtil.getMobArrow(this, itemstack1, pullProgress, itemstack);
@@ -46,18 +44,20 @@ index c858556ea457931aa14e338e20672cb50cb19f0e..b93db38d69ea6f12f4c1d2f73800753a
          double d0 = target.getX() - this.getX();
          double d1 = target.getY(0.3333333333333333D) - entityarrow.getY();
          double d2 = target.getZ() - this.getZ();
-         double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+@@ -192,7 +196,7 @@ public class Illusioner extends SpellcasterIllager implements RangedAttackMob {
+             }
  
--        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
-+        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4), preEvent.isRelative()); // Parchment
-         // Paper start - EntityShootBowEvent
-         org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getMainHandItem(), entityarrow.getPickupItem(), entityarrow, target.getUsedItemHand(), 0.8F, true);
-         if (event.isCancelled()) {
+             if (event.getProjectile() == entityarrow.getBukkitEntity()) {
+-            Projectile.spawnProjectileUsingShoot(entityarrow, worldserver, itemstack1, d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - worldserver.getDifficulty().getId() * 4));
++                Projectile.spawnProjectileUsingShoot(entityarrow, worldserver, itemstack1, d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - worldserver.getDifficulty().getId() * 4), preEvent.isRelative());
+             }
+             // Paper end - EntityShootBowEvent
+         }
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
-index 9ca29b3d4bf8bca5f51f3644e12fcbec2cb5d35e..3c314a9db7467c1066f9e5c8857438bb01317274 100644
+index 571f0699772eecbe02d71845da82a142321f2142..937da68b6d9aac6ad0c37de7f9db888eb29e017b 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/AbstractArrow.java
-@@ -167,8 +167,10 @@ public abstract class AbstractArrow extends Projectile {
+@@ -164,8 +164,10 @@ public abstract class AbstractArrow extends Projectile {
      }
  
      @Override
@@ -71,10 +71,10 @@ index 9ca29b3d4bf8bca5f51f3644e12fcbec2cb5d35e..3c314a9db7467c1066f9e5c8857438bb
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index de64de5d1328d3e0826c9990eb7c7eca5088cb9c..1a4678def2e1f0a48a94c73b2ea5ab3215e6ba3b 100644
+index 6c2d4d6f3a36ab452dfd3c33f66e54f152906639..ed9ca8381bd23336bd1859f4bdc1f18d4867ee1e 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-@@ -181,9 +181,17 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+@@ -192,9 +192,17 @@ public abstract class Projectile extends Entity implements TraceableEntity {
      }
  
      public void shoot(double x, double y, double z, float power, float uncertainty) {
@@ -94,7 +94,7 @@ index de64de5d1328d3e0826c9990eb7c7eca5088cb9c..1a4678def2e1f0a48a94c73b2ea5ab32
          this.hasImpulse = true;
          double d3 = vec3d.horizontalDistance();
  
-@@ -194,6 +202,12 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+@@ -205,6 +213,12 @@ public abstract class Projectile extends Entity implements TraceableEntity {
      }
  
      public void shootFromRotation(Entity shooter, float pitch, float yaw, float roll, float speed, float divergence) {
@@ -107,22 +107,59 @@ index de64de5d1328d3e0826c9990eb7c7eca5088cb9c..1a4678def2e1f0a48a94c73b2ea5ab32
          float f5 = -Mth.sin(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
          float f6 = -Mth.sin((pitch + roll) * 0.017453292F);
          float f7 = Mth.cos(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
-@@ -204,7 +218,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
-         if (vec3d.lengthSqr() > 4D * 4D) {
-             vec3d = vec3d.normalize().scale(2D);
-         }
+@@ -212,7 +226,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+         this.shoot((double) f5, (double) f6, (double) f7, speed, divergence);
+         Vec3 vec3d = shooter.getKnownMovement();
+         // Paper start - allow disabling relative velocity
 -        if (!shooter.level().paperConfig().misc.disableRelativeProjectileVelocity) {
-+        if (!shooter.level().paperConfig().misc.disableRelativeProjectileVelocity && relative) { // Parchment
++        if (!shooter.level().paperConfig().misc.disableRelativeProjectileVelocity && relative) {
          this.setDeltaMovement(this.getDeltaMovement().add(vec3d.x, shooter.onGround() ? 0.0D : vec3d.y, vec3d.z));
          }
          // Paper end - allow disabling relative velocity
+@@ -230,8 +244,12 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+     }
+ 
+     public static <T extends Projectile> T spawnProjectileUsingShoot(Projectile.ProjectileFactory<T> creator, ServerLevel world, ItemStack projectileStack, LivingEntity shooter, double velocityX, double velocityY, double velocityZ, float power, float divergence) {
++        return Projectile.spawnProjectileUsingShoot(creator, world, projectileStack, shooter, velocityX, velocityY, velocityZ, power, divergence, true);
++    }
++
++    public static <T extends Projectile> T spawnProjectileUsingShoot(Projectile.ProjectileFactory<T> creator, ServerLevel world, ItemStack projectileStack, LivingEntity shooter, double velocityX, double velocityY, double velocityZ, float power, float divergence, boolean relative) {
+         return Projectile.spawnProjectile(creator.create(world, shooter, projectileStack), world, projectileStack, (iprojectile) -> {
+-            iprojectile.shoot(velocityX, velocityY, velocityZ, power, divergence);
++            iprojectile.shoot(velocityX, velocityY, velocityZ, power, divergence, relative);
+         });
+     }
+ 
+@@ -239,12 +257,22 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+     // Paper start - fixes and addition to spawn reason API
+         return spawnProjectileUsingShootDelayed(projectile, world, projectileStack, velocityX, velocityY, velocityZ, power, divergence).spawn();
+     }
++    public static <T extends Projectile> T spawnProjectileUsingShoot(T projectile, ServerLevel world, ItemStack projectileStack, double velocityX, double velocityY, double velocityZ, float power, float divergence, boolean relative) {
++        // Paper start - fixes and addition to spawn reason API
++        return spawnProjectileUsingShootDelayed(projectile, world, projectileStack, velocityX, velocityY, velocityZ, power, divergence, relative).spawn();
++    }
+     public static <T extends Projectile> Delayed<T> spawnProjectileUsingShootDelayed(T projectile, ServerLevel world, ItemStack projectileStack, double velocityX, double velocityY, double velocityZ, float power, float divergence) {
+         return Projectile.spawnProjectileDelayed(projectile, world, projectileStack, (iprojectile) -> {
+     // Paper end - fixes and addition to spawn reason API
+             projectile.shoot(velocityX, velocityY, velocityZ, power, divergence);
+         });
+     }
++    public static <T extends Projectile> Delayed<T> spawnProjectileUsingShootDelayed(T projectile, ServerLevel world, ItemStack projectileStack, double velocityX, double velocityY, double velocityZ, float power, float divergence, boolean relative) {
++        return Projectile.spawnProjectileDelayed(projectile, world, projectileStack, (iprojectile) -> {
++            // Paper end - fixes and addition to spawn reason API
++            projectile.shoot(velocityX, velocityY, velocityZ, power, divergence, relative);
++        });
++    }
+ 
+     public static <T extends Projectile> T spawnProjectile(T projectile, ServerLevel world, ItemStack projectileStack) {
+         return Projectile.spawnProjectile(projectile, world, projectileStack, (iprojectile) -> {
 diff --git a/src/main/java/net/minecraft/world/item/BowItem.java b/src/main/java/net/minecraft/world/item/BowItem.java
-index 6eb5c0f23d9dc61e69ad5ad493c89602a9dcd4b5..63ba7c2ecdd80e10d611aeb08fa786a478107cb9 100644
+index bb593209c95c9cf1f9c5d52d52fab4a33ddbabcf..768964dbc785cb78d5ef517cf88f9f8b1f6af629 100644
 --- a/src/main/java/net/minecraft/world/item/BowItem.java
 +++ b/src/main/java/net/minecraft/world/item/BowItem.java
-@@ -31,8 +31,13 @@ public class BowItem extends ProjectileWeaponItem {
-                 float f = getPowerForTime(i);
-                 if (!((double)f < 0.1)) {
+@@ -37,8 +37,13 @@ public class BowItem extends ProjectileWeaponItem {
+                     return false;
+                 } else {
                      List<ItemStack> list = draw(stack, itemStack, player);
 -                    if (world instanceof ServerLevel serverLevel && !list.isEmpty()) {
 -                        this.shoot(serverLevel, player, player.getUsedItemHand(), stack, list, f * 3.0F, 1.0F, f == 1.0F, null);
@@ -130,13 +167,13 @@ index 6eb5c0f23d9dc61e69ad5ad493c89602a9dcd4b5..63ba7c2ecdd80e10d611aeb08fa786a4
 +                    if (!world.isClientSide() && !list.isEmpty()) {
 +                        // Parchment start
 +                        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(user.getBukkitEntity(), stack.asBukkitCopy(), itemStack.asBukkitCopy());
-+                        if (!preEvent.callEvent()) return;
++                        if (!preEvent.callEvent()) return false;
 +                        // Parchment end
 +                        this.shoot((ServerLevel) world, player, player.getUsedItemHand(), stack, list, f * 3.0F, 1.0F, f == 1.0F, null, preEvent.isRelative());
                      }
  
                      world.playSound(
-@@ -53,9 +58,9 @@ public class BowItem extends ProjectileWeaponItem {
+@@ -60,9 +65,9 @@ public class BowItem extends ProjectileWeaponItem {
  
      @Override
      protected void shootProjectile(
@@ -149,10 +186,10 @@ index 6eb5c0f23d9dc61e69ad5ad493c89602a9dcd4b5..63ba7c2ecdd80e10d611aeb08fa786a4
  
      public static float getPowerForTime(int useTicks) {
 diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-index c39fa953accd6cf35672f452052cca42fe6f29d0..9bbdf240f7ee520e5d13155ca34f26235f4e5f5b 100644
+index 52c40eafc77e50a6fd21b9a7a250cea501f11690..2eca32e58e41f15cd9453e936d19c26a1a4b588c 100644
 --- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
 +++ b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-@@ -137,7 +137,7 @@ public class CrossbowItem extends ProjectileWeaponItem {
+@@ -140,7 +140,7 @@ public class CrossbowItem extends ProjectileWeaponItem {
  
      @Override
      protected void shootProjectile(
@@ -161,7 +198,7 @@ index c39fa953accd6cf35672f452052cca42fe6f29d0..9bbdf240f7ee520e5d13155ca34f2623
      ) {
          Vector3f vector3f;
          if (target != null) {
-@@ -198,8 +198,14 @@ public class CrossbowItem extends ProjectileWeaponItem {
+@@ -201,8 +201,14 @@ public class CrossbowItem extends ProjectileWeaponItem {
      ) {
          if (world instanceof ServerLevel serverLevel) {
              ChargedProjectiles chargedProjectiles = stack.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
@@ -178,32 +215,30 @@ index c39fa953accd6cf35672f452052cca42fe6f29d0..9bbdf240f7ee520e5d13155ca34f2623
                      CriteriaTriggers.SHOT_CROSSBOW.trigger(serverPlayer, stack);
                      serverPlayer.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 diff --git a/src/main/java/net/minecraft/world/item/ProjectileWeaponItem.java b/src/main/java/net/minecraft/world/item/ProjectileWeaponItem.java
-index 32dd0b13a0819f597d8a93c6bc3a155781067544..a74540e3a0aa61534fd84868bf8a29d97ccb6e6b 100644
+index 78ba170a83f8c026bd110eae494c52577182ed61..5ece12e41233727fbd1106d067e607810341acab 100644
 --- a/src/main/java/net/minecraft/world/item/ProjectileWeaponItem.java
 +++ b/src/main/java/net/minecraft/world/item/ProjectileWeaponItem.java
-@@ -46,9 +46,10 @@ public abstract class ProjectileWeaponItem extends Item {
+@@ -41,7 +41,7 @@ public abstract class ProjectileWeaponItem extends Item {
  
      public abstract int getDefaultProjectileRange();
  
 -    protected void shoot(ServerLevel world, LivingEntity shooter, InteractionHand hand, ItemStack stack, List<ItemStack> projectiles, float speed, float divergence, boolean critical, @Nullable LivingEntity target) {
-+
 +    protected void shoot(ServerLevel world, LivingEntity shooter, InteractionHand hand, ItemStack stack, List<ItemStack> projectiles, float speed, float divergence, boolean critical, @Nullable LivingEntity target, boolean relative) {
          float f2 = EnchantmentHelper.processProjectileSpread(world, stack, shooter, 0.0F);
--        float f3 = projectiles.size() == 1 ? 0.0F : 2.0F * f2 / (float) (projectiles.size() - 1);
-+        float f3 = projectiles.size() == 1 ? 0.0F : 20.0F / (float) (projectiles.size() - 1);
+         float f3 = projectiles.size() == 1 ? 0.0F : 2.0F * f2 / (float) (projectiles.size() - 1);
          float f4 = (float) ((projectiles.size() - 1) % 2) * f3 / 2.0F;
-         float f5 = 1.0F;
- 
-@@ -61,7 +62,7 @@ public abstract class ProjectileWeaponItem extends Item {
+@@ -56,8 +56,9 @@ public abstract class ProjectileWeaponItem extends Item {
                  f5 = -f5;
-                 Projectile iprojectile = this.createProjectile(world, shooter, stack, itemstack1, critical);
- 
--                this.shootProjectile(shooter, iprojectile, i, speed, divergence, f6, target);
-+                this.shootProjectile(shooter, iprojectile, i, speed, divergence, f6, target, relative);
                  // CraftBukkit start
+                 Projectile iprojectile = this.createProjectile(world, shooter, stack, itemstack1, critical);
+-                this.shootProjectile(shooter, iprojectile, i, speed, divergence, f6, target);
+ 
++                this.shootProjectile(shooter, iprojectile, i, speed, divergence, f6, target, relative);
++                // CraftBukkit start
                  org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(shooter, stack, itemstack1, iprojectile, hand, speed, true);
                  if (event.isCancelled()) {
-@@ -91,7 +92,7 @@ public abstract class ProjectileWeaponItem extends Item {
+                     event.getProjectile().remove();
+@@ -86,7 +87,7 @@ public abstract class ProjectileWeaponItem extends Item {
          return 1;
      }
  

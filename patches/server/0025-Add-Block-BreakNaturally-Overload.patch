@@ -5,10 +5,10 @@ Subject: [PATCH] Add Block BreakNaturally Overload
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index d9aff85fce2a65794dd57cf790f878b4fc4ec54e..4ed92f149be39929a874678bdfa049694270d3b5 100644
+index 43c288a4e226060a5e0cecddd941846d29ae8025..78726d52117105ffebd9d15b407f5e529a217900 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -299,24 +299,28 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -290,24 +290,28 @@ public class Block extends BlockBehaviour implements ItemLike {
          return state.getDrops(lootparams_a);
      }
  
@@ -43,7 +43,7 @@ index d9aff85fce2a65794dd57cf790f878b4fc4ec54e..4ed92f149be39929a874678bdfa04969
      }
  
      // Paper start - Add BlockBreakBlockEvent
-@@ -344,15 +348,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -335,15 +339,17 @@ public class Block extends BlockBehaviour implements ItemLike {
      // Paper start - Properly handle xp dropping
          dropResources(state, world, pos, blockEntity, entity, tool, true);
      }
@@ -64,7 +64,7 @@ index d9aff85fce2a65794dd57cf790f878b4fc4ec54e..4ed92f149be39929a874678bdfa04969
      }
  
      public static void popResource(Level world, BlockPos pos, ItemStack stack) {
-@@ -366,6 +372,17 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -357,6 +363,17 @@ public class Block extends BlockBehaviour implements ItemLike {
          }, stack);
      }
  
@@ -83,7 +83,7 @@ index d9aff85fce2a65794dd57cf790f878b4fc4ec54e..4ed92f149be39929a874678bdfa04969
          int i = direction.getStepX();
          int j = direction.getStepY();
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index ac11f18690434922179b61ffcc3036dea025b0cb..f9aae49eed516bce00cb968de36ca8b3de038311 100644
+index 5cb69d0b822e11a99a96aef4f59986d083b079f4..f151b805763ce5fa4b9bfacb74b0152ab3a6ae5e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 @@ -500,6 +500,11 @@ public class CraftBlock implements Block {

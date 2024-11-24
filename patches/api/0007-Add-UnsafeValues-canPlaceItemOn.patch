@@ -5,11 +5,11 @@ Subject: [PATCH] Add UnsafeValues#canPlaceItemOn
 
 
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 330e3013eda204aa9b33d5e1c3104e0b595abdbc..8093b81f00b84e292a1e6f76af9509ea178a7ab3 100644
+index a491dc40093e19b8d1900443ad613223fd7f3119..fa22e21eb7299f601649af515b9e554e050b1ae1 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -287,4 +287,18 @@ public interface UnsafeValues {
-     <A extends Keyed, M> io.papermc.paper.registry.tag.@Nullable Tag<A> getTag(io.papermc.paper.registry.tag.@NotNull TagKey<A> tagKey); // Paper - hack to get tags for non-server backed registries
+@@ -312,4 +312,18 @@ public interface UnsafeValues {
+     @NotNull java.util.List<net.kyori.adventure.text.Component> computeTooltipLines(@NotNull ItemStack itemStack, @NotNull io.papermc.paper.inventory.tooltip.TooltipContext tooltipContext, @Nullable org.bukkit.entity.Player player); // Paper - expose itemstack tooltip lines
  
      ItemStack createEmptyStack(); // Paper - proxy ItemStack
 +

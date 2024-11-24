@@ -8,10 +8,10 @@ to easily get the items being dropped by any
 block instead of only blocks broken by players.
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index a7108b2be0746aa1f0e574d8c6f5ffad6d369835..d9aff85fce2a65794dd57cf790f878b4fc4ec54e 100644
+index b6d6c2cb9b227a17fb4ce42bc75f92206fbea043..43c288a4e226060a5e0cecddd941846d29ae8025 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -301,7 +301,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -292,7 +292,7 @@ public class Block extends BlockBehaviour implements ItemLike {
  
      public static void dropResources(BlockState state, Level world, BlockPos pos) {
          if (world instanceof ServerLevel) {
@@ -20,7 +20,7 @@ index a7108b2be0746aa1f0e574d8c6f5ffad6d369835..d9aff85fce2a65794dd57cf790f878b4
                  Block.popResource(world, pos, itemstack);
              });
              state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY, true);
-@@ -311,7 +311,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -302,7 +302,7 @@ public class Block extends BlockBehaviour implements ItemLike {
  
      public static void dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity) {
          if (world instanceof ServerLevel) {
@@ -29,7 +29,7 @@ index a7108b2be0746aa1f0e574d8c6f5ffad6d369835..d9aff85fce2a65794dd57cf790f878b4
                  Block.popResource((ServerLevel) world, pos, itemstack);
              });
              state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY, true);
-@@ -347,7 +347,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -338,7 +338,7 @@ public class Block extends BlockBehaviour implements ItemLike {
      public static void dropResources(BlockState state, Level world, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack tool, boolean dropExperience) {
      // Paper end - Properly handle xp dropping
          if (world instanceof ServerLevel) {
@@ -39,10 +39,10 @@ index a7108b2be0746aa1f0e574d8c6f5ffad6d369835..d9aff85fce2a65794dd57cf790f878b4
              });
              state.spawnAfterBreak((ServerLevel) world, pos, tool, dropExperience); // Paper - Properly handle xp dropping
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 8f438df5d9112460e5b1664a56688bb1c6ddc6fa..d19b9c7773d7d416085dc5a4dbe8113ad5fe9c41 100644
+index 0af82fae494762fec22afbb2363d24370dbdb71b..f29ddf243147a866b2b17f41556ff3d817aedf2e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -2288,5 +2288,19 @@ public class CraftEventFactory {
+@@ -2308,5 +2308,19 @@ public class CraftEventFactory {
              }
          });
      }

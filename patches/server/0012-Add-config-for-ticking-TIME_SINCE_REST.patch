@@ -5,10 +5,10 @@ Subject: [PATCH] Add config for ticking TIME_SINCE_REST
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 4bcf27f98765abf693e535cfc1756c27a10cb316..6a698656c90c368d5c64f4a0b2a16500c7dadc02 100644
+index b1c917d65076a3805e5b78cb946753f0c101e214..7034391701ce34119c6cfc22a8dd2dec6293f63d 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -290,6 +290,7 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -317,6 +317,7 @@ public class WorldConfiguration extends ConfigurationPart {
              }
  
              public boolean disablePlayerCrits = false;
@@ -17,7 +17,7 @@ index 4bcf27f98765abf693e535cfc1756c27a10cb316..6a698656c90c368d5c64f4a0b2a16500
              @Comment("Prevents merging items that are not on the same y level, preventing potential visual artifacts.")
              public boolean onlyMergeItemsHorizontally = false;
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 0acb4ef6d4ea60d7e4bc17534e84a7a9b477f04e..dae72e66a976701c0cb1fc26e6c37657b79da423 100644
+index 09ed0bd5f012ae2e34d5ed58828475577b6ab6f8..e280cd56a4dc446edab97e6c48397e03edb2ca1e 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -304,7 +304,7 @@ public abstract class Player extends LivingEntity {

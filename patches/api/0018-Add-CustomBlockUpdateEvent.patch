@@ -6,7 +6,7 @@ Subject: [PATCH] Add CustomBlockUpdateEvent
 
 diff --git a/src/main/java/gg/projecteden/parchment/event/block/CustomBlockUpdateEvent.java b/src/main/java/gg/projecteden/parchment/event/block/CustomBlockUpdateEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ae798a18bb07d83bfd3acefc222a48e29f9a3ec3
+index 0000000000000000000000000000000000000000..f99a67efe3582038fc5500c017a1c1371022985b
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/event/block/CustomBlockUpdateEvent.java
 @@ -0,0 +1,70 @@
