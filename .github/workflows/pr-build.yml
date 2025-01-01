@@ -42,4 +42,4 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: Parchment-PR${{ github.event.pull_request.number }}-JDK${{ matrix.java }}
-          path: build/libs/parchment-paperclip-*-reobf.jar
+          path: build/libs/parchment-paperclip-*.jar
