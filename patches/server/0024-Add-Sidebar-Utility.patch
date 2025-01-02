@@ -30,7 +30,7 @@ new file mode 100644
 index 0000000000000000000000000000000000000000..3184478d24e6c984d4e5b5f67253f966315b298c
 --- /dev/null
 +++ b/src/main/java/gg/projecteden/parchment/sidebar/SidebarBufferImpl.java
-@@ -0,0 +1,181 @@
+@@ -0,0 +1,182 @@
 +package gg.projecteden.parchment.sidebar;
 +
 +import gg.projecteden.parchment.util.StringUtils;
@@ -50,6 +50,7 @@ index 0000000000000000000000000000000000000000..3184478d24e6c984d4e5b5f67253f966
 +import org.bukkit.entity.Player;
 +
 +import java.util.Objects;
++import java.util.Optional;
 +
 +public class SidebarBufferImpl extends SidebarBuffer {
 +
