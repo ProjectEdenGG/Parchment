@@ -184,7 +184,7 @@ index 0000000000000000000000000000000000000000..3184478d24e6c984d4e5b5f67253f966
 +        }
 +
 +        java.util.Optional<NumberFormat> numberFormat = java.util.Optional.of((display == null || display.isEmpty() || display.isBlank()) ? BlankFormat.INSTANCE : new FixedFormat(Component.literal(StringUtils.colorize(display))));
-+        ClientboundSetScorePacket packet = new ClientboundSetScorePacket(id + value, this.name, line, null, numberFormat);
++        ClientboundSetScorePacket packet = new ClientboundSetScorePacket(id + value, this.name, line, Optional.empty(), numberFormat);
 +
 +        this.connection.send(packet);
 +    }
