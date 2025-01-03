@@ -14,7 +14,7 @@ index 799b1fc67bd16029ea26c480e21f5f51877343ab..da1ec6e15fe9525e50f2389eeea6719e
      protected static final Predicate<Entity> HANGING_ENTITY = entity -> entity instanceof HangingEntity;
 +
 +    private int checkInterval; { this.checkInterval = this.getId() % this.level().spigotConfig.hangingTickFrequency; } // Paper - Perf: offset item frame ticking
-+    public BlockPos pos;
++    //public BlockPos pos;
      protected Direction direction = Direction.SOUTH;
 +    public boolean tick = true; // Parchment
  
