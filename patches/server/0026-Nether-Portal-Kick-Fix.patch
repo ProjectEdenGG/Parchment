@@ -5,7 +5,7 @@ Subject: [PATCH] Nether Portal Kick Fix
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 544882862b2248d426185dd67bd217f593caef2a..a12c07215ff51b0365aaebe5f29bd02320a373c8 100644
+index 544882862b2248d426185dd67bd217f593caef2a..0474a5d6a35955702ba76bdc24f5c6e77e358a90 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -1793,7 +1793,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -17,7 +17,3 @@ index 544882862b2248d426185dd67bd217f593caef2a..a12c07215ff51b0365aaebe5f29bd023
  
              while (iterator.hasNext()) {
                  Entity.Movement entity_b = (Entity.Movement) iterator.next();
-
- 
-     protected boolean repositionEntityAfterLoad() {
- 

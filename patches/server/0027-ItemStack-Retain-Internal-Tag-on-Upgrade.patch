@@ -1,0 +1,43 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Blast-MC <cjblanton2@gmail.com>
+Date: Thu, 9 Jan 2025 02:35:24 -0500
+Subject: [PATCH] ItemStack Retain Internal Tag on Upgrade
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
+index ab616f58e35458e52fb5a94e39875a188fd6a05b..4e4bc56f8ae1cd3f6ec142e505e5c9a51ff3a378 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
+@@ -755,11 +755,12 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+             this.setMaxDamage(maxDamage);
+         }
+ 
++        CompoundTag internalTag = null;
+         String internal = SerializableMeta.getString(map, "internal", true);
+         if (internal != null) {
+             ByteArrayInputStream buf = new ByteArrayInputStream(Base64.getDecoder().decode(internal));
+             try {
+-                CompoundTag internalTag = NbtIo.readCompressed(buf, NbtAccounter.unlimitedHeap());
++                internalTag = NbtIo.readCompressed(buf, NbtAccounter.unlimitedHeap());
+                 this.deserializeInternal(internalTag, map);
+             } catch (IOException ex) {
+                 Logger.getLogger(CraftMetaItem.class.getName()).log(Level.SEVERE, null, ex);
+@@ -825,6 +826,18 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+                 Logger.getLogger(CraftMetaItem.class.getName()).log(Level.SEVERE, null, ex);
+             }
+         }
++
++        if (internalTag != null) {
++            if (this.customTag == null) {
++                this.customTag  = new CompoundTag();
++            }
++            for (String key: internalTag.getAllKeys()) {
++                if (this.customTag.contains(key)) {
++                    continue;
++                }
++                this.customTag.put(key, internalTag.get(key));
++            }
++        }
+     }
+ 
+     void deserializeInternal(CompoundTag tag, Object context) {
