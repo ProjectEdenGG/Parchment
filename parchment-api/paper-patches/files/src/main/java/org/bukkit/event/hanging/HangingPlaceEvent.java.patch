@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
++++ b/src/main/java/org/bukkit/event/hanging/HangingPlaceEvent.java
+@@ -14,7 +_,7 @@
+ /**
+  * Triggered when a hanging entity is created in the world
+  */
+-public class HangingPlaceEvent extends HangingEvent implements Cancellable {
++public class HangingPlaceEvent extends HangingEvent implements Cancellable, gg.projecteden.parchment.OptionalPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled;
+     private final Player player;

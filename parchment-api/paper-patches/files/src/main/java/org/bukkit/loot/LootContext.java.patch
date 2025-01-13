@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/loot/LootContext.java
++++ b/src/main/java/org/bukkit/loot/LootContext.java
+@@ -11,7 +_,7 @@
+  * Represents additional information a {@link LootTable} can use to modify it's
+  * generated loot.
+  */
+-public final class LootContext {
++public final class LootContext implements gg.projecteden.parchment.HasLocation { // Parchment
+ 
+     public static final int DEFAULT_LOOT_MODIFIER = -1;
+ 

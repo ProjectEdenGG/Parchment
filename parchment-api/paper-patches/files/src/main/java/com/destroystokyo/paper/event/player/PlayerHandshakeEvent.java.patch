@@ -1,0 +1,11 @@
+--- a/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/player/PlayerHandshakeEvent.java
+@@ -21,7 +_,7 @@
+  * <p>WARNING: TAMPERING WITH THIS EVENT CAN BE DANGEROUS</p>
+  */
+ @NullMarked
+-public class PlayerHandshakeEvent extends Event implements Cancellable {
++public class PlayerHandshakeEvent extends Event implements Cancellable, gg.projecteden.api.interfaces.OptionalUniqueId { // Parchment
+ 
+     private static final HandlerList HANDLER_LIST = new HandlerList();
+ 

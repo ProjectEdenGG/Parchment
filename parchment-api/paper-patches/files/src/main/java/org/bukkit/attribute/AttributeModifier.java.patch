@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/attribute/AttributeModifier.java
++++ b/src/main/java/org/bukkit/attribute/AttributeModifier.java
+@@ -20,7 +_,7 @@
+ /**
+  * Concrete implementation of an attribute modifier.
+  */
+-public class AttributeModifier implements ConfigurationSerializable, Keyed {
++public class AttributeModifier implements ConfigurationSerializable, Keyed, gg.projecteden.api.interfaces.HasUniqueId { // Parchment
+ 
+     private static final Pattern UUID_PATTERN = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
+     private final NamespacedKey key;

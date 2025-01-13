@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
++++ b/src/main/java/org/bukkit/event/player/PlayerUnleashEntityEvent.java
+@@ -10,7 +_,7 @@
+ /**
+  * Called prior to an entity being unleashed due to a player's action.
+  */
+-public class PlayerUnleashEntityEvent extends EntityUnleashEvent implements Cancellable {
++public class PlayerUnleashEntityEvent extends EntityUnleashEvent implements Cancellable, gg.projecteden.parchment.HasPlayer { // Parchment
+ 
+     private boolean cancelled = false;
+ 

@@ -1,0 +1,85 @@
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -59,7 +_,17 @@
+ /**
+  * Represents a player, connected or not
+  */
+-public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient { // Paper
++public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient , gg.projecteden.parchment.HasPlayer { // Paper // Parchment
++
++    // Parchment start
++    /**
++     * Returns this player object.
++     *
++     * @return this player
++     */
++    @Override
++    @NotNull Player getPlayer();
++    // Parchment end
+ 
+     // Paper start
+     @Override
+@@ -2128,6 +_,17 @@
+      */
+     public boolean canSee(@NotNull Entity entity);
+ 
++    // Parchment start
++    /**
++     * Gets a view of the hidden entity UUIDs.
++     *
++     * @param plugin Plugin that has hidden entities
++     * @return a view of hidden entity UUIDs
++     */
++    public java.util.@NotNull Set<java.util.UUID> getHiddenEntities(@NotNull Plugin plugin);
++    // Parchment end
++
++
+     // Paper start
+     /**
+      * Returns whether the {@code other} player is listed for {@code this}.
+@@ -3892,4 +_,45 @@
+      */
+     void sendEntityEffect(org.bukkit.@NotNull EntityEffect effect, @NotNull Entity target);
+     // Paper end - entity effect API
++
++    /**
++     * Checks if the player will spawn phantoms at night
++     * Uses time since last rest statistic
++     *
++     * {@link #getTimeSinceLastRest()}
++     *
++     * @return if the player will spawn phantoms at night
++     */
++    boolean isInsomniac();
++
++    /**
++     * Sets if the player bypasses phantom spawning if insomniac
++     *
++     * @param val
++     */
++    void setBypassInsomnia(boolean val);
++
++    /**
++     * Does the player bypass phantom spawning if insomniac
++     *
++     * @return if the player bypasses phantom spawning
++     */
++    boolean doesBypassInsomnia();
++
++    /**
++     * Set the time since last rest stat for the player
++     * This modifies the phantom spawning timer
++     *
++     * @param ticks how long since last rest, greater than or equal to 1
++     */
++    void setTimeSinceLastRest(int ticks);
++
++    /**
++     * Gets the time since the player last slept
++     *
++     * @return ticks since the player last slept
++     */
++    int getTimeSinceLastRest();
++// Parchment end
++
+ }

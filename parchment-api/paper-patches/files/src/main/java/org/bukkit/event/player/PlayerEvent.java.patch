@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/player/PlayerEvent.java
++++ b/src/main/java/org/bukkit/event/player/PlayerEvent.java
+@@ -7,7 +_,7 @@
+ /**
+  * Represents a player related event
+  */
+-public abstract class PlayerEvent extends Event {
++public abstract class PlayerEvent extends Event implements gg.projecteden.parchment.HasPlayer { // Parchment
+     protected Player player;
+ 
+     public PlayerEvent(@NotNull final Player who) {

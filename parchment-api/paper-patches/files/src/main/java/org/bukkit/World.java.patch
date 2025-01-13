@@ -1,0 +1,39 @@
+--- a/src/main/java/org/bukkit/World.java
++++ b/src/main/java/org/bukkit/World.java
+@@ -52,6 +_,36 @@
+  */
+ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient, Metadatable, PersistentDataHolder, Keyed, net.kyori.adventure.audience.ForwardingAudience { // Paper
+ 
++    // Parchment start
++    /**
++     * Returns the item that will result from smelting the input item, if applicable.
++     *
++     * @param toSmelt the item to simulate smelting
++     * @return the resulting item, or null
++     */
++    @Nullable
++    default ItemStack smeltItem(@NotNull ItemStack toSmelt) {
++        return smeltItem(toSmelt, gg.projecteden.parchment.inventory.RecipeType.SMELTING);
++    }
++
++    /**
++     * Returns the item that will result from smelting the input item, if applicable.
++     * <p>
++     * Applicable values for {@code recipeType} are
++     * {@link gg.projecteden.parchment.inventory.RecipeType#SMELTING SMELTING},
++     * {@link gg.projecteden.parchment.inventory.RecipeType#BLASTING BLASTING},
++     * {@link gg.projecteden.parchment.inventory.RecipeType#SMOKING SMOKING},
++     * and {@link gg.projecteden.parchment.inventory.RecipeType#CAMPFIRE_COOKING CAMPFIRE_COOKING}.
++     * An {@link IllegalArgumentException} will be thrown if another value is supplied.
++     *
++     * @param toSmelt the item to simulate smelting
++     * @param recipeType type of furnace to simulate smelting
++     * @return the resulting item, or null
++     */
++    @Nullable
++    ItemStack smeltItem(@NotNull ItemStack toSmelt, gg.projecteden.parchment.inventory.@NotNull RecipeType recipeType);
++    // Parchment end
++
+     // Paper start - void damage configuration
+     /**
+      * Checks if void damage is enabled on this world.

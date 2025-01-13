@@ -1,0 +1,37 @@
+--- a/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntityEnterLoveModeEvent.java
+@@ -13,7 +_,7 @@
+  * This can be cancelled but the item will still be consumed that was used to
+  * make the entity enter into love mode.
+  */
+-public class EntityEnterLoveModeEvent extends EntityEvent implements Cancellable {
++public class EntityEnterLoveModeEvent extends EntityEvent implements Cancellable, gg.projecteden.parchment.OptionalHumanEntity { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancel;
+@@ -44,9 +_,24 @@
+      * null if there wasn't one.
+      */
+     @Nullable
+-    public HumanEntity getHumanEntity() {
++    // Parchment start
++    @Deprecated
++    public final HumanEntity getHumanEntity() {
++        return getPlayer();
++    }
++
++    /**
++     * Gets the Human Entity that caused the animal to enter love mode.
++     *
++     * @return The Human entity that caused the animal to enter love mode, or
++     * null if there wasn't one.
++     */
++    @Override
++    @Nullable
++    public HumanEntity getPlayer() {
+         return humanEntity;
+     }
++    // Parchment end
+ 
+     /**
+      * Gets the amount of ticks that the animal will fall in love for.

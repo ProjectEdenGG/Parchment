@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java
++++ b/src/main/java/org/bukkit/event/inventory/InventoryCloseEvent.java
+@@ -28,7 +_,7 @@
+  * on the next tick. Also be aware that this is not an exhaustive list, and
+  * other methods could potentially create issues as well.
+  */
+-public class InventoryCloseEvent extends InventoryEvent {
++public class InventoryCloseEvent extends InventoryEvent implements gg.projecteden.parchment.HasHumanEntity { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     // Paper start
+     private final Reason reason;

@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntityExplodeEvent.java
+@@ -14,7 +_,7 @@
+  * event isn't called if the {@link org.bukkit.GameRule#MOB_GRIEFING}
+  * is disabled as no block interaction will occur.
+  */
+-public class EntityExplodeEvent extends EntityEvent implements Cancellable {
++public class EntityExplodeEvent extends EntityEvent implements Cancellable, gg.projecteden.parchment.HasLocation { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancel;
+     private final Location location;

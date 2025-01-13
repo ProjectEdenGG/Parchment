@@ -1,0 +1,25 @@
+--- a/src/main/java/org/bukkit/entity/Hanging.java
++++ b/src/main/java/org/bukkit/entity/Hanging.java
+@@ -20,4 +_,22 @@
+      *     attach to in order to face the given direction.
+      */
+     public boolean setFacingDirection(@NotNull BlockFace face, boolean force);
++
++    // Parchment start
++    /**
++     * Determines whether the hanging entity is allowed to tick.
++     * Ticking is used to validate the hanging entity's placement.
++     *
++     * @return True if the entity is allowed to tick.
++     */
++    default boolean canTick() { return true; }
++
++    /**
++     * Sets whether the hanging entity is allowed to tick.
++     * Ticking is used to validate the hanging entity's placement.
++     *
++     * @param tick True if the entity is allowed to tick.
++     */
++    default void setCanTick(boolean tick) { throw new UnsupportedOperationException(); }
++    // Parchment end
+ }

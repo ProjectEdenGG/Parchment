@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
++++ b/src/main/java/org/bukkit/event/inventory/InventoryOpenEvent.java
+@@ -9,7 +_,7 @@
+ /**
+  * Called when a player opens an inventory
+  */
+-public class InventoryOpenEvent extends InventoryEvent implements Cancellable {
++public class InventoryOpenEvent extends InventoryEvent implements Cancellable, gg.projecteden.parchment.HasHumanEntity { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled;
+     private net.kyori.adventure.text.Component titleOverride; // Paper

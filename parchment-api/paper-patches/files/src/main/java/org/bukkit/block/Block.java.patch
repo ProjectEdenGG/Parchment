@@ -1,0 +1,32 @@
+--- a/src/main/java/org/bukkit/block/Block.java
++++ b/src/main/java/org/bukkit/block/Block.java
+@@ -32,7 +_,7 @@
+  * (i.e. lighting and power) may not be able to be safely accessed during world
+  * generation when used in cases like BlockPhysicsEvent!!!!
+  */
+-public interface Block extends Metadatable, Translatable, net.kyori.adventure.translation.Translatable { // Paper - translatable
++public interface Block extends Metadatable, Translatable, net.kyori.adventure.translation.Translatable, gg.projecteden.parchment.HasLocation { // Paper - translatable // Parchment
+ 
+     /**
+      * Gets the metadata for this block
+@@ -593,6 +_,20 @@
+      * @return true if the block was destroyed
+      */
+     boolean breakNaturally(@NotNull ItemStack tool, boolean triggerEffect, boolean dropExperience);
++
++    // Parchment Start
++    /**
++     * Breaks the block and spawns item drops as if a player had broken it
++     * with a specific tool
++     *
++     * @param player The player to break the block as
++     * @param tool The tool or item in hand used for digging
++     * @param triggerEffect Play the block break particle effect and sound
++     * @param dropExperience drop exp if the block normally does so
++     * @return true if the block was destroyed
++     */
++    boolean breakNaturally(Player player, @NotNull ItemStack tool, boolean triggerEffect, boolean dropExperience);
++    // Parchment end
+ 
+     /**
+      * Causes the block to be ticked, this is different from {@link Block#randomTick()},

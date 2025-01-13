@@ -12,23 +12,23 @@ paperweight {
 
         patchFile {
             path = "paper-server/build.gradle.kts"
-            outputFile = file("fork-server/build.gradle.kts")
-            patchFile = file("fork-server/build.gradle.kts.patch")
+            outputFile = file("parchment-server/build.gradle.kts")
+            patchFile = file("parchment-server/build.gradle.kts.patch")
         }
         patchFile {
             path = "paper-api/build.gradle.kts"
-            outputFile = file("fork-api/build.gradle.kts")
-            patchFile = file("fork-api/build.gradle.kts.patch")
+            outputFile = file("parchment-api/build.gradle.kts")
+            patchFile = file("parchment-api/build.gradle.kts.patch")
         }
         patchDir("paperApi") {
             upstreamPath = "paper-api"
             excludes = setOf("build.gradle.kts")
-            patchesDir = file("fork-api/paper-patches")
+            patchesDir = file("parchment-api/paper-patches")
             outputDir = file("paper-api")
         }
         patchDir("paperApiGenerator") {
             upstreamPath = "paper-api-generator"
-            patchesDir = file("fork-api-generator/paper-patches")
+            patchesDir = file("parchment-api-generator/paper-patches")
             outputDir = file("paper-api-generator")
         }
     }
@@ -49,6 +49,7 @@ subprojects {
     repositories {
         mavenCentral()
         maven(paperMavenPublicUrl)
+        maven("https://sonatype.projecteden.gg/repository/maven-public/")
     }
 
     dependencies {
@@ -80,12 +81,11 @@ subprojects {
 
     extensions.configure<PublishingExtension> {
         repositories {
-            /*
-            maven("https://repo.papermc.io/repository/maven-snapshots/") {
-                name = "paperSnapshots"
+            maven {
+                name = "edenSnapshots"
+                url = uri("https://sonatype.projecteden.gg/repository/maven-snapshots/")
                 credentials(PasswordCredentials::class)
             }
-             */
         }
     }
 }

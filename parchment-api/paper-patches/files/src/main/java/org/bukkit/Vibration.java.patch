@@ -1,0 +1,12 @@
+--- a/src/main/java/org/bukkit/Vibration.java
++++ b/src/main/java/org/bukkit/Vibration.java
+@@ -74,7 +_,8 @@
+             }
+         }
+ 
+-        public static class BlockDestination implements Destination {
++        public static class BlockDestination implements Destination, gg.projecteden.parchment.HasLocation { // Parchment
++
+ 
+             private final Location block;
+ 

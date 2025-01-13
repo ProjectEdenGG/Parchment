@@ -1,0 +1,11 @@
+--- a/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/entity/TurtleLayEggEvent.java
+@@ -12,7 +_,7 @@
+  * Fired when a Turtle lays eggs
+  */
+ @NullMarked
+-public class TurtleLayEggEvent extends EntityEvent implements Cancellable {
++public class TurtleLayEggEvent extends EntityEvent implements Cancellable, gg.projecteden.parchment.HasLocation { // Parchment
+ 
+     private static final HandlerList HANDLER_LIST = new HandlerList();
+ 

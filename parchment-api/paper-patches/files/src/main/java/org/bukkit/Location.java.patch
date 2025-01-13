@@ -1,0 +1,24 @@
+--- a/src/main/java/org/bukkit/Location.java
++++ b/src/main/java/org/bukkit/Location.java
+@@ -27,13 +_,20 @@
+  * magnitude than 360 are valid, but may be normalized to any other equivalent
+  * representation by the implementation.
+  */
+-public class Location implements Cloneable, ConfigurationSerializable, io.papermc.paper.math.FinePosition {
++public class Location implements Cloneable, ConfigurationSerializable, io.papermc.paper.math.FinePosition, gg.projecteden.parchment.HasLocation { // Paper // Parchment
+     private Reference<World> world;
+     private double x;
+     private double y;
+     private double z;
+     private float pitch;
+     private float yaw;
++
++    // Parchment start
++    @Override
++    public @NotNull Location getLocation() {
++        return this;
++    }
++    // Parchment end
+ 
+     /**
+      * Constructs a new Location with the given coordinates

@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/entity/ItemDespawnEvent.java
++++ b/src/main/java/org/bukkit/event/entity/ItemDespawnEvent.java
+@@ -13,7 +_,7 @@
+  * Cancelling the event results in the item being allowed to exist for 5 more
+  * minutes. This behavior is not guaranteed and may change in future versions.
+  */
+-public class ItemDespawnEvent extends EntityEvent implements Cancellable {
++public class ItemDespawnEvent extends EntityEvent implements Cancellable, gg.projecteden.parchment.HasLocation { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean canceled;
+     private final Location location;

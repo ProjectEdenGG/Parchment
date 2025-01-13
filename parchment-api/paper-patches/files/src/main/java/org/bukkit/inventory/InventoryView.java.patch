@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/inventory/InventoryView.java
++++ b/src/main/java/org/bukkit/inventory/InventoryView.java
+@@ -9,7 +_,7 @@
+  * Represents a view linking two inventories and a single player (whose
+  * inventory may or may not be one of the two).
+  */
+-public interface InventoryView {
++public interface InventoryView extends gg.projecteden.parchment.HasHumanEntity { // Parchment
+     public static final int OUTSIDE = -999;
+     /**
+      * Represents various extra properties of certain inventory windows.

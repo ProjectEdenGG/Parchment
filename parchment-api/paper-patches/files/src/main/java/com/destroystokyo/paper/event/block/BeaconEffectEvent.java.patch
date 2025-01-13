@@ -1,0 +1,11 @@
+--- a/src/main/java/com/destroystokyo/paper/event/block/BeaconEffectEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/block/BeaconEffectEvent.java
+@@ -13,7 +_,7 @@
+  * Called when a beacon effect is being applied to a player.
+  */
+ @NullMarked
+-public class BeaconEffectEvent extends BlockEvent implements Cancellable {
++public class BeaconEffectEvent extends BlockEvent implements Cancellable, gg.projecteden.parchment.HasPlayer { // Parchment
+ 
+     private static final HandlerList HANDLER_LIST = new HandlerList();
+ 

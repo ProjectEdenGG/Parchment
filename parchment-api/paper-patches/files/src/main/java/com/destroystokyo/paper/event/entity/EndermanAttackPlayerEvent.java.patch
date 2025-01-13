@@ -1,0 +1,11 @@
+--- a/src/main/java/com/destroystokyo/paper/event/entity/EndermanAttackPlayerEvent.java
++++ b/src/main/java/com/destroystokyo/paper/event/entity/EndermanAttackPlayerEvent.java
+@@ -38,7 +_,7 @@
+  * at the Enderman, according to Vanilla rules.
+  */
+ @NullMarked
+-public class EndermanAttackPlayerEvent extends EntityEvent implements Cancellable {
++public class EndermanAttackPlayerEvent extends EntityEvent implements Cancellable, gg.projecteden.parchment.HasPlayer { // Parchment
+ 
+     private static final HandlerList HANDLER_LIST = new HandlerList();
+ 

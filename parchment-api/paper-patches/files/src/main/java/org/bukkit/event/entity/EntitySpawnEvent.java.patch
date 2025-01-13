@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/entity/EntitySpawnEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntitySpawnEvent.java
+@@ -11,7 +_,7 @@
+  * <p>
+  * If an Entity Spawn event is cancelled, the entity will not spawn.
+  */
+-public class EntitySpawnEvent extends EntityEvent implements Cancellable {
++public class EntitySpawnEvent extends EntityEvent implements Cancellable, gg.projecteden.parchment.HasLocation { // Parchment
+ 
+     private static final HandlerList handlers = new HandlerList();
+     private boolean canceled;

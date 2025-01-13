@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/Raid.java
++++ b/src/main/java/org/bukkit/Raid.java
+@@ -9,7 +_,7 @@
+ /**
+  * Represents a raid event.
+  */
+-public interface Raid extends org.bukkit.persistence.PersistentDataHolder { // Paper
++public interface Raid extends org.bukkit.persistence.PersistentDataHolder, gg.projecteden.parchment.HasLocation { // Paper // Parchment
+ 
+     /**
+      * Get whether this raid started.

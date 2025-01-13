@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java
++++ b/src/main/java/org/bukkit/event/entity/PlayerLeashEntityEvent.java
+@@ -11,7 +_,7 @@
+ /**
+  * Called immediately prior to a creature being leashed by a player.
+  */
+-public class PlayerLeashEntityEvent extends Event implements Cancellable {
++public class PlayerLeashEntityEvent extends Event implements Cancellable, gg.projecteden.parchment.HasPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private final Entity leashHolder;
+     private final Entity entity;

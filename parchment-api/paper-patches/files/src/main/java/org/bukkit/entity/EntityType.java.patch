@@ -1,0 +1,10 @@
+--- a/src/main/java/org/bukkit/entity/EntityType.java
++++ b/src/main/java/org/bukkit/entity/EntityType.java
+@@ -341,6 +_,7 @@
+     /**
+      * An unknown entity without an Entity Class
+      */
++    NPC("npc", NPC.class, -1, true),
+     UNKNOWN(null, null, -1, false);
+ 
+     private final String name;

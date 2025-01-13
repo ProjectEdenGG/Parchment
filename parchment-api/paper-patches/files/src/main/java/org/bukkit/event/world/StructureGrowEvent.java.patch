@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/world/StructureGrowEvent.java
++++ b/src/main/java/org/bukkit/event/world/StructureGrowEvent.java
+@@ -14,7 +_,7 @@
+  * Event that is called when an organic structure attempts to grow (Sapling {@literal ->}
+  * Tree), (Mushroom {@literal ->} Huge Mushroom), naturally or using bonemeal.
+  */
+-public class StructureGrowEvent extends WorldEvent implements Cancellable {
++public class StructureGrowEvent extends WorldEvent implements Cancellable, gg.projecteden.parchment.OptionalPlayer { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private boolean cancelled = false;
+     private final Location location;

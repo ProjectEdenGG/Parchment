@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
++++ b/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
+@@ -18,7 +_,7 @@
+  * Consider rendering any translatable yourself with {@link net.kyori.adventure.translation.GlobalTranslator#render}
+  * if the client's language is known.
+  */
+-public class AsyncPlayerPreLoginEvent extends Event {
++public class AsyncPlayerPreLoginEvent extends Event implements gg.projecteden.api.interfaces.HasUniqueId { // Parchment
+     private static final HandlerList handlers = new HandlerList();
+     private Result result;
+     private net.kyori.adventure.text.Component message; // Paper

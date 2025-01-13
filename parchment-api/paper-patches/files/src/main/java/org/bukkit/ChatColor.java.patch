@@ -1,0 +1,73 @@
+--- a/src/main/java/org/bukkit/ChatColor.java
++++ b/src/main/java/org/bukkit/ChatColor.java
+@@ -13,7 +_,7 @@
+  * @deprecated ChatColor has been deprecated in favor of <a href="https://docs.advntr.dev/text.html">Adventure</a> API. See {@link net.kyori.adventure.text.format.NamedTextColor} for the adventure equivalent of pre-defined text colors
+  */
+ @Deprecated // Paper
+-public enum ChatColor {
++public enum ChatColor implements net.kyori.adventure.text.format.StyleBuilderApplicable, net.kyori.adventure.text.format.TextFormat { // Parchment
+     /**
+      * Represents black
+      */
+@@ -183,6 +_,13 @@
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.MAGIC;
+         }
++
++        // Parchment start
++        @Override
++        public void styleApply(net.kyori.adventure.text.format.Style.@NotNull Builder style) {
++            style.apply(net.kyori.adventure.text.format.TextDecoration.OBFUSCATED);
++        }
++        // Parchment end
+     },
+     /**
+      * Makes the text bold.
+@@ -213,6 +_,13 @@
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.UNDERLINE;
+         }
++
++        // Parchment start
++        @Override
++        public void styleApply(net.kyori.adventure.text.format.Style.@NotNull Builder style) {
++            style.apply(net.kyori.adventure.text.format.TextDecoration.UNDERLINED);
++        }
++        // Parchment end
+     },
+     /**
+      * Makes the text italic.
+@@ -233,6 +_,16 @@
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.RESET;
+         }
++
++        // Parchment start
++        @Override
++        public void styleApply(net.kyori.adventure.text.format.Style.@NotNull Builder style) {
++            style.color(null);
++            for (net.kyori.adventure.text.format.TextDecoration decoration : net.kyori.adventure.text.format.TextDecoration.values()) {
++                style.decoration(decoration, net.kyori.adventure.text.format.TextDecoration.State.NOT_SET);
++            }
++        }
++        // Parchment end
+     };
+ 
+     /**
+@@ -264,6 +_,16 @@
+     public net.md_5.bungee.api.ChatColor asBungee() {
+         return net.md_5.bungee.api.ChatColor.RESET;
+     };
++
++    // Parchment start
++    @Override
++    public void styleApply(net.kyori.adventure.text.format.Style.@NotNull Builder style) {
++        if (isColor())
++            style.color(net.kyori.adventure.text.format.TextColor.color(asBungee().getColor().getRGB()));
++        else
++            style.decorate(net.kyori.adventure.text.format.TextDecoration.valueOf(name()));
++    }
++    // Parchment end
+ 
+     /**
+      * Gets the char value associated with this color
