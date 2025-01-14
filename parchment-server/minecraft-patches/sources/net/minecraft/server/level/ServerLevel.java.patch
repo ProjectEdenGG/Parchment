@@ -1,0 +1,77 @@
+--- a/net/minecraft/server/level/ServerLevel.java
++++ b/net/minecraft/server/level/ServerLevel.java
+@@ -1053,7 +_,7 @@
+ 
+     private void announceSleepStatus() {
+         if (this.canSleepThroughNights()) {
+-            if (!this.getServer().isSingleplayer() || this.getServer().isPublished()) {
++            if (false && !this.getServer().isSingleplayer() || this.getServer().isPublished()) {
+                 int _int = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
+                 Component component;
+                 if (this.sleepStatus.areEnoughSleeping(_int)) {
+@@ -1623,28 +_,47 @@
+ 
+     @Override
+     public void playSeededSound(
+-        @Nullable Player player, double x, double y, double z, Holder<SoundEvent> sound, SoundSource category, float volume, float pitch, long seed
+-    ) {
+-        this.server
+-            .getPlayerList()
+-            .broadcast(
+-                player, x, y, z, sound.value().getRange(volume), this.dimension(), new ClientboundSoundPacket(sound, category, x, y, z, volume, pitch, seed)
+-            );
++        @Nullable Player player, double x, double y, double z, Holder<SoundEvent> sound, SoundSource category, float volume, float pitch, long seed) {
++        // Parchment start - sound event
++        org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
++                player == null ? null : player.getBukkitEntity(),
++            net.kyori.adventure.sound.Sound.sound()
++                    .type(sound.unwrap().<net.kyori.adventure.key.Key>map(
++                        key -> io.papermc.paper.adventure.PaperAdventure.asAdventure(key.location()),
++                        soundEvent -> io.papermc.paper.adventure.PaperAdventure.asAdventure(soundEvent.location())
++                    ))
++                    .source(io.papermc.paper.adventure.PaperAdventure.asAdventure(category))
++                    .volume(volume)
++                    .pitch(pitch)
++                    .seed(seed)
++                    .build(),
++            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(this, x, y, z),
++            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.DISTANCE_FUNCTION,
++            null
++        ));
++        // Parchment end
+     }
+ 
+     @Override
+     public void playSeededSound(@Nullable Player player, Entity entity, Holder<SoundEvent> sound, SoundSource category, float volume, float pitch, long seed) {
+-        this.server
+-            .getPlayerList()
+-            .broadcast(
+-                player,
+-                entity.getX(),
+-                entity.getY(),
+-                entity.getZ(),
+-                sound.value().getRange(volume),
+-                this.dimension(),
+-                new ClientboundSoundEntityPacket(sound, category, entity, volume, pitch, seed)
+-            );
++        // Parchment start - sound event
++        org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
++                player == null ? null : player.getBukkitEntity(),
++            net.kyori.adventure.sound.Sound.sound()
++                .type(sound.unwrap().<net.kyori.adventure.key.Key>map(
++                    key -> io.papermc.paper.adventure.PaperAdventure.asAdventure(key.location()),
++                    soundEvent -> io.papermc.paper.adventure.PaperAdventure.asAdventure(soundEvent.location())
++                ))
++                .source(io.papermc.paper.adventure.PaperAdventure.asAdventure(category))
++                .volume(volume)
++                .pitch(pitch)
++                .seed(seed)
++                .build(),
++            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(entity),
++            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.DISTANCE_FUNCTION,
++            null
++        ));
++        // Parchment end
+     }
+ 
+     @Override

@@ -1,0 +1,23 @@
+--- a/net/minecraft/world/entity/monster/Illusioner.java
++++ b/net/minecraft/world/entity/monster/Illusioner.java
+@@ -175,6 +_,11 @@
+         ItemStack itemInHand = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW));
+         ItemStack projectile = this.getProjectile(itemInHand);
+         AbstractArrow mobArrow = ProjectileUtil.getMobArrow(this, projectile, distanceFactor, itemInHand);
++
++        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(this.getBukkitEntity(), this.getMainHandItem().asBukkitCopy(), itemstack1.asBukkitCopy());
++        if (!preEvent.callEvent()) return;
++        // Parchment end
++
+         double d = target.getX() - this.getX();
+         double d1 = target.getY(0.3333333333333333) - mobArrow.getY();
+         double d2 = target.getZ() - this.getZ();
+@@ -189,7 +_,7 @@
+ 
+             if (event.getProjectile() == mobArrow.getBukkitEntity()) {
+             Projectile.spawnProjectileUsingShoot(
+-                mobArrow, serverLevel, projectile, d, d1 + squareRoot * 0.2F, d2, 1.6F, 14 - serverLevel.getDifficulty().getId() * 4
++                mobArrow, serverLevel, projectile, d, d1 + squareRoot * 0.2F, d2, 1.6F, 14 - serverLevel.getDifficulty().getId() * 4, preEvent.isRelative()
+             );
+             }
+             // Paper end - EntityShootBowEvent

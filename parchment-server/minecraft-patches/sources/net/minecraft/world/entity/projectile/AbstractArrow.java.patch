@@ -1,0 +1,14 @@
+--- a/net/minecraft/world/entity/projectile/AbstractArrow.java
++++ b/net/minecraft/world/entity/projectile/AbstractArrow.java
+@@ -146,8 +_,9 @@
+     }
+ 
+     @Override
+-    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+-        super.shoot(x, y, z, velocity, inaccuracy);
++    public void shoot(double x, double y, double z, float speed, float divergence, boolean relative) {
++        super.shoot(x, y, z, speed, divergence, relative);
++    // Parchment end
+         this.life = 0;
+     }
+ 

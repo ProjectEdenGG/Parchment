@@ -1,0 +1,69 @@
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -1198,7 +_,7 @@
+     }
+ 
+     private static EntityDamageEvent callEntityDamageEvent(Block damager, BlockState damagerState, Entity damagee, DamageCause cause, org.bukkit.damage.DamageSource bukkitDamageSource, Map<DamageModifier, Double> modifiers, Map<DamageModifier, Function<? super Double, Double>> modifierFunctions, boolean cancelled) {
+-        EntityDamageByBlockEvent event = new EntityDamageByBlockEvent(damager, damagerState, damagee.getBukkitEntity(), cause, bukkitDamageSource, modifiers, modifierFunctions);
++        EntityDamageByBlockEvent event = new EntityDamageByBlockEvent(damager, damagerState, damagee.getBukkitEntity(), cause, bukkitDamageSource, modifiers, modifierFunctions, bukkitDamageSource.getDamageLocation());
+         return CraftEventFactory.callEntityDamageEvent(event, damagee, cancelled);
+     }
+ 
+@@ -2271,4 +_,57 @@
+         return event;
+     }
+     // Paper end - add EntityFertilizeEggEvent
++
++    // Parchment start
++    private static net.minecraft.network.protocol.@org.jetbrains.annotations.NotNull Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> handleSoundEvent(gg.projecteden.parchment.event.sound.SoundEvent event, CraftPlayer recipient) {
++        net.kyori.adventure.sound.Sound sound = event.calculateSound(recipient);
++        ResourceLocation name = io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.name());
++        gg.projecteden.parchment.event.sound.SoundEvent.Emitter emitter = event.calculateEmitter(recipient);
++        net.minecraft.sounds.SoundSource source = io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.source());
++        float volume = sound.volume();
++        float pitch = sound.pitch();
++        long seed = sound.seed().orElse(0L); // TODO: random source?
++        net.minecraft.resources.ResourceKey<net.minecraft.sounds.SoundEvent> soundKey = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.SOUND_EVENT, name);
++        net.minecraft.core.Holder.Reference<net.minecraft.sounds.SoundEvent> soundEvent = io.papermc.paper.adventure.PaperAdventure.asVanillaSoundHolder(sound.name()) // TODO: calculate event distance?
++            .orElseGet(() -> net.minecraft.core.Holder.Reference.create(net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT, soundKey, net.minecraft.sounds.SoundEvent.createFixedRangeEvent(name, (float) event.calculateDistance())));
++        if (emitter instanceof gg.projecteden.parchment.event.sound.SoundEvent.EntityEmitter entityEmitter)
++            return new net.minecraft.network.protocol.game.ClientboundSoundEntityPacket(soundEvent, source, ((CraftEntity) entityEmitter.entity()).getHandle(), volume, pitch, seed);
++        else if (emitter instanceof gg.projecteden.parchment.event.sound.SoundEvent.LocationEmitter locationEmitter) {
++            org.bukkit.Location loc = locationEmitter.getLocation();
++            return new net.minecraft.network.protocol.game.ClientboundSoundPacket(soundEvent, source, loc.getX(), loc.getY(), loc.getZ(), volume, pitch, seed);
++        }
++        throw new IllegalArgumentException("Unknown emitter type: " + emitter.getClass().getName());
++    }
++
++    public static void playSoundEvent(gg.projecteden.parchment.event.sound.SoundEvent event) {
++        org.apache.commons.lang3.Validate.notNull(event, "event");
++        io.papermc.paper.util.MCUtil.ASYNC_EXECUTOR.execute(() -> {
++            if (!event.callEvent())
++                return;
++            try {
++                for (Player _player : event.calculateRecipients()) {
++                    CraftPlayer player = (CraftPlayer) _player;
++                    player.getHandle().connection.send(handleSoundEvent(event, player));
++                }
++            } catch (Throwable e) {
++                org.slf4j.LoggerFactory.getLogger("SoundEvent").error("Error playing sound event", e);
++            }
++        });
++    }
++    
++    public static List<ItemStack> callBlockDropResourcesEvent(LevelAccessor world, BlockPos pos, List<ItemStack> items) {
++        List<org.bukkit.inventory.ItemStack> bukkitItems = new ArrayList<>(items.size());
++        for (ItemStack item : items) {
++            bukkitItems.add(CraftItemStack.asBukkitCopy(item));
++        }
++        gg.projecteden.parchment.event.block.BlockDropResourcesEvent event = new gg.projecteden.parchment.event.block.BlockDropResourcesEvent(CraftBlock.at(world, pos), bukkitItems);
++        event.callEvent();
++        items = new ArrayList<>(bukkitItems.size());
++        for (org.bukkit.inventory.ItemStack item : bukkitItems) {
++            items.add(CraftItemStack.asNMSCopy(item));
++        }
++        return items;
++    }
++    // Parchment end
++    
+ }

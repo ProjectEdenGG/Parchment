@@ -1,0 +1,28 @@
+--- a/net/minecraft/world/item/CrossbowItem.java
++++ b/net/minecraft/world/item/CrossbowItem.java
+@@ -141,7 +_,7 @@
+ 
+     @Override
+     protected void shootProjectile(
+-        LivingEntity shooter, Projectile projectile, int index, float velocity, float inaccuracy, float angle, @Nullable LivingEntity target
++        LivingEntity shooter, Projectile projectile, int index, float velocity, float inaccuracy, float angle, @Nullable LivingEntity target, boolean relative
+     ) {
+         Vector3f projectileShotVector;
+         if (target != null) {
+@@ -202,8 +_,15 @@
+     ) {
+         if (level instanceof ServerLevel serverLevel) {
+             ChargedProjectiles chargedProjectiles = weapon.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
++
++            // Parchment start
++            gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(shooter.getBukkitEntity(), stack.asBukkitCopy(), chargedProjectiles.getItems().get(0).asBukkitCopy());
++            if (!preEvent.callEvent()) return;
++            // TODO: handle relative flag in CrossbowAttackMob#shootCrossbowProjectile
++            // Parchment end
++
+             if (chargedProjectiles != null && !chargedProjectiles.isEmpty()) {
+-                this.shoot(serverLevel, shooter, hand, weapon, chargedProjectiles.getItems(), velocity, inaccuracy, shooter instanceof Player, target);
++                this.shoot(serverLevel, shooter, hand, weapon, chargedProjectiles.getItems(), velocity, inaccuracy, shooter instanceof Player, target, preEvent.isRelative());
+                 if (shooter instanceof ServerPlayer serverPlayer) {
+                     CriteriaTriggers.SHOT_CROSSBOW.trigger(serverPlayer, weapon);
+                     serverPlayer.awardStat(Stats.ITEM_USED.get(weapon.getItem()));

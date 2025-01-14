@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -272,6 +_,8 @@
+             return false;
+         }
+ 
++        gg.projecteden.parchment.entity.EntityDataServices.init();
++
+         // CraftBukkit start
+         // this.setPlayerList(new DedicatedPlayerList(this, this.registries(), this.playerDataStorage)); // Spigot - moved up
+         this.server.loadPlugins();

@@ -1,0 +1,15 @@
+--- a/net/minecraft/core/Holder.java
++++ b/net/minecraft/core/Holder.java
+@@ -138,6 +_,12 @@
+             return new Holder.Reference<>(Holder.Reference.Type.INTRUSIVE, owner, null, value);
+         }
+ 
++        // Parchment start
++        public static <T> Holder.Reference<T> create(HolderOwner<T> owner, @Nullable ResourceKey<T> registryKey, @Nullable T value) {
++            return new Holder.Reference<>(Holder.Reference.Type.STAND_ALONE, owner, registryKey, value);
++        }
++        // Parchment end
++
+         public ResourceKey<T> key() {
+             if (this.key == null) {
+                 throw new IllegalStateException("Trying to access unbound value '" + this.value + "' from registry " + this.owner);

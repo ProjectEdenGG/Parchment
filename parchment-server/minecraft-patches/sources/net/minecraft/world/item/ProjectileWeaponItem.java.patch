@@ -1,0 +1,30 @@
+--- a/net/minecraft/world/item/ProjectileWeaponItem.java
++++ b/net/minecraft/world/item/ProjectileWeaponItem.java
+@@ -49,7 +_,8 @@
+         float velocity,
+         float inaccuracy,
+         boolean isCrit,
+-        @Nullable LivingEntity target
++        @Nullable LivingEntity target,
++        boolean relative
+     ) {
+         float f = EnchantmentHelper.processProjectileSpread(level, weapon, shooter, 0.0F);
+         float f1 = projectileItems.size() == 1 ? 0.0F : 2.0F * f / (projectileItems.size() - 1);
+@@ -64,7 +_,7 @@
+                 int i1 = i;
+                 // CraftBukkit start
+                 Projectile projectile = this.createProjectile(level, shooter, weapon, itemStack, isCrit);
+-                this.shootProjectile(shooter, projectile, i1, velocity, inaccuracy, f4, target);
++                this.shootProjectile(shooter, projectile, i1, velocity, inaccuracy, f4, target, relative);
+ 
+                 org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(shooter, weapon, itemStack, projectile, hand, velocity, true);
+                 if (event.isCancelled()) {
+@@ -98,7 +_,7 @@
+     }
+ 
+     protected abstract void shootProjectile(
+-        LivingEntity shooter, Projectile projectile, int index, float velocity, float inaccuracy, float angle, @Nullable LivingEntity target
++        LivingEntity shooter, Projectile projectile, int index, float velocity, float inaccuracy, float angle, @Nullable LivingEntity target, boolean relative
+     );
+ 
+     protected Projectile createProjectile(Level level, LivingEntity shooter, ItemStack weapon, ItemStack ammo, boolean isCrit) {

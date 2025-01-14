@@ -1,0 +1,19 @@
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -2472,4 +_,16 @@
+         return this.adventure$pointers;
+     }
+     // Paper end
++    
++    // Parchment start
++    @Override
++    public ItemStack smeltItem(ItemStack toSmelt, gg.projecteden.parchment.inventory.RecipeType recipeType) {
++        var optional = world.recipeAccess().getRecipeFor(gg.projecteden.parchment.inventory.CraftRecipeType.asCookingRecipe(recipeType), new net.minecraft.world.item.crafting.SingleRecipeInput(CraftItemStack.asNMSCopy(toSmelt)), world).map(recipe -> recipe.value()).orElse(null);
++        if (optional == null) {
++            return null;
++        }
++        return optional.assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(CraftItemStack.asNMSCopy(toSmelt)), world.registryAccess()).asBukkitCopy();
++    }
++    // Parchment end
++    
+ }

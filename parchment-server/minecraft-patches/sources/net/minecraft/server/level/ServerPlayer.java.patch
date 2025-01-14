@@ -1,0 +1,46 @@
+--- a/net/minecraft/server/level/ServerPlayer.java
++++ b/net/minecraft/server/level/ServerPlayer.java
+@@ -176,6 +_,7 @@
+ import net.minecraft.world.scores.ScoreHolder;
+ import net.minecraft.world.scores.Team;
+ import net.minecraft.world.scores.criteria.ObjectiveCriteria;
++import org.bukkit.SoundCategory;
+ import org.slf4j.Logger;
+ 
+ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patches.chunk_system.player.ChunkSystemServerPlayer { // Paper - rewrite chunk system
+@@ -2546,7 +_,7 @@
+             // Paper end - Add PlayerSetSpawnEvent
+ 
+             if (event.willNotifyPlayer() && event.getNotification() != null) { // Paper - Add PlayerSetSpawnEvent
+-                this.sendSystemMessage(io.papermc.paper.adventure.PaperAdventure.asVanilla(event.getNotification())); // Paper - Add PlayerSetSpawnEvent
++                //this.sendSystemMessage(io.papermc.paper.adventure.PaperAdventure.asVanilla(event.getNotification())); // Paper - Add PlayerSetSpawnEvent
+             }
+ 
+             this.respawnPosition = position;
+@@ -2581,12 +_,20 @@
+ 
+     @Override
+     public void playNotifySound(SoundEvent sound, SoundSource source, float volume, float pitch) {
+-        this.connection
+-            .send(
+-                new ClientboundSoundPacket(
+-                    BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound), source, this.getX(), this.getY(), this.getZ(), volume, pitch, this.random.nextLong()
+-                )
+-            );
++        // Parchment start - sound event
++        org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
++            null,
++            net.kyori.adventure.sound.Sound.sound()
++                    .type(io.papermc.paper.adventure.PaperAdventure.asAdventure(sound.location()))
++                    .source(io.papermc.paper.adventure.PaperAdventure.asAdventure(source))
++                    .volume(volume)
++                    .pitch(pitch)
++                    .seed(this.random.nextLong())
++                    .build(),
++            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(level(), getX(), getY(), getZ()),
++            _sound -> 0d, soundEvent -> java.util.Collections.singletonList(getBukkitEntity())
++        ));
++        // Parchment end
+     }
+ 
+     @Override

@@ -1,0 +1,50 @@
+--- a/net/minecraft/world/entity/player/Player.java
++++ b/net/minecraft/world/entity/player/Player.java
+@@ -314,7 +_,7 @@
+                 this.awardStat(Stats.CROUCH_TIME);
+             }
+ 
+-            if (!this.isSleeping()) {
++            if (!this.isSleeping() && this.level().paperConfig().entities.behavior.tickTimeSinceSleep) { // Parchment
+                 this.awardStat(Stats.TIME_SINCE_REST);
+             }
+         }
+@@ -1824,9 +_,23 @@
+ 
+     // Paper start - send while respecting visibility
+     private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
+-        fromEntity.level().playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity itself
+-        if (fromEntity instanceof ServerPlayer serverPlayer) {
+-            serverPlayer.connection.send(new net.minecraft.network.protocol.game.ClientboundSoundPacket(net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.wrapAsHolder(soundEffect), soundCategory, x, y, z, volume, pitch, fromEntity.random.nextLong()));
++        fromEntity.level().playSound(fromEntity, x, y, z, soundEffect, soundCategory, volume, pitch); // This will not send the effect to the entity himself
++        if (fromEntity instanceof ServerPlayer) {
++            // Parchment start - sound event
++            org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
++                    null,
++                    net.kyori.adventure.sound.Sound.sound()
++                            .type(io.papermc.paper.adventure.PaperAdventure.asAdventure(soundEffect.location()))
++                            .source(io.papermc.paper.adventure.PaperAdventure.asAdventure(soundCategory))
++                            .volume(volume)
++                            .pitch(pitch)
++                            .seed(fromEntity.random.nextLong())
++                            .build(),
++                    gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(fromEntity.level(), x, y, z),
++                    sound -> 0d,
++                    soundEvent -> java.util.Collections.singletonList(((ServerPlayer) fromEntity).getBukkitEntity())
++            ));
++            // Parchment end
+         }
+     }
+     // Paper end - send while respecting visibility
+@@ -2432,4 +_,11 @@
+             return this.message;
+         }
+     }
++    
++    // Parchment start
++    public void setProfile(GameProfile gameProfile) {
++        this.gameProfile = gameProfile;
++    }
++    // Parchment end
++    
+ }

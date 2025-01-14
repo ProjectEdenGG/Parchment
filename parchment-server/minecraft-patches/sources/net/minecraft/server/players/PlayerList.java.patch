@@ -1,0 +1,23 @@
+--- a/net/minecraft/server/players/PlayerList.java
++++ b/net/minecraft/server/players/PlayerList.java
+@@ -802,19 +_,7 @@
+         if (!keepInventory && respawnPosition != null && level1 != null) {
+             BlockState blockState = level1.getBlockState(respawnPosition);
+             if (blockState.is(Blocks.RESPAWN_ANCHOR)) {
+-                serverPlayer.connection
+-                    .send(
+-                        new ClientboundSoundPacket(
+-                            SoundEvents.RESPAWN_ANCHOR_DEPLETE,
+-                            SoundSource.BLOCKS,
+-                            respawnPosition.getX(),
+-                            respawnPosition.getY(),
+-                            respawnPosition.getZ(),
+-                            1.0F,
+-                            1.0F,
+-                            level.getRandom().nextLong()
+-                        )
+-                    );
++                player.playNotifySound(SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.BLOCKS, 1.0F, 1.0F); // Parchment - use existing play sound method
+             }
+             // Paper start - Add PlayerPostRespawnEvent
+             if (blockState.is(net.minecraft.tags.BlockTags.BEDS) && !teleportTransition.missingRespawnBlock()) {

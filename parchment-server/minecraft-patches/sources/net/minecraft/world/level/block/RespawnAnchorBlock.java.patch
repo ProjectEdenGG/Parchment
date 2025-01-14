@@ -1,0 +1,35 @@
+--- a/net/minecraft/world/level/block/RespawnAnchorBlock.java
++++ b/net/minecraft/world/level/block/RespawnAnchorBlock.java
+@@ -75,7 +_,32 @@
+     protected InteractionResult useItemOn(
+         ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult
+     ) {
++        // Parchment start -- PlayerUseRespawnAnchorEvent
++        org.bukkit.entity.Player bukkitPlayer = player.getBukkitEntity() instanceof org.bukkit.entity.Player ? (org.bukkit.entity.Player) player.getBukkitEntity() : null;
++        org.bukkit.block.Block block = org.bukkit.craftbukkit.block.CraftBlock.at(level, pos);
++        gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult result;
++        // Parchment end
+         if (isRespawnFuel(stack) && canBeCharged(state)) {
++            // Parchment start -- PlayerUseRespawnAnchorEvent
++            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE;
++        } else if (state.getValue(CHARGE) == 0) {
++            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING;
++        } else if (!canSetSpawn(level) && !level.isClientSide) {
++            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE;
++        } else if (!level.isClientSide) {
++            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.SET_SPAWN;
++        } else {
++            return InteractionResult.SUCCESS;
++        }
++        if (bukkitPlayer != null) {
++            gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent event = new gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent(bukkitPlayer, block, result);
++            event.callEvent();
++            result = event.getResult();
++        }
++        if (result == gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING) {
++            return InteractionResult.PASS;
++        } else if (result == gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE) {
++            // Parchment end
+             charge(player, level, pos, state);
+             stack.consume(1, player);
+             return InteractionResult.SUCCESS;

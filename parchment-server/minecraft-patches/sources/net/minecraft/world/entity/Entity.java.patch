@@ -1,0 +1,34 @@
+--- a/net/minecraft/world/entity/Entity.java
++++ b/net/minecraft/world/entity/Entity.java
+@@ -5081,4 +_,31 @@
+         return ((ServerLevel) this.level).isPositionEntityTicking(this.blockPosition());
+     }
+     // Paper end - Expose entity id counter
++    
++    
++    @javax.annotation.Nullable
++    private gg.projecteden.parchment.entity.EntityData storedEntityData;
++
++    /**
++     * Retrieves the stored EntityData for this entity
++     * @return The currently stored EntityData
++     */
++    public gg.projecteden.parchment.entity.EntityData getStoredEntityData() {
++        if (this.storedEntityData == null) {
++            this.storedEntityData = gg.projecteden.parchment.entity.EntityData.create(this.getBukkitEntity());
++        }
++        return this.storedEntityData;
++    }
++
++    /**
++     * Clears the currently stored EntityData for this entity
++     * @return the previously stored EntityData
++     */
++    public @javax.annotation.Nullable gg.projecteden.parchment.entity.EntityData clearStoredEntityData() {
++        gg.projecteden.parchment.entity.EntityData data = this.storedEntityData;
++        this.storedEntityData = null;
++
++        return data;
++    }
++    
+ }

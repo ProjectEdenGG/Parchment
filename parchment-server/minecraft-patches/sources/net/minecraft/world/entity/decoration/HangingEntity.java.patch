@@ -1,0 +1,51 @@
+--- a/net/minecraft/world/entity/decoration/HangingEntity.java
++++ b/net/minecraft/world/entity/decoration/HangingEntity.java
+@@ -23,6 +_,9 @@
+     protected static final Predicate<Entity> HANGING_ENTITY = entity -> entity instanceof HangingEntity;
+     protected Direction direction = Direction.SOUTH;
+ 
++    private int checkInterval; { this.checkInterval = this.getId() % this.level().spigotConfig.hangingTickFrequency; } // Paper - Perf: offset item frame ticking
++    public boolean tick = true; // Parchment
++
+     protected HangingEntity(EntityType<? extends HangingEntity> entityType, Level level) {
+         super(entityType, level);
+     }
+@@ -116,4 +_,38 @@
+     public float mirror(Mirror transformMirror) {
+         return this.rotate(transformMirror.getRotation(this.direction));
+     }
++
++    @Override
++    public void tick() {
++        if (tick && !this.level().isClientSide) { // Parchment
++            this.checkBelowWorld();
++            if (this.checkInterval++ == this.level().spigotConfig.hangingTickFrequency) { // Spigot
++                this.checkInterval = 0;
++                if (!this.isRemoved() && !this.survives()) {
++                    // CraftBukkit start - fire break events
++                    BlockState material = this.level().getBlockState(this.blockPosition());
++                    org.bukkit.event.hanging.HangingBreakEvent.RemoveCause cause;
++
++                    if (!material.isAir()) {
++                        // TODO: This feels insufficient to catch 100% of suffocation cases
++                        cause = org.bukkit.event.hanging.HangingBreakEvent.RemoveCause.OBSTRUCTION;
++                    } else {
++                        cause = org.bukkit.event.hanging.HangingBreakEvent.RemoveCause.PHYSICS;
++                    }
++
++                    org.bukkit.event.hanging.HangingBreakEvent event = new org.bukkit.event.hanging.HangingBreakEvent((org.bukkit.entity.Hanging) this.getBukkitEntity(), cause);
++                    this.level().getCraftServer().getPluginManager().callEvent(event);
++
++                    if (this.isRemoved() || event.isCancelled()) {
++                        return;
++                    }
++                    // CraftBukkit end
++                    this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DROP); // CraftBukkit - add Bukkit remove cause
++                    this.dropItem((ServerLevel) this.level(), (Entity) null);
++                }
++            }
++        }
++
++    }
++    
+ }

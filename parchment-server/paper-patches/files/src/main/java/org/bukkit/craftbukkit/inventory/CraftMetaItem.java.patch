@@ -1,0 +1,35 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
+@@ -761,11 +_,12 @@
+             this.setMaxDamage(maxDamage);
+         }
+ 
++        CompoundTag internalTag = null;
+         String internal = SerializableMeta.getString(map, "internal", true);
+         if (internal != null) {
+             ByteArrayInputStream buf = new ByteArrayInputStream(Base64.getDecoder().decode(internal));
+             try {
+-                CompoundTag internalTag = NbtIo.readCompressed(buf, NbtAccounter.unlimitedHeap());
++                internalTag = NbtIo.readCompressed(buf, NbtAccounter.unlimitedHeap());
+                 this.deserializeInternal(internalTag, map);
+             } catch (IOException ex) {
+                 Logger.getLogger(CraftMetaItem.class.getName()).log(Level.SEVERE, null, ex);
+@@ -829,6 +_,18 @@
+                 this.customTag = NbtIo.readCompressed(buf, NbtAccounter.unlimitedHeap());
+             } catch (IOException ex) {
+                 Logger.getLogger(CraftMetaItem.class.getName()).log(Level.SEVERE, null, ex);
++            }
++        }
++
++        if (internalTag != null) {
++            if (this.customTag == null) {
++                this.customTag  = new CompoundTag();
++            }
++            for (String key: internalTag.getAllKeys()) {
++                if (this.customTag.contains(key)) {
++                    continue;
++                }
++                this.customTag.put(key, internalTag.get(key));
+             }
+         }
+     }

@@ -1,0 +1,20 @@
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
+@@ -66,4 +_,17 @@
+     public String toString() {
+         return "CraftHanging";
+     }
++    
++    // Parchment start
++    @Override
++    public boolean canTick() {
++        return this.getHandle().tick;
++    }
++
++    @Override
++    public void setCanTick(boolean tick) {
++        this.getHandle().tick = tick;
++    }
++    // Parchment end
++    
+ }

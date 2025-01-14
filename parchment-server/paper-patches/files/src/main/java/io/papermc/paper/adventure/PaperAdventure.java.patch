@@ -1,0 +1,39 @@
+--- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
++++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
+@@ -504,4 +_,36 @@
+         return AdventureCodecs.STYLE_MAP_CODEC.codec()
+             .parse(ops, encoded).getOrThrow(IllegalStateException::new);
+     }
++    
++    // Parchment start
++    public static Sound.Source asAdventure(final SoundSource source) {
++        return switch (source) {
++            case MASTER -> Sound.Source.MASTER;
++            case MUSIC -> Sound.Source.MUSIC;
++            case RECORDS -> Sound.Source.RECORD;
++            case WEATHER -> Sound.Source.WEATHER;
++            case BLOCKS -> Sound.Source.BLOCK;
++            case HOSTILE -> Sound.Source.HOSTILE;
++            case NEUTRAL -> Sound.Source.NEUTRAL;
++            case PLAYERS -> Sound.Source.PLAYER;
++            case AMBIENT -> Sound.Source.AMBIENT;
++            case VOICE -> Sound.Source.VOICE;
++        };
++    }
++    
++    public static Optional<SoundEvent> asVanillaSound(final Key key) {
++        return BuiltInRegistries.SOUND_EVENT.getOptional(asVanilla(key));
++    }
++    
++    public static Optional<Holder.Reference<SoundEvent>> asSoundHolder(final net.minecraft.resources.ResourceKey<SoundEvent> key) {
++        return BuiltInRegistries.SOUND_EVENT.get(key);
++    }
++    
++    public static Optional<Holder.Reference<net.minecraft.sounds.SoundEvent>> asVanillaSoundHolder(final Key key) {
++        return asSoundHolder(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.SOUND_EVENT, asVanilla(key)));
++    }
++    
++    // Parchment end
++    
++    
+ }

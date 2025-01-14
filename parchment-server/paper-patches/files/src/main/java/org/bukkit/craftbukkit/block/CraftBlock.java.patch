@@ -1,0 +1,29 @@
+--- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
++++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
+@@ -500,6 +_,11 @@
+ 
+     @Override
+     public boolean breakNaturally(ItemStack item, boolean triggerEffect, boolean dropExperience) {
++        return this.breakNaturally(null, item, triggerEffect, dropExperience);
++    }
++
++    @Override
++    public boolean breakNaturally(Player player, ItemStack item, boolean triggerEffect, boolean dropExperience) {
+         // Paper end
+         // Order matters here, need to drop before setting to air so skulls can get their data
+         net.minecraft.world.level.block.state.BlockState iblockdata = this.getNMS();
+@@ -509,8 +_,12 @@
+ 
+         // Modelled off EntityHuman#hasBlock
+         if (block != Blocks.AIR && (item == null || !iblockdata.requiresCorrectToolForDrops() || nmsItem.isCorrectToolForDrops(iblockdata))) {
+-            net.minecraft.world.level.block.Block.dropResources(iblockdata, this.world.getMinecraftWorld(), this.position, this.world.getBlockEntity(this.position), null, nmsItem, false); // Paper - Properly handle xp dropping
+-            // Paper start - improve Block#breanNaturally
++            List<net.minecraft.world.entity.item.ItemEntity> itemEntities = net.minecraft.world.level.block.Block.dropResources(iblockdata, this.world.getMinecraftWorld(), this.position, this.world.getBlockEntity(this.position), null, nmsItem, false);
++
++            if (player != null) {
++                new org.bukkit.event.block.BlockDropItemEvent(this, this.getState(), player, itemEntities.stream().map(i -> (org.bukkit.entity.Item) CraftEntity.getEntity((org.bukkit.craftbukkit.CraftServer) Bukkit.getServer(), i)).toList()).callEvent();
++            }
++
+             if (triggerEffect) {
+                 if (iblockdata.getBlock() instanceof net.minecraft.world.level.block.BaseFireBlock) {
+                     this.world.levelEvent(net.minecraft.world.level.block.LevelEvent.SOUND_EXTINGUISH_FIRE, this.position, 0);

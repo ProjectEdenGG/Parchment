@@ -1,0 +1,11 @@
+--- a/src/main/java/com/destroystokyo/paper/Metrics.java
++++ b/src/main/java/com/destroystokyo/paper/Metrics.java
+@@ -73,7 +_,7 @@
+         Metrics.logger = logger;
+ 
+         // Start submitting the data
+-        startSubmitting();
++        //  startSubmitting(); // Parchment
+     }
+ 
+     /**

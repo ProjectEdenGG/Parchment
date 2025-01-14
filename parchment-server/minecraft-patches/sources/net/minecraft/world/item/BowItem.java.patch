@@ -1,0 +1,29 @@
+--- a/net/minecraft/world/item/BowItem.java
++++ b/net/minecraft/world/item/BowItem.java
+@@ -37,8 +_,12 @@
+                     return false;
+                 } else {
+                     List<ItemStack> list = draw(stack, projectile, player);
+-                    if (level instanceof ServerLevel serverLevel && !list.isEmpty()) {
+-                        this.shoot(serverLevel, player, player.getUsedItemHand(), stack, list, powerForTime * 3.0F, 1.0F, powerForTime == 1.0F, null);
++                    if (!level.isClientSide() && !list.isEmpty()) {
++                        // Parchment start
++                        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(player.getBukkitEntity(), stack.asBukkitCopy(), stack.asBukkitCopy());
++                        if (!preEvent.callEvent()) return false;
++                        // Parchment end
++                        this.shoot((ServerLevel) level, player, player.getUsedItemHand(), stack, list, powerForTime * 3.0F, 1.0F, powerForTime == 1.0F, null, preEvent.isRelative());
+                     }
+ 
+                     level.playSound(
+@@ -60,9 +_,9 @@
+ 
+     @Override
+     protected void shootProjectile(
+-        LivingEntity shooter, Projectile projectile, int index, float velocity, float inaccuracy, float angle, @Nullable LivingEntity target
++        LivingEntity shooter, Projectile projectile, int index, float velocity, float inaccuracy, float angle, @Nullable LivingEntity target, boolean relative
+     ) {
+-        projectile.shootFromRotation(shooter, shooter.getXRot(), shooter.getYRot() + angle, 0.0F, velocity, inaccuracy);
++        projectile.shootFromRotation(shooter, shooter.getXRot(), shooter.getYRot() + angle, 0.0F, velocity, inaccuracy, relative);
+     }
+ 
+     public static float getPowerForTime(int charge) {
