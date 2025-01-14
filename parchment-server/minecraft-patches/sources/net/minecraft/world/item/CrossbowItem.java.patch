@@ -15,7 +15,7 @@
              ChargedProjectiles chargedProjectiles = weapon.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
 +
 +            // Parchment start
-+            gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(shooter.getBukkitEntity(), stack.asBukkitCopy(), chargedProjectiles.getItems().get(0).asBukkitCopy());
++            gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(shooter.getBukkitEntity(), weapon.asBukkitCopy(), chargedProjectiles.getItems().get(0).asBukkitCopy());
 +            if (!preEvent.callEvent()) return;
 +            // TODO: handle relative flag in CrossbowAttackMob#shootCrossbowProjectile
 +            // Parchment end

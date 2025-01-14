@@ -6,7 +6,7 @@
          AbstractArrow arrow = this.getArrow(projectile, distanceFactor, itemInHand);
 +
 +        // Parchment start
-+        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(this.getBukkitEntity(), this.getMainHandItem().asBukkitCopy(), itemstack1.asBukkitCopy());
++        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(this.getBukkitEntity(), this.getMainHandItem().asBukkitCopy(), projectile.asBukkitCopy());
 +        if (!preEvent.callEvent()) return;
 +        // Parchment end
 +
