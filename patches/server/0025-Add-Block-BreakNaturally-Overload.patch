@@ -8,41 +8,6 @@ diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main
 index 43c288a4e226060a5e0cecddd941846d29ae8025..78726d52117105ffebd9d15b407f5e529a217900 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -290,24 +290,28 @@ public class Block extends BlockBehaviour implements ItemLike {
-         return state.getDrops(lootparams_a);
-     }
- 
--    public static void dropResources(BlockState state, Level world, BlockPos pos) {
-+    public static List<ItemEntity> dropResources(BlockState state, Level world, BlockPos pos) {
-         if (world instanceof ServerLevel) {
-+            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
-             org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, (BlockEntity) null)).forEach((itemstack) -> { // Parchment
--                Block.popResource(world, pos, itemstack);
-+                itemEntities.add(Block.popResourceWithReturn(world, pos, itemstack));
-             });
-             state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY, true);
-+            return itemEntities;
-         }
--
-+        return new java.util.ArrayList<>();
-     }
- 
--    public static void dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity) {
-+    public static List<ItemEntity> dropResources(BlockState state, LevelAccessor world, BlockPos pos, @Nullable BlockEntity blockEntity) {
-         if (world instanceof ServerLevel) {
-+            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
-             org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(world, pos, Block.getDrops(state, (ServerLevel) world, pos, blockEntity)).forEach((itemstack) -> { // Parchment
--                Block.popResource((ServerLevel) world, pos, itemstack);
-+                itemEntities.add(Block.popResourceWithReturn((ServerLevel) world, pos, itemstack));
-             });
-             state.spawnAfterBreak((ServerLevel) world, pos, ItemStack.EMPTY, true);
-+            return itemEntities;
-         }
--
-+        return new java.util.ArrayList<>();
-     }
- 
-     // Paper start - Add BlockBreakBlockEvent
 @@ -335,15 +339,17 @@ public class Block extends BlockBehaviour implements ItemLike {
      // Paper start - Properly handle xp dropping
          dropResources(state, world, pos, blockEntity, entity, tool, true);
