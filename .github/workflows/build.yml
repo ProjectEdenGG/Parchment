@@ -44,7 +44,7 @@ jobs:
           ./gradlew :parchment-api:publishMavenPublicationToEdenSnapshotsRepository
           ./gradlew publishDevBundlePublicationToEdenSnapshotsRepository -PpublishDevBundle
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: Parchment-JDK${{ matrix.java }}
           path: parchment-server/build/libs/parchment-paperclip-*-mojmap.jar
