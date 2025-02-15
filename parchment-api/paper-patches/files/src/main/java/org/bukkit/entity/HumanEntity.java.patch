@@ -1,15 +1,15 @@
 --- a/src/main/java/org/bukkit/entity/HumanEntity.java
 +++ b/src/main/java/org/bukkit/entity/HumanEntity.java
-@@ -23,7 +_,14 @@
- /**
+@@ -25,7 +_,14 @@
   * Represents a human entity, such as an NPC or a player
   */
+ @NullMarked
 -public interface HumanEntity extends LivingEntity, AnimalTamer, InventoryHolder {
 +public interface HumanEntity extends LivingEntity, AnimalTamer, InventoryHolder, gg.projecteden.parchment.HasHumanEntity { // Parchment
 +
 +    // Parchment start
 +    @Override
-+    default @NotNull HumanEntity getPlayer() {
++    default HumanEntity getPlayer() {
 +        return this;
 +    }
 +    // Parchment end

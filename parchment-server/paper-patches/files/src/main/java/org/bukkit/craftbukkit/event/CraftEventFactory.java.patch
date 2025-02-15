@@ -9,7 +9,7 @@
          return CraftEventFactory.callEntityDamageEvent(event, damagee, cancelled);
      }
  
-@@ -2271,4 +_,57 @@
+@@ -2272,4 +_,57 @@
          return event;
      }
      // Paper end - add EntityFertilizeEggEvent

@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2472,4 +_,16 @@
+@@ -2498,4 +_,16 @@
          return this.adventure$pointers;
      }
      // Paper end

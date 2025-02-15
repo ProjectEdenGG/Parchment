@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -219,6 +_,7 @@
+@@ -226,6 +_,7 @@
      public org.bukkit.event.player.PlayerResourcePackStatusEvent.Status resourcePackStatus; // Paper - more resource pack API
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime; // Paper - getLastPlayed replacement API
@@ -8,11 +8,11 @@
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -3541,4 +_,41 @@
-         this.getHandle().connection.send(new net.minecraft.network.protocol.game.ClientboundEntityEventPacket(((CraftEntity) target).getHandle(), effect.getData()));
+@@ -3583,4 +_,39 @@
+         handle.containerMenu.broadcastChanges();
+         return new PaperPlayerGiveResult(leftovers.build(), drops.build());
      }
-     // Paper end - entity effect API
-+    
++
 +    // Parchment start
 +    @Override
 +    public Set<UUID> getHiddenEntities(Plugin plugin) {
@@ -21,7 +21,7 @@
 +            .map(Map.Entry::getKey)
 +            .collect(java.util.stream.Collectors.toSet());
 +    }
-+    
++
 +    @Override
 +    public boolean isInsomniac() {
 +        return net.minecraft.world.entity.EntitySelector.IS_INSOMNIAC.test(this.getHandle());
@@ -46,7 +46,5 @@
 +    public int getTimeSinceLastRest() {
 +        return net.minecraft.util.Mth.clamp(this.getHandle().getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
 +    }
-+    
-+   // Parchment end
-+    
++
  }

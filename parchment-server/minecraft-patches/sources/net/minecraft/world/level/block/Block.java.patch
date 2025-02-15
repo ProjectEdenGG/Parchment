@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/block/Block.java
 +++ b/net/minecraft/world/level/block/Block.java
-@@ -308,30 +_,46 @@
+@@ -308,30 +_,45 @@
      }
      // Paper end - Add BlockBreakBlockEvent
  
@@ -43,7 +43,6 @@
 -            getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach(itemStack -> popResource(level, pos, itemStack));
 +            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
 +            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(level, pos, Block.getDrops(state, (ServerLevel) level, pos, blockEntity, entity, tool)).forEach((itemstack1) -> { // Parchment
-+                Block.popResource(level, pos, itemstack1);
 +                itemEntities.add(Block.popResourceWithReturn(level, pos, itemstack1));
 +            });
              state.spawnAfterBreak((ServerLevel) level, pos, tool, dropExperience); // Paper - Properly handle xp dropping

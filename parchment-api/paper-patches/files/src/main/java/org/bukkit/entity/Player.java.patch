@@ -1,11 +1,11 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -59,7 +_,17 @@
- /**
+@@ -62,7 +_,17 @@
   * Represents a player, connected or not
   */
+ @NullMarked
 -public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient { // Paper
-+public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient , gg.projecteden.parchment.HasPlayer { // Paper // Parchment
++public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient, gg.projecteden.parchment.HasPlayer { // Paper // Parchment
 +
 +    // Parchment start
 +    /**
@@ -14,14 +14,14 @@
 +     * @return this player
 +     */
 +    @Override
-+    @NotNull Player getPlayer();
++    Player getPlayer();
 +    // Parchment end
  
      // Paper start
      @Override
-@@ -2128,6 +_,17 @@
+@@ -2084,6 +_,16 @@
       */
-     public boolean canSee(@NotNull Entity entity);
+     public boolean canSee(Player player);
  
 +    // Parchment start
 +    /**
@@ -30,17 +30,16 @@
 +     * @param plugin Plugin that has hidden entities
 +     * @return a view of hidden entity UUIDs
 +     */
-+    public java.util.@NotNull Set<java.util.UUID> getHiddenEntities(@NotNull Plugin plugin);
++    public java.util.Set<java.util.UUID> getHiddenEntities(Plugin plugin);
 +    // Parchment end
 +
-+
-     // Paper start
      /**
-      * Returns whether the {@code other} player is listed for {@code this}.
-@@ -3892,4 +_,45 @@
+      * Visually hides an entity from this player.
+      *
+@@ -3902,4 +_,43 @@
+      * @return the result of this method, holding leftovers and spawned items.
       */
-     void sendEntityEffect(org.bukkit.@NotNull EntityEffect effect, @NotNull Entity target);
-     // Paper end - entity effect API
+     PlayerGiveResult give(Collection<ItemStack> items, boolean dropIfFull);
 +
 +    /**
 +     * Checks if the player will spawn phantoms at night
@@ -80,6 +79,4 @@
 +     * @return ticks since the player last slept
 +     */
 +    int getTimeSinceLastRest();
-+// Parchment end
-+
  }

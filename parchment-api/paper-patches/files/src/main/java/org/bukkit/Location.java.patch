@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
-@@ -27,13 +_,20 @@
+@@ -28,13 +_,20 @@
   * magnitude than 360 are valid, but may be normalized to any other equivalent
   * representation by the implementation.
   */

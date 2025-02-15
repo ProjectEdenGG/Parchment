@@ -9,7 +9,7 @@
  
      /**
       * Gets the metadata for this block
-@@ -593,6 +_,20 @@
+@@ -590,6 +_,20 @@
       * @return true if the block was destroyed
       */
      boolean breakNaturally(@NotNull ItemStack tool, boolean triggerEffect, boolean dropExperience);

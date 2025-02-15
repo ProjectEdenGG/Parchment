@@ -1,9 +1,9 @@
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
-@@ -19,7 +_,14 @@
-  * player that is stored on the disk and can, thus, be retrieved without the
+@@ -20,7 +_,14 @@
   * player needing to be online.
   */
+ @NullMarked
 -public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, io.papermc.paper.persistence.PersistentDataViewHolder { // Paper - Add Offline PDC API
 +public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, io.papermc.paper.persistence.PersistentDataViewHolder, gg.projecteden.parchment.HasOfflinePlayer, gg.projecteden.parchment.OptionalPlayer { // Parchment
 +

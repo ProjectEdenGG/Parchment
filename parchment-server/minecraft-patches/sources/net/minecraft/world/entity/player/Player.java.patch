@@ -36,7 +36,7 @@
          }
      }
      // Paper end - send while respecting visibility
-@@ -2432,4 +_,11 @@
+@@ -2440,4 +_,11 @@
              return this.message;
          }
      }
