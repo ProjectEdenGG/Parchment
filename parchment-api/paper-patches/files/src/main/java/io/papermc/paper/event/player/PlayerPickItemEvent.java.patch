@@ -1,0 +1,46 @@
+--- a/src/main/java/io/papermc/paper/event/player/PlayerPickItemEvent.java
++++ b/src/main/java/io/papermc/paper/event/player/PlayerPickItemEvent.java
+@@ -1,6 +_,8 @@
+ package io.papermc.paper.event.player;
+ 
+ import com.google.common.base.Preconditions;
++import org.bukkit.Location;
++import org.bukkit.entity.Entity;
+ import org.bukkit.entity.Player;
+ import org.bukkit.event.Cancellable;
+ import org.bukkit.event.HandlerList;
+@@ -22,13 +_,18 @@
+     private int targetSlot;
+     private int sourceSlot;
+ 
++    private Location location;
++    private Entity entity;
++
+     private boolean cancelled;
+ 
+     @ApiStatus.Internal
+-    public PlayerPickItemEvent(final Player player, final int targetSlot, final int sourceSlot) {
++    public PlayerPickItemEvent(final Player player, final int targetSlot, final int sourceSlot, final Location location, final Entity entity) {
+         super(player);
+         this.targetSlot = targetSlot;
+         this.sourceSlot = sourceSlot;
++        this.location = location;
++        this.entity = entity;
+     }
+ 
+     /**
+@@ -72,6 +_,14 @@
+     public void setSourceSlot(final @Range(from = -1, to = 35) int sourceSlot) {
+         Preconditions.checkArgument(sourceSlot >= -1 && sourceSlot <= 35, "Source slot must be in range of the player's inventory slot, or -1");
+         this.sourceSlot = sourceSlot;
++    }
++
++    public Location getLocation() {
++        return location;
++    }
++
++    public Entity getEntity() {
++        return entity;
+     }
+ 
+     @Override

@@ -16,6 +16,40 @@
          }
          // CraftBukkit end
          // Paper start - Don't suggest if tab-complete is disabled
+@@ -977,7 +_,8 @@
+                         addBlockDataToItem(blockState, serverLevel, blockPos, cloneItemStack);
+                     }
+ 
+-                    this.tryPickItem(cloneItemStack);
++                    Location location = new Location(this.player.getBukkitEntity().getWorld(), blockPos.getX(), blockPos.getY(), blockPos.getZ());
++                    this.tryPickItem(cloneItemStack, location, null);
+                 }
+             }
+         }
+@@ -1001,12 +_,12 @@
+         if (entity != null && this.player.canInteractWithEntity(entity, 3.0)) {
+             ItemStack pickResult = entity.getPickResult();
+             if (pickResult != null && !pickResult.isEmpty()) {
+-                this.tryPickItem(pickResult);
++                this.tryPickItem(pickResult, null, entity.getBukkitEntity());
+             }
+         }
+     }
+ 
+-    private void tryPickItem(ItemStack stack) {
++    private void tryPickItem(ItemStack stack, Location location, org.bukkit.entity.Entity entity) {
+         if (stack.isItemEnabled(this.player.level().enabledFeatures())) {
+             Inventory inventory = this.player.getInventory();
+             int i = inventory.findSlotMatchingItem(stack);
+@@ -1014,7 +_,7 @@
+             final int sourceSlot = i;
+             final int targetSlot = Inventory.isHotbarSlot(sourceSlot) ? sourceSlot : inventory.getSuitableHotbarSlot();
+             final org.bukkit.entity.Player bukkitPlayer = this.player.getBukkitEntity();
+-            final io.papermc.paper.event.player.PlayerPickItemEvent event = new io.papermc.paper.event.player.PlayerPickItemEvent(bukkitPlayer, targetSlot, sourceSlot);
++            final io.papermc.paper.event.player.PlayerPickItemEvent event = new io.papermc.paper.event.player.PlayerPickItemEvent(bukkitPlayer, targetSlot, sourceSlot, location, entity);
+             if (!event.callEvent()) {
+                 return;
+             }
 @@ -2497,6 +_,7 @@
  
      // Spigot start - spam exclusions
