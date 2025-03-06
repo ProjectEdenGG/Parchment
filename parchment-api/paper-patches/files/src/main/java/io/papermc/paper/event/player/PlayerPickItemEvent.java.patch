@@ -35,11 +35,11 @@
          this.sourceSlot = sourceSlot;
 +    }
 +
-+    public Location getLocation() {
++    public @org.jetbrains.annotations.Nullable Location getLocation() {
 +        return location;
 +    }
 +
-+    public Entity getEntity() {
++    public @org.jetbrains.annotations.Nullable Entity getEntity() {
 +        return entity;
      }
  
