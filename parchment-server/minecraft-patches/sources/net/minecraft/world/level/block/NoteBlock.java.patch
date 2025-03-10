@@ -16,21 +16,23 @@
          if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) return state; // Paper - prevent noteblock instrument from updating
          boolean flag = direction.getAxis() == Direction.Axis.Y;
          return flag
-@@ -94,6 +_,7 @@
- 
-     @Override
-     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
-+        if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(this.defaultBlockState()), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.POWERED, org.bukkit.craftbukkit.util.CraftLocation.toBukkit(pos, level)).callEvent()) return;
+@@ -97,6 +_,7 @@
          if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) return; // Paper - prevent noteblock powered-state from updating
          boolean hasNeighborSignal = level.hasNeighborSignal(pos);
          if (hasNeighborSignal != state.getValue(POWERED)) {
-@@ -125,7 +_,9 @@
++            if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(this.defaultBlockState()), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.POWERED, org.bukkit.craftbukkit.util.CraftLocation.toBukkit(pos, level)).callEvent()) return;
+             if (hasNeighborSignal) {
+                 this.playNote(null, state, level, pos);
+                 state = level.getBlockState(pos); // CraftBukkit - SPIGOT-5617: update in case changed in event
+@@ -125,7 +_,11 @@
      @Override
      protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
          if (!level.isClientSide) {
 -            if (!io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) state = state.cycle(NoteBlock.NOTE); // Paper - prevent noteblock note from updating
-+            if (!io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates ||
-+                    !new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(this.defaultBlockState()), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.PITCH, org.bukkit.craftbukkit.util.CraftLocation.toBukkit(pos, level)).callEvent())
++            if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(this.defaultBlockState()), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.PITCH, org.bukkit.craftbukkit.util.CraftLocation.toBukkit(pos, level)).callEvent())
++                return InteractionResult.SUCCESS;
++
++            if (!io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates)
 +                state = (BlockState) state.cycle(NoteBlock.NOTE); // Paper - prevent noteblock note from updating
              level.setBlock(pos, state, 3);
              this.playNote(player, state, level, pos);
