@@ -22,7 +22,7 @@
  
 -                    this.tryPickItem(cloneItemStack);
 +                    Location location = new Location(this.player.getBukkitEntity().getWorld(), blockPos.getX(), blockPos.getY(), blockPos.getZ());
-+                    this.tryPickItem(cloneItemStack, location, null);
++                    this.tryPickItem(cloneItemStack, location, null, flag);
                  }
              }
          }
@@ -31,13 +31,13 @@
              ItemStack pickResult = entity.getPickResult();
              if (pickResult != null && !pickResult.isEmpty()) {
 -                this.tryPickItem(pickResult);
-+                this.tryPickItem(pickResult, null, entity.getBukkitEntity());
++                this.tryPickItem(pickResult, null, entity.getBukkitEntity(), this.player.hasInfiniteMaterials() && packet.includeData());
              }
          }
      }
  
 -    private void tryPickItem(ItemStack stack) {
-+    private void tryPickItem(ItemStack stack, Location location, org.bukkit.entity.Entity entity) {
++    private void tryPickItem(ItemStack stack, Location location, org.bukkit.entity.Entity entity, boolean isRequestingData) {
          if (stack.isItemEnabled(this.player.level().enabledFeatures())) {
              Inventory inventory = this.player.getInventory();
              int i = inventory.findSlotMatchingItem(stack);
@@ -46,7 +46,7 @@
              final int targetSlot = Inventory.isHotbarSlot(sourceSlot) ? sourceSlot : inventory.getSuitableHotbarSlot();
              final org.bukkit.entity.Player bukkitPlayer = this.player.getBukkitEntity();
 -            final io.papermc.paper.event.player.PlayerPickItemEvent event = new io.papermc.paper.event.player.PlayerPickItemEvent(bukkitPlayer, targetSlot, sourceSlot);
-+            final io.papermc.paper.event.player.PlayerPickItemEvent event = new io.papermc.paper.event.player.PlayerPickItemEvent(bukkitPlayer, targetSlot, sourceSlot, location, entity);
++            final io.papermc.paper.event.player.PlayerPickItemEvent event = new io.papermc.paper.event.player.PlayerPickItemEvent(bukkitPlayer, targetSlot, sourceSlot, location, entity, isRequestingData);
              if (!event.callEvent()) {
                  return;
              }
