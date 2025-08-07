@@ -1,10 +1,10 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftHanging.java
-@@ -66,4 +_,17 @@
-     public String toString() {
-         return "CraftHanging";
+@@ -62,4 +_,18 @@
+     public HangingEntity getHandle() {
+         return (HangingEntity) this.entity;
      }
-+    
++
 +    // Parchment start
 +    @Override
 +    public boolean canTick() {
@@ -16,5 +16,6 @@
 +        this.getHandle().tick = tick;
 +    }
 +    // Parchment end
-+    
++
++
  }

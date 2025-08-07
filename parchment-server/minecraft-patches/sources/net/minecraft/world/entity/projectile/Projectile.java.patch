@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/net/minecraft/world/entity/projectile/Projectile.java
-@@ -182,8 +_,14 @@
+@@ -150,8 +_,14 @@
      }
  
      public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
@@ -16,7 +16,7 @@
          this.hasImpulse = true;
          double d = movementToShoot.horizontalDistance();
          this.setYRot((float)(Mth.atan2(movementToShoot.x, movementToShoot.z) * 180.0F / (float)Math.PI));
-@@ -193,6 +_,10 @@
+@@ -161,6 +_,10 @@
      }
  
      public void shootFromRotation(Entity shooter, float x, float y, float z, float velocity, float inaccuracy) {
@@ -27,7 +27,7 @@
          float f = -Mth.sin(y * (float) (Math.PI / 180.0)) * Mth.cos(x * (float) (Math.PI / 180.0));
          float f1 = -Mth.sin((x + z) * (float) (Math.PI / 180.0));
          float f2 = Mth.cos(y * (float) (Math.PI / 180.0)) * Mth.cos(x * (float) (Math.PI / 180.0));
-@@ -202,7 +_,7 @@
+@@ -170,7 +_,7 @@
          if (Double.isNaN(knownMovement.x) || Double.isNaN(knownMovement.y) || Double.isNaN(knownMovement.z)) {
              knownMovement = new Vec3(0, 0, 0);
          }
@@ -36,7 +36,7 @@
          this.setDeltaMovement(this.getDeltaMovement().add(knownMovement.x, shooter.onGround() ? 0.0 : knownMovement.y, knownMovement.z));
          }
          // Paper end - allow disabling relative velocity
-@@ -235,7 +_,11 @@
+@@ -217,7 +_,11 @@
          float velocity,
          float inaccuracy
      ) {
@@ -49,18 +49,20 @@
      }
  
      public static <T extends Projectile> T spawnProjectileUsingShoot(
-@@ -244,9 +_,19 @@
-     // Paper start - fixes and addition to spawn reason API
+@@ -227,9 +_,21 @@
          return spawnProjectileUsingShootDelayed(projectile, level, spawnedFrom, x, y, z, velocity, inaccuracy).spawn();
      }
+ 
 +    public static <T extends Projectile> T spawnProjectileUsingShoot(T projectile, ServerLevel world, ItemStack projectileStack, double velocityX, double velocityY, double velocityZ, float power, float divergence, boolean relative) {
 +        // Paper start - fixes and addition to spawn reason API
 +        return spawnProjectileUsingShootDelayed(projectile, world, projectileStack, velocityX, velocityY, velocityZ, power, divergence, relative).spawn();
 +    }
++
      public static <T extends Projectile> Delayed<T> spawnProjectileUsingShootDelayed(T projectile, ServerLevel level, ItemStack spawnedFrom, double x, double y, double z, float velocity, float inaccuracy) {
          return spawnProjectileDelayed(projectile, level, spawnedFrom, projectile1 -> projectile.shoot(x, y, z, velocity, inaccuracy));
-     // Paper end - fixes and addition to spawn reason API
+         // Paper end - fixes and addition to spawn reason API
 +    }
++
 +    public static <T extends Projectile> Delayed<T> spawnProjectileUsingShootDelayed(T projectile, ServerLevel world, ItemStack projectileStack, double velocityX, double velocityY, double velocityZ, float power, float divergence, boolean relative) {
 +        return Projectile.spawnProjectileDelayed(projectile, world, projectileStack, (iprojectile) -> {
 +            // Paper end - fixes and addition to spawn reason API

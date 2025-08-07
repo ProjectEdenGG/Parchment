@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/raid/Raid.java
 +++ b/net/minecraft/world/entity/raid/Raid.java
-@@ -503,8 +_,7 @@
+@@ -510,8 +_,7 @@
              double d = vec3.x + 13.0 / squareRoot * (vec31.x - vec3.x);
              double d1 = vec3.z + 13.0 / squareRoot * (vec31.z - vec3.z);
              if (squareRoot <= 64.0 || players.contains(serverPlayer)) {

@@ -1,15 +1,15 @@
 --- a/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
 +++ b/net/minecraft/world/level/block/entity/BarrelBlockEntity.java
-@@ -55,7 +_,7 @@
-         this.maxStack = i;
+@@ -56,7 +_,7 @@
      }
      // CraftBukkit end
+ 
 -    private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
 +    private NonNullList<ItemStack> items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
      public final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
          @Override
          protected void onOpen(Level level, BlockPos pos, BlockState state) {
-@@ -107,7 +_,7 @@
+@@ -108,7 +_,7 @@
  
      @Override
      public int getContainerSize() {
@@ -18,7 +18,7 @@
      }
  
      @Override
-@@ -127,7 +_,7 @@
+@@ -128,7 +_,7 @@
  
      @Override
      protected AbstractContainerMenu createMenu(int id, Inventory player) {

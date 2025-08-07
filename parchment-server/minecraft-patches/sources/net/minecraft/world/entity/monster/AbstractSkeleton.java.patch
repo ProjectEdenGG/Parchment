@@ -1,7 +1,7 @@
 --- a/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/net/minecraft/world/entity/monster/AbstractSkeleton.java
-@@ -202,6 +_,12 @@
-         ItemStack itemInHand = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW));
+@@ -203,13 +_,19 @@
+         ItemStack itemInHand = this.getItemInHand(hand); // Paper - call EntityShootBowEvent
          ItemStack projectile = this.getProjectile(itemInHand);
          AbstractArrow arrow = this.getArrow(projectile, distanceFactor, itemInHand);
 +
@@ -13,12 +13,11 @@
          double d = target.getX() - this.getX();
          double d1 = target.getY(0.3333333333333333) - arrow.getY();
          double d2 = target.getZ() - this.getZ();
-@@ -217,7 +_,7 @@
-             if (event.getProjectile() == arrow.getBukkitEntity()) {
-             // CraftBukkit end
-             Projectile.spawnProjectileUsingShoot(
+         double squareRoot = Math.sqrt(d * d + d2 * d2);
+         if (this.level() instanceof ServerLevel serverLevel) {
+             Projectile.Delayed<AbstractArrow> delayedEntity = Projectile.spawnProjectileUsingShootDelayed( // Paper - delayed
 -                arrow, serverLevel, projectile, d, d1 + squareRoot * 0.2F, d2, 1.6F, 14 - serverLevel.getDifficulty().getId() * 4
 +                arrow, serverLevel, projectile, d, d1 + squareRoot * 0.2F, d2, 1.6F, 14 - serverLevel.getDifficulty().getId() * 4, preEvent.isRelative()
              );
-             } // CraftBukkit
-         }
+ 
+             // Paper start - call EntityShootBowEvent

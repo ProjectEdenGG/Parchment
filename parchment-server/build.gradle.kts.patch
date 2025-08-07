@@ -1,6 +1,6 @@
 --- a/paper-server/build.gradle.kts
 +++ b/paper-server/build.gradle.kts
-@@ -37,6 +_,21 @@
+@@ -43,6 +_,21 @@
          "org.bukkit.craftbukkit",
          "org.spigotmc",
      )
@@ -22,7 +22,7 @@
  }
  
  tasks.generateDevelopmentBundle {
-@@ -101,7 +_,20 @@
+@@ -107,7 +_,20 @@
      }
  }
  
@@ -44,7 +44,7 @@
  configurations.named(log4jPlugins.compileClasspathConfigurationName) {
      extendsFrom(configurations.compileClasspath.get())
  }
-@@ -119,7 +_,7 @@
+@@ -129,7 +_,7 @@
  }
  
  dependencies {
@@ -53,7 +53,7 @@
      implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
-@@ -188,14 +_,14 @@
+@@ -200,14 +_,14 @@
          val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",

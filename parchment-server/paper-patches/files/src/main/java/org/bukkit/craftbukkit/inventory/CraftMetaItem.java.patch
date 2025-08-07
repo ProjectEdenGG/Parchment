@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
-@@ -761,11 +_,12 @@
+@@ -745,11 +_,12 @@
              this.setMaxDamage(maxDamage);
          }
  
@@ -13,19 +13,19 @@
 +                internalTag = NbtIo.readCompressed(buf, NbtAccounter.unlimitedHeap());
                  this.deserializeInternal(internalTag, map);
              } catch (IOException ex) {
-                 Logger.getLogger(CraftMetaItem.class.getName()).log(Level.SEVERE, null, ex);
-@@ -829,6 +_,18 @@
+                 LOGGER.error("Failed to read internal tag from object", ex);
+@@ -812,6 +_,18 @@
                  this.customTag = NbtIo.readCompressed(buf, NbtAccounter.unlimitedHeap());
              } catch (IOException ex) {
-                 Logger.getLogger(CraftMetaItem.class.getName()).log(Level.SEVERE, null, ex);
+                 LOGGER.error("Failed to read custom tag for item", ex);
 +            }
 +        }
 +
 +        if (internalTag != null) {
 +            if (this.customTag == null) {
-+                this.customTag  = new CompoundTag();
++                this.customTag = new CompoundTag();
 +            }
-+            for (String key: internalTag.getAllKeys()) {
++            for (String key : internalTag.getAllKeys()) {
 +                if (this.customTag.contains(key)) {
 +                    continue;
 +                }

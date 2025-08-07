@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -62,7 +_,17 @@
+@@ -63,7 +_,17 @@
   * Represents a player, connected or not
   */
  @NullMarked
@@ -19,7 +19,7 @@
  
      // Paper start
      @Override
-@@ -2084,6 +_,16 @@
+@@ -2073,6 +_,16 @@
       */
      public boolean canSee(Player player);
  
@@ -36,10 +36,10 @@
      /**
       * Visually hides an entity from this player.
       *
-@@ -3902,4 +_,43 @@
-      * @return the result of this method, holding leftovers and spawned items.
+@@ -3932,4 +_,44 @@
       */
-     PlayerGiveResult give(Collection<ItemStack> items, boolean dropIfFull);
+     @ApiStatus.Experimental
+     PlayerGameConnection getConnection();
 +
 +    /**
 +     * Checks if the player will spawn phantoms at night
@@ -79,4 +79,5 @@
 +     * @return ticks since the player last slept
 +     */
 +    int getTimeSinceLastRest();
++
  }

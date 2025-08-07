@@ -1,16 +1,18 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -226,6 +_,7 @@
-     public org.bukkit.event.player.PlayerResourcePackStatusEvent.Status resourcePackStatus; // Paper - more resource pack API
-     private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
-     private long lastSaveTime; // Paper - getLastPlayed replacement API
+@@ -225,6 +_,9 @@
+     private int hash = 0;
+     private double health = 20;
+     // Paper end
++
 +    private boolean bypassesInsomnia = false; // Parchment - Insomnia api
++
+     // Spigot start
+     private final Player.Spigot spigot = new Player.Spigot() {
  
-     public CraftPlayer(CraftServer server, ServerPlayer entity) {
-         super(server, entity);
-@@ -3583,4 +_,39 @@
-         handle.containerMenu.broadcastChanges();
-         return new PaperPlayerGiveResult(leftovers.build(), drops.build());
+@@ -3600,4 +_,40 @@
+             this(new ShortArraySet(), new ArrayList<>());
+         }
      }
 +
 +    // Parchment start
@@ -46,5 +48,6 @@
 +    public int getTimeSinceLastRest() {
 +        return net.minecraft.util.Mth.clamp(this.getHandle().getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
 +    }
++
 +
  }

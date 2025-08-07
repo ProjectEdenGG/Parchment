@@ -1,35 +1,25 @@
 --- a/paper-api/build.gradle.kts
 +++ b/paper-api/build.gradle.kts
-@@ -15,6 +_,8 @@
- val slf4jVersion = "2.0.9"
- val log4jVersion = "2.17.1"
- 
+@@ -15,6 +_,7 @@
+ val bungeeCordChatVersion = "1.21-R0.2-deprecated+build.21"
+ val slf4jVersion = "2.0.16"
+ val log4jVersion = "2.24.1"
 +val edenVersion: String by project // Parchment
-+
+ 
  val apiAndDocs: Configuration by configurations.creating {
      attributes {
-         attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.DOCUMENTATION))
-@@ -39,6 +_,7 @@
+@@ -40,6 +_,7 @@
  }
  
  dependencies {
-+    api("gg.projecteden:eden-interfaces:$edenVersion") // Parchment
- 
++    api("gg.projecteden:eden-interfaces:${edenVersion}") // Parchment
      // api dependencies are listed transitively to API consumers
      api("com.google.guava:guava:33.3.1-jre")
-@@ -93,7 +_,7 @@
-     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
- }
- 
--val generatedApiPath: java.nio.file.Path = layout.projectDirectory.dir("src/generated/java").asFile.toPath()
-+val generatedApiPath: java.nio.file.Path = rootProject.layout.projectDirectory.dir("paper-api/src/generated/java").asFile.toPath()
- idea {
-     module {
-         generatedSourceDirs.add(generatedApiPath.toFile())
-@@ -103,6 +_,18 @@
+     api("com.google.code.gson:gson:2.11.0")
+@@ -100,6 +_,18 @@
      main {
          java {
-             srcDir(generatedApiPath)
+             srcDir(generatedDir)
 +            srcDir(file("../paper-api/src/main/java"))
 +        }
 +        resources {
@@ -45,16 +35,16 @@
          }
      }
  }
-@@ -169,7 +_,7 @@
+@@ -166,7 +_,7 @@
  
- tasks.withType<Javadoc> {
+ tasks.withType<Javadoc>().configureEach {
      val options = options as StandardJavadocDocletOptions
 -    options.overview = "src/main/javadoc/overview.html"
 +    options.overview = "../paper-api/src/main/javadoc/overview.html"
      options.use()
      options.isDocFilesSubDirs = true
      options.links(
-@@ -202,11 +_,11 @@
+@@ -199,11 +_,11 @@
      }
  
      // workaround for https://github.com/gradle/gradle/issues/4046

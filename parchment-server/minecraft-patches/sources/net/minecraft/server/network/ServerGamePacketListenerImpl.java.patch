@@ -1,8 +1,8 @@
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -785,9 +_,12 @@
+@@ -821,9 +_,11 @@
      public void handleCustomCommandSuggestions(ServerboundCommandSuggestionPacket packet) {
-         // PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel()); // Paper - AsyncTabCompleteEvent; run this async
+         // PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level()); // Paper - AsyncTabCompleteEvent; run this async
          // CraftBukkit start
 -        if (!this.tabSpamThrottler.isIncrementAndUnderThreshold() && !this.server.getPlayerList().isOp(this.player.getGameProfile()) && !this.server.isSingleplayerOwner(this.player.getGameProfile())) { // Paper - configurable tab spam limits
 -            this.disconnectAsync(Component.translatable("disconnect.spam"), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM); // Paper - Kick event cause // Paper - add proper async disconnect
@@ -11,54 +11,19 @@
 +            if (!this.tabSpamThrottler.isIncrementAndUnderThreshold() && !this.server.getPlayerList().isOp(this.player.getGameProfile()) && !this.server.isSingleplayerOwner(this.player.getGameProfile())) { // Paper - configurable tab spam limits
 +                this.disconnectAsync(Component.translatable("disconnect.spam"), org.bukkit.event.player.PlayerKickEvent.Cause.SPAM); // Paper - Kick event cause // Paper - add proper async disconnect
 +                return;
-+    
 +            }
          }
          // CraftBukkit end
          // Paper start - Don't suggest if tab-complete is disabled
-@@ -977,7 +_,8 @@
-                         addBlockDataToItem(blockState, serverLevel, blockPos, cloneItemStack);
-                     }
- 
--                    this.tryPickItem(cloneItemStack);
-+                    Location location = new Location(this.player.getBukkitEntity().getWorld(), blockPos.getX(), blockPos.getY(), blockPos.getZ());
-+                    this.tryPickItem(cloneItemStack, location, null, flag);
-                 }
-             }
-         }
-@@ -1001,12 +_,12 @@
-         if (entity != null && this.player.canInteractWithEntity(entity, 3.0)) {
-             ItemStack pickResult = entity.getPickResult();
-             if (pickResult != null && !pickResult.isEmpty()) {
--                this.tryPickItem(pickResult);
-+                this.tryPickItem(pickResult, null, entity.getBukkitEntity(), this.player.hasInfiniteMaterials() && packet.includeData());
-             }
-         }
-     }
- 
--    private void tryPickItem(ItemStack stack) {
-+    private void tryPickItem(ItemStack stack, Location location, org.bukkit.entity.Entity entity, boolean isRequestingData) {
-         if (stack.isItemEnabled(this.player.level().enabledFeatures())) {
-             Inventory inventory = this.player.getInventory();
-             int i = inventory.findSlotMatchingItem(stack);
-@@ -1014,7 +_,7 @@
-             final int sourceSlot = i;
-             final int targetSlot = Inventory.isHotbarSlot(sourceSlot) ? sourceSlot : inventory.getSuitableHotbarSlot();
-             final org.bukkit.entity.Player bukkitPlayer = this.player.getBukkitEntity();
--            final io.papermc.paper.event.player.PlayerPickItemEvent event = new io.papermc.paper.event.player.PlayerPickItemEvent(bukkitPlayer, targetSlot, sourceSlot);
-+            final io.papermc.paper.event.player.PlayerPickItemEvent event = new io.papermc.paper.event.player.PlayerPickItemEvent(bukkitPlayer, targetSlot, sourceSlot, location, entity, isRequestingData);
-             if (!event.callEvent()) {
-                 return;
-             }
-@@ -2497,6 +_,7 @@
- 
+@@ -2537,6 +_,7 @@
      // Spigot start - spam exclusions
      private void detectRateSpam(String message) {
-+        if (this.getCraftPlayer().hasPermission("spam.bypass")) return; // Parchment - spam bypass
          // CraftBukkit start - replaced with thread safe throttle
-         for (String exclude : org.spigotmc.SpigotConfig.spamExclusions) {
-             if (exclude != null && message.startsWith(exclude)) {
-@@ -3280,9 +_,11 @@
++        if (this.getCraftPlayer().hasPermission("spam.bypass")) return; // Parchment - spam bypass
+         if (org.spigotmc.SpigotConfig.enableSpamExclusions) {
+             for (String exclude : org.spigotmc.SpigotConfig.spamExclusions) {
+                 if (exclude != null && message.startsWith(exclude)) {
+@@ -3245,9 +_,11 @@
      public void handlePlaceRecipe(ServerboundPlaceRecipePacket packet) {
          // Paper start - auto recipe limit
          if (!org.bukkit.Bukkit.isPrimaryThread()) {

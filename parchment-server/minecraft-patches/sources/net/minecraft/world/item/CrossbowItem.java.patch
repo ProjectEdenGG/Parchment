@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/item/CrossbowItem.java
 +++ b/net/minecraft/world/item/CrossbowItem.java
-@@ -141,7 +_,7 @@
+@@ -112,7 +_,7 @@
  
      @Override
      protected void shootProjectile(
@@ -9,7 +9,7 @@
      ) {
          Vector3f projectileShotVector;
          if (target != null) {
-@@ -202,8 +_,15 @@
+@@ -173,8 +_,15 @@
      ) {
          if (level instanceof ServerLevel serverLevel) {
              ChargedProjectiles chargedProjectiles = weapon.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
@@ -21,8 +21,8 @@
 +            // Parchment end
 +
              if (chargedProjectiles != null && !chargedProjectiles.isEmpty()) {
--                this.shoot(serverLevel, shooter, hand, weapon, chargedProjectiles.getItems(), velocity, inaccuracy, shooter instanceof Player, target);
-+                this.shoot(serverLevel, shooter, hand, weapon, chargedProjectiles.getItems(), velocity, inaccuracy, shooter instanceof Player, target, preEvent.isRelative());
+-                this.shoot(serverLevel, shooter, hand, weapon, chargedProjectiles.getItems(), velocity, inaccuracy, shooter instanceof Player, target, 1); // Paper - Pass draw strength
++                this.shoot(serverLevel, shooter, hand, weapon, chargedProjectiles.getItems(), velocity, inaccuracy, shooter instanceof Player, target, 1, preEvent.isRelative()); // Paper - Pass draw strength
                  if (shooter instanceof ServerPlayer serverPlayer) {
                      CriteriaTriggers.SHOT_CROSSBOW.trigger(serverPlayer, weapon);
                      serverPlayer.awardStat(Stats.ITEM_USED.get(weapon.getItem()));

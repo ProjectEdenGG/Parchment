@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -4087,7 +_,7 @@
+@@ -4199,7 +_,7 @@
          Vec3 direction = this.getLookAngle();
          Vec3 end = start.add(direction.x * maxDistance, direction.y * maxDistance, direction.z * maxDistance);
  

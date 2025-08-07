@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
-@@ -1053,7 +_,7 @@
+@@ -1056,7 +_,7 @@
  
      private void announceSleepStatus() {
          if (this.canSleepThroughNights()) {
@@ -9,18 +9,21 @@
                  int _int = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
                  Component component;
                  if (this.sleepStatus.areEnoughSleeping(_int)) {
-@@ -1623,28 +_,47 @@
- 
-     @Override
+@@ -1648,34 +_,48 @@
      public void playSeededSound(
--        @Nullable Player player, double x, double y, double z, Holder<SoundEvent> sound, SoundSource category, float volume, float pitch, long seed
--    ) {
+         @Nullable Entity entity, double x, double y, double z, Holder<SoundEvent> sound, SoundSource source, float volume, float pitch, long seed
+     ) {
 -        this.server
 -            .getPlayerList()
 -            .broadcast(
--                player, x, y, z, sound.value().getRange(volume), this.dimension(), new ClientboundSoundPacket(sound, category, x, y, z, volume, pitch, seed)
+-                entity instanceof Player player ? player : null,
+-                x,
+-                y,
+-                z,
+-                sound.value().getRange(volume),
+-                this.dimension(),
+-                new ClientboundSoundPacket(sound, source, x, y, z, volume, pitch, seed)
 -            );
-+        @Nullable Player player, double x, double y, double z, Holder<SoundEvent> sound, SoundSource category, float volume, float pitch, long seed) {
 +        // Parchment start - sound event
 +        org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
 +                player == null ? null : player.getBukkitEntity(),
@@ -42,17 +45,19 @@
      }
  
      @Override
-     public void playSeededSound(@Nullable Player player, Entity entity, Holder<SoundEvent> sound, SoundSource category, float volume, float pitch, long seed) {
+     public void playSeededSound(
+         @Nullable Entity entity, Entity sourceEntity, Holder<SoundEvent> sound, SoundSource source, float volume, float pitch, long seed
+     ) {
 -        this.server
 -            .getPlayerList()
 -            .broadcast(
--                player,
--                entity.getX(),
--                entity.getY(),
--                entity.getZ(),
+-                entity instanceof Player player ? player : null,
+-                sourceEntity.getX(),
+-                sourceEntity.getY(),
+-                sourceEntity.getZ(),
 -                sound.value().getRange(volume),
 -                this.dimension(),
--                new ClientboundSoundEntityPacket(sound, category, entity, volume, pitch, seed)
+-                new ClientboundSoundEntityPacket(sound, source, sourceEntity, volume, pitch, seed)
 -            );
 +        // Parchment start - sound event
 +        org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(

@@ -1,8 +1,8 @@
 --- a/net/minecraft/world/entity/decoration/HangingEntity.java
 +++ b/net/minecraft/world/entity/decoration/HangingEntity.java
-@@ -23,6 +_,9 @@
-     protected static final Predicate<Entity> HANGING_ENTITY = entity -> entity instanceof HangingEntity;
-     protected Direction direction = Direction.SOUTH;
+@@ -27,6 +_,9 @@
+     private static final EntityDataAccessor<Direction> DATA_DIRECTION = SynchedEntityData.defineId(HangingEntity.class, EntityDataSerializers.DIRECTION);
+     private static final Direction DEFAULT_DIRECTION = Direction.SOUTH;
  
 +    private int checkInterval; { this.checkInterval = this.getId() % this.level().spigotConfig.hangingTickFrequency; } // Paper - Perf: offset item frame ticking
 +    public boolean tick = true; // Parchment
@@ -10,9 +10,9 @@
      protected HangingEntity(EntityType<? extends HangingEntity> entityType, Level level) {
          super(entityType, level);
      }
-@@ -116,4 +_,38 @@
+@@ -144,4 +_,38 @@
      public float mirror(Mirror transformMirror) {
-         return this.rotate(transformMirror.getRotation(this.direction));
+         return this.rotate(transformMirror.getRotation(this.getDirection()));
      }
 +
 +    @Override
@@ -47,5 +47,5 @@
 +        }
 +
 +    }
-+    
++
  }

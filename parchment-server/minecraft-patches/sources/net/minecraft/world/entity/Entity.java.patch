@@ -1,11 +1,10 @@
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -5077,4 +_,31 @@
-         return ((ServerLevel) this.level).isPositionEntityTicking(this.blockPosition());
+@@ -5364,4 +_,30 @@
+         return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }
      // Paper end - Expose entity id counter
-+    
-+    
++
 +    @javax.annotation.Nullable
 +    private gg.projecteden.parchment.entity.EntityData storedEntityData;
 +
@@ -30,5 +29,5 @@
 +
 +        return data;
 +    }
-+    
++
  }

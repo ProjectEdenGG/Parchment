@@ -10,14 +10,14 @@
  import org.bukkit.event.Cancellable;
  import org.bukkit.event.HandlerList;
 @@ -21,14 +_,21 @@
- 
+
      private int targetSlot;
      private int sourceSlot;
 +    private final Location location;
 +    private final Entity entity;
 +    private boolean isRequestingData;
 +
- 
+
      private boolean cancelled;
  
      @ApiStatus.Internal

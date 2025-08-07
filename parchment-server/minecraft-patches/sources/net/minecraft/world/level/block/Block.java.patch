@@ -1,13 +1,13 @@
 --- a/net/minecraft/world/level/block/Block.java
 +++ b/net/minecraft/world/level/block/Block.java
-@@ -308,30 +_,45 @@
+@@ -354,30 +_,45 @@
      }
      // Paper end - Add BlockBreakBlockEvent
  
 -    public static void dropResources(BlockState state, Level level, BlockPos pos) {
 +    public static List<ItemEntity> dropResources(BlockState state, Level level, BlockPos pos) {
          if (level instanceof ServerLevel) {
--            getDrops(state, (ServerLevel)level, pos, null).forEach(itemStack -> popResource(level, pos, itemStack));
+-            getDrops(state, (ServerLevel)level, pos, null).forEach(stack -> popResource(level, pos, stack));
 +            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
 +            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(level, pos, Block.getDrops(state, (ServerLevel) level, pos, (BlockEntity) null)).forEach((itemstack) -> { // Parchment
 +                itemEntities.add(Block.popResourceWithReturn(level, pos, itemstack));
@@ -21,7 +21,7 @@
 -    public static void dropResources(BlockState state, LevelAccessor level, BlockPos pos, @Nullable BlockEntity blockEntity) {
 +    public static List<ItemEntity> dropResources(BlockState state, LevelAccessor level, BlockPos pos, @Nullable BlockEntity blockEntity) {
          if (level instanceof ServerLevel) {
--            getDrops(state, (ServerLevel)level, pos, blockEntity).forEach(itemStack -> popResource((ServerLevel)level, pos, itemStack));
+-            getDrops(state, (ServerLevel)level, pos, blockEntity).forEach(stack -> popResource((ServerLevel)level, pos, stack));
 +            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
 +            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(level, pos, Block.getDrops(state, (ServerLevel) level, pos, blockEntity)).forEach((itemstack) -> { // Parchment
 +                itemEntities.add(Block.popResourceWithReturn((ServerLevel) level, pos, itemstack));
@@ -40,19 +40,19 @@
 +    public static List<ItemEntity> dropResources(BlockState state, Level level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack tool, boolean dropExperience) {
      // Paper end - Properly handle xp dropping
          if (level instanceof ServerLevel) {
--            getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach(itemStack -> popResource(level, pos, itemStack));
+-            getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach(stack -> popResource(level, pos, stack));
 +            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
 +            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(level, pos, Block.getDrops(state, (ServerLevel) level, pos, blockEntity, entity, tool)).forEach((itemstack1) -> { // Parchment
 +                itemEntities.add(Block.popResourceWithReturn(level, pos, itemstack1));
 +            });
-             state.spawnAfterBreak((ServerLevel) level, pos, tool, dropExperience); // Paper - Properly handle xp dropping
+             state.spawnAfterBreak((ServerLevel)level, pos, tool, dropExperience); // Paper - Properly handle xp dropping
 +            return itemEntities;
          }
 +        return new java.util.ArrayList<>();
      }
  
      public static void popResource(Level level, BlockPos pos, ItemStack stack) {
-@@ -340,6 +_,17 @@
+@@ -386,6 +_,17 @@
          double d2 = pos.getY() + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25) - d;
          double d3 = pos.getZ() + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25);
          popResource(level, () -> new ItemEntity(level, d1, d2, d3, stack), stack);

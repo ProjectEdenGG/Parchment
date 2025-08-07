@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/entity/HumanEntity.java
 +++ b/src/main/java/org/bukkit/entity/HumanEntity.java
-@@ -25,7 +_,14 @@
+@@ -27,7 +_,14 @@
   * Represents a human entity, such as an NPC or a player
   */
  @NullMarked

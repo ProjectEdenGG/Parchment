@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1198,7 +_,7 @@
+@@ -1064,7 +_,7 @@
      }
  
      private static EntityDamageEvent callEntityDamageEvent(Block damager, BlockState damagerState, Entity damagee, DamageCause cause, org.bukkit.damage.DamageSource bukkitDamageSource, Map<DamageModifier, Double> modifiers, Map<DamageModifier, Function<? super Double, Double>> modifierFunctions, boolean cancelled) {
@@ -9,10 +9,10 @@
          return CraftEventFactory.callEntityDamageEvent(event, damagee, cancelled);
      }
  
-@@ -2272,4 +_,57 @@
-         return event;
+@@ -2118,4 +_,58 @@
+ 
+         return disconnectReason;
      }
-     // Paper end - add EntityFertilizeEggEvent
 +
 +    // Parchment start
 +    private static net.minecraft.network.protocol.@org.jetbrains.annotations.NotNull Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> handleSoundEvent(gg.projecteden.parchment.event.sound.SoundEvent event, CraftPlayer recipient) {
@@ -50,7 +50,7 @@
 +            }
 +        });
 +    }
-+    
++
 +    public static List<ItemStack> callBlockDropResourcesEvent(LevelAccessor world, BlockPos pos, List<ItemStack> items) {
 +        List<org.bukkit.inventory.ItemStack> bukkitItems = new ArrayList<>(items.size());
 +        for (ItemStack item : items) {
@@ -65,5 +65,6 @@
 +        return items;
 +    }
 +    // Parchment end
-+    
++
++
  }

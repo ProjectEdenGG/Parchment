@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
-@@ -314,7 +_,7 @@
+@@ -339,7 +_,7 @@
                  this.awardStat(Stats.CROUCH_TIME);
              }
  
@@ -9,7 +9,7 @@
                  this.awardStat(Stats.TIME_SINCE_REST);
              }
          }
-@@ -1824,9 +_,23 @@
+@@ -1764,9 +_,23 @@
  
      // Paper start - send while respecting visibility
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
@@ -36,7 +36,7 @@
          }
      }
      // Paper end - send while respecting visibility
-@@ -2440,4 +_,11 @@
+@@ -2358,4 +_,11 @@
              return this.message;
          }
      }

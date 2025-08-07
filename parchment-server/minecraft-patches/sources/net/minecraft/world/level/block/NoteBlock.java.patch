@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/block/NoteBlock.java
 +++ b/net/minecraft/world/level/block/NoteBlock.java
-@@ -70,6 +_,7 @@
+@@ -64,6 +_,7 @@
  
      @Override
      public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -8,7 +8,7 @@
          if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) return this.defaultBlockState(); // Paper - place without considering instrument
          return this.setInstrument(context.getLevel(), context.getClickedPos(), this.defaultBlockState());
      }
-@@ -85,6 +_,7 @@
+@@ -79,6 +_,7 @@
          BlockState neighborState,
          RandomSource random
      ) {
@@ -16,7 +16,7 @@
          if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) return state; // Paper - prevent noteblock instrument from updating
          boolean flag = direction.getAxis() == Direction.Axis.Y;
          return flag
-@@ -97,6 +_,7 @@
+@@ -91,6 +_,7 @@
          if (io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) return; // Paper - prevent noteblock powered-state from updating
          boolean hasNeighborSignal = level.hasNeighborSignal(pos);
          if (hasNeighborSignal != state.getValue(POWERED)) {
@@ -24,7 +24,7 @@
              if (hasNeighborSignal) {
                  this.playNote(null, state, level, pos);
                  state = level.getBlockState(pos); // CraftBukkit - SPIGOT-5617: update in case changed in event
-@@ -125,7 +_,11 @@
+@@ -119,7 +_,11 @@
      @Override
      protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
          if (!level.isClientSide) {

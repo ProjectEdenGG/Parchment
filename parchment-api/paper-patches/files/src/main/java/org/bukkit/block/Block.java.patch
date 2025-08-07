@@ -9,10 +9,10 @@
  
      /**
       * Gets the metadata for this block
-@@ -590,6 +_,20 @@
-      * @return true if the block was destroyed
+@@ -836,4 +_,19 @@
+      * @return {@code true} if the block can suffocate
       */
-     boolean breakNaturally(@NotNull ItemStack tool, boolean triggerEffect, boolean dropExperience);
+     boolean isSuffocating();
 +
 +    // Parchment Start
 +    /**
@@ -27,6 +27,5 @@
 +     */
 +    boolean breakNaturally(Player player, @NotNull ItemStack tool, boolean triggerEffect, boolean dropExperience);
 +    // Parchment end
- 
-     /**
-      * Causes the block to be ticked, this is different from {@link Block#randomTick()},
++
+ }

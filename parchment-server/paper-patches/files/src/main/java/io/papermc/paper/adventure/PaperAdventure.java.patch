@@ -1,6 +1,6 @@
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -504,4 +_,36 @@
+@@ -503,4 +_,36 @@
          return AdventureCodecs.STYLE_MAP_CODEC.codec()
              .parse(ops, encoded).getOrThrow(IllegalStateException::new);
      }
