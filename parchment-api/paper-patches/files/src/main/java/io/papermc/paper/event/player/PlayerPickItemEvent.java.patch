@@ -9,30 +9,31 @@
  import org.bukkit.entity.Player;
  import org.bukkit.event.Cancellable;
  import org.bukkit.event.HandlerList;
-@@ -21,14 +_,21 @@
-
-     private int targetSlot;
-     private int sourceSlot;
+@@ -24,6 +_,8 @@
+ 
+     private static final HandlerList HANDLER_LIST = new HandlerList();
+ 
 +    private final Location location;
 +    private final Entity entity;
-+    private boolean isRequestingData;
-+
-
+     private final boolean includeData;
+ 
+     private int targetSlot;
+@@ -32,11 +_,13 @@
      private boolean cancelled;
  
      @ApiStatus.Internal
--    public PlayerPickItemEvent(final Player player, final int targetSlot, final int sourceSlot) {
-+    public PlayerPickItemEvent(final Player player, final int targetSlot, final int sourceSlot, final Location location, final Entity entity, boolean isRequestingData) {
+-    protected PlayerPickItemEvent(final Player player, final boolean includeData, final int targetSlot, final int sourceSlot) {
++    public PlayerPickItemEvent(final Player player, final int targetSlot, final int sourceSlot, final Location location, final Entity entity, boolean includeData) {
          super(player);
+         this.includeData = includeData;
          this.targetSlot = targetSlot;
          this.sourceSlot = sourceSlot;
 +        this.location = location;
 +        this.entity = entity;
-+        this.isRequestingData = isRequestingData;
      }
  
      /**
-@@ -72,6 +_,18 @@
+@@ -89,6 +_,14 @@
      public void setSourceSlot(final @Range(from = -1, to = 35) int sourceSlot) {
          Preconditions.checkArgument(sourceSlot >= -1 && sourceSlot <= 35, "Source slot must be in range of the player's inventory slot, or -1");
          this.sourceSlot = sourceSlot;
@@ -44,10 +45,6 @@
 +
 +    public @org.jetbrains.annotations.Nullable Entity getEntity() {
 +        return entity;
-+    }
-+
-+    public boolean isRequestingData() {
-+        return isRequestingData;
      }
  
      @Override
