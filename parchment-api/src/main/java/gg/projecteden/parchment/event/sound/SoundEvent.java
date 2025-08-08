@@ -42,7 +42,7 @@ public final class SoundEvent extends Event implements Cancellable {
             .toList();
     });
 
-    private @Nullable HumanEntity except;
+    private @Nullable Entity except;
     private @NotNull Function<@NotNull Sound, @NotNull Double> distanceFunction;
     private @NotNull Function<@NotNull SoundEvent, @NotNull List<@NotNull Player>> recipientsFunction;
     private @NotNull Sound sound;
@@ -51,7 +51,7 @@ public final class SoundEvent extends Event implements Cancellable {
     private @Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Sound> soundOverrideFunction;
     private @Nullable BiFunction<@NotNull SoundEvent, @NotNull Player, @Nullable Emitter> emitterOverrideFunction;
 
-    public SoundEvent(@Nullable HumanEntity except, @NotNull Sound sound, @NotNull Emitter emitter, @Nullable Function<Sound, Double> distanceFunction, @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
+    public SoundEvent(@Nullable Entity except, @NotNull Sound sound, @NotNull Emitter emitter, @Nullable Function<Sound, Double> distanceFunction, @Nullable Function<SoundEvent, List<Player>> recipientsFunction) {
         super(true);
         this.except = except;
         this.sound = Objects.requireNonNull(sound, "sound cannot be null");
@@ -65,7 +65,7 @@ public final class SoundEvent extends Event implements Cancellable {
      *
      * @return player excluded from receiving this sound
      */
-    public @Nullable HumanEntity getException() {
+    public @Nullable Entity getException() {
         return except;
     }
 
@@ -74,7 +74,7 @@ public final class SoundEvent extends Event implements Cancellable {
      *
      * @param except player excluded from receiving this sound
      */
-    public void setException(@Nullable HumanEntity except) {
+    public void setException(@Nullable Entity except) {
         this.except = except;
     }
 
@@ -295,7 +295,7 @@ public final class SoundEvent extends Event implements Cancellable {
         @Override
         public @NotNull List<Player> apply(@NotNull SoundEvent event) {
             List<Player> recipients = wrapped.apply(event);
-            HumanEntity except = event.getException();
+            Entity except = event.getException();
             if (except != null) {
                 List<Player> filteredRecipients = new ArrayList<>(recipients.size());
                 for (Player player : recipients) {

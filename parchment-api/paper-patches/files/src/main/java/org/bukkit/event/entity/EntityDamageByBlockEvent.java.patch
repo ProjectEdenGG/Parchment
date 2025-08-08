@@ -8,7 +8,13 @@
  
      @ApiStatus.Internal
      @Deprecated(since = "1.20.4", forRemoval = true)
-@@ -39,14 +_,35 @@
+@@ -34,20 +_,41 @@
+         super(damagee, cause, damageSource, damage);
+         this.damager = damager;
+         this.damagerState = damagerState;
++        this.location = damager.getLocation();
+     }
+ 
      @ApiStatus.Internal
      @Deprecated(since = "1.20.4", forRemoval = true)
      public EntityDamageByBlockEvent(@Nullable final Block damager, @NotNull final Entity damagee, @NotNull final DamageCause cause, @NotNull final Map<DamageModifier, Double> modifiers, @NotNull final Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions) {
@@ -22,6 +28,7 @@
          super(damagee, cause, damageSource, modifiers, modifierFunctions);
          this.damager = damager;
          this.damagerState = damagerState;
+-    }
 +        // Parchment start
 +        if (damageLocation != null)
 +            this.location = damageLocation;
@@ -43,9 +50,9 @@
 +        return location;
 +    }
 +    // Parchment end
-     }
  
      /**
+      * Returns the block that damaged the player.
 @@ -71,4 +_,5 @@
      public BlockState getDamagerBlockState() {
          return this.damagerState;

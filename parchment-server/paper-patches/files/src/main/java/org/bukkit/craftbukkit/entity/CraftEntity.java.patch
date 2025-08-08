@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+@@ -1333,4 +_,8 @@
+         return this.entity.get(io.papermc.paper.datacomponent.PaperDataComponentType.bukkitToMinecraft(type)) != null;
+     }
+ 
++    public gg.projecteden.parchment.entity.EntityData getStoredEntityData() {
++        return this.entity.getStoredEntityData();
++    }
++
+ }

@@ -25,7 +25,7 @@
 +            if (this.customTag == null) {
 +                this.customTag = new CompoundTag();
 +            }
-+            for (String key : internalTag.getAllKeys()) {
++            for (String key : internalTag.keySet()) {
 +                if (this.customTag.contains(key)) {
 +                    continue;
 +                }

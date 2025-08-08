@@ -1,16 +1,18 @@
 --- a/net/minecraft/world/item/BowItem.java
 +++ b/net/minecraft/world/item/BowItem.java
-@@ -38,6 +_,10 @@
+@@ -38,7 +_,11 @@
                  } else {
                      List<ItemStack> list = draw(stack, projectile, player);
                      if (level instanceof ServerLevel serverLevel && !list.isEmpty()) {
+-                        this.shoot(serverLevel, player, player.getUsedItemHand(), stack, list, powerForTime * 3.0F, 1.0F, powerForTime == 1.0F, null, powerForTime); // Paper - Pass draw strength
 +                        // Parchment start
 +                        gg.projecteden.parchment.event.entity.PreEntityShootBowEvent preEvent = new gg.projecteden.parchment.event.entity.PreEntityShootBowEvent(player.getBukkitEntity(), stack.asBukkitCopy(), stack.asBukkitCopy());
 +                        if (!preEvent.callEvent()) return false;
 +                        // Parchment end
-                         this.shoot(serverLevel, player, player.getUsedItemHand(), stack, list, powerForTime * 3.0F, 1.0F, powerForTime == 1.0F, null, powerForTime); // Paper - Pass draw strength
++                        this.shoot(serverLevel, player, player.getUsedItemHand(), stack, list, powerForTime * 3.0F, 1.0F, powerForTime == 1.0F, null, powerForTime, preEvent.isRelative()); // Paper - Pass draw strength
                      }
  
+                     level.playSound(
 @@ -60,9 +_,9 @@
  
      @Override
