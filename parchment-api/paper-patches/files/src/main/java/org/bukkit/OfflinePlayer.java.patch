@@ -5,7 +5,7 @@
   */
  @NullMarked
 -public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, io.papermc.paper.persistence.PersistentDataViewHolder { // Paper - Add Offline PDC API
-+public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, io.papermc.paper.persistence.PersistentDataViewHolder, gg.projecteden.parchment.HasOfflinePlayer, gg.projecteden.parchment.OptionalPlayer { // Parchment
++public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable, io.papermc.paper.persistence.PersistentDataViewHolder, gg.projecteden.parchment.HasOfflinePlayer, gg.projecteden.parchment.OptionalPlayer, gg.projecteden.api.interfaces.HasUniqueId { // Parchment
 +
 +    // Parchment start
 +    @Override
