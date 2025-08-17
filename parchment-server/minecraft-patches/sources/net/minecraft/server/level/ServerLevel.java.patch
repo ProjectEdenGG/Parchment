@@ -72,7 +72,7 @@
 +                .pitch(pitch)
 +                .seed(seed)
 +                .build(),
-+            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(entity),
++            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(sourceEntity),
 +            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.DISTANCE_FUNCTION,
 +            null
 +        ));
