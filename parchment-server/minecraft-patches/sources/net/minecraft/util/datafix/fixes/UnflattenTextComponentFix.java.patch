@@ -1,0 +1,13 @@
+--- a/net/minecraft/util/datafix/fixes/UnflattenTextComponentFix.java
++++ b/net/minecraft/util/datafix/fixes/UnflattenTextComponentFix.java
+@@ -44,6 +_,10 @@
+                 return new Dynamic<>(ops, JsonOps.INSTANCE.convertTo(ops, jsonElement));
+             }
+         } catch (Exception var3) {
++            if (!json.startsWith("\"") && !json.endsWith("\"")) {
++                json = "\"" + json + "\"";
++                return unflattenJson(ops, json);
++            }
+             LOGGER.error("Failed to unflatten text component json: {}", json, var3);
+         }
+ 
