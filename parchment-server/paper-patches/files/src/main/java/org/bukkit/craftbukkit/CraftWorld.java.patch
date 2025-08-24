@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2488,4 +_,16 @@
+@@ -2490,4 +_,16 @@
          return POINTERS_SUPPLIER.view(this);
      }
      // Paper end

@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -767,19 +_,7 @@
+@@ -765,19 +_,7 @@
                  BlockPos blockPos = respawnConfig.pos();
                  BlockState blockState = level1.getBlockState(blockPos);
                  if (blockState.is(Blocks.RESPAWN_ANCHOR)) {

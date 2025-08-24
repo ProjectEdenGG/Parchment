@@ -1,19 +1,11 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -225,6 +_,9 @@
-     private int hash = 0;
-     private double health = 20;
-     // Paper end
+@@ -3522,4 +_,41 @@
+     public PlayerGameConnection getConnection() {
+         return this.getHandle().connection.playerGameConnection;
+     }
 +
 +    private boolean bypassesInsomnia = false; // Parchment - Insomnia api
-+
-     // Spigot start
-     private final Player.Spigot spigot = new Player.Spigot() {
- 
-@@ -3600,4 +_,40 @@
-             this(new ShortArraySet(), new ArrayList<>());
-         }
-     }
 +
 +    // Parchment start
 +    @Override
@@ -48,6 +40,5 @@
 +    public int getTimeSinceLastRest() {
 +        return net.minecraft.util.Mth.clamp(this.getHandle().getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
 +    }
-+
 +
  }

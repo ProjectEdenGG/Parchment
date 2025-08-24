@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
-@@ -745,11 +_,12 @@
+@@ -746,11 +_,12 @@
              this.setMaxDamage(maxDamage);
          }
  
@@ -14,7 +14,51 @@
                  this.deserializeInternal(internalTag, map);
              } catch (IOException ex) {
                  LOGGER.error("Failed to read internal tag from object", ex);
-@@ -812,6 +_,18 @@
+@@ -762,23 +_,26 @@
+             ByteArrayInputStream buf = new ByteArrayInputStream(Base64.getDecoder().decode(unhandled));
+             try {
+                 CompoundTag unhandledTag = NbtIo.readCompressed(buf, NbtAccounter.unlimitedHeap());
+-                DataComponentPatch unhandledPatch = DataComponentPatch.CODEC.parse(CraftRegistry.getMinecraftRegistry().createSerializationContext(NbtOps.INSTANCE), unhandledTag).result().get();
+-
+-                CraftMetaItem.getOrEmpty(unhandledPatch, CraftMetaItem.CAN_PLACE_ON).ifPresent(data -> {
+-                    this.canPlaceOnPredicates = List.copyOf(data.predicates);
+-                });
+-                CraftMetaItem.getOrEmpty(unhandledPatch, CraftMetaItem.CAN_BREAK).ifPresent(data -> {
+-                    this.canBreakPredicates = List.copyOf(data.predicates);
+-                });
+-                this.unhandledTags.copy(unhandledPatch.forget(type -> type == CraftMetaItem.CAN_PLACE_ON.TYPE || type == CraftMetaItem.CAN_BREAK.TYPE));
+-
+-                for (Entry<DataComponentType<?>, Optional<?>> entry : unhandledPatch.entrySet()) {
+-                    // Move removed unhandled tags to dedicated removedTags
+-                    if (entry.getValue().isEmpty()) {
+-                        DataComponentType<?> key = entry.getKey();
+-
+-                        this.unhandledTags.clear(key);
+-                        this.removedTags.add(key);
++                Optional<DataComponentPatch> unhandledPatchOptional = DataComponentPatch.CODEC.parse(CraftRegistry.getMinecraftRegistry().createSerializationContext(NbtOps.INSTANCE), unhandledTag).result();
++                if (unhandledPatchOptional.isPresent()) {
++                    DataComponentPatch unhandledPatch = unhandledPatchOptional.get();
++
++                    CraftMetaItem.getOrEmpty(unhandledPatch, CraftMetaItem.CAN_PLACE_ON).ifPresent(data -> {
++                        this.canPlaceOnPredicates = List.copyOf(data.predicates);
++                    });
++                    CraftMetaItem.getOrEmpty(unhandledPatch, CraftMetaItem.CAN_BREAK).ifPresent(data -> {
++                        this.canBreakPredicates = List.copyOf(data.predicates);
++                    });
++                    this.unhandledTags.copy(unhandledPatch.forget(type -> type == CraftMetaItem.CAN_PLACE_ON.TYPE || type == CraftMetaItem.CAN_BREAK.TYPE));
++
++                    for (Entry<DataComponentType<?>, Optional<?>> entry : unhandledPatch.entrySet()) {
++                        // Move removed unhandled tags to dedicated removedTags
++                        if (entry.getValue().isEmpty()) {
++                            DataComponentType<?> key = entry.getKey();
++
++                            this.unhandledTags.clear(key);
++                            this.removedTags.add(key);
++                        }
+                     }
+                 }
+             } catch (IOException ex) {
+@@ -813,6 +_,18 @@
                  this.customTag = NbtIo.readCompressed(buf, NbtAccounter.unlimitedHeap());
              } catch (IOException ex) {
                  LOGGER.error("Failed to read custom tag for item", ex);

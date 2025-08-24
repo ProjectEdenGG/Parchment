@@ -1,6 +1,6 @@
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -307,6 +_,7 @@
+@@ -308,6 +_,7 @@
              }
  
              public boolean disablePlayerCrits = false;
