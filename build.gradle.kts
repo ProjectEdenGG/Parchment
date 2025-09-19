@@ -44,7 +44,7 @@ subprojects {
     repositories {
         mavenCentral()
         maven(paperMavenPublicUrl)
-        maven("https://sonatype.projecteden.gg/repository/maven-public/")
+        maven("https://maven.projecteden.gg/releases")
     }
 
     dependencies {
@@ -78,7 +78,7 @@ subprojects {
         repositories {
             maven {
                 name = "edenSnapshots"
-                url = uri("https://sonatype.projecteden.gg/repository/maven-snapshots/")
+                url = uri("https://maven.projecteden.gg/snapshots")
                 credentials(PasswordCredentials::class)
             }
         }
