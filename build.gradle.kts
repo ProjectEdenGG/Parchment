@@ -45,6 +45,7 @@ subprojects {
         mavenCentral()
         maven(paperMavenPublicUrl)
         maven("https://maven.projecteden.gg/releases")
+        maven("https://maven.projecteden.gg/snapshots")
     }
 
     dependencies {
