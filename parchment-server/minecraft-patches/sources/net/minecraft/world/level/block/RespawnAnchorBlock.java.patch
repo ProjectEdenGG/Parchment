@@ -14,9 +14,9 @@
 +            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.CHARGE;
 +        } else if (state.getValue(CHARGE) == 0) {
 +            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.NOTHING;
-+        } else if (!canSetSpawn(level) && !level.isClientSide) {
++        } else if (level instanceof ServerLevel serverLevel && !canSetSpawn(serverLevel, pos) && !level.isClientSide()) {
 +            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.EXPLODE;
-+        } else if (!level.isClientSide) {
++        } else if (!level.isClientSide()) {
 +            result = gg.projecteden.parchment.event.player.PlayerUseRespawnAnchorEvent.RespawnAnchorResult.SET_SPAWN;
 +        } else {
 +            return InteractionResult.SUCCESS;

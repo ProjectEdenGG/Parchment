@@ -1,10 +1,9 @@
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -467,5 +_,38 @@
-         return AdventureCodecs.STYLE_MAP_CODEC.codec()
+@@ -468,4 +_,37 @@
              .parse(ops, encoded).getOrThrow(IllegalStateException::new);
      }
-+
+ 
 +
 +    // Parchment start
 +    public static net.kyori.adventure.sound.Sound.Source asAdventure(final SoundSource source) {
@@ -37,5 +36,5 @@
 +
 +    // Parchment end
 +
- 
++
  }

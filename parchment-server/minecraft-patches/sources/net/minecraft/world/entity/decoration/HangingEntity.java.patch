@@ -17,7 +17,7 @@
 +
 +    @Override
 +    public void tick() {
-+        if (tick && !this.level().isClientSide) { // Parchment
++        if (tick && !this.level().isClientSide()) { // Parchment
 +            this.checkBelowWorld();
 +            if (this.checkInterval++ == this.level().spigotConfig.hangingTickFrequency) { // Spigot
 +                this.checkInterval = 0;
@@ -41,7 +41,7 @@
 +                    }
 +                    // CraftBukkit end
 +                    this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DROP); // CraftBukkit - add Bukkit remove cause
-+                    this.dropItem((ServerLevel) this.level(), (Entity) null);
++                    this.dropItem((ServerLevel) this.level(), null);
 +                }
 +            }
 +        }

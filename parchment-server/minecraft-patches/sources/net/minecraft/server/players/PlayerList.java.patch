@@ -22,7 +22,7 @@
 +                            null,
 +                            net.kyori.adventure.sound.Sound.sound()
 +                                    .type(SoundEvents.RESPAWN_ANCHOR_DEPLETE.unwrap().<net.kyori.adventure.key.Key>map(
-+                                            key -> io.papermc.paper.adventure.PaperAdventure.asAdventure(key.location()),
++                                            key -> io.papermc.paper.adventure.PaperAdventure.asAdventure(key.identifier()),
 +                                            soundEvent -> io.papermc.paper.adventure.PaperAdventure.asAdventure(soundEvent.location())
 +                                    ))
 +                                    .source(io.papermc.paper.adventure.PaperAdventure.asAdventure(SoundSource.BLOCKS))
