@@ -27,13 +27,13 @@
 @@ -119,7 +_,11 @@
      @Override
      protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-         if (!level.isClientSide) {
+         if (!level.isClientSide()) {
 -            if (!io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates) state = state.cycle(NoteBlock.NOTE); // Paper - prevent noteblock note from updating
 +            if (!new gg.projecteden.parchment.event.block.CustomBlockUpdateEvent(org.bukkit.craftbukkit.block.data.CraftBlockData.fromData(this.defaultBlockState()), gg.projecteden.parchment.event.block.CustomBlockUpdateEvent.UpdateType.PITCH, org.bukkit.craftbukkit.util.CraftLocation.toBukkit(pos, level)).callEvent())
 +                return InteractionResult.SUCCESS;
 +
 +            if (!io.papermc.paper.configuration.GlobalConfiguration.get().blockUpdates.disableNoteblockUpdates)
-+                state = (BlockState) state.cycle(NoteBlock.NOTE); // Paper - prevent noteblock note from updating
-             level.setBlock(pos, state, 3);
++                state = state.cycle(NoteBlock.NOTE); // Paper - prevent noteblock note from updating
+             level.setBlock(pos, state, Block.UPDATE_ALL);
              this.playNote(player, state, level, pos);
              player.awardStat(Stats.TUNE_NOTEBLOCK);

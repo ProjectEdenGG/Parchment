@@ -1,9 +1,10 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -3522,4 +_,41 @@
-     public PlayerGameConnection getConnection() {
-         return this.getHandle().connection.playerGameConnection;
+@@ -3356,4 +_,43 @@
+             entity.remove();
+         }
      }
++
 +
 +    private boolean bypassesInsomnia = false; // Parchment - Insomnia api
 +
@@ -40,5 +41,6 @@
 +    public int getTimeSinceLastRest() {
 +        return net.minecraft.util.Mth.clamp(this.getHandle().getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(net.minecraft.stats.Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
 +    }
++
 +
  }

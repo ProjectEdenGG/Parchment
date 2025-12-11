@@ -1,15 +1,14 @@
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
-@@ -339,7 +_,7 @@
-                 this.awardStat(Stats.CROUCH_TIME);
-             }
+@@ -419,6 +_,7 @@
+         return 10;
+     }
  
--            if (!this.isSleeping()) {
-+            if (!this.isSleeping() && this.level().paperConfig().entities.behavior.tickTimeSinceSleep) { // Parchment
-                 this.awardStat(Stats.TIME_SINCE_REST);
-             }
-         }
-@@ -1764,9 +_,23 @@
++
+     @Override
+     public void playSound(SoundEvent sound, float volume, float pitch) {
+         this.level().playSound(this, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), volume, pitch);
+@@ -1695,9 +_,23 @@
  
      // Paper start - send while respecting visibility
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
@@ -36,15 +35,15 @@
          }
      }
      // Paper end - send while respecting visibility
-@@ -2358,4 +_,11 @@
-             return this.message;
-         }
+@@ -2227,4 +_,11 @@
+         public static final Player.BedSleepingProblem NOT_SAFE = new Player.BedSleepingProblem(Component.translatable("block.minecraft.bed.not_safe"));
+         public static final Player.BedSleepingProblem EXPLOSION = new Player.BedSleepingProblem(null); // Paper - Added to properly handle explosions in bed events
      }
-+    
++
 +    // Parchment start
 +    public void setProfile(GameProfile gameProfile) {
 +        this.gameProfile = gameProfile;
 +    }
 +    // Parchment end
-+    
++
  }

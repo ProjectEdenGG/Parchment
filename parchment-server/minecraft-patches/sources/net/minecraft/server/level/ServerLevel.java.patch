@@ -1,15 +1,15 @@
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
-@@ -1056,7 +_,7 @@
+@@ -1114,7 +_,7 @@
+     }
  
      private void announceSleepStatus() {
-         if (this.canSleepThroughNights()) {
--            if (!this.getServer().isSingleplayer() || this.getServer().isPublished()) {
-+            if (false && !this.getServer().isSingleplayer() || this.getServer().isPublished()) {
-                 int _int = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
+-        if (this.canSleepThroughNights()) {
++        if (this.canSleepThroughNights() && false) { // Parchment
+             if (!this.getServer().isSingleplayer() || this.getServer().isPublished()) {
+                 int i = this.getGameRules().get(GameRules.PLAYERS_SLEEPING_PERCENTAGE);
                  Component component;
-                 if (this.sleepStatus.areEnoughSleeping(_int)) {
-@@ -1648,34 +_,48 @@
+@@ -1722,34 +_,48 @@
      public void playSeededSound(
          @Nullable Entity entity, double x, double y, double z, Holder<SoundEvent> sound, SoundSource source, float volume, float pitch, long seed
      ) {

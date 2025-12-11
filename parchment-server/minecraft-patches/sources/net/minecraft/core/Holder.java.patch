@@ -1,6 +1,6 @@
 --- a/net/minecraft/core/Holder.java
 +++ b/net/minecraft/core/Holder.java
-@@ -138,6 +_,12 @@
+@@ -135,6 +_,12 @@
              return new Holder.Reference<>(Holder.Reference.Type.INTRUSIVE, owner, null, value);
          }
  

@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/level/block/Block.java
 +++ b/net/minecraft/world/level/block/Block.java
-@@ -354,30 +_,45 @@
+@@ -404,30 +_,45 @@
      }
      // Paper end - Add BlockBreakBlockEvent
  
@@ -33,12 +33,12 @@
      }
  
      public static void dropResources(BlockState state, Level level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack tool) {
-     // Paper start - Properly handle xp dropping
+         // Paper start - Properly handle xp dropping
          dropResources(state, level, pos, blockEntity, entity, tool, true);
      }
 -    public static void dropResources(BlockState state, Level level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack tool, boolean dropExperience) {
 +    public static List<ItemEntity> dropResources(BlockState state, Level level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack tool, boolean dropExperience) {
-     // Paper end - Properly handle xp dropping
+         // Paper end - Properly handle xp dropping
          if (level instanceof ServerLevel) {
 -            getDrops(state, (ServerLevel)level, pos, blockEntity, entity, tool).forEach(stack -> popResource(level, pos, stack));
 +            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
@@ -52,7 +52,7 @@
      }
  
      public static void popResource(Level level, BlockPos pos, ItemStack stack) {
-@@ -386,6 +_,17 @@
+@@ -436,6 +_,17 @@
          double d2 = pos.getY() + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25) - d;
          double d3 = pos.getZ() + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25);
          popResource(level, () -> new ItemEntity(level, d1, d2, d3, stack), stack);

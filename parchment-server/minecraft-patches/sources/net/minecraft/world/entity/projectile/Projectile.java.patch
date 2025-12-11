@@ -1,22 +1,22 @@
 --- a/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/net/minecraft/world/entity/projectile/Projectile.java
-@@ -150,8 +_,14 @@
+@@ -154,8 +_,14 @@
      }
  
      public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-+        shoot(x, y, z, velocity, inaccuracy, true);
++        this.shoot(x, y, z, velocity, inaccuracy, true);
 +    }
 +
 +    public void shoot(double x, double y, double z, float velocity, float inaccuracy, boolean relative) {
          Vec3 movementToShoot = this.getMovementToShoot(x, y, z, velocity, inaccuracy);
 -        this.setDeltaMovement(movementToShoot);
-+        if (relative) { // Parchment
++        if (relative) {
 +            this.setDeltaMovement(movementToShoot);
-+        } // Parchment
-         this.hasImpulse = true;
++        }
+         this.needsSync = true;
          double d = movementToShoot.horizontalDistance();
          this.setYRot((float)(Mth.atan2(movementToShoot.x, movementToShoot.z) * 180.0F / (float)Math.PI));
-@@ -161,6 +_,10 @@
+@@ -165,6 +_,10 @@
      }
  
      public void shootFromRotation(Entity shooter, float x, float y, float z, float velocity, float inaccuracy) {
@@ -27,7 +27,7 @@
          float f = -Mth.sin(y * (float) (Math.PI / 180.0)) * Mth.cos(x * (float) (Math.PI / 180.0));
          float f1 = -Mth.sin((x + z) * (float) (Math.PI / 180.0));
          float f2 = Mth.cos(y * (float) (Math.PI / 180.0)) * Mth.cos(x * (float) (Math.PI / 180.0));
-@@ -170,7 +_,7 @@
+@@ -174,7 +_,7 @@
          if (Double.isNaN(knownMovement.x) || Double.isNaN(knownMovement.y) || Double.isNaN(knownMovement.z)) {
              knownMovement = new Vec3(0, 0, 0);
          }
@@ -36,7 +36,7 @@
          this.setDeltaMovement(this.getDeltaMovement().add(knownMovement.x, shooter.onGround() ? 0.0 : knownMovement.y, knownMovement.z));
          }
          // Paper end - allow disabling relative velocity
-@@ -217,7 +_,11 @@
+@@ -221,7 +_,11 @@
          float velocity,
          float inaccuracy
      ) {
@@ -49,7 +49,7 @@
      }
  
      public static <T extends Projectile> T spawnProjectileUsingShoot(
-@@ -227,9 +_,21 @@
+@@ -231,9 +_,21 @@
          return spawnProjectileUsingShootDelayed(projectile, level, spawnedFrom, x, y, z, velocity, inaccuracy).spawn();
      }
  

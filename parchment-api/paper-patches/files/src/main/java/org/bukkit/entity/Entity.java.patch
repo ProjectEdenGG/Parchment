@@ -9,7 +9,7 @@
  
      /**
       * Gets the entity's current position
-@@ -1261,4 +_,7 @@
+@@ -1322,4 +_,7 @@
       */
      void broadcastHurtAnimation(@NotNull java.util.Collection<Player> players);
      // Paper end - broadcast hurt animation

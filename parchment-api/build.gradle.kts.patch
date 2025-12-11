@@ -1,6 +1,6 @@
 --- a/paper-api/build.gradle.kts
 +++ b/paper-api/build.gradle.kts
-@@ -15,6 +_,7 @@
+@@ -16,6 +_,7 @@
  val bungeeCordChatVersion = "1.21-R0.2-deprecated+build.21"
  val slf4jVersion = "2.0.16"
  val log4jVersion = "2.24.1"
@@ -8,7 +8,7 @@
  
  val apiAndDocs: Configuration by configurations.creating {
      attributes {
-@@ -40,6 +_,7 @@
+@@ -41,6 +_,7 @@
  }
  
  dependencies {
@@ -16,7 +16,7 @@
      // api dependencies are listed transitively to API consumers
      api("com.google.guava:guava:33.3.1-jre")
      api("com.google.code.gson:gson:2.11.0")
-@@ -90,7 +_,7 @@
+@@ -91,7 +_,7 @@
      testRuntimeOnly("org.junit.platform:junit-platform-launcher")
  }
  
@@ -25,10 +25,11 @@
  idea {
      module {
          generatedSourceDirs.add(generatedDir.toFile())
-@@ -100,6 +_,18 @@
+@@ -100,7 +_,18 @@
+ sourceSets {
      main {
          java {
-             srcDir(generatedDir)
+-            srcDir(generatedDir)
 +            srcDir(file("../paper-api/src/main/java"))
 +        }
 +        resources {
@@ -44,7 +45,7 @@
          }
      }
  }
-@@ -166,7 +_,7 @@
+@@ -183,7 +_,7 @@
  
  tasks.withType<Javadoc>().configureEach {
      val options = options as StandardJavadocDocletOptions
@@ -53,7 +54,7 @@
      options.use()
      options.isDocFilesSubDirs = true
      options.links(
-@@ -199,11 +_,11 @@
+@@ -216,11 +_,11 @@
      }
  
      // workaround for https://github.com/gradle/gradle/issues/4046

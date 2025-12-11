@@ -1,7 +1,7 @@
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -765,19 +_,7 @@
-                 BlockPos blockPos = respawnConfig.pos();
+@@ -664,19 +_,23 @@
+                 BlockPos blockPos = respawnData.pos();
                  BlockState blockState = level1.getBlockState(blockPos);
                  if (blockState.is(Blocks.RESPAWN_ANCHOR)) {
 -                    serverPlayer.connection
@@ -17,7 +17,23 @@
 -                                level.getRandom().nextLong()
 -                            )
 -                        );
-+                    player.playNotifySound(SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.BLOCKS, 1.0F, 1.0F); // Parchment - use existing play sound method
++
++                    org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
++                            null,
++                            net.kyori.adventure.sound.Sound.sound()
++                                    .type(SoundEvents.RESPAWN_ANCHOR_DEPLETE.unwrap().<net.kyori.adventure.key.Key>map(
++                                            key -> io.papermc.paper.adventure.PaperAdventure.asAdventure(key.location()),
++                                            soundEvent -> io.papermc.paper.adventure.PaperAdventure.asAdventure(soundEvent.location())
++                                    ))
++                                    .source(io.papermc.paper.adventure.PaperAdventure.asAdventure(SoundSource.BLOCKS))
++                                    .volume(1.0f)
++                                    .pitch(1.0f)
++                                    .seed(level.getRandom().nextLong())
++                                    .build(),
++                            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(level1, blockPos.getX(), blockPos.getY(), blockPos.getZ()),
++                            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.DISTANCE_FUNCTION,
++                            null
++                    ));
                  }
-                 // Paper start - Add PlayerPostRespawnEvent
-                 if (!teleportTransition.missingRespawnBlock()) {
+             }
+         }

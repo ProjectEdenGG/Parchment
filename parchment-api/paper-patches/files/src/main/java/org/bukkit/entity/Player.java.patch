@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -63,7 +_,17 @@
+@@ -64,7 +_,17 @@
   * Represents a player, connected or not
   */
  @NullMarked
@@ -19,7 +19,7 @@
  
      // Paper start
      @Override
-@@ -2073,6 +_,16 @@
+@@ -2107,6 +_,16 @@
       */
      public boolean canSee(Player player);
  
@@ -36,7 +36,7 @@
      /**
       * Visually hides an entity from this player.
       *
-@@ -3932,4 +_,44 @@
+@@ -4004,4 +_,44 @@
       */
      @ApiStatus.Experimental
      PlayerGameConnection getConnection();

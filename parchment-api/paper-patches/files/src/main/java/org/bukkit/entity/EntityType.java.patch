@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/entity/EntityType.java
 +++ b/src/main/java/org/bukkit/entity/EntityType.java
-@@ -202,6 +_,7 @@
+@@ -207,6 +_,7 @@
      /**
       * An unknown entity without an Entity Class
       */

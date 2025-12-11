@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1064,7 +_,7 @@
+@@ -1181,7 +_,7 @@
      }
  
      private static EntityDamageEvent callEntityDamageEvent(Block damager, BlockState damagerState, Entity damagee, DamageCause cause, org.bukkit.damage.DamageSource bukkitDamageSource, Map<DamageModifier, Double> modifiers, Map<DamageModifier, Function<? super Double, Double>> modifierFunctions, boolean cancelled) {
@@ -9,9 +9,9 @@
          return CraftEventFactory.callEntityDamageEvent(event, damagee, cancelled);
      }
  
-@@ -2118,4 +_,58 @@
- 
-         return disconnectReason;
+@@ -2379,4 +_,56 @@
+         }
+         return false;
      }
 +
 +    // Parchment start
@@ -65,6 +65,4 @@
 +        return items;
 +    }
 +    // Parchment end
-+
-+
  }

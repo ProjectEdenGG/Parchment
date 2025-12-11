@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     java // TODO java launcher tasks
-    id("io.papermc.paperweight.patcher") version "2.0.0-beta.18"
+    id("io.papermc.paperweight.patcher") version "2.0.0-beta.19"
 }
 
 paperweight {
@@ -44,7 +44,7 @@ subprojects {
     repositories {
         mavenCentral()
         maven(paperMavenPublicUrl)
-        maven("https://sonatype.projecteden.gg/repository/maven-public/")
+        maven("https://maven.projecteden.gg/snapshots")
     }
 
     dependencies {
@@ -78,7 +78,7 @@ subprojects {
         repositories {
             maven {
                 name = "edenSnapshots"
-                url = uri("https://sonatype.projecteden.gg/repository/maven-snapshots/")
+                url = uri("https://maven.projecteden.gg/repository/maven-snapshots/")
                 credentials(PasswordCredentials::class)
             }
         }

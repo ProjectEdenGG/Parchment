@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -231,6 +_,8 @@
+@@ -316,6 +_,8 @@
              return false;
          }
  

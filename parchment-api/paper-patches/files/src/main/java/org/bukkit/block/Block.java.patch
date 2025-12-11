@@ -9,7 +9,7 @@
  
      /**
       * Gets the metadata for this block
-@@ -836,4 +_,19 @@
+@@ -834,4 +_,19 @@
       * @return {@code true} if the block can suffocate
       */
      boolean isSuffocating();
