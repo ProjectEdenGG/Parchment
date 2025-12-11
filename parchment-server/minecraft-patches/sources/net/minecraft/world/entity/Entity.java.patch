@@ -1,5 +1,14 @@
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
+@@ -2996,7 +_,7 @@
+         if (!this.level().isClientSide()
+             && player.isSecondaryUseActive()
+             && this instanceof Leashable leashable
+-            && leashable.canBeLeashed()
++            && new gg.projecteden.parchment.event.entity.CheckEntityLeashableEvent(this.getBukkitEntity(), leashable.canBeLeashed()).callEvent()
+             && this.isAlive()
+             && !(this instanceof LivingEntity livingEntity && livingEntity.isBaby())) {
+             List<Leashable> list = Leashable.leashableInArea(this, leashable3 -> leashable3.getLeashHolder() == player);
 @@ -5429,4 +_,30 @@
          return ((ServerLevel) this.level()).isPositionEntityTicking(this.blockPosition());
      }

@@ -1,0 +1,16 @@
+--- a/net/minecraft/world/entity/Leashable.java
++++ b/net/minecraft/world/entity/Leashable.java
+@@ -53,7 +_,12 @@
+     }
+ 
+     default boolean canHaveALeashAttachedTo(Entity entity) {
+-        return this != entity && !(this.leashDistanceTo(entity) > this.leashSnapDistance()) && this.canBeLeashed();
++        if (this != entity && !(this.leashDistanceTo(entity) > this.leashSnapDistance())) {
++            CheckEntityLeashableEvent event = new CheckEntityLeashableEvent(((Entity) this).getBukkitEntity(), this.canBeLeashed());
++            event.callEvent();
++            return event.isLeashable();
++        }
++        return false;
+     }
+ 
+     default double leashDistanceTo(Entity entity) {
