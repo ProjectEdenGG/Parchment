@@ -25,23 +25,13 @@
  idea {
      module {
          generatedSourceDirs.add(generatedDir.toFile())
-@@ -100,7 +_,18 @@
+@@ -100,7 +_,8 @@
  sourceSets {
      main {
          java {
 -            srcDir(generatedDir)
++            srcDir(generatedDir.toFile())
 +            srcDir(file("../paper-api/src/main/java"))
-+        }
-+        resources {
-+            srcDir(file("../paper-api/src/main/resources"))
-+        }
-+    }
-+    test {
-+        java {
-+            srcDir(file("../paper-api/src/test/java"))
-+        }
-+        resources {
-+            srcDir(file("../paper-api/src/test/resources"))
          }
      }
  }
