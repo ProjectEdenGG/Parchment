@@ -78,7 +78,7 @@ subprojects {
         repositories {
             maven {
                 name = "edenSnapshots"
-                url = uri("https://maven.projecteden.gg/repository/maven-snapshots/")
+                url = uri("https://maven.projecteden.gg/snapshots")
                 credentials(PasswordCredentials::class)
             }
         }
