@@ -1,0 +1,13 @@
+--- a/src/main/java/org/bukkit/event/hanging/HangingBreakEvent.java
++++ b/src/main/java/org/bukkit/event/hanging/HangingBreakEvent.java
+@@ -20,6 +_,10 @@
+     public HangingBreakEvent(@NotNull final Hanging hanging, @NotNull final HangingBreakEvent.RemoveCause cause) {
+         super(hanging);
+         this.cause = cause;
++
++        if (!new gg.projecteden.parchment.event.entity.PreHangingEntityBreakEvent().callEvent()) {
++            this.cancelled = true;
++        }
+     }
+ 
+     /**
