@@ -2,22 +2,22 @@
 +++ b/paper-api/build.gradle.kts
 @@ -16,6 +_,7 @@
  val bungeeCordChatVersion = "1.21-R0.2-deprecated+build.21"
- val slf4jVersion = "2.0.16"
- val log4jVersion = "2.24.1"
+ val slf4jVersion = "2.0.17"
+ val log4jVersion = "2.26.0"
 +val edenVersion: String by project // Parchment
  
- val apiAndDocs: Configuration by configurations.creating {
-     attributes {
-@@ -41,6 +_,7 @@
+ val apiAndDocs: Configuration by configurations.creating
+ configurations.api {
+@@ -42,6 +_,7 @@
  }
  
  dependencies {
 +    api("gg.projecteden:eden-interfaces:${edenVersion}") // Parchment
      // api dependencies are listed transitively to API consumers
-     api("com.google.guava:guava:33.3.1-jre")
-     api("com.google.code.gson:gson:2.11.0")
-@@ -91,7 +_,7 @@
-     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+     api("com.google.guava:guava:33.6.0-jre")
+     api("com.google.code.gson:gson:2.14.0")
+@@ -94,7 +_,7 @@
+     testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.0.3")
  }
  
 -val generatedDir: java.nio.file.Path = layout.projectDirectory.dir("src/generated/java").asFile.toPath()
@@ -25,7 +25,7 @@
  idea {
      module {
          generatedSourceDirs.add(generatedDir.toFile())
-@@ -100,7 +_,8 @@
+@@ -103,7 +_,8 @@
  sourceSets {
      main {
          java {
@@ -35,7 +35,7 @@
          }
      }
  }
-@@ -183,7 +_,7 @@
+@@ -186,7 +_,7 @@
  
  tasks.withType<Javadoc>().configureEach {
      val options = options as StandardJavadocDocletOptions
@@ -44,7 +44,7 @@
      options.use()
      options.isDocFilesSubDirs = true
      options.links(
-@@ -216,11 +_,11 @@
+@@ -213,11 +_,11 @@
      }
  
      // workaround for https://github.com/gradle/gradle/issues/4046
