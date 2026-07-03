@@ -1,14 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -28,6 +_,7 @@
- import net.minecraft.network.Connection;
- import net.minecraft.network.chat.Component;
- import net.minecraft.network.protocol.game.ServerboundContainerClosePacket;
-+import net.minecraft.resources.Identifier;
- import net.minecraft.server.MinecraftServer;
- import net.minecraft.server.level.ServerLevel;
- import net.minecraft.server.level.ServerPlayer;
-@@ -1181,7 +_,7 @@
+@@ -1163,7 +_,7 @@
      }
  
      private static EntityDamageEvent callEntityDamageEvent(Block damager, BlockState damagerState, Entity damagee, DamageCause cause, org.bukkit.damage.DamageSource bukkitDamageSource, Map<DamageModifier, Double> modifiers, Map<DamageModifier, Function<? super Double, Double>> modifierFunctions, boolean cancelled) {
@@ -17,15 +9,15 @@
          return CraftEventFactory.callEntityDamageEvent(event, damagee, cancelled);
      }
  
-@@ -2379,4 +_,56 @@
+@@ -2425,4 +_,56 @@
          }
-         return false;
+         return event.getFuseTime();
      }
 +
 +    // Parchment start
 +    private static net.minecraft.network.protocol.@org.jetbrains.annotations.NotNull Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> handleSoundEvent(gg.projecteden.parchment.event.sound.SoundEvent event, CraftPlayer recipient) {
 +        net.kyori.adventure.sound.Sound sound = event.calculateSound(recipient);
-+        Identifier name = io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.name());
++        net.minecraft.resources.Identifier name = io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.name());
 +        gg.projecteden.parchment.event.sound.SoundEvent.Emitter emitter = event.calculateEmitter(recipient);
 +        net.minecraft.sounds.SoundSource source = io.papermc.paper.adventure.PaperAdventure.asVanilla(sound.source());
 +        float volume = sound.volume();

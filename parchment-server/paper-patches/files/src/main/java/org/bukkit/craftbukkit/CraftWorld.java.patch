@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2043,4 +_,16 @@
+@@ -2044,4 +_,16 @@
          return POINTERS_SUPPLIER.view(this);
      }
      // Paper end
@@ -12,7 +12,7 @@
 +        if (optional == null) {
 +            return null;
 +        }
-+        return optional.assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(CraftItemStack.asNMSCopy(toSmelt)), world.registryAccess()).asBukkitCopy();
++        return optional.assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(CraftItemStack.asNMSCopy(toSmelt))).asBukkitCopy();
 +    }
 +    // Parchment end
 +

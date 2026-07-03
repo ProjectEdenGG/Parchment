@@ -40,7 +40,7 @@ jobs:
           git config --global user.email "no-reply@github.com"
           git config --global user.name "GitHub Actions"
           ./gradlew applyAllPatches
-          ./gradlew createMojmapPaperclipJar
+          ./gradlew createPaperclipJar
           ./gradlew :parchment-api:publishMavenPublicationToEdenSnapshotsRepository
           ./gradlew publishDevBundlePublicationToEdenSnapshotsRepository -PpublishDevBundle
 

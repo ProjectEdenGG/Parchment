@@ -1,6 +1,6 @@
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -468,4 +_,37 @@
+@@ -435,4 +_,37 @@
              .parse(ops, encoded).getOrThrow(IllegalStateException::new);
      }
  

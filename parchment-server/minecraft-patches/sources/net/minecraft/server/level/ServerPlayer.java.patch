@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -814,7 +_,7 @@
+@@ -817,7 +_,7 @@
                      this.awardStat(Stats.CROUCH_TIME);
                  }
  
@@ -9,7 +9,7 @@
                      this.awardStat(Stats.TIME_SINCE_REST);
                  }
              }
-@@ -2652,7 +_,7 @@
+@@ -2683,7 +_,7 @@
                  event.isForced()
              );
              if (event.willNotifyPlayer() && event.getNotification() != null) {

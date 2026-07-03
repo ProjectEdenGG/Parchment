@@ -7,26 +7,13 @@ import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class PreEntityShootBowEvent extends EntityEvent implements Cancellable {
+public class PreEntityShootBowEvent extends EntityEvent {
     private static final HandlerList handlers = new HandlerList();
 
-    private final @NotNull ItemStack bow;
-    private final @NotNull ItemStack arrow;
     boolean relative = true;
-    boolean cancelled = false;
 
-    public PreEntityShootBowEvent(@NotNull Entity entity, @NotNull ItemStack bow, @NotNull ItemStack arrow) {
+    public PreEntityShootBowEvent(@NotNull Entity entity) {
         super(entity);
-        this.bow = bow;
-        this.arrow = arrow;
-    }
-
-    public @NotNull ItemStack getBow() {
-        return this.bow;
-    }
-
-    public @NotNull ItemStack getArrow() {
-        return this.arrow;
     }
 
     public boolean isRelative() {
@@ -35,16 +22,6 @@ public class PreEntityShootBowEvent extends EntityEvent implements Cancellable {
 
     public void setRelative(boolean relative) {
         this.relative = relative;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
     }
 
     @Override

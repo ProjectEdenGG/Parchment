@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -499,11 +_,20 @@
+@@ -455,11 +_,20 @@
  
      @Override
      public boolean breakNaturally(ItemStack item, boolean triggerEffect, boolean dropExperience) {
@@ -19,19 +19,19 @@
 +    }
 +
 +    public boolean breakNaturally(Player player, ItemStack item, boolean triggerEffect, boolean dropExperience, boolean forceEffect) {
-         // Paper end
          // Order matters here, need to drop before setting to air so skulls can get their data
-         net.minecraft.world.level.block.state.BlockState state = this.getNMS();
-@@ -513,7 +_,11 @@
+         BlockState state = this.getBlockState();
+         net.minecraft.world.level.block.Block block = state.getBlock();
+@@ -468,7 +_,11 @@
  
          // Modelled off Player#hasCorrectToolForDrops
-         if (block != Blocks.AIR && (item == null || !state.requiresCorrectToolForDrops() || nmsItem.isCorrectToolForDrops(state))) {
--            net.minecraft.world.level.block.Block.dropResources(state, this.world.getMinecraftWorld(), this.position, this.world.getBlockEntity(this.position), null, nmsItem, false); // Paper - Properly handle xp dropping
-+            List<net.minecraft.world.entity.item.ItemEntity> itemEntities = net.minecraft.world.level.block.Block.dropResources(state, this.world.getMinecraftWorld(), this.position, this.world.getBlockEntity(this.position), null, nmsItem, false);
+         if (!state.isAir() && (item == null || !state.requiresCorrectToolForDrops() || nmsItem.isCorrectToolForDrops(state))) {
+-            net.minecraft.world.level.block.Block.dropResources(state, this.level.getMinecraftWorld(), this.position, this.level.getBlockEntity(this.position), null, nmsItem, false);
++            List<net.minecraft.world.entity.item.ItemEntity> itemEntities = net.minecraft.world.level.block.Block.dropResources(state, this.level.getMinecraftWorld(), this.position, this.level.getBlockEntity(this.position), null, nmsItem, false);
 +
 +            if (player != null) {
 +                new org.bukkit.event.block.BlockDropItemEvent(this, this.getState(), player, itemEntities.stream().map(i -> (org.bukkit.entity.Item) CraftEntity.getEntity((org.bukkit.craftbukkit.CraftServer) Bukkit.getServer(), i)).toList()).callEvent();
 +            }
-             // Paper start - improve Block#breakNaturally
-             if (dropExperience) block.popExperience(this.world.getMinecraftWorld(), this.position, block.getExpDrop(state, this.world.getMinecraftWorld(), this.position, nmsItem, true));
-             // Paper end
+             if (dropExperience) block.popExperience(this.level.getMinecraftWorld(), this.position, block.getExpDrop(state, this.level.getMinecraftWorld(), this.position, nmsItem, true));
+             result = true;
+         }

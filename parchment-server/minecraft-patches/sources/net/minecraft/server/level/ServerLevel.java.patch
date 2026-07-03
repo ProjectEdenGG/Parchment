@@ -1,22 +1,22 @@
 --- a/net/minecraft/server/level/ServerLevel.java
 +++ b/net/minecraft/server/level/ServerLevel.java
-@@ -1114,7 +_,7 @@
+@@ -1153,7 +_,7 @@
      }
  
      private void announceSleepStatus() {
 -        if (this.canSleepThroughNights()) {
 +        if (this.canSleepThroughNights() && false) { // Parchment
              if (!this.getServer().isSingleplayer() || this.getServer().isPublished()) {
-                 int i = this.getGameRules().get(GameRules.PLAYERS_SLEEPING_PERCENTAGE);
-                 Component component;
-@@ -1722,34 +_,48 @@
-     public void playSeededSound(
-         @Nullable Entity entity, double x, double y, double z, Holder<SoundEvent> sound, SoundSource source, float volume, float pitch, long seed
+                 int percentage = this.getGameRules().get(GameRules.PLAYERS_SLEEPING_PERCENTAGE);
+                 Component message;
+@@ -1761,17 +_,24 @@
+         final float pitch,
+         final long seed
      ) {
 -        this.server
 -            .getPlayerList()
 -            .broadcast(
--                entity instanceof Player player ? player : null,
+-                except instanceof Player player ? player : null,
 -                x,
 -                y,
 -                z,
@@ -26,7 +26,7 @@
 -            );
 +        // Parchment start - sound event
 +        org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
-+                entity == null ? null : entity.getBukkitEntity(),
++                except == null ? null : except.getBukkitEntity(),
 +            net.kyori.adventure.sound.Sound.sound()
 +                    .type(sound.unwrap().<net.kyori.adventure.key.Key>map(
 +                        key -> io.papermc.paper.adventure.PaperAdventure.asAdventure(key.identifier()),
@@ -45,13 +45,14 @@
      }
  
      @Override
-     public void playSeededSound(
-         @Nullable Entity entity, Entity sourceEntity, Holder<SoundEvent> sound, SoundSource source, float volume, float pitch, long seed
+@@ -1784,17 +_,24 @@
+         final float pitch,
+         final long seed
      ) {
 -        this.server
 -            .getPlayerList()
 -            .broadcast(
--                entity instanceof Player player ? player : null,
+-                except instanceof Player player ? player : null,
 -                sourceEntity.getX(),
 -                sourceEntity.getY(),
 -                sourceEntity.getZ(),
@@ -61,7 +62,7 @@
 -            );
 +        // Parchment start - sound event
 +        org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
-+                entity == null ? null : entity.getBukkitEntity(),
++                except == null ? null : except.getBukkitEntity(),
 +            net.kyori.adventure.sound.Sound.sound()
 +                .type(sound.unwrap().<net.kyori.adventure.key.Key>map(
 +                    key -> io.papermc.paper.adventure.PaperAdventure.asAdventure(key.identifier()),

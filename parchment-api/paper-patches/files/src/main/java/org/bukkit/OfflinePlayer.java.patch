@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/OfflinePlayer.java
 +++ b/src/main/java/org/bukkit/OfflinePlayer.java
-@@ -22,7 +_,14 @@
+@@ -21,7 +_,14 @@
   * player needing to be online.
   */
  @NullMarked

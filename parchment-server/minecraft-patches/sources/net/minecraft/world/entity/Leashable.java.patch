@@ -1,11 +1,11 @@
 --- a/net/minecraft/world/entity/Leashable.java
 +++ b/net/minecraft/world/entity/Leashable.java
-@@ -53,7 +_,7 @@
+@@ -54,7 +_,7 @@
      }
  
-     default boolean canHaveALeashAttachedTo(Entity entity) {
+     default boolean canHaveALeashAttachedTo(final Entity entity) {
 -        return this != entity && !(this.leashDistanceTo(entity) > this.leashSnapDistance()) && this.canBeLeashed();
 +        return this != entity && !(this.leashDistanceTo(entity) > this.leashSnapDistance()) && new gg.projecteden.parchment.event.entity.CheckEntityLeashableEvent(((Entity) this).getBukkitEntity(), this.canBeLeashed()).callEvent();
      }
  
-     default double leashDistanceTo(Entity entity) {
+     default double leashDistanceTo(final Entity entity) {

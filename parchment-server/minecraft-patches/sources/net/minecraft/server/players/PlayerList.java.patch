@@ -1,17 +1,17 @@
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -664,19 +_,23 @@
-                 BlockPos blockPos = respawnData.pos();
-                 BlockState blockState = level1.getBlockState(blockPos);
+@@ -663,19 +_,23 @@
+                 BlockPos respawnPosition = respawnData.pos();
+                 BlockState blockState = respawnLevel.getBlockState(respawnPosition);
                  if (blockState.is(Blocks.RESPAWN_ANCHOR)) {
--                    serverPlayer.connection
+-                    player.connection
 -                        .send(
 -                            new ClientboundSoundPacket(
 -                                SoundEvents.RESPAWN_ANCHOR_DEPLETE,
 -                                SoundSource.BLOCKS,
--                                blockPos.getX(),
--                                blockPos.getY(),
--                                blockPos.getZ(),
+-                                respawnPosition.getX(),
+-                                respawnPosition.getY(),
+-                                respawnPosition.getZ(),
 -                                1.0F,
 -                                1.0F,
 -                                level.getRandom().nextLong()
@@ -30,7 +30,7 @@
 +                                    .pitch(1.0f)
 +                                    .seed(level.getRandom().nextLong())
 +                                    .build(),
-+                            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(level1, blockPos.getX(), blockPos.getY(), blockPos.getZ()),
++                            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(respawnLevel, respawnPosition.getX(), respawnPosition.getY(), respawnPosition.getZ()),
 +                            gg.projecteden.parchment.event.sound.ParchmentSoundEvent.DISTANCE_FUNCTION,
 +                            null
 +                    ));

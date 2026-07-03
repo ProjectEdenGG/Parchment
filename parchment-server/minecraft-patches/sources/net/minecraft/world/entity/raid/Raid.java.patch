@@ -1,11 +1,10 @@
 --- a/net/minecraft/world/entity/raid/Raid.java
 +++ b/net/minecraft/world/entity/raid/Raid.java
-@@ -531,8 +_,21 @@
-             double d = vec3.x + 13.0 / squareRoot * (vec31.x - vec3.x);
-             double d1 = vec3.z + 13.0 / squareRoot * (vec31.z - vec3.z);
-             if (squareRoot <= 64.0 || players.contains(serverPlayer)) {
--                serverPlayer.connection
--                    .send(new ClientboundSoundPacket(SoundEvents.RAID_HORN, SoundSource.NEUTRAL, d, serverPlayer.getY(), d1, 64.0F, 1.0F, randomLong));
+@@ -539,7 +_,21 @@
+             double x3 = playerLoc.x + 13.0 / distBtwn * (raidLoc.x - playerLoc.x);
+             double z3 = playerLoc.z + 13.0 / distBtwn * (raidLoc.z - playerLoc.z);
+             if (distBtwn <= 64.0 || playersInRaid.contains(player)) {
+-                player.connection.send(new ClientboundSoundPacket(SoundEvents.RAID_HORN, SoundSource.NEUTRAL, x3, player.getY(), z3, 64.0F, 1.0F, seed));
 +                org.bukkit.craftbukkit.event.CraftEventFactory.playSoundEvent(new gg.projecteden.parchment.event.sound.SoundEvent(
 +                        null,
 +                        net.kyori.adventure.sound.Sound.sound()
@@ -17,7 +16,7 @@
 +                                .volume(64.0f)
 +                                .pitch(1.0f)
 +                                .build(),
-+                        gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(level, pos.getX(), pos.getY(), pos.getZ()),
++                        gg.projecteden.parchment.event.sound.ParchmentSoundEvent.createEmitter(level, soundOrigin.getX(), soundOrigin.getY(), soundOrigin.getZ()),
 +                        gg.projecteden.parchment.event.sound.ParchmentSoundEvent.DISTANCE_FUNCTION,
 +                        null
 +                ));

@@ -8,7 +8,7 @@
  
      @ApiStatus.Internal
      @Deprecated(since = "1.20.4", forRemoval = true)
-@@ -34,20 +_,41 @@
+@@ -35,20 +_,41 @@
          super(damagee, cause, damageSource, damage);
          this.damager = damager;
          this.damagerState = damagerState;
@@ -53,7 +53,7 @@
  
      /**
       * Returns the block that damaged the player.
-@@ -71,4 +_,5 @@
+@@ -72,4 +_,5 @@
      public BlockState getDamagerBlockState() {
          return this.damagerState;
      }

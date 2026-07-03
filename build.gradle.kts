@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     java // TODO java launcher tasks
-    id("io.papermc.paperweight.patcher") version "2.0.0-beta.19"
+    id("io.papermc.paperweight.patcher") version "2.0.0-beta.21"
 }
 
 paperweight {
@@ -37,7 +37,7 @@ subprojects {
 
     extensions.configure<JavaPluginExtension> {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
+            languageVersion = JavaLanguageVersion.of(25)
         }
     }
 
@@ -57,8 +57,16 @@ subprojects {
     }
     tasks.withType<JavaCompile> {
         options.encoding = Charsets.UTF_8.name()
-        options.release = 21
+        options.release = 25
         options.isFork = true
+        options.compilerArgs.addAll(
+            listOf(
+                "-Xlint:-unchecked",
+                "-Xlint:-deprecation",
+                "-Xlint:-removal",
+                "-Xlint:-dep-ann"
+            )
+        )
     }
     tasks.withType<Javadoc> {
         options.encoding = Charsets.UTF_8.name()

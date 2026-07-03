@@ -1,14 +1,6 @@
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
-@@ -419,6 +_,7 @@
-         return 10;
-     }
- 
-+
-     @Override
-     public void playSound(SoundEvent sound, float volume, float pitch) {
-         this.level().playSound(this, this.getX(), this.getY(), this.getZ(), sound, this.getSoundSource(), volume, pitch);
-@@ -1695,9 +_,23 @@
+@@ -1701,9 +_,23 @@
  
      // Paper start - send while respecting visibility
      private static void sendSoundEffect(Player fromEntity, double x, double y, double z, SoundEvent soundEffect, SoundSource soundCategory, float volume, float pitch) {
@@ -35,7 +27,7 @@
          }
      }
      // Paper end - send while respecting visibility
-@@ -2227,4 +_,11 @@
+@@ -2247,4 +_,11 @@
          public static final Player.BedSleepingProblem NOT_SAFE = new Player.BedSleepingProblem(Component.translatable("block.minecraft.bed.not_safe"));
          public static final Player.BedSleepingProblem EXPLOSION = new Player.BedSleepingProblem(null); // Paper - Added to properly handle explosions in bed events
      }

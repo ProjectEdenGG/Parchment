@@ -7,9 +7,9 @@
 -    private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
 +    private NonNullList<ItemStack> items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
      public final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
+         // Paper start - delay open/close callbacks
          @Override
-         protected void onOpen(Level level, BlockPos pos, BlockState state) {
-@@ -111,7 +_,7 @@
+@@ -118,7 +_,7 @@
  
      @Override
      public int getContainerSize() {
@@ -18,12 +18,12 @@
      }
  
      @Override
-@@ -131,7 +_,7 @@
+@@ -138,7 +_,7 @@
  
      @Override
-     protected AbstractContainerMenu createMenu(int id, Inventory player) {
--        return ChestMenu.threeRows(id, player, this);
-+        return ChestMenu.sixRows(id, player, this);
+     protected AbstractContainerMenu createMenu(final int containerId, final Inventory inventory) {
+-        return ChestMenu.threeRows(containerId, inventory, this);
++        return ChestMenu.sixRows(containerId, inventory, this);
      }
  
      @Override

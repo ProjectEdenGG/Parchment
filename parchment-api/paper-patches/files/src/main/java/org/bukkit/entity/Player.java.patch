@@ -1,11 +1,11 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -64,7 +_,17 @@
+@@ -71,7 +_,17 @@
   * Represents a player, connected or not
   */
  @NullMarked
--public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient { // Paper
-+public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient, gg.projecteden.parchment.HasPlayer { // Paper // Parchment
+-public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient, ObjectContentsLike { // Paper
++public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient, ObjectContentsLike, gg.projecteden.parchment.HasPlayer { // Paper // Parchment
 +
 +    // Parchment start
 +    /**
@@ -19,7 +19,7 @@
  
      // Paper start
      @Override
-@@ -2107,6 +_,16 @@
+@@ -2115,6 +_,16 @@
       */
      public boolean canSee(Player player);
  
@@ -36,10 +36,10 @@
      /**
       * Visually hides an entity from this player.
       *
-@@ -4004,4 +_,44 @@
-      */
-     @ApiStatus.Experimental
-     PlayerGameConnection getConnection();
+@@ -4020,4 +_,44 @@
+     default ObjectContents asObjectContents() {
+         return this.getPlayerProfile().asObjectContents();
+     }
 +
 +    /**
 +     * Checks if the player will spawn phantoms at night
