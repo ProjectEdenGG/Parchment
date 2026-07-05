@@ -47,10 +47,11 @@
          final BlockState state,
          final Level level,
          final BlockPos pos,
-@@ -452,8 +_,14 @@
+@@ -451,9 +_,14 @@
+         , final boolean dropExperience // Paper - Properly handle xp dropping
      ) {
          if (level instanceof ServerLevel serverLevel) {
-             getDrops(state, serverLevel, pos, blockEntity, breaker, tool).forEach(stack -> popResource(level, pos, stack));
+-            getDrops(state, serverLevel, pos, blockEntity, breaker, tool).forEach(stack -> popResource(level, pos, stack));
 -            state.spawnAfterBreak(serverLevel, pos, tool, dropExperience); // Paper - Properly handle xp dropping
 +            List<ItemEntity> itemEntities = new java.util.ArrayList<>();
 +            org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDropResourcesEvent(level, pos, Block.getDrops(state, (ServerLevel) level, pos, blockEntity, breaker, tool)).forEach((itemstack1) -> { // Parchment
