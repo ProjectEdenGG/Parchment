@@ -18,7 +18,7 @@ public class PreHangingEntityBreakEvent extends Event implements Cancellable {
 
     @Override
     public void setCancelled(boolean cancel) {
-        this.cancelled = true;
+        this.cancelled = cancel;
     }
 
     @Override
