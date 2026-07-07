@@ -1,0 +1,19 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftTransmuteRecipe.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftTransmuteRecipe.java
+@@ -26,7 +_,7 @@
+     }
+ 
+     @Override
+-    public void addToRecipeManager() {
++    public void addToRecipeManager(boolean reload) {
+         net.minecraft.world.item.crafting.TransmuteRecipe recipe = new net.minecraft.world.item.crafting.TransmuteRecipe(
+             new net.minecraft.world.item.crafting.Recipe.CommonInfo(true),
+             new net.minecraft.world.item.crafting.CraftingRecipe.CraftingBookInfo(CraftRecipe.getCategory(this.getCategory()), this.getGroup()),
+@@ -36,6 +_,6 @@
+             CraftItemStack.asTemplate(this.getResult()),
+             false
+         );
+-        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe));
++        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe), reload);
+     }
+ }

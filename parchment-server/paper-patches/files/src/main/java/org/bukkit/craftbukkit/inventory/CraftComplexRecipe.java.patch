@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftComplexRecipe.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftComplexRecipe.java
+@@ -19,7 +_,7 @@
+     }
+ 
+     @Override
+-    public void addToRecipeManager() {
++    public void addToRecipeManager(boolean reload) {
+         MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), this.recipe));
+     }
+ }

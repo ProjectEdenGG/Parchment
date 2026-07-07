@@ -1,0 +1,19 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftSmithingTrimRecipe.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftSmithingTrimRecipe.java
+@@ -29,7 +_,7 @@
+     }
+ 
+     @Override
+-    public void addToRecipeManager() {
++    public void addToRecipeManager(boolean reload) {
+         final net.minecraft.world.item.crafting.SmithingTrimRecipe recipe = new net.minecraft.world.item.crafting.SmithingTrimRecipe(
+             new net.minecraft.world.item.crafting.Recipe.CommonInfo(true),
+             CraftRecipe.toIngredient(this.getTemplate(), false),
+@@ -38,6 +_,6 @@
+             CraftTrimPattern.bukkitToMinecraftHolder(this.getTrimPattern()),
+             this.willCopyDataComponents()
+         );
+-        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe));
++        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe), reload);
+     }
+ }

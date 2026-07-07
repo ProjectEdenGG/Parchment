@@ -1,0 +1,23 @@
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -1473,9 +_,9 @@
+                 return false;
+             }
+         }
+-        toAdd.addToRecipeManager();
++        toAdd.addToRecipeManager(resendRecipes);
+         // Paper start - API for updating recipes on clients
+-        if (true || resendRecipes) { // Always needs to be resent now... TODO
++        if (resendRecipes) { // Always needs to be resent now... TODO
+             this.playerList.reloadRecipes();
+         }
+         // Paper end - API for updating recipes on clients
+@@ -1657,7 +_,7 @@
+         // Paper start - resend recipes on successful removal
+         final ResourceKey<net.minecraft.world.item.crafting.Recipe<?>> id = CraftNamespacedKey.toResourceKey(Registries.RECIPE, recipeKey);
+         final boolean removed = this.getServer().getRecipeManager().removeRecipe(id);
+-        if (removed/* && resendRecipes*/) { // TODO Always need to resend them rn - deprecate this method?
++        if (removed && resendRecipes) { // TODO Always need to resend them rn - deprecate this method?
+             this.playerList.reloadRecipes();
+         }
+         return removed;

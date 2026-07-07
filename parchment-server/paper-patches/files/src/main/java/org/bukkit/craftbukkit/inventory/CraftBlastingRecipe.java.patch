@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftBlastingRecipe.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftBlastingRecipe.java
+@@ -25,7 +_,7 @@
+     }
+ 
+     @Override
+-    public void addToRecipeManager() {
++    public void addToRecipeManager(boolean reload) {
+         net.minecraft.world.item.crafting.BlastingRecipe recipe = new net.minecraft.world.item.crafting.BlastingRecipe(
+             new net.minecraft.world.item.crafting.Recipe.CommonInfo(true),
+             new net.minecraft.world.item.crafting.AbstractCookingRecipe.CookingBookInfo(CraftRecipe.getCategory(this.getCategory()), this.getGroup()),

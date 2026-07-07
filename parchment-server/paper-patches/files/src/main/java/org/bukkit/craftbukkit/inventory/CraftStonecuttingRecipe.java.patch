@@ -1,0 +1,17 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftStonecuttingRecipe.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftStonecuttingRecipe.java
+@@ -23,12 +_,12 @@
+     }
+ 
+     @Override
+-    public void addToRecipeManager() {
++    public void addToRecipeManager(boolean reload) {
+         StonecutterRecipe recipe = new net.minecraft.world.item.crafting.StonecutterRecipe(
+             new net.minecraft.world.item.crafting.Recipe.CommonInfo(true),
+             CraftRecipe.toIngredient(this.getInputChoice(), true),
+             CraftItemStack.asTemplate(this.getResult())
+         );
+-        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe));
++        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe), reload);
+     }
+ }

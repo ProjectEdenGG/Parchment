@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftRecipe.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftRecipe.java
+@@ -19,7 +_,7 @@
+ 
+ public interface CraftRecipe extends Recipe {
+ 
+-    void addToRecipeManager();
++    void addToRecipeManager(boolean reload);
+ 
+     static Optional<Ingredient> toPossibleIngredient(@Nullable RecipeChoice bukkit, boolean requireNotEmpty) {
+         return (bukkit == null || bukkit == RecipeChoice.empty()) ? Optional.empty() : Optional.of(toIngredient(bukkit, requireNotEmpty)); // Paper - support "empty" choices

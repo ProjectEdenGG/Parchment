@@ -1,0 +1,19 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftShapelessRecipe.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftShapelessRecipe.java
+@@ -39,7 +_,7 @@
+     }
+ 
+     @Override
+-    public void addToRecipeManager() {
++    public void addToRecipeManager(boolean reload) {
+         List<org.bukkit.inventory.RecipeChoice> choices = this.getChoiceList();
+         List<Ingredient> ingredients = new ArrayList<>(choices.size());
+         for (org.bukkit.inventory.RecipeChoice choice : choices) {
+@@ -52,6 +_,6 @@
+             CraftItemStack.asTemplate(this.getResult()),
+             ingredients
+         );
+-        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe));
++        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe), reload);
+     }
+ }

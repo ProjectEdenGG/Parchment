@@ -1,0 +1,48 @@
+--- a/net/minecraft/world/item/crafting/RecipeManager.java
++++ b/net/minecraft/world/item/crafting/RecipeManager.java
+@@ -91,16 +_,24 @@
+     public void addRecipe(RecipeHolder<?> holder) {
+         org.spigotmc.AsyncCatcher.catchOp("Recipe Add"); // Spigot
+         this.recipes.addRecipe(holder);
+-        this.finalizeRecipeLoading();
++        this.finalizeRecipeLoading(true);
++    }
++
++    public void addRecipe(RecipeHolder<?> holder, boolean reload) {
++        org.spigotmc.AsyncCatcher.catchOp("Recipe Add"); // Spigot
++        this.recipes.addRecipe(holder);
++        this.finalizeRecipeLoading(reload);
+     }
+ 
+     private FeatureFlagSet enabledFlags;
+ 
+-    public void finalizeRecipeLoading() {
++    public void finalizeRecipeLoading(boolean reload) {
+         if (this.enabledFlags != null) {
+             this.finalizeRecipeLoading(this.enabledFlags);
+ 
+-            net.minecraft.server.MinecraftServer.getServer().getPlayerList().reloadResources();
++            if (reload) {
++                net.minecraft.server.MinecraftServer.getServer().getPlayerList().reloadResources();
++            }
+         }
+     }
+ 
+@@ -222,7 +_,7 @@
+     public boolean removeRecipe(ResourceKey<Recipe<?>> id) {
+         boolean removed = this.recipes.removeRecipe(id);
+         if (removed) {
+-            this.finalizeRecipeLoading();
++            this.finalizeRecipeLoading(true);
+         }
+ 
+         return removed;
+@@ -230,7 +_,7 @@
+ 
+     public void clearRecipes() {
+         this.recipes = RecipeMap.create(java.util.Collections.emptyList());
+-        this.finalizeRecipeLoading();
++        this.finalizeRecipeLoading(true);
+     }
+     // CraftBukkit end
+ 

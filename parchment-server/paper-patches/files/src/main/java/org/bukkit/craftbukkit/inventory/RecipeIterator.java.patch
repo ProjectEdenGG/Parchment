@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/RecipeIterator.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/RecipeIterator.java
+@@ -30,7 +_,7 @@
+     public void remove() {
+         MinecraftServer.getServer().getRecipeManager().recipes.byKey.remove(this.currentRecipe.id());
+         this.recipes.remove();
+-        MinecraftServer.getServer().getRecipeManager().finalizeRecipeLoading();
++        MinecraftServer.getServer().getRecipeManager().finalizeRecipeLoading(true);
+         MinecraftServer.getServer().getPlayerList().reloadRecipes();
+     }
+ }

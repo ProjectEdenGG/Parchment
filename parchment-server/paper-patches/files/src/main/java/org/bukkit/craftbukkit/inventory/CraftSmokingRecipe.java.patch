@@ -1,0 +1,19 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftSmokingRecipe.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftSmokingRecipe.java
+@@ -25,7 +_,7 @@
+     }
+ 
+     @Override
+-    public void addToRecipeManager() {
++    public void addToRecipeManager(boolean reload) {
+         net.minecraft.world.item.crafting.SmokingRecipe recipe = new net.minecraft.world.item.crafting.SmokingRecipe(
+             new net.minecraft.world.item.crafting.Recipe.CommonInfo(true),
+             new net.minecraft.world.item.crafting.AbstractCookingRecipe.CookingBookInfo(CraftRecipe.getCategory(this.getCategory()), this.getGroup()),
+@@ -34,6 +_,6 @@
+             this.getExperience(),
+             this.getCookingTime()
+         );
+-        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe));
++        MinecraftServer.getServer().getRecipeManager().addRecipe(new RecipeHolder<>(CraftNamespacedKey.toResourceKey(Registries.RECIPE, this.getKey()), recipe), reload);
+     }
+ }
