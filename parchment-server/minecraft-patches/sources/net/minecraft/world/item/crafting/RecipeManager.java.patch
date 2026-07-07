@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/item/crafting/RecipeManager.java
 +++ b/net/minecraft/world/item/crafting/RecipeManager.java
-@@ -91,16 +_,24 @@
+@@ -91,16 +_,28 @@
      public void addRecipe(RecipeHolder<?> holder) {
          org.spigotmc.AsyncCatcher.catchOp("Recipe Add"); // Spigot
          this.recipes.addRecipe(holder);
@@ -16,7 +16,10 @@
  
      private FeatureFlagSet enabledFlags;
  
--    public void finalizeRecipeLoading() {
+     public void finalizeRecipeLoading() {
++        this.finalizeRecipeLoading(true);
++    }
++
 +    public void finalizeRecipeLoading(boolean reload) {
          if (this.enabledFlags != null) {
              this.finalizeRecipeLoading(this.enabledFlags);
