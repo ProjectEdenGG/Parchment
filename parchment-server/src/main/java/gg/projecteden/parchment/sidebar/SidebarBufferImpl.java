@@ -168,7 +168,8 @@ public class SidebarBufferImpl extends SidebarBuffer {
                 Math.min(value.length(), SidebarBufferImpl.AFFIX_LIMIT + SidebarBufferImpl.NAME_LIMIT)
             );
 
-            ClientboundSetPlayerTeamPacket packet = ClientboundSetPlayerTeamPacket.createRemovePacket(DedicatedServer.getServer().getScoreboard().getPlayerTeam(this.getTeamName(line)));
+            PlayerTeam team = new PlayerTeam(DedicatedServer.getServer().getScoreboard(), this.getTeamName(line));
+            ClientboundSetPlayerTeamPacket packet = ClientboundSetPlayerTeamPacket.createRemovePacket(team);
             this.connection.send(packet);
         }
 
